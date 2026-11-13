@@ -1,0 +1,11 @@
+{
+  "contract": "eaf-bundle/2",
+  "kind": "real",
+  "generatedAt": "2026-11-13T18:55:11+00:00",
+  "files": {
+    "features.json": "c3470bb83171518cf344e6fe6f21a5917a17a18affe90eaee01615e3de057361",
+    "targets.json": "4c0187afdfc4debabb322ddd29a2fa50aefc0e2fbd3d875d03334ce7521d3153",
+    "sites.geojson": "accade3b25898256c12acba487362faafce0393f5fed55bb68cc577011287f7f",
+    "scores.json": "27e448fce0c7a0ef66df43c0dd1cbbaf19a47124b49055e5c8aa48c7bef1e09e"
+  }
+}

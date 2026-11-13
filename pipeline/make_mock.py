@@ -1,22 +1,24 @@
-"""Write a deterministic MOCK data bundle to web/public/data/.
+"""Write a deterministic MOCK data bundle to web/public-mock/data/.
 
 Same shapes as the real bundle (CLAUDE.md §4). All numeric `norm` values are
-random (seeded) and NOT measurements. `generatedAt` is "MOCK" so the UI can flag it.
+random (seeded) and NOT measurements. manifest.json says kind "mock" and
+`generatedAt` is "MOCK", so the app can only show it in mock mode
+(`npm run dev:mock`), always under a MOCK banner.
 
 Uses only the standard library so it runs before the pipeline env is installed:
     python pipeline/make_mock.py
 """
 import csv
-import json
 import random
 
 import config
+from bundle_io import export_features, write_bundle
 from scoring import novelty_km, rank_sites
 
 SEED = 42
 NULL_RATE = 0.1  # share of optional numeric values left null, to exercise "data pending"
 OPTIONAL_NUMERIC = {"temp_range", "veg"}
-RAW_KEYS = ["precip_mm", "tmean_c", "trange_c", "relief_m", "ndvi"]
+RAW_KEYS = [f["raw"] for f in config.FEATURES if "raw" in f]
 
 
 def read_csv(path):
@@ -47,8 +49,7 @@ def mock_norm(rng, row, allow_null):
 
 
 def build_features():
-    keys = ["id", "label", "kind", "unit", "earthMin", "earthMax", "invert", "related", "description", "source"]
-    return [{k: f[k] for k in keys if k in f} for f in config.FEATURES]
+    return export_features(config.FEATURES)
 
 
 def build_targets(rng):
@@ -100,28 +101,22 @@ def build_scores(targets, sites, features):
     return {t["id"]: rank_sites(t, site_props, weights, features) for t in targets}
 
 
-def write_json(name, obj):
-    config.BUNDLE_DIR.mkdir(parents=True, exist_ok=True)
-    path = config.BUNDLE_DIR / name
-    with open(path, "w", encoding="utf-8", newline="\n") as f:
-        json.dump(obj, f, ensure_ascii=False, indent=2)
-        f.write("\n")
-    print(f"wrote {path.relative_to(config.ROOT.parent).as_posix()}")
-
-
 def main():
     rng = random.Random(SEED)
     targets = build_targets(rng)
     sites = build_sites(rng)
     features = build_features()
-    write_json("features.json", features)
-    write_json("targets.json", targets)
-    write_json("sites.geojson", sites)
-    write_json("scores.json", {
-        "generatedAt": "MOCK",
-        "defaultPreset": config.DEFAULT_PRESET,
-        "byTarget": build_scores(targets, sites, features),
-    })
+    # Mock goes to its OWN public dir (web/public-mock/data), never next to real data.
+    write_bundle(config.MOCK_BUNDLE_DIR, "mock", {
+        "features.json": features,
+        "targets.json": targets,
+        "sites.geojson": sites,
+        "scores.json": {
+            "generatedAt": "MOCK",
+            "defaultPreset": config.DEFAULT_PRESET,
+            "byTarget": build_scores(targets, sites, features),
+        },
+    }, root_for_log=config.ROOT.parent)
 
 
 if __name__ == "__main__":

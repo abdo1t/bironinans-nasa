@@ -1,9 +1,18 @@
 import { Link, useParams } from 'react-router-dom'
 import ScoreBars from '../components/ScoreBars.jsx'
+import TargetReference from '../components/TargetReference.jsx'
 import TargetSelect from '../components/TargetSelect.jsx'
-import { CoverageBadge, MockTag, NoveltyTag, ScoreBadge, SourceTag } from '../components/Tags.jsx'
+import {
+  ConfidenceTag,
+  CoverageBadge,
+  EvidenceTag,
+  MockTag,
+  NoveltyTag,
+  ScoreBadge,
+  SourceTag,
+} from '../components/Tags.jsx'
 import { useBundle } from '../data/useBundle.js'
-import { bodyLabel, formatCoord, sourceKind } from '../lib/format.js'
+import { bodyLabel, describeSiteValue, formatCoord, sourceKind } from '../lib/format.js'
 import { PRESETS } from '../lib/presets.js'
 import { LIMITATIONS_NOTE, WHY_MIN_SIM, scoreSite } from '../lib/scoring.js'
 import { useAppState } from '../state/AppState.jsx'
@@ -26,7 +35,7 @@ export default function SiteDetails() {
   }
 
   const target = app.target
-  const result = target ? scoreSite(target, site, app.weights, data.features) : null
+  const result = target ? scoreSite(target, site, app.weights, data.features, data.minCriteria) : null
   const ranked = target ? app.rankBySite[site.id] : null
   const listed = app.shortlist.includes(site.id)
 
@@ -40,13 +49,22 @@ export default function SiteDetails() {
         <div>
           <h1>{site.name}</h1>
           <p className="muted">
-            {site.country} · {formatCoord(site.lat, site.lon)} <span className="hint">(approximate — verify)</span>
+            {site.country} · {formatCoord(site.lat, site.lon)}{' '}
+            <span className="hint" title={site.coord?.source}>
+              ({site.coord?.precision || 'approximate — verify'})
+            </span>
           </p>
           <p className="site__tags">
             <NoveltyTag site={site} />
-            <span className="muted">Nearest catalogued analog: {site.novelKm === 0 ? 'this site' : `${site.novelKm} km`}</span>
+            <span className="muted">
+              {site.knownAnalog
+                ? 'Published analog site'
+                : `Nearest catalogued analog: ${site.novelKm} km`}
+            </span>
             {data.isMock && <MockTag />}
           </p>
+          {site.analogRef && <p className="hint">Analog reference: {site.analogRef}</p>}
+          {site.notes && <p className="hint">Note: {site.notes}</p>}
         </div>
         <div className="site__actions">
           <button
@@ -87,10 +105,15 @@ export default function SiteDetails() {
               )}
             </div>
             <div>
-              <CoverageBadge coverage={result.coverage} />
-              <p className="hint">Criteria with missing data are left out of the score, not counted as zero.</p>
+              <CoverageBadge coverage={result.coverage} /> {result.score !== null && <ConfidenceTag coverage={result.coverage} />}
+              <p className="hint">
+                Criteria with missing data are left out of the score, not counted as zero. A score needs at least{' '}
+                {data.minCriteria} criteria with data.
+              </p>
             </div>
           </section>
+
+          <TargetReference target={target} features={data.features} isMock={data.isMock} />
 
           <section className="panel">
             <h2>Score breakdown</h2>
@@ -129,10 +152,18 @@ export default function SiteDetails() {
             observations and must not be used for planning.
           </p>
         )}
+        {!data.isMock && (
+          <p>
+            Climate values are NASA POWER reanalysis averages for a ~50 km grid cell, not station measurements at this
+            exact point. Target temperatures are surface (skin/regolith) temperatures, compared with Earth skin
+            temperature.
+          </p>
+        )}
         {site.isNewCandidate && (
           <p>
-            “Uncatalogued candidate” means only that this site is more than 300 km from every catalogued analog. It has
-            not been validated as an analog.
+            “Uncatalogued candidate” means only that this site is more than 300 km from every site in this project’s
+            analog reference list and we found no peer-reviewed analog study of it. It has not been validated as an
+            analog.
           </p>
         )}
       </section>
@@ -140,31 +171,75 @@ export default function SiteDetails() {
       <section className="panel">
         <h2>Data sources</h2>
         <div className="table-scroll">
-        <table className="sources">
-          <thead>
-            <tr>
-              <th scope="col">Criterion</th>
-              <th scope="col">This site’s value</th>
-              <th scope="col">Planned source (real data)</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.features.map((f) => {
-              const src = site.sources?.[f.id]
-              return (
-                <tr key={f.id}>
-                  <th scope="row">{f.label}</th>
-                  <td>
-                    <SourceTag source={src} />{' '}
-                    {sourceKind(src) === 'real' ? src : <span className="muted">{src || 'No value yet'}</span>}
-                  </td>
-                  <td className="muted">{f.source}</td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
+          <table className="sources">
+            <thead>
+              <tr>
+                <th scope="col">Criterion</th>
+                <th scope="col">This site’s value</th>
+                <th scope="col">{data.isMock ? 'Planned source (real data)' : 'Dataset, period and resolution'}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.features.map((f) => {
+                const sv = describeSiteValue(f, site)
+                const p = sv.provenance
+                if (!p) {
+                  const src = site.sources?.[f.id]
+                  return (
+                    <tr key={f.id}>
+                      <th scope="row">{f.label}</th>
+                      <td>
+                        <SourceTag source={src} />{' '}
+                        {sourceKind(src) === 'real' ? src : <span className="muted">{src || 'No value yet'}</span>}
+                      </td>
+                      <td className="muted">{f.source}</td>
+                    </tr>
+                  )
+                }
+                return (
+                  <tr key={f.id}>
+                    <th scope="row">{f.label}</th>
+                    <td>
+                      {sv.text ?? <span className="muted">—</span>} <EvidenceTag status={sv.status} />
+                      {sv.excluded && <span className="cell-note">Not used in score: {sv.excluded}</span>}
+                    </td>
+                    <td className="sources__detail">
+                      {p.status === 'unavailable' ? (
+                        <span className="muted">{p.note}</span>
+                      ) : p.citation ? (
+                        <span>{p.citation}</span>
+                      ) : (
+                        <span>
+                          {p.dataset}
+                          {p.parameter && <> · {p.parameter}</>}
+                          {p.period && <> · climatology {p.period}</>}
+                          {p.resolution && <> · {p.resolution}</>}
+                          {p.method && <> · {p.method}</>}
+                          {p.url && (
+                            <>
+                              {' '}
+                              ·{' '}
+                              <a href={p.url} target="_blank" rel="noreferrer">
+                                source request ↗
+                              </a>
+                            </>
+                          )}
+                          {p.retrievedAt && <span className="muted"> · retrieved {p.retrievedAt.slice(0, 10)}</span>}
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
         </div>
+        {site.coord?.source && (
+          <p className="hint">
+            Coordinates: {site.coord.source}
+            {site.coord.elevM !== null && site.coord.elevM !== undefined && <> · elevation {site.coord.elevM} m ({site.coord.elevSource})</>}
+          </p>
+        )}
         {target?.trekUrl && (
           <p>
             <a href={target.trekUrl} target="_blank" rel="noreferrer">

@@ -6,8 +6,8 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -70.0,
-          -24.1
+          -70.01828,
+          -24.10169
         ]
       },
       "properties": {
@@ -15,33 +15,96 @@
         "name": "Atacama Desert (Yungay)",
         "country": "Chile",
         "knownAnalog": true,
+        "analogRef": "Navarro-González et al. 2003, Science, doi:10.1126/science.1089143 (Mars-like soils in the Atacama)",
         "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
           "relief_m": null,
+          "precip_mm_yr": 7.3,
+          "ts_mean_c": 18.95,
+          "ts_range_c": 28.59,
           "ndvi": null
         },
         "norm": {
-          "terrain": 0.04,
-          "aridity": 0.46,
-          "temp": 0.12,
-          "temp_range": 0.08,
-          "veg": 0.63,
-          "geology": "evaporite",
+          "terrain": null,
+          "aridity": 0.9964,
+          "temp": 0.8311,
+          "temp_range": 0.8169,
+          "veg": null,
+          "geology": "sulfate",
           "ice": "no"
         },
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
+          "aridity": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp_range": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "geology": "Literature: Voigt et al. 2017 (Goldschmidt abstract #4103): salt suite mainly gypsum, anhydrite, halite and nitr",
+          "ice": "Literature: Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation"
+        },
+        "provenance": {
+          "terrain": {
+            "status": "unavailable",
+            "dem": "SRTMGL1.003",
+            "note": "Not yet acquired: NASA SRTM v3 1 arc-second (SRTMGL1 v003) download needs a NASA Earthdata login"
+          },
+          "aridity": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "PRECTOTCORR (x 365.25)",
+            "status": "reanalysis",
+            "value": 7.3,
+            "units": "mm/yr",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1261.0 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=-24.1017&longitude=-70.0183&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:05+00:00"
+          },
+          "temp": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS",
+            "status": "reanalysis",
+            "value": 18.95,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1261.0 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=-24.1017&longitude=-70.0183&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:05+00:00"
+          },
+          "temp_range": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS_RANGE",
+            "status": "reanalysis",
+            "value": 28.59,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1261.0 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=-24.1017&longitude=-70.0183&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:05+00:00"
+          },
+          "veg": {
+            "status": "unavailable",
+            "note": "MODIS NDVI not yet acquired (needs Earthdata login)"
+          },
+          "geology": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "sulfate",
+            "citation": "Voigt et al. 2017 (Goldschmidt abstract #4103): salt suite mainly gypsum, anhydrite, halite and nitratite; Front. Microbiol. 2022, doi:10.3389/fmicb.2021.794743 (bassanite, anhydrite, gypsum)"
+          },
+          "ice": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "no",
+            "citation": "Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation; outside permafrost zones)"
+          }
+        },
+        "clipped": {},
+        "coord": {
+          "source": "Voigt, Herwartz & Staubwasser, Goldschmidt 2017 abstract #4103: Yungay 24°6′6.1″S 70°1′5.8″W",
+          "precision": "soil-pit location (conference abstract)",
+          "elevM": 1017.0,
+          "elevSource": "DEM lookup (ASTER GDEM 30 m via OpenTopoData), ±20 m"
+        },
+        "notes": "Soils mix silicate and salt suites; 'evaporite' is also defensible."
       }
     },
     {
@@ -49,213 +112,526 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -89.68,
-          75.38
-        ]
-      },
-      "properties": {
-        "id": "haughton",
-        "name": "Haughton Crater / Devon Island",
-        "country": "Canada",
-        "knownAnalog": true,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.89,
-          "aridity": 0.36,
-          "temp": 0.19,
-          "temp_range": null,
-          "veg": 0.77,
-          "geology": "sedimentary",
-          "ice": "yes"
-        },
-        "novelKm": 0,
-        "isNewCandidate": false,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -116.87,
-          36.46
-        ]
-      },
-      "properties": {
-        "id": "death-valley",
-        "name": "Death Valley",
-        "country": "USA",
-        "knownAnalog": true,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.99,
-          "aridity": 0.86,
-          "temp": 0.87,
-          "temp_range": 0.45,
-          "veg": 0.16,
-          "geology": "evaporite",
-          "ice": "no"
-        },
-        "novelKm": 0,
-        "isNewCandidate": false,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          161.9,
-          -77.5
-        ]
-      },
-      "properties": {
-        "id": "mcmurdo",
-        "name": "McMurdo Dry Valleys",
-        "country": "Antarctica",
-        "knownAnalog": true,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.36,
-          "aridity": 0.67,
-          "temp": 0.7,
-          "temp_range": 0.07,
-          "veg": 0.53,
-          "geology": "anorthosite",
-          "ice": "yes"
-        },
-        "novelKm": 0,
-        "isNewCandidate": false,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "MOCK — synthetic placeholder, not a measurement",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -115.5,
-          35.1
-        ]
-      },
-      "properties": {
-        "id": "mojave",
-        "name": "Mojave Desert",
-        "country": "USA",
-        "knownAnalog": true,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.16,
-          "aridity": 0.38,
-          "temp": 0.99,
-          "temp_range": 0.56,
-          "veg": 0.84,
-          "geology": "ice",
-          "ice": "no"
-        },
-        "novelKm": 0,
-        "isNewCandidate": false,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "MOCK — synthetic placeholder, not a measurement",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -110.79,
-          38.41
+          -110.7919,
+          38.40646
         ]
       },
       "properties": {
         "id": "mdrs-utah",
-        "name": "Mars Desert Research Station area (Hanksville)",
+        "name": "Mars Desert Research Station (Hanksville)",
         "country": "USA",
         "knownAnalog": true,
+        "analogRef": "Stoker et al. 2011, Int. J. Astrobiology, doi:10.1017/S1473550411000115",
         "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
           "relief_m": null,
+          "precip_mm_yr": 241.1,
+          "ts_mean_c": 12.19,
+          "ts_range_c": 21.85,
           "ndvi": null
         },
         "norm": {
-          "terrain": 0.06,
-          "aridity": 0.82,
-          "temp": 0.81,
-          "temp_range": 0.07,
-          "veg": 0.57,
-          "geology": "sedimentary",
+          "terrain": null,
+          "aridity": 0.8795,
+          "temp": 0.7599,
+          "temp_range": 0.6243,
+          "veg": null,
+          "geology": "clay",
           "ice": "no"
         },
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
+          "aridity": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp_range": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "geology": "Literature: Stoker et al. 2011, Int. J. Astrobiology 10(3), doi:10.1017/S1473550411000115: Mancos and Morrison s",
+          "ice": "Literature: Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation"
+        },
+        "provenance": {
+          "terrain": {
+            "status": "unavailable",
+            "dem": "SRTMGL1.003",
+            "note": "Not yet acquired: NASA SRTM v3 1 arc-second (SRTMGL1 v003) download needs a NASA Earthdata login"
+          },
+          "aridity": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "PRECTOTCORR (x 365.25)",
+            "status": "reanalysis",
+            "value": 241.1,
+            "units": "mm/yr",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1659.66 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=38.4065&longitude=-110.7919&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:08+00:00"
+          },
+          "temp": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS",
+            "status": "reanalysis",
+            "value": 12.19,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1659.66 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=38.4065&longitude=-110.7919&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:08+00:00"
+          },
+          "temp_range": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS_RANGE",
+            "status": "reanalysis",
+            "value": 21.85,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1659.66 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=38.4065&longitude=-110.7919&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:08+00:00"
+          },
+          "veg": {
+            "status": "unavailable",
+            "note": "MODIS NDVI not yet acquired (needs Earthdata login)"
+          },
+          "geology": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "clay",
+            "citation": "Stoker et al. 2011, Int. J. Astrobiology 10(3), doi:10.1017/S1473550411000115: Mancos and Morrison soils rich in phyllosilicates (montmorillonite, nontronite, illite)"
+          },
+          "ice": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "no",
+            "citation": "Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation; outside permafrost zones)"
+          }
+        },
+        "clipped": {},
+        "coord": {
+          "source": "Wikipedia infobox, Mars Desert Research Station (38°24′23.25″N 110°47′30.85″W)",
+          "precision": "station coordinates",
+          "elevM": 1375.0,
+          "elevSource": "DEM lookup (ASTER GDEM 30 m via OpenTopoData), ±20 m"
+        },
+        "notes": "Same study: sulfate is the dominant anion in all soils."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -116.82583,
+          36.25028
+        ]
+      },
+      "properties": {
+        "id": "death-valley",
+        "name": "Death Valley (Badwater Basin)",
+        "country": "USA",
+        "knownAnalog": true,
+        "analogRef": "Baldridge et al. 2004, JGR Planets, doi:10.1029/2004JE002315 (Mars remote-sensing analog studies in Badwater Basin)",
+        "raw": {
+          "relief_m": null,
+          "precip_mm_yr": 124.2,
+          "ts_mean_c": 19.59,
+          "ts_range_c": 25.67,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": null,
+          "aridity": null,
+          "temp": null,
+          "temp_range": null,
+          "veg": null,
+          "geology": "evaporite",
+          "ice": "no"
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "geology": "Literature: Baldridge, Farmer & Moersch 2004, JGR Planets 109(E12), doi:10.1029/2004JE002315 (evaporite minerals",
+          "ice": "Literature: Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation"
+        },
+        "provenance": {
+          "terrain": {
+            "status": "unavailable",
+            "dem": "SRTMGL1.003",
+            "note": "Not yet acquired: NASA SRTM v3 1 arc-second (SRTMGL1 v003) download needs a NASA Earthdata login"
+          },
+          "aridity": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "PRECTOTCORR (x 365.25)",
+            "status": "reanalysis",
+            "value": 124.2,
+            "units": "mm/yr",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 845.57 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=36.2503&longitude=-116.8258&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:11+00:00",
+            "excluded": "POWER grid cell (~50 km) mean elevation 846 m vs site -86 m (difference 932 m > 500 m): cell does not represent the site"
+          },
+          "temp": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS",
+            "status": "reanalysis",
+            "value": 19.59,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 845.57 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=36.2503&longitude=-116.8258&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:11+00:00",
+            "excluded": "POWER grid cell (~50 km) mean elevation 846 m vs site -86 m (difference 932 m > 500 m): cell does not represent the site"
+          },
+          "temp_range": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS_RANGE",
+            "status": "reanalysis",
+            "value": 25.67,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 845.57 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=36.2503&longitude=-116.8258&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:11+00:00",
+            "excluded": "POWER grid cell (~50 km) mean elevation 846 m vs site -86 m (difference 932 m > 500 m): cell does not represent the site"
+          },
+          "veg": {
+            "status": "unavailable",
+            "note": "MODIS NDVI not yet acquired (needs Earthdata login)"
+          },
+          "geology": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "evaporite",
+            "citation": "Baldridge, Farmer & Moersch 2004, JGR Planets 109(E12), doi:10.1029/2004JE002315 (evaporite minerals at Badwater); salt crust ~95% NaCl (Wikipedia)"
+          },
+          "ice": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "no",
+            "citation": "Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation; outside permafrost zones)"
+          }
+        },
+        "clipped": {},
+        "coord": {
+          "source": "Wikipedia infobox, Badwater Basin",
+          "precision": "basin reference point",
+          "elevM": -86.0,
+          "elevSource": "Wikipedia, Badwater Basin"
+        },
+        "notes": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -89.8667,
+          75.4333
+        ]
+      },
+      "properties": {
+        "id": "haughton",
+        "name": "Haughton impact structure (Devon Island)",
+        "country": "Canada",
+        "knownAnalog": true,
+        "analogRef": "Lee & Osinski 2005, Meteoritics & Planetary Science 40(12), doi:10.1111/j.1945-5100.2005.tb00144.x",
+        "raw": {
+          "relief_m": null,
+          "precip_mm_yr": 321.4,
+          "ts_mean_c": -15.27,
+          "ts_range_c": 6.84,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": null,
+          "aridity": 0.8393,
+          "temp": 0.4708,
+          "temp_range": 0.1954,
+          "veg": null,
+          "geology": "sedimentary",
+          "ice": "yes"
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "aridity": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp_range": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "geology": "Literature: Lindgren et al. 2009, Astrobiology, doi:10.1089/ast.2008.0270: thick target succession of sedimentar",
+          "ice": "Literature: Osinski et al., LPSC 2020 abstract (NTRS 20200001979): GPR and shallow drilling confirm ice in polyg"
+        },
+        "provenance": {
+          "terrain": {
+            "status": "unavailable",
+            "dem": "ASTGTM.003",
+            "note": "Not yet acquired: ASTER GDEM v3 1 arc-second (ASTGTM v003) download needs a NASA Earthdata login"
+          },
+          "aridity": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "PRECTOTCORR (x 365.25)",
+            "status": "reanalysis",
+            "value": 321.4,
+            "units": "mm/yr",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 188.16 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=75.4333&longitude=-89.8667&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:14+00:00"
+          },
+          "temp": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS",
+            "status": "reanalysis",
+            "value": -15.27,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 188.16 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=75.4333&longitude=-89.8667&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:14+00:00"
+          },
+          "temp_range": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS_RANGE",
+            "status": "reanalysis",
+            "value": 6.84,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 188.16 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=75.4333&longitude=-89.8667&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:14+00:00"
+          },
+          "veg": {
+            "status": "unavailable",
+            "note": "MODIS NDVI not yet acquired (needs Earthdata login)"
+          },
+          "geology": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "sedimentary",
+            "citation": "Lindgren et al. 2009, Astrobiology, doi:10.1089/ast.2008.0270: thick target succession of sedimentary rocks, mainly carbonates"
+          },
+          "ice": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "yes",
+            "citation": "Osinski et al., LPSC 2020 abstract (NTRS 20200001979): GPR and shallow drilling confirm ice in polygon troughs"
+          }
+        },
+        "clipped": {},
+        "coord": {
+          "source": "Mars Institute, HMP Research Station page: 75°26′ N, 89°52′ W",
+          "precision": "arc-minute (~1–2 km); research station on the NW rim",
+          "elevM": 215.0,
+          "elevSource": "DEM lookup (ASTER GDEM 30 m via OpenTopoData), ±20 m"
+        },
+        "notes": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          160.73238,
+          -77.86617
+        ]
+      },
+      "properties": {
+        "id": "mcmurdo",
+        "name": "McMurdo Dry Valleys (University Valley)",
+        "country": "Antarctica",
+        "knownAnalog": true,
+        "analogRef": "Heldmann et al. 2013, Planetary and Space Science, doi:10.1016/j.pss.2013.05.019 (high-elevation Dry Valleys as analogs for subsurface ice on Mars)",
+        "raw": {
+          "relief_m": null,
+          "precip_mm_yr": 142.4,
+          "ts_mean_c": -35.25,
+          "ts_range_c": 6.46,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": null,
+          "aridity": 0.9288,
+          "temp": 0.2605,
+          "temp_range": 0.1846,
+          "veg": null,
+          "geology": null,
+          "ice": "yes"
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "aridity": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp_range": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "ice": "Literature: Goordial et al. 2016, ISME J, doi:10.1038/ismej.2015.239: ice-cemented permafrost widespread beneath"
+        },
+        "provenance": {
+          "terrain": {
+            "status": "unavailable",
+            "dem": "ASTGTM.003",
+            "note": "Not yet acquired: ASTER GDEM v3 1 arc-second (ASTGTM v003) download needs a NASA Earthdata login"
+          },
+          "aridity": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "PRECTOTCORR (x 365.25)",
+            "status": "reanalysis",
+            "value": 142.4,
+            "units": "mm/yr",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1710.18 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=-77.8662&longitude=160.7324&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:17+00:00"
+          },
+          "temp": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS",
+            "status": "reanalysis",
+            "value": -35.25,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1710.18 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=-77.8662&longitude=160.7324&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:17+00:00"
+          },
+          "temp_range": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS_RANGE",
+            "status": "reanalysis",
+            "value": 6.46,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1710.18 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=-77.8662&longitude=160.7324&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:17+00:00"
+          },
+          "veg": {
+            "status": "unavailable",
+            "note": "MODIS NDVI not yet acquired (needs Earthdata login)"
+          },
+          "geology": {
+            "status": "unavailable",
+            "note": "Mixed: soils derived from Ferrar dolerite and Beacon Supergroup sandstone (Goordial et al. 2016) — no single class"
+          },
+          "ice": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "yes",
+            "citation": "Goordial et al. 2016, ISME J, doi:10.1038/ismej.2015.239: ice-cemented permafrost widespread beneath dry permafrost"
+          }
+        },
+        "clipped": {},
+        "coord": {
+          "source": "Goordial et al. 2016, ISME J, doi:10.1038/ismej.2015.239: 77°51.970′S 160°43.943′E (IT-5 cm permafrost core)",
+          "precision": "sampling-site coordinates",
+          "elevM": 1700.0,
+          "elevSource": "Goordial et al. 2016, ISME J (1700 m a.s.l.)"
+        },
+        "notes": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -6.55643,
+          37.72512
+        ]
+      },
+      "properties": {
+        "id": "rio-tinto",
+        "name": "Río Tinto (Peña de Hierro)",
+        "country": "Spain",
+        "knownAnalog": true,
+        "analogRef": "Fernández-Remolar et al. 2005, Earth and Planetary Science Letters, doi:10.1016/j.epsl.2005.09.043 (implications for Meridiani Planum, Mars)",
+        "raw": {
+          "relief_m": null,
+          "precip_mm_yr": 467.5,
+          "ts_mean_c": 18.78,
+          "ts_range_c": 18.89,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": null,
+          "aridity": 0.7663,
+          "temp": 0.8293,
+          "temp_range": 0.5397,
+          "veg": null,
+          "geology": "sulfate",
+          "ice": "no"
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "aridity": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp_range": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "geology": "Literature: Amils & Fernández-Remolar 2014, Life 4:511, doi:10.3390/life4030511 (sulfate and iron-oxide deposits",
+          "ice": "Literature: Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation"
+        },
+        "provenance": {
+          "terrain": {
+            "status": "unavailable",
+            "dem": "SRTMGL1.003",
+            "note": "Not yet acquired: NASA SRTM v3 1 arc-second (SRTMGL1 v003) download needs a NASA Earthdata login"
+          },
+          "aridity": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "PRECTOTCORR (x 365.25)",
+            "status": "reanalysis",
+            "value": 467.5,
+            "units": "mm/yr",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 187.78 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=37.7251&longitude=-6.5564&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:20+00:00"
+          },
+          "temp": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS",
+            "status": "reanalysis",
+            "value": 18.78,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 187.78 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=37.7251&longitude=-6.5564&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:20+00:00"
+          },
+          "temp_range": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS_RANGE",
+            "status": "reanalysis",
+            "value": 18.89,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 187.78 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=37.7251&longitude=-6.5564&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:20+00:00"
+          },
+          "veg": {
+            "status": "unavailable",
+            "note": "MODIS NDVI not yet acquired (needs Earthdata login)"
+          },
+          "geology": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "sulfate",
+            "citation": "Amils & Fernández-Remolar 2014, Life 4:511, doi:10.3390/life4030511 (sulfate and iron-oxide deposits from sulfide bioleaching)"
+          },
+          "ice": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "no",
+            "citation": "Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation; outside permafrost zones)"
+          }
+        },
+        "clipped": {},
+        "coord": {
+          "source": "Waymarking.com (user-contributed): N 37° 43.507, W 006° 33.386 — Río Tinto source at Peña de Hierro (Amils & Fernández-Remolar 2014)",
+          "precision": "LOW-AUTHORITY source — verify; Minas de Riotinto town is ~6 km away",
+          "elevM": 423.0,
+          "elevSource": "DEM lookup (ASTER GDEM 30 m via OpenTopoData), ±20 m"
+        },
+        "notes": "Bedrock is volcano-sedimentary massive sulfide; sulfates/Fe-oxides are precipitates."
       }
     },
     {
@@ -264,41 +640,101 @@
         "type": "Point",
         "coordinates": [
           -16.83,
-          64.87
+          64.85
         ]
       },
       "properties": {
         "id": "iceland-lava",
-        "name": "Iceland lava fields (Holuhraun)",
+        "name": "Holuhraun lava field",
         "country": "Iceland",
         "knownAnalog": true,
+        "analogRef": "Voigt et al. 2025, Planetary Science Journal, doi:10.3847/PSJ/adb5f1 (Holuhraun as analog for young volcanic terrains in Elysium Planitia)",
         "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
           "relief_m": null,
+          "precip_mm_yr": 862.0,
+          "ts_mean_c": -4.39,
+          "ts_range_c": 4.87,
           "ndvi": null
         },
         "norm": {
-          "terrain": 0.72,
-          "aridity": 0.21,
-          "temp": 0.5,
-          "temp_range": 0.64,
-          "veg": 0.14,
+          "terrain": null,
+          "aridity": 0.569,
+          "temp": 0.5854,
+          "temp_range": 0.1391,
+          "veg": null,
           "geology": "basalt",
-          "ice": "no"
+          "ice": null
         },
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
+          "aridity": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp_range": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "geology": "Literature: Pedersen et al. 2017, J. Volcanol. Geotherm. Res., doi:10.1016/j.jvolgeores.2017.02.027 (2014–2015 b"
+        },
+        "provenance": {
+          "terrain": {
+            "status": "unavailable",
+            "dem": "ASTGTM.003",
+            "note": "Not yet acquired: ASTER GDEM v3 1 arc-second (ASTGTM v003) download needs a NASA Earthdata login"
+          },
+          "aridity": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "PRECTOTCORR (x 365.25)",
+            "status": "reanalysis",
+            "value": 862.0,
+            "units": "mm/yr",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 801.56 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=64.8500&longitude=-16.8300&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:24+00:00"
+          },
+          "temp": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS",
+            "status": "reanalysis",
+            "value": -4.39,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 801.56 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=64.8500&longitude=-16.8300&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:24+00:00"
+          },
+          "temp_range": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS_RANGE",
+            "status": "reanalysis",
+            "value": 4.87,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 801.56 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=64.8500&longitude=-16.8300&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:24+00:00"
+          },
+          "veg": {
+            "status": "unavailable",
+            "note": "MODIS NDVI not yet acquired (needs Earthdata login)"
+          },
+          "geology": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "basalt",
+            "citation": "Pedersen et al. 2017, J. Volcanol. Geotherm. Res., doi:10.1016/j.jvolgeores.2017.02.027 (2014–2015 basaltic fissure eruption at Holuhraun)"
+          },
+          "ice": {
+            "status": "unavailable",
+            "note": "Uncertain: modelled lower permafrost limit ~600–900 m in N Iceland (Czekirda et al. 2019, Front. Earth Sci., doi:10.3389/feart.2019.00130); site ~750 m"
+          }
+        },
+        "clipped": {},
+        "coord": {
+          "source": "Wikipedia, Holuhraun (64°51′N 16°50′W)",
+          "precision": "arc-minute general location, not a point on the 2014–15 flow",
+          "elevM": 750.0,
+          "elevSource": "DEM lookup (ASTER GDEM 30 m via OpenTopoData), ±20 m"
+        },
+        "notes": null
       }
     },
     {
@@ -306,180 +742,8 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -155.47,
-          19.82
-        ]
-      },
-      "properties": {
-        "id": "mauna-kea",
-        "name": "Mauna Kea / Hawaiʻi volcanics",
-        "country": "USA",
-        "knownAnalog": true,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.74,
-          "aridity": 0.54,
-          "temp": 0.75,
-          "temp_range": 0.58,
-          "veg": 1.0,
-          "geology": "basalt",
-          "ice": "no"
-        },
-        "novelKm": 0,
-        "isNewCandidate": false,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -6.56,
-          37.69
-        ]
-      },
-      "properties": {
-        "id": "rio-tinto",
-        "name": "Río Tinto",
-        "country": "Spain",
-        "knownAnalog": true,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.14,
-          "aridity": 0.49,
-          "temp": 0.76,
-          "temp_range": 0.15,
-          "veg": 0.68,
-          "geology": "sulfate",
-          "ice": "no"
-        },
-        "novelKm": 0,
-        "isNewCandidate": false,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          13.4,
-          79.4
-        ]
-      },
-      "properties": {
-        "id": "svalbard",
-        "name": "Svalbard (Bockfjorden)",
-        "country": "Norway",
-        "knownAnalog": true,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.6,
-          "aridity": 0.38,
-          "temp": 0.6,
-          "temp_range": 0.25,
-          "veg": 0.94,
-          "geology": "sedimentary",
-          "ice": "yes"
-        },
-        "novelKm": 0,
-        "isNewCandidate": false,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "MOCK — synthetic placeholder, not a measurement",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          119.4,
-          -21.17
-        ]
-      },
-      "properties": {
-        "id": "pilbara",
-        "name": "Pilbara (North Pole Dome)",
-        "country": "Australia",
-        "knownAnalog": true,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.72,
-          "aridity": 0.68,
-          "temp": 0.54,
-          "temp_range": 0.64,
-          "veg": 0.43,
-          "geology": "sedimentary",
-          "ice": "no"
-        },
-        "novelKm": 0,
-        "isNewCandidate": false,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -13.75,
-          29.0
+          -13.79333,
+          28.99417
         ]
       },
       "properties": {
@@ -487,289 +751,96 @@
         "name": "Lanzarote (Timanfaya)",
         "country": "Spain",
         "knownAnalog": true,
+        "analogRef": "Palma et al. 2024, Science of the Total Environment, doi:10.1016/j.scitotenv.2023.169583 (Lanzarote as a Mars volcanology analog; La Corona lava tubes)",
         "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
           "relief_m": null,
+          "precip_mm_yr": 109.6,
+          "ts_mean_c": 21.27,
+          "ts_range_c": 4.49,
           "ndvi": null
         },
         "norm": {
-          "terrain": 0.45,
-          "aridity": 0.95,
-          "temp": 0.88,
-          "temp_range": 0.5,
-          "veg": 0.91,
-          "geology": "basalt",
-          "ice": "no"
-        },
-        "novelKm": 0,
-        "isNewCandidate": false,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          76.51,
-          19.98
-        ]
-      },
-      "properties": {
-        "id": "lonar",
-        "name": "Lonar Crater",
-        "country": "India",
-        "knownAnalog": true,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.87,
-          "aridity": 0.3,
-          "temp": 0.64,
-          "temp_range": 0.15,
-          "veg": 0.54,
-          "geology": "basalt",
-          "ice": "no"
-        },
-        "novelKm": 0,
-        "isNewCandidate": false,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          78.0,
-          33.3
-        ]
-      },
-      "properties": {
-        "id": "ladakh",
-        "name": "Ladakh (Tso Kar / Puga)",
-        "country": "India",
-        "knownAnalog": true,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.78,
-          "aridity": 0.53,
-          "temp": 0.0,
-          "temp_range": 0.02,
-          "veg": 0.88,
-          "geology": "ice",
-          "ice": "no"
-        },
-        "novelKm": 0,
-        "isNewCandidate": false,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "MOCK — synthetic placeholder, not a measurement",
-          "ice": "MOCK — synthetic placeholder, not a measurement"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          54.5,
-          19.0
-        ]
-      },
-      "properties": {
-        "id": "dhofar",
-        "name": "Dhofar desert",
-        "country": "Oman",
-        "knownAnalog": true,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.24,
-          "aridity": 0.24,
-          "temp": 0.57,
+          "terrain": null,
+          "aridity": null,
+          "temp": null,
           "temp_range": null,
-          "veg": 0.82,
-          "geology": "sedimentary",
+          "veg": null,
+          "geology": "basalt",
           "ice": "no"
         },
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          28.17,
-          27.36
-        ]
-      },
-      "properties": {
-        "id": "white-desert",
-        "name": "White Desert (Farafra)",
-        "country": "Egypt",
-        "knownAnalog": false,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
+          "geology": "Literature: Muller et al. 2024, Bull. Volcanol., doi:10.1007/s00445-024-01729-5 (large basaltic fissure eruption",
+          "ice": "Literature: Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation"
         },
-        "norm": {
-          "terrain": 0.98,
-          "aridity": 0.53,
-          "temp": 0.13,
-          "temp_range": 0.95,
-          "veg": 0.53,
-          "geology": "sedimentary",
-          "ice": "no"
+        "provenance": {
+          "terrain": {
+            "status": "unavailable",
+            "dem": "SRTMGL1.003",
+            "note": "Not yet acquired: NASA SRTM v3 1 arc-second (SRTMGL1 v003) download needs a NASA Earthdata login"
+          },
+          "aridity": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "PRECTOTCORR (x 365.25)",
+            "status": "reanalysis",
+            "value": 109.6,
+            "units": "mm/yr",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 26.63 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=28.9942&longitude=-13.7933&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:27+00:00",
+            "excluded": "Island (~60 x 20 km) smaller than the 0.5 x 0.625 deg POWER cell: the cell is mostly ocean (daily skin-temperature range 4.5 C reflects sea surface), so it does not represent the lava field"
+          },
+          "temp": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS",
+            "status": "reanalysis",
+            "value": 21.27,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 26.63 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=28.9942&longitude=-13.7933&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:27+00:00",
+            "excluded": "Island (~60 x 20 km) smaller than the 0.5 x 0.625 deg POWER cell: the cell is mostly ocean (daily skin-temperature range 4.5 C reflects sea surface), so it does not represent the lava field"
+          },
+          "temp_range": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS_RANGE",
+            "status": "reanalysis",
+            "value": 4.49,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 26.63 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=28.9942&longitude=-13.7933&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:27+00:00",
+            "excluded": "Island (~60 x 20 km) smaller than the 0.5 x 0.625 deg POWER cell: the cell is mostly ocean (daily skin-temperature range 4.5 C reflects sea surface), so it does not represent the lava field"
+          },
+          "veg": {
+            "status": "unavailable",
+            "note": "MODIS NDVI not yet acquired (needs Earthdata login)"
+          },
+          "geology": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "basalt",
+            "citation": "Muller et al. 2024, Bull. Volcanol., doi:10.1007/s00445-024-01729-5 (large basaltic fissure eruption, Timanfaya 1730–1736)"
+          },
+          "ice": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "no",
+            "citation": "Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation; outside permafrost zones)"
+          }
         },
-        "novelKm": 2840,
-        "isNewCandidate": true,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          25.9,
-          23.4
-        ]
-      },
-      "properties": {
-        "id": "gilf-kebir",
-        "name": "Gilf Kebir",
-        "country": "Egypt",
-        "knownAnalog": false,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
+        "clipped": {},
+        "coord": {
+          "source": "Wikipedia infobox, Timanfaya National Park",
+          "precision": "park reference point",
+          "elevM": 137.0,
+          "elevSource": "DEM lookup (ASTER GDEM 30 m via OpenTopoData), ±20 m"
         },
-        "norm": {
-          "terrain": 0.61,
-          "aridity": 0.96,
-          "temp": 0.93,
-          "temp_range": 0.69,
-          "veg": 0.4,
-          "geology": "sedimentary",
-          "ice": "no"
-        },
-        "novelKm": 3000,
-        "isNewCandidate": true,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          35.42,
-          29.58
-        ]
-      },
-      "properties": {
-        "id": "wadi-rum",
-        "name": "Wadi Rum",
-        "country": "Jordan",
-        "knownAnalog": false,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.67,
-          "aridity": 0.37,
-          "temp": 0.9,
-          "temp_range": 0.25,
-          "veg": null,
-          "geology": "sedimentary",
-          "ice": "no"
-        },
-        "novelKm": 2258,
-        "isNewCandidate": true,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
+        "notes": "Analog paper studies La Corona lava tubes, not Timanfaya itself."
       }
     },
     {
@@ -778,338 +849,104 @@
         "type": "Point",
         "coordinates": [
           40.3,
-          14.24
+          14.24167
         ]
       },
       "properties": {
         "id": "danakil",
-        "name": "Danakil Depression (Dallol)",
+        "name": "Dallol (Danakil Depression)",
         "country": "Ethiopia",
-        "knownAnalog": false,
+        "knownAnalog": true,
+        "analogRef": "Cavalazzi et al. 2019, Astrobiology, doi:10.1089/ast.2018.1926 (an exceptional planetary field analog)",
         "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
           "relief_m": null,
+          "precip_mm_yr": 449.3,
+          "ts_mean_c": 27.59,
+          "ts_range_c": 22.17,
           "ndvi": null
         },
         "norm": {
-          "terrain": 0.02,
-          "aridity": 0.55,
-          "temp": 0.59,
-          "temp_range": null,
-          "veg": 0.06,
-          "geology": "evaporite",
-          "ice": "no"
-        },
-        "novelKm": 1602,
-        "isNewCandidate": true,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          15.04,
-          -23.56
-        ]
-      },
-      "properties": {
-        "id": "namib",
-        "name": "Namib Desert (Gobabeb)",
-        "country": "Namibia",
-        "knownAnalog": false,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.07,
-          "aridity": 0.03,
-          "temp": 0.33,
-          "temp_range": 0.28,
-          "veg": 0.54,
-          "geology": "sedimentary",
-          "ice": "no"
-        },
-        "novelKm": 6381,
-        "isNewCandidate": true,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -67.49,
-          -20.13
-        ]
-      },
-      "properties": {
-        "id": "uyuni",
-        "name": "Salar de Uyuni (Altiplano)",
-        "country": "Bolivia",
-        "knownAnalog": false,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.72,
-          "aridity": 0.88,
-          "temp": 0.58,
-          "temp_range": 0.47,
-          "veg": 0.09,
-          "geology": "evaporite",
-          "ice": "no"
-        },
-        "novelKm": 512,
-        "isNewCandidate": true,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          104.0,
-          43.5
-        ]
-      },
-      "properties": {
-        "id": "gobi",
-        "name": "Gobi Desert",
-        "country": "Mongolia",
-        "knownAnalog": false,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.66,
-          "aridity": 0.35,
-          "temp": 0.41,
-          "temp_range": 0.05,
-          "veg": 0.65,
-          "geology": "sedimentary",
-          "ice": "no"
-        },
-        "novelKm": 2519,
-        "isNewCandidate": true,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          83.0,
-          38.8
-        ]
-      },
-      "properties": {
-        "id": "taklamakan",
-        "name": "Taklamakan Desert",
-        "country": "China",
-        "knownAnalog": false,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.06,
-          "aridity": 0.73,
-          "temp": 0.8,
-          "temp_range": 0.19,
-          "veg": 0.14,
-          "geology": "sedimentary",
-          "ice": "no"
-        },
-        "novelKm": 759,
-        "isNewCandidate": true,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          58.3,
-          30.5
-        ]
-      },
-      "properties": {
-        "id": "lut",
-        "name": "Lut Desert (Kaluts)",
-        "country": "Iran",
-        "knownAnalog": false,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.18,
-          "aridity": 0.46,
-          "temp": 0.87,
-          "temp_range": null,
-          "veg": 0.86,
-          "geology": "sedimentary",
-          "ice": "no"
-        },
-        "novelKm": 1335,
-        "isNewCandidate": true,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          51.0,
-          20.0
-        ]
-      },
-      "properties": {
-        "id": "rub-al-khali",
-        "name": "Rub' al Khali",
-        "country": "Saudi Arabia",
-        "knownAnalog": false,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.1,
-          "aridity": 0.65,
-          "temp": 0.54,
+          "terrain": null,
+          "aridity": null,
+          "temp": null,
           "temp_range": null,
           "veg": null,
-          "geology": "sedimentary",
-          "ice": "no"
-        },
-        "novelKm": 383,
-        "isNewCandidate": true,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          25.5,
-          -20.75
-        ]
-      },
-      "properties": {
-        "id": "makgadikgadi",
-        "name": "Makgadikgadi Pans",
-        "country": "Botswana",
-        "knownAnalog": false,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.75,
-          "aridity": 0.24,
-          "temp": 0.41,
-          "temp_range": 0.86,
-          "veg": 0.16,
           "geology": "evaporite",
           "ice": "no"
         },
-        "novelKm": 5432,
-        "isNewCandidate": true,
+        "novelKm": 0,
+        "isNewCandidate": false,
         "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
+          "geology": "Literature: Cavalazzi et al. 2019, Astrobiology, doi:10.1089/ast.2018.1926",
+          "ice": "Literature: Cavalazzi et al. 2019: average annual temperature 36–38 °C"
+        },
+        "provenance": {
+          "terrain": {
+            "status": "unavailable",
+            "dem": "SRTMGL1.003",
+            "note": "Not yet acquired: NASA SRTM v3 1 arc-second (SRTMGL1 v003) download needs a NASA Earthdata login"
+          },
+          "aridity": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "PRECTOTCORR (x 365.25)",
+            "status": "reanalysis",
+            "value": 449.3,
+            "units": "mm/yr",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1063.31 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=14.2417&longitude=40.3000&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:29+00:00",
+            "excluded": "POWER grid cell (~50 km) mean elevation 1063 m vs site -99 m (difference 1162 m > 500 m): cell does not represent the site"
+          },
+          "temp": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS",
+            "status": "reanalysis",
+            "value": 27.59,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1063.31 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=14.2417&longitude=40.3000&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:29+00:00",
+            "excluded": "POWER grid cell (~50 km) mean elevation 1063 m vs site -99 m (difference 1162 m > 500 m): cell does not represent the site"
+          },
+          "temp_range": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS_RANGE",
+            "status": "reanalysis",
+            "value": 22.17,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1063.31 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=14.2417&longitude=40.3000&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:29+00:00",
+            "excluded": "POWER grid cell (~50 km) mean elevation 1063 m vs site -99 m (difference 1162 m > 500 m): cell does not represent the site"
+          },
+          "veg": {
+            "status": "unavailable",
+            "note": "MODIS NDVI not yet acquired (needs Earthdata login)"
+          },
+          "geology": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "evaporite",
+            "citation": "Cavalazzi et al. 2019, Astrobiology, doi:10.1089/ast.2018.1926; evaporitic plain of the Danakil Depression (halite, jarosite, hematite)"
+          },
+          "ice": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "no",
+            "citation": "Cavalazzi et al. 2019: average annual temperature 36–38 °C; Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation; outside permafrost zones)"
+          }
+        },
+        "clipped": {},
+        "coord": {
+          "source": "Wikipedia infobox, Dallol (hydrothermal system): 14°14′30″N 40°18′00″E",
+          "precision": "feature reference point",
+          "elevM": -99.0,
+          "elevSource": "DEM lookup (ASTER GDEM 30 m via OpenTopoData), ±20 m"
+        },
+        "notes": "Dome also hosts hydrothermal sulfates and Fe-oxides."
       }
     },
     {
@@ -1117,84 +954,105 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          54.5,
-          34.7
+          28.20044,
+          27.27734
         ]
       },
       "properties": {
-        "id": "dasht-e-kavir",
-        "name": "Dasht-e Kavir",
-        "country": "Iran",
+        "id": "white-desert",
+        "name": "White Desert (Sahara el Beyda, Farafra)",
+        "country": "Egypt",
         "knownAnalog": false,
+        "analogRef": null,
         "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
           "relief_m": null,
+          "precip_mm_yr": 14.6,
+          "ts_mean_c": 22.8,
+          "ts_range_c": 21.91,
           "ndvi": null
         },
         "norm": {
-          "terrain": 0.0,
-          "aridity": 0.39,
-          "temp": 0.93,
-          "temp_range": 0.29,
-          "veg": 0.73,
-          "geology": "evaporite",
-          "ice": "no"
-        },
-        "novelKm": 1746,
-        "isNewCandidate": true,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          9.0,
-          25.5
-        ]
-      },
-      "properties": {
-        "id": "tassili",
-        "name": "Tassili n'Ajjer",
-        "country": "Algeria",
-        "knownAnalog": false,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.78,
-          "aridity": 0.66,
-          "temp": 0.49,
-          "temp_range": 0.22,
+          "terrain": null,
+          "aridity": 0.9927,
+          "temp": 0.8716,
+          "temp_range": 0.626,
           "veg": null,
           "geology": "sedimentary",
           "ice": "no"
         },
-        "novelKm": 1997,
+        "novelKm": 1917,
         "isNewCandidate": true,
         "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
+          "aridity": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp_range": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "geology": "Literature: Kamh 2020, doi:10.19080/etoaj.2020.03.555616 (chalky limestone of the White Desert, Farafra)",
+          "ice": "Literature: Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation"
+        },
+        "provenance": {
+          "terrain": {
+            "status": "unavailable",
+            "dem": "SRTMGL1.003",
+            "note": "Not yet acquired: NASA SRTM v3 1 arc-second (SRTMGL1 v003) download needs a NASA Earthdata login"
+          },
+          "aridity": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "PRECTOTCORR (x 365.25)",
+            "status": "reanalysis",
+            "value": 14.6,
+            "units": "mm/yr",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 156.47 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=27.2773&longitude=28.2004&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:32+00:00"
+          },
+          "temp": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS",
+            "status": "reanalysis",
+            "value": 22.8,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 156.47 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=27.2773&longitude=28.2004&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:32+00:00"
+          },
+          "temp_range": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS_RANGE",
+            "status": "reanalysis",
+            "value": 21.91,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 156.47 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=27.2773&longitude=28.2004&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:32+00:00"
+          },
+          "veg": {
+            "status": "unavailable",
+            "note": "MODIS NDVI not yet acquired (needs Earthdata login)"
+          },
+          "geology": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "sedimentary",
+            "citation": "Kamh 2020, doi:10.19080/etoaj.2020.03.555616 (chalky limestone of the White Desert, Farafra); Wikipedia: white chalk formations"
+          },
+          "ice": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "no",
+            "citation": "Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation; outside permafrost zones)"
+          }
+        },
+        "clipped": {},
+        "coord": {
+          "source": "Wikipedia infobox, White Desert National Park",
+          "precision": "park reference point",
+          "elevM": null,
+          "elevSource": "DEM lookup gave 13 m, which looks implausibly low — left blank pending verification"
+        },
+        "notes": "No peer-reviewed planetary-analog study found (not proof of absence)."
       }
     },
     {
@@ -1202,511 +1060,105 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          18.55,
-          19.79
+          35.42,
+          29.59306
         ]
       },
       "properties": {
-        "id": "emi-koussi",
-        "name": "Emi Koussi (Tibesti)",
-        "country": "Chad",
+        "id": "wadi-rum",
+        "name": "Wadi Rum",
+        "country": "Jordan",
         "knownAnalog": false,
+        "analogRef": null,
         "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
           "relief_m": null,
+          "precip_mm_yr": 40.2,
+          "ts_mean_c": 19.72,
+          "ts_range_c": 26.94,
           "ndvi": null
         },
         "norm": {
-          "terrain": 0.74,
-          "aridity": 0.06,
-          "temp": 0.31,
-          "temp_range": null,
-          "veg": 0.92,
-          "geology": "basalt",
-          "ice": "no"
-        },
-        "novelKm": 3137,
-        "isNewCandidate": true,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          5.6,
-          23.25
-        ]
-      },
-      "properties": {
-        "id": "hoggar",
-        "name": "Hoggar / Atakor volcanic field",
-        "country": "Algeria",
-        "knownAnalog": false,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.53,
-          "aridity": 0.06,
-          "temp": 0.51,
-          "temp_range": 0.07,
-          "veg": null,
-          "geology": "basalt",
-          "ice": "no"
-        },
-        "novelKm": 1980,
-        "isNewCandidate": true,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          39.9,
-          25.0
-        ]
-      },
-      "properties": {
-        "id": "harrat-khaybar",
-        "name": "Harrat Khaybar",
-        "country": "Saudi Arabia",
-        "knownAnalog": false,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.86,
-          "aridity": 0.4,
-          "temp": 0.94,
-          "temp_range": 0.58,
-          "veg": null,
-          "geology": "basalt",
-          "ice": "no"
-        },
-        "novelKm": 1645,
-        "isNewCandidate": true,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          8.4,
-          33.75
-        ]
-      },
-      "properties": {
-        "id": "chott-el-djerid",
-        "name": "Chott el Djerid",
-        "country": "Tunisia",
-        "knownAnalog": false,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.08,
-          "aridity": 0.66,
-          "temp": 0.57,
-          "temp_range": 0.26,
-          "veg": 0.31,
-          "geology": "evaporite",
-          "ice": "no"
-        },
-        "novelKm": 1418,
-        "isNewCandidate": true,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          137.3,
-          -28.4
-        ]
-      },
-      "properties": {
-        "id": "kati-thanda",
-        "name": "Kati Thanda–Lake Eyre",
-        "country": "Australia",
-        "knownAnalog": false,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.27,
-          "aridity": 0.13,
-          "temp": 0.65,
-          "temp_range": 0.93,
-          "veg": 0.01,
-          "geology": "evaporite",
-          "ice": "no"
-        },
-        "novelKm": 1975,
-        "isNewCandidate": true,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          85.0,
-          34.0
-        ]
-      },
-      "properties": {
-        "id": "changtang",
-        "name": "Changtang Plateau",
-        "country": "China",
-        "knownAnalog": false,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.62,
-          "aridity": 0.56,
-          "temp": 0.1,
-          "temp_range": 0.51,
-          "veg": 0.35,
-          "geology": "basalt",
-          "ice": "yes"
-        },
-        "novelKm": 652,
-        "isNewCandidate": true,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "MOCK — synthetic placeholder, not a measurement",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -50.5,
-          67.0
-        ]
-      },
-      "properties": {
-        "id": "kangerlussuaq",
-        "name": "Kangerlussuaq ice-free margin",
-        "country": "Greenland",
-        "knownAnalog": false,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.88,
-          "aridity": 0.37,
-          "temp": 0.16,
-          "temp_range": 0.7,
-          "veg": 0.99,
-          "geology": "sedimentary",
-          "ice": "yes"
-        },
-        "novelKm": 1525,
-        "isNewCandidate": true,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "MOCK — synthetic placeholder, not a measurement",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          134.77,
-          67.58
-        ]
-      },
-      "properties": {
-        "id": "batagaika",
-        "name": "Batagaika crater (Yakutia)",
-        "country": "Russia",
-        "knownAnalog": false,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.53,
-          "aridity": 0.67,
-          "temp": 0.55,
-          "temp_range": 0.1,
-          "veg": 0.26,
-          "geology": "sedimentary",
-          "ice": "yes"
-        },
-        "novelKm": 3257,
-        "isNewCandidate": true,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          160.33,
-          55.83
-        ]
-      },
-      "properties": {
-        "id": "tolbachik",
-        "name": "Tolbachik lava fields",
-        "country": "Russia",
-        "knownAnalog": false,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.89,
-          "aridity": 0.74,
-          "temp": 0.16,
-          "temp_range": 0.21,
-          "veg": 0.69,
-          "geology": "basalt",
-          "ice": "no"
-        },
-        "novelKm": 4584,
-        "isNewCandidate": true,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          32.75,
-          18.33
-        ]
-      },
-      "properties": {
-        "id": "bayuda",
-        "name": "Bayuda volcanic field",
-        "country": "Sudan",
-        "knownAnalog": false,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.85,
-          "aridity": 0.51,
-          "temp": 0.25,
-          "temp_range": 0.05,
-          "veg": 0.83,
-          "geology": "basalt",
-          "ice": "no"
-        },
-        "novelKm": 2291,
-        "isNewCandidate": true,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          19.25,
-          19.1
-        ]
-      },
-      "properties": {
-        "id": "aorounga",
-        "name": "Aorounga Crater",
-        "country": "Chad",
-        "knownAnalog": false,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.04,
-          "aridity": 0.33,
-          "temp": 0.13,
-          "temp_range": 0.16,
-          "veg": 0.71,
-          "geology": "sedimentary",
-          "ice": "no"
-        },
-        "novelKm": 3243,
-        "isNewCandidate": true,
-        "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "veg": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          71.0,
-          27.0
-        ]
-      },
-      "properties": {
-        "id": "thar",
-        "name": "Thar Desert",
-        "country": "India",
-        "knownAnalog": false,
-        "raw": {
-          "precip_mm": null,
-          "tmean_c": null,
-          "trange_c": null,
-          "relief_m": null,
-          "ndvi": null
-        },
-        "norm": {
-          "terrain": 0.56,
-          "aridity": 0.11,
-          "temp": 0.95,
-          "temp_range": 0.15,
+          "terrain": null,
+          "aridity": 0.9799,
+          "temp": 0.8392,
+          "temp_range": 0.7697,
           "veg": null,
           "geology": "sedimentary",
           "ice": "no"
         },
-        "novelKm": 961,
+        "novelKm": 1779,
         "isNewCandidate": true,
         "sources": {
-          "terrain": "MOCK — synthetic placeholder, not a measurement",
-          "aridity": "MOCK — synthetic placeholder, not a measurement",
-          "temp": "MOCK — synthetic placeholder, not a measurement",
-          "temp_range": "MOCK — synthetic placeholder, not a measurement",
-          "geology": "Seed CSV class (literature, unverified)",
-          "ice": "Seed CSV class (literature, unverified)"
-        }
+          "aridity": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp_range": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "geology": "Literature: Wikipedia, Wadi Rum: near-vertical mountains of iron-rich, erosion-resistant Umm Ishrin Sandstone",
+          "ice": "Literature: Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation"
+        },
+        "provenance": {
+          "terrain": {
+            "status": "unavailable",
+            "dem": "SRTMGL1.003",
+            "note": "Not yet acquired: NASA SRTM v3 1 arc-second (SRTMGL1 v003) download needs a NASA Earthdata login"
+          },
+          "aridity": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "PRECTOTCORR (x 365.25)",
+            "status": "reanalysis",
+            "value": 40.2,
+            "units": "mm/yr",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1076.35 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=29.5931&longitude=35.4200&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:35+00:00"
+          },
+          "temp": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS",
+            "status": "reanalysis",
+            "value": 19.72,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1076.35 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=29.5931&longitude=35.4200&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:35+00:00"
+          },
+          "temp_range": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS_RANGE",
+            "status": "reanalysis",
+            "value": 26.94,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1076.35 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=29.5931&longitude=35.4200&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:35+00:00"
+          },
+          "veg": {
+            "status": "unavailable",
+            "note": "MODIS NDVI not yet acquired (needs Earthdata login)"
+          },
+          "geology": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "sedimentary",
+            "citation": "Wikipedia, Wadi Rum: near-vertical mountains of iron-rich, erosion-resistant Umm Ishrin Sandstone"
+          },
+          "ice": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "no",
+            "citation": "Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation; outside permafrost zones)"
+          }
+        },
+        "clipped": {},
+        "coord": {
+          "source": "Wikipedia infobox, Wadi Rum",
+          "precision": "protected-area reference point",
+          "elevM": 938.0,
+          "elevSource": "DEM lookup (ASTER GDEM 30 m via OpenTopoData), ±20 m"
+        },
+        "notes": "No peer-reviewed analog study found, but used for the PETRA-1 analog mission (2024, Jordan Times) and as a Mars film location; local granitoid basement."
       }
     }
   ]

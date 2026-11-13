@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { SERIES_COLORS, formatValue, pct } from '../lib/format.js'
 import { similarity } from '../lib/scoring.js'
-import { CoverageBadge, NoveltyTag, ScoreBadge } from './Tags.jsx'
+import { ConfidenceTag, CoverageBadge, NoveltyTag, ScoreBadge } from './Tags.jsx'
 
 export default function CompareTable({ sites, target, features, weights, rankBySite, linkTo }) {
   return (
@@ -64,7 +64,8 @@ export default function CompareTable({ sites, target, features, weights, rankByS
             <th scope="row">Coverage</th>
             {sites.map((s) => (
               <td key={s.id}>
-                <CoverageBadge coverage={rankBySite[s.id]?.coverage} />
+                <CoverageBadge coverage={rankBySite[s.id]?.coverage} />{' '}
+                {rankBySite[s.id]?.score !== null && <ConfidenceTag coverage={rankBySite[s.id]?.coverage} />}
               </td>
             ))}
           </tr>

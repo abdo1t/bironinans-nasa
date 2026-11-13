@@ -10,6 +10,7 @@ normalize() and novelty helpers are Python-only (the browser never normalizes).
 """
 import math
 
+MIN_CRITERIA_FOR_SCORE = 3  # used by the real bundle + app (score_site defaults to 1)
 WHY_MIN_SIM = 0.7
 WHY_MAX_ITEMS = 3
 MUCH_DIFF = 0.5  # |site - target| at or above this reads as "Much ..."
@@ -115,7 +116,11 @@ def _gap_phrase(feature, s, site_val, target_val):
     return f"{label}: {site_val} vs the target's {target_val}"
 
 
-def score_site(target, site, weights, features):
+def insufficient_gap(used, selected, min_used):
+    return f"Insufficient data: {used} of {selected} selected criteria have data (minimum {min_used})"
+
+
+def score_site(target, site, weights, features, min_used=1):
     """Score one site against one target (§5.3–5.6).
 
     Returns {score, contrib, coverage, why, gap, sims}.
@@ -124,6 +129,9 @@ def score_site(target, site, weights, features):
         contrib / sims — never 0. A 0 always means "measured, and no match".
       * score is `None` when no selected criterion is usable (not 0).
       * coverage = {"used": usable selected criteria, "selected": criteria with w > 0}.
+      * min_used: fewer usable criteria than this -> score None ("insufficient
+        data"); sims are still returned. The real bundle and app use
+        MIN_CRITERIA_FOR_SCORE = 3 so a 1–2 criterion match never ranks.
     `sims` is for the UI and is not exported to scores.json.
     """
     tnorm, snorm = target["norm"], site["norm"]
@@ -144,13 +152,19 @@ def score_site(target, site, weights, features):
     coverage = {"used": len(rows), "selected": len(selected)}
     sims = {f["id"]: s for f, w, s in selected}
 
-    if den == 0:
+    if den == 0 or len(rows) < min_used:
+        if not selected:
+            gap = NO_CRITERIA_GAP
+        elif den == 0:
+            gap = NO_DATA_GAP
+        else:
+            gap = insufficient_gap(len(rows), len(selected), min_used)
         return {
             "score": None,
             "contrib": {f["id"]: None for f, w, s in selected},
             "coverage": coverage,
             "why": [],
-            "gap": NO_DATA_GAP if selected else NO_CRITERIA_GAP,
+            "gap": gap,
             "sims": sims,
         }
 
@@ -173,7 +187,7 @@ def score_site(target, site, weights, features):
     return {"score": score, "contrib": contrib, "coverage": coverage, "why": why, "gap": gap, "sims": sims}
 
 
-def rank_sites(target, sites, weights, features):
+def rank_sites(target, sites, weights, features, min_used=1):
     """Rank site property dicts for one target (§5.8).
 
     Score desc, then name asc (code point), then id. Sites with score None
@@ -181,7 +195,7 @@ def rank_sites(target, sites, weights, features):
     """
     scored = []
     for site in sites:
-        r = score_site(target, site, weights, features)
+        r = score_site(target, site, weights, features, min_used)
         scored.append((site["name"], site["id"], {
             "site": site["id"],
             "score": r["score"],

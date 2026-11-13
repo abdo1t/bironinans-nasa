@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { CoverageBadge, NoveltyTag, ScoreBar } from './Tags.jsx'
+import { ConfidenceTag, CoverageBadge, NoveltyTag, ScoreBar } from './Tags.jsx'
 
 export default function ResultsList({ ranking, siteById, target, shortlist, shortlistFull, onToggleShortlist, linkTo }) {
   return (
@@ -38,6 +38,12 @@ export default function ResultsList({ ranking, siteById, target, shortlist, shor
                 </td>
                 <td>
                   <CoverageBadge coverage={r.coverage} />
+                  {r.score !== null && (
+                    <>
+                      <br />
+                      <ConfidenceTag coverage={r.coverage} />
+                    </>
+                  )}
                 </td>
                 <td className="results__why">{r.why[0] || <span className="muted">{r.gap}</span>}</td>
                 <td>

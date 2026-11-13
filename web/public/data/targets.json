@@ -1,164 +1,179 @@
 [
   {
+    "id": "mars-jezero",
+    "body": "mars",
+    "name": "Jezero Crater — Perseverance landing site",
+    "lat": 18.44,
+    "lon": 77.45,
+    "summary": "Crater-floor lava flows (Máaz/Séítah) beside an ancient lake delta with clays and carbonates; Perseverance landing site.",
+    "trekUrl": "https://trek.nasa.gov/mars/",
+    "coord": {
+      "source": "Zafrir et al. 2026, Icarus 460, 117296 (doi:10.1016/j.icarus.2026.117296): Perseverance landed at 18.44 N, 77.45 E",
+      "note": "Secondary citation; Octavia E. Butler Landing. Values below are from MEDA along the early rover traverse, not one fixed point."
+    },
+    "norm": {
+      "terrain": null,
+      "aridity": 1.0,
+      "temp": 0.0826,
+      "temp_range": 1.0,
+      "veg": 1.0,
+      "geology": "basalt",
+      "ice": "no"
+    },
+    "refs": {
+      "aridity": "NASA Science, Mars Facts: \"the Martian atmosphere is too thin for liquid water to exist for long on the surface\"",
+      "temp": "Munguira et al. 2024, JGR Planets 129, e2024JE008385",
+      "temp_range": "Munguira et al. 2023, JGR Planets 128, e2022JE007559",
+      "veg": "NASA Science, Mars Facts: \"Scientists don't expect to find living things currently thriving on Mars.\"",
+      "geology": "Sun et al. 2023, JGR Planets 128, e2022JE007613 (§1, §2.2.2); Farley et al. 2022, Science 377, eabo2196",
+      "ice": "Piqueux et al. 2019, GRL 46, 14290"
+    },
+    "provenance": {
+      "terrain": {
+        "status": "unavailable",
+        "note": "No published relief for a 10 x 10 km window; needs MOLA/HiRISE DEM processing with the same method as Earth (planned)."
+      },
+      "aridity": {
+        "status": "definitional",
+        "display": "0 mm/yr (no liquid precipitation)",
+        "citation": "NASA Science, Mars Facts: \"the Martian atmosphere is too thin for liquid water to exist for long on the surface\"",
+        "url": "https://science.nasa.gov/mars/facts/",
+        "note": "Physical constraint, not a measurement; the page does not discuss precipitation explicitly.",
+        "basisValue": 0
+      },
+      "temp": {
+        "status": "in-situ",
+        "display": "≈ −52 °C (midpoint of daily-mean surface temperature 210–232 K over one Mars year)",
+        "range": [
+          -63.15,
+          -41.15
+        ],
+        "citation": "Munguira et al. 2024, JGR Planets 129, e2024JE008385 — One Martian Year of Near-Surface Temperatures at Jezero From MEDA (results, Fig. 4a)",
+        "url": "https://doi.org/10.1029/2024JE008385",
+        "note": "No annual mean is published; we use the midpoint of the published range (derived). Normalized value could lie anywhere from 0 to 0.20 across that range.",
+        "basisValue": -52.15
+      },
+      "temp_range": {
+        "status": "in-situ",
+        "display": "55–105 K daily surface-temperature range (first 400 sols)",
+        "range": [
+          55,
+          105
+        ],
+        "citation": "Munguira et al. 2023, JGR Planets 128, e2022JE007559 — Near Surface Atmospheric Temperatures at Jezero From MEDA (conclusions; table: 81 K at Ls 25°, 104 K at Ls 180°)",
+        "url": "https://doi.org/10.1029/2022JE007559",
+        "note": "Uses the lower end of the published range; every value in the range exceeds Earth's bound (35 °C) and clips to 1. Coverage Ls 13–203° only.",
+        "basisValue": 55
+      },
+      "veg": {
+        "status": "definitional",
+        "display": "No vegetation",
+        "citation": "NASA Science, Mars Facts: \"Scientists don't expect to find living things currently thriving on Mars.\"",
+        "url": "https://science.nasa.gov/mars/facts/",
+        "note": "NDVI is not defined for Mars; treated as NDVI 0 (bare).",
+        "basisValue": 0
+      },
+      "geology": {
+        "status": "literature",
+        "category": "basalt",
+        "display": "Basaltic lava flows (Máaz formation) on the crater floor",
+        "citation": "Sun et al. 2023, JGR Planets 128, e2022JE007613 (§1, §2.2.2); Farley et al. 2022, Science 377, eabo2196",
+        "url": "https://doi.org/10.1029/2022JE007613",
+        "note": "Applies to the landing site. The delta (not the landing site) hosts Fe/Mg clays and carbonates; it would map to 'clay'."
+      },
+      "ice": {
+        "status": "literature",
+        "category": "no",
+        "display": "No near-surface ice expected at 18° N",
+        "citation": "Piqueux et al. 2019, GRL 46, 14290 — shallow ice consistent with latitudes as low as 35° N / 45° S",
+        "url": "https://doi.org/10.1029/2019GL083947",
+        "note": "Inference from the latitude limit; no Jezero-specific statement found."
+      }
+    },
+    "clipped": {
+      "temp_range": "above"
+    }
+  },
+  {
     "id": "moon-south-pole",
     "body": "moon",
-    "name": "Lunar South Pole (Shackleton rim / Artemis region)",
-    "lat": -89.5,
-    "lon": 0.0,
-    "summary": "Extreme cold, low sun angle, rough terrain; water ice in permanently shadowed cold traps.",
+    "name": "Lunar South Pole — Shackleton–de Gerlache connecting ridge (Artemis)",
+    "lat": -89.468,
+    "lon": -137.4,
+    "summary": "Sunlit ridge near Shackleton crater in the Artemis exploration zone; anorthositic highlands next to permanently shadowed cold traps that hold water ice.",
+    "trekUrl": "https://trek.nasa.gov/moon/",
+    "coord": {
+      "source": "NASA ACD-50044 Rev A, Lunar Surface Data Book (2023), Fig. 7.3.1: point C1 (89.468° S, 222.6° E) on the Shackleton–de Gerlache connecting ridge",
+      "note": "222.6° E converted to −137.4°. Point definitions (C1/C2) differ between papers."
+    },
     "norm": {
-      "terrain": 0.64,
-      "aridity": 0.03,
-      "temp": 0.28,
-      "temp_range": 0.22,
-      "veg": 0.74,
+      "terrain": null,
+      "aridity": 1.0,
+      "temp": 0.0,
+      "temp_range": null,
+      "veg": 1.0,
       "geology": "anorthosite",
       "ice": "yes"
     },
     "refs": {
-      "terrain": "MOCK — synthetic placeholder, not a measurement",
-      "aridity": "MOCK — synthetic placeholder, not a measurement",
-      "temp": "MOCK — synthetic placeholder, not a measurement",
-      "temp_range": "MOCK — synthetic placeholder, not a measurement",
-      "veg": "MOCK — synthetic placeholder, not a measurement",
-      "geology": "Seed CSV class (literature, unverified)",
-      "ice": "Seed CSV class (literature, unverified)"
+      "aridity": "NASA Science, Moon Facts: \"The Moon's weak atmosphere and its lack of liquid water cannot support life as we know it.\"",
+      "temp": "Williams et al. 2019, JGR Planets 124, 2505",
+      "veg": "NASA Science, Moon Facts (no liquid water, cannot support life as we know it)",
+      "geology": "Patterson et al. 2024, JGR Planets 129, e2023JE008275",
+      "ice": "Colaprete et al. 2010, Science 330, 463 (LCROSS: 5.6 ± 2.9 wt% water ice in Cabeus); Li et al. 2018, PNAS 115, 8907 (M3:"
     },
-    "trekUrl": "https://trek.nasa.gov/moon/"
-  },
-  {
-    "id": "moon-mare",
-    "body": "moon",
-    "name": "Mare Tranquillitatis",
-    "lat": 8.5,
-    "lon": 31.4,
-    "summary": "Flat basaltic plain with a large day-night temperature swing.",
-    "norm": {
-      "terrain": 0.68,
-      "aridity": 0.89,
-      "temp": 0.09,
-      "temp_range": 0.42,
-      "veg": 0.03,
-      "geology": "basalt",
-      "ice": "no"
+    "provenance": {
+      "terrain": {
+        "status": "unavailable",
+        "note": "No published relief for a 10 x 10 km window; needs LOLA DEM processing with the same method as Earth (planned). Shackleton is 4.2 km deep (rim to floor), which is not this metric."
+      },
+      "aridity": {
+        "status": "definitional",
+        "display": "0 mm/yr (no atmosphere, no liquid water)",
+        "citation": "NASA Science, Moon Facts: \"The Moon's weak atmosphere and its lack of liquid water cannot support life as we know it.\"",
+        "url": "https://science.nasa.gov/moon/facts/",
+        "note": "Physical constraint, not a measurement.",
+        "basisValue": 0
+      },
+      "temp": {
+        "status": "orbital",
+        "display": "≈ 200 K (−73 °C) in summer, colder in winter",
+        "citation": "Williams et al. 2019, JGR Planets 124, 2505 — Seasonal Polar Temperatures on the Moon (Diviner; text on Fig. 10d, Connecting Ridge)",
+        "url": "https://doi.org/10.1029/2019JE006028",
+        "note": "No annual mean is published. Summer ≈200 K is an upper bound, so the annual mean is below Earth's coldest bound (−60 °C) and clips to 0 whatever its exact value.",
+        "basisValue": -73.15
+      },
+      "temp_range": {
+        "status": "unavailable",
+        "note": "No published day–night range for the ridge; at the pole, season and shadowing dominate over a simple diurnal cycle."
+      },
+      "veg": {
+        "status": "definitional",
+        "display": "No vegetation",
+        "citation": "NASA Science, Moon Facts (no liquid water, cannot support life as we know it)",
+        "url": "https://science.nasa.gov/moon/facts/",
+        "note": "NDVI is not defined for the Moon; treated as NDVI 0 (bare).",
+        "basisValue": 0
+      },
+      "geology": {
+        "status": "literature",
+        "category": "anorthosite",
+        "display": "Anorthosite (feldspathic highlands; regolith and breccia at the surface)",
+        "citation": "Patterson et al. 2024, JGR Planets 129, e2023JE008275 — Lithologies and Chronologic Opportunities of Materials to Be Returned From the Artemis Exploration Zone",
+        "url": "https://doi.org/10.1029/2023JE008275",
+        "note": "Interpretation from orbital data; surface is impact-processed regolith, possibly with South Pole–Aitken ejecta."
+      },
+      "ice": {
+        "status": "in-situ",
+        "category": "yes",
+        "display": "Water ice in nearby permanently shadowed regions",
+        "citation": "Colaprete et al. 2010, Science 330, 463 (LCROSS: 5.6 ± 2.9 wt% water ice in Cabeus); Li et al. 2018, PNAS 115, 8907 (M3: surface-exposed ice in polar cold traps)",
+        "url": "https://doi.org/10.1126/science.1186986",
+        "note": "Region-level: ice is in cold traps (Cabeus is ~100 km away), not on the sunlit ridge surface itself."
+      }
     },
-    "refs": {
-      "terrain": "MOCK — synthetic placeholder, not a measurement",
-      "aridity": "MOCK — synthetic placeholder, not a measurement",
-      "temp": "MOCK — synthetic placeholder, not a measurement",
-      "temp_range": "MOCK — synthetic placeholder, not a measurement",
-      "veg": "MOCK — synthetic placeholder, not a measurement",
-      "geology": "Seed CSV class (literature, unverified)",
-      "ice": "Seed CSV class (literature, unverified)"
-    },
-    "trekUrl": "https://trek.nasa.gov/moon/"
-  },
-  {
-    "id": "moon-lava-tube",
-    "body": "moon",
-    "name": "Marius Hills skylight",
-    "lat": 14.1,
-    "lon": -56.7,
-    "summary": "Volcanic region with a lava-tube skylight offering natural shelter.",
-    "norm": {
-      "terrain": 0.22,
-      "aridity": 0.51,
-      "temp": 0.03,
-      "temp_range": 0.2,
-      "veg": 0.65,
-      "geology": "basalt",
-      "ice": "no"
-    },
-    "refs": {
-      "terrain": "MOCK — synthetic placeholder, not a measurement",
-      "aridity": "MOCK — synthetic placeholder, not a measurement",
-      "temp": "MOCK — synthetic placeholder, not a measurement",
-      "temp_range": "MOCK — synthetic placeholder, not a measurement",
-      "veg": "MOCK — synthetic placeholder, not a measurement",
-      "geology": "Seed CSV class (literature, unverified)",
-      "ice": "Seed CSV class (literature, unverified)"
-    },
-    "trekUrl": "https://trek.nasa.gov/moon/"
-  },
-  {
-    "id": "mars-jezero",
-    "body": "mars",
-    "name": "Jezero Crater",
-    "lat": 18.4,
-    "lon": 77.5,
-    "summary": "Ancient lake delta with clays and carbonates; Perseverance landing site.",
-    "norm": {
-      "terrain": 0.54,
-      "aridity": 0.22,
-      "temp": 0.59,
-      "temp_range": 0.81,
-      "veg": 0.01,
-      "geology": "clay",
-      "ice": "no"
-    },
-    "refs": {
-      "terrain": "MOCK — synthetic placeholder, not a measurement",
-      "aridity": "MOCK — synthetic placeholder, not a measurement",
-      "temp": "MOCK — synthetic placeholder, not a measurement",
-      "temp_range": "MOCK — synthetic placeholder, not a measurement",
-      "veg": "MOCK — synthetic placeholder, not a measurement",
-      "geology": "Seed CSV class (literature, unverified)",
-      "ice": "Seed CSV class (literature, unverified)"
-    },
-    "trekUrl": "https://trek.nasa.gov/mars/"
-  },
-  {
-    "id": "mars-gale",
-    "body": "mars",
-    "name": "Gale Crater",
-    "lat": -5.4,
-    "lon": 137.8,
-    "summary": "Layered sediments with sulfates and clays; Curiosity landing site.",
-    "norm": {
-      "terrain": 0.81,
-      "aridity": 0.7,
-      "temp": 0.34,
-      "temp_range": 0.16,
-      "veg": 0.96,
-      "geology": "sulfate",
-      "ice": "no"
-    },
-    "refs": {
-      "terrain": "MOCK — synthetic placeholder, not a measurement",
-      "aridity": "MOCK — synthetic placeholder, not a measurement",
-      "temp": "MOCK — synthetic placeholder, not a measurement",
-      "temp_range": "MOCK — synthetic placeholder, not a measurement",
-      "veg": "MOCK — synthetic placeholder, not a measurement",
-      "geology": "Seed CSV class (literature, unverified)",
-      "ice": "Seed CSV class (literature, unverified)"
-    },
-    "trekUrl": "https://trek.nasa.gov/mars/"
-  },
-  {
-    "id": "mars-arcadia",
-    "body": "mars",
-    "name": "Arcadia Planitia",
-    "lat": 46.7,
-    "lon": -168.0,
-    "summary": "Mid-latitude plains with shallow subsurface ice.",
-    "norm": {
-      "terrain": 0.34,
-      "aridity": 0.09,
-      "temp": 0.1,
-      "temp_range": 0.85,
-      "veg": 0.6,
-      "geology": "ice",
-      "ice": "yes"
-    },
-    "refs": {
-      "terrain": "MOCK — synthetic placeholder, not a measurement",
-      "aridity": "MOCK — synthetic placeholder, not a measurement",
-      "temp": "MOCK — synthetic placeholder, not a measurement",
-      "temp_range": "MOCK — synthetic placeholder, not a measurement",
-      "veg": "MOCK — synthetic placeholder, not a measurement",
-      "geology": "MOCK — synthetic placeholder, not a measurement",
-      "ice": "Seed CSV class (literature, unverified)"
-    },
-    "trekUrl": "https://trek.nasa.gov/mars/"
+    "clipped": {
+      "temp": "below"
+    }
   }
 ]

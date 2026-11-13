@@ -799,6 +799,40 @@
         ],
         "gap": "No gaps on the selected criteria"
       }
+    },
+    {
+      "name": "too few usable criteria gives a null score (minUsed 3)",
+      "working": "terrain 1, geology 1 usable; temp missing -> 2 of 3 selected usable < minimum 3 -> null (would be 100 with the default minimum of 1)",
+      "target": {
+        "terrain": 0.5,
+        "temp": 0.5,
+        "geology": "clay"
+      },
+      "site": {
+        "terrain": 0.5,
+        "temp": null,
+        "geology": "clay"
+      },
+      "weights": {
+        "terrain": 1,
+        "temp": 1,
+        "geology": 1
+      },
+      "minUsed": 3,
+      "expect": {
+        "score": null,
+        "coverage": {
+          "used": 2,
+          "selected": 3
+        },
+        "contrib": {
+          "terrain": null,
+          "temp": null,
+          "geology": null
+        },
+        "why": [],
+        "gap": "Insufficient data: 2 of 3 selected criteria have data (minimum 3)"
+      }
     }
   ],
   "rankCases": [
@@ -845,6 +879,47 @@
         ],
         [
           "a-null",
+          null
+        ]
+      ]
+    },
+    {
+      "name": "a site below the minimum criteria ranks after scored sites (minUsed 2)",
+      "working": "Thin: 1 usable criterion (perfect match) -> null with minimum 2; Broad: 2 usable, s=1 and s=0.5 -> 75",
+      "target": {
+        "terrain": 0.5,
+        "aridity": 1.0
+      },
+      "sites": [
+        {
+          "id": "thin",
+          "name": "Aa-thin",
+          "norm": {
+            "terrain": 0.5,
+            "aridity": null
+          }
+        },
+        {
+          "id": "broad",
+          "name": "Bb-broad",
+          "norm": {
+            "terrain": 0.5,
+            "aridity": 0.5
+          }
+        }
+      ],
+      "weights": {
+        "terrain": 1,
+        "aridity": 1
+      },
+      "minUsed": 2,
+      "expect": [
+        [
+          "broad",
+          75
+        ],
+        [
+          "thin",
           null
         ]
       ]

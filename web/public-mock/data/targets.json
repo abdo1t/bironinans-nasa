@@ -1,0 +1,164 @@
+[
+  {
+    "id": "moon-south-pole",
+    "body": "moon",
+    "name": "Lunar South Pole (Shackleton rim / Artemis region)",
+    "lat": -89.5,
+    "lon": 0.0,
+    "summary": "Extreme cold, low sun angle, rough terrain; water ice in permanently shadowed cold traps.",
+    "norm": {
+      "terrain": 0.64,
+      "aridity": 0.03,
+      "temp": 0.28,
+      "temp_range": 0.22,
+      "veg": 0.74,
+      "geology": "anorthosite",
+      "ice": "yes"
+    },
+    "refs": {
+      "terrain": "MOCK — synthetic placeholder, not a measurement",
+      "aridity": "MOCK — synthetic placeholder, not a measurement",
+      "temp": "MOCK — synthetic placeholder, not a measurement",
+      "temp_range": "MOCK — synthetic placeholder, not a measurement",
+      "veg": "MOCK — synthetic placeholder, not a measurement",
+      "geology": "Seed CSV class (literature, unverified)",
+      "ice": "Seed CSV class (literature, unverified)"
+    },
+    "trekUrl": "https://trek.nasa.gov/moon/"
+  },
+  {
+    "id": "moon-mare",
+    "body": "moon",
+    "name": "Mare Tranquillitatis",
+    "lat": 8.5,
+    "lon": 31.4,
+    "summary": "Flat basaltic plain with a large day-night temperature swing.",
+    "norm": {
+      "terrain": 0.68,
+      "aridity": 0.89,
+      "temp": 0.09,
+      "temp_range": 0.42,
+      "veg": 0.03,
+      "geology": "basalt",
+      "ice": "no"
+    },
+    "refs": {
+      "terrain": "MOCK — synthetic placeholder, not a measurement",
+      "aridity": "MOCK — synthetic placeholder, not a measurement",
+      "temp": "MOCK — synthetic placeholder, not a measurement",
+      "temp_range": "MOCK — synthetic placeholder, not a measurement",
+      "veg": "MOCK — synthetic placeholder, not a measurement",
+      "geology": "Seed CSV class (literature, unverified)",
+      "ice": "Seed CSV class (literature, unverified)"
+    },
+    "trekUrl": "https://trek.nasa.gov/moon/"
+  },
+  {
+    "id": "moon-lava-tube",
+    "body": "moon",
+    "name": "Marius Hills skylight",
+    "lat": 14.1,
+    "lon": -56.7,
+    "summary": "Volcanic region with a lava-tube skylight offering natural shelter.",
+    "norm": {
+      "terrain": 0.22,
+      "aridity": 0.51,
+      "temp": 0.03,
+      "temp_range": 0.2,
+      "veg": 0.65,
+      "geology": "basalt",
+      "ice": "no"
+    },
+    "refs": {
+      "terrain": "MOCK — synthetic placeholder, not a measurement",
+      "aridity": "MOCK — synthetic placeholder, not a measurement",
+      "temp": "MOCK — synthetic placeholder, not a measurement",
+      "temp_range": "MOCK — synthetic placeholder, not a measurement",
+      "veg": "MOCK — synthetic placeholder, not a measurement",
+      "geology": "Seed CSV class (literature, unverified)",
+      "ice": "Seed CSV class (literature, unverified)"
+    },
+    "trekUrl": "https://trek.nasa.gov/moon/"
+  },
+  {
+    "id": "mars-jezero",
+    "body": "mars",
+    "name": "Jezero Crater",
+    "lat": 18.4,
+    "lon": 77.5,
+    "summary": "Ancient lake delta with clays and carbonates; Perseverance landing site.",
+    "norm": {
+      "terrain": 0.54,
+      "aridity": 0.22,
+      "temp": 0.59,
+      "temp_range": 0.81,
+      "veg": 0.01,
+      "geology": "clay",
+      "ice": "no"
+    },
+    "refs": {
+      "terrain": "MOCK — synthetic placeholder, not a measurement",
+      "aridity": "MOCK — synthetic placeholder, not a measurement",
+      "temp": "MOCK — synthetic placeholder, not a measurement",
+      "temp_range": "MOCK — synthetic placeholder, not a measurement",
+      "veg": "MOCK — synthetic placeholder, not a measurement",
+      "geology": "Seed CSV class (literature, unverified)",
+      "ice": "Seed CSV class (literature, unverified)"
+    },
+    "trekUrl": "https://trek.nasa.gov/mars/"
+  },
+  {
+    "id": "mars-gale",
+    "body": "mars",
+    "name": "Gale Crater",
+    "lat": -5.4,
+    "lon": 137.8,
+    "summary": "Layered sediments with sulfates and clays; Curiosity landing site.",
+    "norm": {
+      "terrain": 0.81,
+      "aridity": 0.7,
+      "temp": 0.34,
+      "temp_range": 0.16,
+      "veg": 0.96,
+      "geology": "sulfate",
+      "ice": "no"
+    },
+    "refs": {
+      "terrain": "MOCK — synthetic placeholder, not a measurement",
+      "aridity": "MOCK — synthetic placeholder, not a measurement",
+      "temp": "MOCK — synthetic placeholder, not a measurement",
+      "temp_range": "MOCK — synthetic placeholder, not a measurement",
+      "veg": "MOCK — synthetic placeholder, not a measurement",
+      "geology": "Seed CSV class (literature, unverified)",
+      "ice": "Seed CSV class (literature, unverified)"
+    },
+    "trekUrl": "https://trek.nasa.gov/mars/"
+  },
+  {
+    "id": "mars-arcadia",
+    "body": "mars",
+    "name": "Arcadia Planitia",
+    "lat": 46.7,
+    "lon": -168.0,
+    "summary": "Mid-latitude plains with shallow subsurface ice.",
+    "norm": {
+      "terrain": 0.34,
+      "aridity": 0.09,
+      "temp": 0.1,
+      "temp_range": 0.85,
+      "veg": 0.6,
+      "geology": "ice",
+      "ice": "yes"
+    },
+    "refs": {
+      "terrain": "MOCK — synthetic placeholder, not a measurement",
+      "aridity": "MOCK — synthetic placeholder, not a measurement",
+      "temp": "MOCK — synthetic placeholder, not a measurement",
+      "temp_range": "MOCK — synthetic placeholder, not a measurement",
+      "veg": "MOCK — synthetic placeholder, not a measurement",
+      "geology": "MOCK — synthetic placeholder, not a measurement",
+      "ice": "Seed CSV class (literature, unverified)"
+    },
+    "trekUrl": "https://trek.nasa.gov/mars/"
+  }
+]

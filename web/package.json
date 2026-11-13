@@ -8,7 +8,9 @@
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "dev:mock": "vite --mode mock",
+    "build:mock": "vite build --mode mock --outDir dist-mock"
   },
   "dependencies": {
     "leaflet": "^1.9.4",

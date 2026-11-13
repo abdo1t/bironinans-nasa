@@ -29,6 +29,32 @@ export default function About() {
         </section>
       )}
 
+      {!data.isMock && (
+        <section className="panel">
+          <h2>Data status (research prototype)</h2>
+          <ul>
+            <li>
+              <strong>{data.sites.length} Earth sites</strong> with cited coordinates; <strong>{data.targets.length} targets</strong>{' '}
+              (one Moon, one Mars) whose values come from Perseverance (MEDA) and LRO results — see “Target reference
+              values” on Explore.
+            </li>
+            <li>
+              Climate (aridity, surface temperature, daily swing): NASA POWER climatology API, MERRA-2 reanalysis,
+              2001–2025, 0.5° × 0.625° grid cells (~50 km). Values describe the grid cell, not the exact point.
+            </li>
+            <li>
+              Where a grid cell clearly does not represent the site (site–cell elevation differs by more than 500 m, or an
+              island smaller than the cell) the value is shown but not used in scores.
+            </li>
+            <li>Rock type and ground ice: peer-reviewed literature, cited per site; left empty when evidence is mixed.</li>
+            <li>
+              Not yet acquired (excluded from all scores): terrain relief (SRTM / ASTER GDEM, needs an Earthdata login) and
+              vegetation (MODIS NDVI). Target terrain is also not yet computed.
+            </li>
+          </ul>
+        </section>
+      )}
+
       <section className="panel">
         <h2>Method</h2>
         <ol>
@@ -40,6 +66,19 @@ export default function About() {
             zero. The coverage badge (e.g. “5/6 criteria”) shows how many of your selected criteria had data. If none
             did, the site gets no score and sorts last.
           </li>
+          <li>
+            A score needs at least {data.minCriteria} criteria with data on both sides; with fewer, the site shows
+            “Insufficient data” instead of a score. Confidence is High / Medium / Low depending on how many of your
+            selected criteria had data.
+          </li>
+          <li>
+            Moon and Mars are colder and drier than anywhere on Earth. Where a target value lies beyond Earth’s range it
+            is set to Earth’s extreme (marked “Beyond Earth range”), so the score then means “as close as Earth gets”.
+          </li>
+          <li>
+            Temperature compares <em>surface</em> temperatures (Earth skin temperature vs. measured regolith/ground
+            temperature), because the Moon has no air.
+          </li>
           <li>“Why” lists the criteria that contribute most (with at least 70% similarity); “Where it falls short” is the selected criterion with the lowest similarity.</li>
         </ol>
       </section>
@@ -47,9 +86,10 @@ export default function About() {
       <section className="panel">
         <h2>Catalogued analogs and uncatalogued candidates</h2>
         <p>
-          A <strong>catalogued analog</strong> is a site already used for Moon/Mars analog research. An{' '}
-          <strong>uncatalogued candidate</strong> is simply more than 300 km from every catalogued analog. It is a lead
-          worth field validation — not a scientifically validated new analog.
+          A <strong>catalogued analog</strong> is a site with a peer-reviewed Moon/Mars analog study (cited on its page)
+          or on this project’s reference list. An <strong>uncatalogued candidate</strong> is more than 300 km from every
+          catalogued site and we found no peer-reviewed analog study of it. That is not proof that nobody has studied it,
+          and it is not a validated analog — it is a lead worth field validation.
         </p>
       </section>
 

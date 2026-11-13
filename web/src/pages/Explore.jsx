@@ -3,6 +3,7 @@ import CriteriaPanel from '../components/CriteriaPanel.jsx'
 import MapView from '../components/MapView.jsx'
 import ResultsList from '../components/ResultsList.jsx'
 import ShortlistBar from '../components/ShortlistBar.jsx'
+import TargetReference from '../components/TargetReference.jsx'
 import TargetSelect from '../components/TargetSelect.jsx'
 import { MockTag } from '../components/Tags.jsx'
 import { useBundle } from '../data/useBundle.js'
@@ -81,6 +82,8 @@ export default function Explore() {
             </button>
           </div>
         </header>
+
+        <TargetReference target={app.target} features={data.features} isMock={data.isMock} />
 
         <p className="sr-only" aria-live="polite">
           {top ? `Ranking updated. Top site: ${data.siteById[top.site].name}, score ${top.score}.` : 'No site could be scored.'}

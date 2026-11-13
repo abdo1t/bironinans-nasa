@@ -3,7 +3,7 @@ import { CircleMarker, MapContainer, Popup, TileLayer } from 'react-leaflet'
 import { Link } from 'react-router-dom'
 import 'leaflet/dist/leaflet.css'
 import { NO_SCORE_COLOR, SCORE_BINS, scoreColor } from '../lib/format.js'
-import { CoverageBadge, MockTag, NoveltyTag } from './Tags.jsx'
+import { ConfidenceTag, CoverageBadge, MockTag, NoveltyTag } from './Tags.jsx'
 
 // Basemap tiles are the only external requests the app makes (no API key).
 const TILE_URL = 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}'
@@ -60,7 +60,10 @@ export default function MapView({ ranking, siteById, shortlist, shortlistFull, o
                     <span className="popup__score">
                       {hasScore ? `Score ${r.score}/100 · #${r.rank}` : 'No score — data pending'}
                     </span>
-                    <CoverageBadge coverage={r.coverage} />
+                    <span>
+                      <CoverageBadge coverage={r.coverage} /> {hasScore && <ConfidenceTag coverage={r.coverage} />}
+                    </span>
+                    {!hasScore && <span className="popup__gap">{r.gap}</span>}
                     <span className="popup__tags">
                       <NoveltyTag site={site} />
                       {isMock && <MockTag />}
@@ -95,7 +98,7 @@ export default function MapView({ ranking, siteById, shortlist, shortlistFull, o
           ))}
           <li>
             <span className="swatch swatch--hollow" style={{ borderColor: NO_SCORE_COLOR }} aria-hidden="true" />
-            No score (data pending)
+            No score (insufficient data)
           </li>
           <li>
             <span className="swatch swatch--ring" aria-hidden="true" />

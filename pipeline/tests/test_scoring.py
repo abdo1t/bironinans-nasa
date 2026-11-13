@@ -88,14 +88,14 @@ def test_no_criteria_selected():
 
 @pytest.mark.parametrize("case", FIXTURE["handCases"], ids=lambda c: c["name"])
 def test_hand_case(case):
-    r = score_site({"norm": case["target"]}, {"norm": case["site"]}, case["weights"], FEATURES)
+    r = score_site({"norm": case["target"]}, {"norm": case["site"]}, case["weights"], FEATURES, case.get("minUsed", 1))
     for key, value in case["expect"].items():
         assert r[key] == value, f"{key}: {case['working']}"
 
 
 @pytest.mark.parametrize("case", FIXTURE["rankCases"], ids=lambda c: c["name"])
 def test_rank_case(case):
-    ranked = rank_sites({"norm": case["target"]}, case["sites"], case["weights"], FEATURES)
+    ranked = rank_sites({"norm": case["target"]}, case["sites"], case["weights"], FEATURES, case.get("minUsed", 1))
     assert [[r["site"], r["score"]] for r in ranked] == case["expect"]
 
 

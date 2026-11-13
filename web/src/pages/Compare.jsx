@@ -33,6 +33,10 @@ function verdict(sites, target, features, weights, rankBySite) {
         continue
       }
       const max = Math.max(...vals.map((x) => x.v))
+      if (max === 0) {
+        lines.push(`${f.label} (weight ${topWeight}): none of these sites matches the target.`)
+        continue
+      }
       const names = vals.filter((x) => x.v === max).map((x) => x.s.name)
       lines.push(`${f.label} (weight ${topWeight}): ${names.join(' and ')} closest (${pct(max)}).`)
     }

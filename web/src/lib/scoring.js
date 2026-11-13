@@ -5,6 +5,7 @@
 //   * Rounding is explicit half-up: Math.floor(x + 0.5) (matches Python side).
 //   * Names compare by code unit with plain `<`, never localeCompare.
 
+export const MIN_CRITERIA_FOR_SCORE = 3 // real bundle + app; scoreSite defaults to 1
 export const WHY_MIN_SIM = 0.7
 export const WHY_MAX_ITEMS = 3
 export const MUCH_DIFF = 0.5
@@ -81,9 +82,14 @@ function gapPhrase(feature, s, siteVal, targetVal) {
  *   - A selected criterion with a missing value is null in contrib / sims — never 0.
  *   - score is null when no selected criterion is usable (not 0).
  *   - coverage = { used, selected }.
+ *   - minUsed: fewer usable criteria than this -> score null ("insufficient data").
  * `sims` is for the UI only.
  */
-export function scoreSite(target, site, weights, features) {
+export function insufficientGap(used, selected, minUsed) {
+  return `Insufficient data: ${used} of ${selected} selected criteria have data (minimum ${minUsed})`
+}
+
+export function scoreSite(target, site, weights, features, minUsed = 1) {
   const tnorm = target.norm
   const snorm = site.norm
   const selected = [] // { f, w, s } in feature order, w > 0; s may be null
@@ -105,17 +111,15 @@ export function scoreSite(target, site, weights, features) {
   const sims = {}
   for (const { f, s } of selected) sims[f.id] = s
 
-  if (den === 0) {
+  if (den === 0 || rows.length < minUsed) {
     const contrib = {}
     for (const { f } of selected) contrib[f.id] = null
-    return {
-      score: null,
-      contrib,
-      coverage,
-      why: [],
-      gap: selected.length ? NO_DATA_GAP : NO_CRITERIA_GAP,
-      sims,
-    }
+    const gap = !selected.length
+      ? NO_CRITERIA_GAP
+      : den === 0
+        ? NO_DATA_GAP
+        : insufficientGap(rows.length, selected.length, minUsed)
+    return { score: null, contrib, coverage, why: [], gap, sims }
   }
 
   const score = roundHalfUp((100 * num) / den)
@@ -147,10 +151,10 @@ function compareScore(a, b) {
  * Rank site objects (with id, name, norm) for one target (§5.8): score desc, then
  * name asc, then id. Sites with a null score (no usable data) sort last.
  */
-export function rankSites(target, sites, weights, features) {
+export function rankSites(target, sites, weights, features, minUsed = 1) {
   return sites
     .map((site) => {
-      const r = scoreSite(target, site, weights, features)
+      const r = scoreSite(target, site, weights, features, minUsed)
       return {
         name: site.name,
         out: { site: site.id, score: r.score, contrib: r.contrib, coverage: r.coverage, why: r.why, gap: r.gap },

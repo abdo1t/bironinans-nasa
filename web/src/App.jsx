@@ -34,6 +34,16 @@ function MockBanner() {
   )
 }
 
+function DataBanner() {
+  return (
+    <div className="data-banner" role="note">
+      <strong>Research prototype.</strong> Climate: NASA POWER reanalysis (2001–2025, ~50 km cells). Targets: cited
+      Perseverance / LRO results. Terrain relief and vegetation not yet acquired — excluded from scores.{' '}
+      <NavLink to="/about">Method &amp; limitations</NavLink>
+    </div>
+  )
+}
+
 export default function App() {
   const { status, error, data } = useBundle()
 
@@ -60,7 +70,7 @@ export default function App() {
       ) : (
         <AppStateProvider>
           <Header />
-          {data.isMock && <MockBanner />}
+          {data.isMock ? <MockBanner /> : <DataBanner />}
           <main id="main" className="app-main" tabIndex={-1}>
             <Routes>
               <Route path="/" element={<Home />} />

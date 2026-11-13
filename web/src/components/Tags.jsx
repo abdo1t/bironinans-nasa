@@ -1,4 +1,41 @@
-import { NO_SCORE_COLOR, scoreColor, sourceKind } from '../lib/format.js'
+import { EVIDENCE, NO_SCORE_COLOR, confidence, scoreColor, sourceKind } from '../lib/format.js'
+
+/** Evidence type of a real value (Reanalysis, In-situ, Literature, ...). */
+export function EvidenceTag({ status }) {
+  const e = EVIDENCE[status]
+  if (!e) return null
+  return (
+    <span className={`tag tag--evidence tag--ev-${status}`} title={e.title}>
+      {e.label}
+    </span>
+  )
+}
+
+/** Shown when a target value lies beyond Earth's range and was clipped to the bound. */
+export function ClippedTag({ direction }) {
+  if (!direction) return null
+  const text = direction === 'below' ? 'colder/lower than anywhere on Earth' : 'beyond Earth’s maximum'
+  return (
+    <span className="tag tag--clipped" title={`Target value is ${text}; similarity measures how close a site comes to Earth's extreme.`}>
+      Beyond Earth range
+    </span>
+  )
+}
+
+/** High / Medium / Low confidence from coverage. */
+export function ConfidenceTag({ coverage }) {
+  const level = confidence(coverage)
+  if (!level) return null
+  const label = { high: 'High confidence', medium: 'Medium confidence', low: 'Low confidence' }[level]
+  return (
+    <span
+      className={`tag tag--conf tag--conf-${level}`}
+      title={`${coverage.used} of ${coverage.selected} selected criteria had data on both sides`}
+    >
+      {label}
+    </span>
+  )
+}
 
 // Small status labels. Identity is always carried by text, never colour alone.
 
@@ -65,7 +102,7 @@ export function ScoreBadge({ score, large = false }) {
     return (
       <span className={`score-badge score-badge--none${large ? ' score-badge--large' : ''}`}>
         <span className="swatch swatch--hollow" style={{ borderColor: NO_SCORE_COLOR }} aria-hidden="true" />
-        No score — data pending
+        No score — insufficient data
       </span>
     )
   }
@@ -80,7 +117,7 @@ export function ScoreBadge({ score, large = false }) {
 
 export function ScoreBar({ score }) {
   if (score === null || score === undefined) {
-    return <span className="score-bar__none">No score — data pending</span>
+    return <span className="score-bar__none">No score — insufficient data</span>
   }
   return (
     <span className="score-bar" title={`Score ${score} of 100`}>

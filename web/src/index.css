@@ -1036,3 +1036,109 @@ thead th {
     bottom: 1.5rem;
   }
 }
+
+/* ---------------------------------------------------------------- phase 3: provenance */
+
+.data-banner {
+  padding: 0.45rem 1.5rem;
+  background: #13233a;
+  color: #cde2fb;
+  font-size: 0.85rem;
+}
+
+.tag--evidence {
+  color: var(--text-2);
+  font-weight: 500;
+}
+
+.tag--ev-reanalysis,
+.tag--ev-measurement {
+  color: #86b6ef;
+}
+
+.tag--ev-in-situ,
+.tag--ev-orbital {
+  color: #9ee0c4;
+}
+
+.tag--ev-literature {
+  color: #e6b98a;
+}
+
+.tag--ev-definitional {
+  color: var(--muted);
+  border-style: dotted;
+}
+
+.tag--ev-unavailable {
+  color: var(--muted);
+  border-style: dashed;
+}
+
+.tag--clipped {
+  color: #f0a8d0;
+  border-style: dashed;
+  margin-left: 0.25rem;
+}
+
+.tag--excluded {
+  color: var(--warn-text);
+  border-style: dashed;
+  margin-left: 0.25rem;
+}
+
+.tag--conf-high {
+  color: #9ee0c4;
+}
+
+.tag--conf-medium {
+  color: var(--warn-text);
+}
+
+.tag--conf-low {
+  color: #ff9b9b;
+}
+
+.cell-note {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--muted);
+  max-width: 320px;
+  margin-top: 0.2rem;
+}
+
+.target-ref {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.6rem 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.explore__main .target-ref {
+  margin-bottom: 0;
+}
+
+.target-ref summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.target-ref__table {
+  margin-top: 0.6rem;
+}
+
+.target-ref__src {
+  font-size: 0.8rem;
+  max-width: 460px;
+}
+
+.sources__detail {
+  font-size: 0.8rem;
+}
+
+.popup__gap {
+  color: var(--warn-text);
+  font-size: 0.8rem;
+}

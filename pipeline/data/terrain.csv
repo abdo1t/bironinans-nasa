@@ -1,0 +1,12 @@
+id,lat,lon,dem,dem_label,quality,window_km,relief_m,elev_m,valid_frac,granules,note,retrieved_at
+atacama,-24.10169,-70.01828,SRTMGL1.003,NASA SRTM v3 1 arc-second (SRTMGL1 v003),primary,10.0,,,,,no Earthdata credentials; relief left null,2026-11-13T18:40:57+00:00
+mdrs-utah,38.40646,-110.7919,SRTMGL1.003,NASA SRTM v3 1 arc-second (SRTMGL1 v003),primary,10.0,,,,,no Earthdata credentials; relief left null,2026-11-13T18:40:57+00:00
+death-valley,36.25028,-116.82583,SRTMGL1.003,NASA SRTM v3 1 arc-second (SRTMGL1 v003),primary,10.0,,,,,no Earthdata credentials; relief left null,2026-11-13T18:40:57+00:00
+haughton,75.4333,-89.8667,ASTGTM.003,ASTER GDEM v3 1 arc-second (ASTGTM v003),fallback,10.0,,,,,no Earthdata credentials; relief left null,2026-11-13T18:40:57+00:00
+mcmurdo,-77.86617,160.73238,ASTGTM.003,ASTER GDEM v3 1 arc-second (ASTGTM v003),fallback,10.0,,,,,no Earthdata credentials; relief left null,2026-11-13T18:40:57+00:00
+rio-tinto,37.72512,-6.55643,SRTMGL1.003,NASA SRTM v3 1 arc-second (SRTMGL1 v003),primary,10.0,,,,,no Earthdata credentials; relief left null,2026-11-13T18:40:57+00:00
+iceland-lava,64.85,-16.83,ASTGTM.003,ASTER GDEM v3 1 arc-second (ASTGTM v003),fallback,10.0,,,,,no Earthdata credentials; relief left null,2026-11-13T18:40:57+00:00
+lanzarote,28.99417,-13.79333,SRTMGL1.003,NASA SRTM v3 1 arc-second (SRTMGL1 v003),primary,10.0,,,,,no Earthdata credentials; relief left null,2026-11-13T18:40:57+00:00
+danakil,14.24167,40.3,SRTMGL1.003,NASA SRTM v3 1 arc-second (SRTMGL1 v003),primary,10.0,,,,,no Earthdata credentials; relief left null,2026-11-13T18:40:57+00:00
+white-desert,27.27734,28.20044,SRTMGL1.003,NASA SRTM v3 1 arc-second (SRTMGL1 v003),primary,10.0,,,,,no Earthdata credentials; relief left null,2026-11-13T18:40:57+00:00
+wadi-rum,29.59306,35.42,SRTMGL1.003,NASA SRTM v3 1 arc-second (SRTMGL1 v003),primary,10.0,,,,,no Earthdata credentials; relief left null,2026-11-13T18:40:57+00:00

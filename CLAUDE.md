@@ -78,10 +78,13 @@ earth-analog-finder/
 │  │  ├─ sites_seed.csv      # ~40 Earth candidate sites (name, lat, lon, knownAnalog, geology, ice)
 │  │  └─ known_analogs.csv   # catalogued analog sites, for novelty distance
 │  ├─ data/
-│  │  └─ sites_raw.csv       # cached raw values (committed; demo never re-fetches)
+│  │  ├─ power/<site>.json   # raw POWER responses + request (committed cache)
+│  │  ├─ power.csv           # fetch_power.py output
+│  │  └─ terrain.csv         # fetch_terrain.py output (relief or null + reason)
 │  ├─ make_mock.py           # writes a deterministic MOCK bundle to web/public/data/
-│  ├─ fetch_power.py         # NASA POWER climatology per site → sites_raw.csv
-│  ├─ fetch_terrain.py       # SRTM relief/slope/roughness per site → sites_raw.csv
+│  ├─ fetch_power.py         # NASA POWER climatology per site → data/power.csv
+│  ├─ fetch_terrain.py       # SRTMGL1 → ASTER GDEM v3 relief per site → data/terrain.csv
+│  ├─ bundle_io.py / validate_bundle.py  # bundle + manifest writer; schema/provenance validator
 │  ├─ fetch_ndvi.py          # (optional) vegetation per site
 │  ├─ scoring.py             # SOURCE OF TRUTH for normalize + score + explain
 │  ├─ build_bundle.py        # seed + raw → normalized → scores → JSON export
@@ -96,7 +99,8 @@ earth-analog-finder/
    ├─ index.html
    ├─ package.json
    ├─ vite.config.js
-   ├─ public/data/           # targets.json, features.json, sites.geojson, scores.json
+   ├─ public/data/           # REAL bundle: targets.json, features.json, sites.geojson, scores.json, manifest.json
+   ├─ public-mock/data/      # MOCK bundle (served only by `npm run dev:mock` / `build:mock`)
    └─ src/
       ├─ main.jsx
       ├─ App.jsx             # routes
@@ -132,10 +136,10 @@ All numbers in `norm` are in `[0, 1]`. Categorical features are strings. Feature
 
 | id | label | kind | Earth source | notes |
 |---|---|---|---|---|
-| `terrain` | Terrain roughness | numeric | SRTM relief / slope std within ~5 km box | higher = rougher |
+| `terrain` | Terrain relief | numeric | SRTMGL1 v003 (56°S–60°N) else ASTER GDEM v3: P99 − P1 elevation in a 10 × 10 km window | higher = more relief |
 | `aridity` | Aridity | numeric | NASA POWER annual precipitation (inverted) | 1 = hyper-arid |
-| `temp` | Temperature | numeric | NASA POWER annual mean T2M | 0 = coldest Earth bound |
-| `temp_range` | Temperature swing | numeric | NASA POWER T2M_MAX − T2M_MIN | optional, include if time |
+| `temp` | Surface temperature | numeric | NASA POWER annual mean `TS` (skin temperature; the Moon has no air) | bounds −60…+35 °C; 0 = coldest Earth bound |
+| `temp_range` | Daily temperature swing | numeric | NASA POWER `TS_RANGE` (mean daily range). Never `T2M_MAX − T2M_MIN` (annual extremes) | bounds 0…35 °C |
 | `veg` | Bare ground | numeric | NDVI (inverted) or literature | 1 = no vegetation |
 | `geology` | Geology match | categorical | literature / EMIT | e.g. `basalt`, `anorthosite`, `clay`, `sulfate`, `evaporite`, `sedimentary`, `ice` |
 | `ice` | Ground ice / permafrost | categorical | literature flag | `yes` / `no` |
@@ -207,6 +211,8 @@ FeatureCollection of Points. `properties`:
 
 ### 4.5 `scores.json` (default ranking per target, computed with the `balanced` preset)
 
+`minCriteria` (real bundle: 3) is the minimum number of usable criteria for a score; the app uses the same value.
+
 ```json
 {
   "generatedAt": "2026-11-14T12:00:00Z",
@@ -228,6 +234,13 @@ FeatureCollection of Points. `properties`:
 
 ---
 
+### 4.6 Real-bundle extensions (contract `eaf-bundle/2`, Phase 3)
+
+* `manifest.json`: `{contract, kind: "real"|"mock", generatedAt, files: {name: sha256}}`. The app refuses to start if the kind does not match its build mode, a hash differs, or a real bundle contains any `MOCK` value (`web/src/lib/bundleIntegrity.js`). `pipeline/validate_bundle.py` enforces the same plus schema, NaN/∞, coordinates and provenance.
+* `targets.json` adds `provenance[fid] = {status: in-situ|orbital|model|literature|definitional|unavailable, display, citation, url, note, basisValue}`, `clipped[fid] = "below"|"above"`, `coord {source, note}`. `status: unavailable` ⇔ `norm[fid] = null`.
+* `sites.geojson` properties add `provenance[fid]` (dataset, parameter, status e.g. `reanalysis`, value, units, period, resolution, request url, `excluded` reason when shown-but-not-scored), `clipped`, `coord {source, precision, elevM, elevSource}`, `analogRef`, `notes`. `raw` keys: `relief_m, precip_mm_yr, ts_mean_c, ts_range_c, ndvi`.
+* Methodology, decisions and limitations: `docs/methodology.md`; per-criterion readiness: `docs/data_readiness.md`.
+
 ## 5. Scoring spec (implement identically in `pipeline/scoring.py` and `web/src/lib/scoring.js`)
 
 1. **Normalize (Python only).** For each numeric feature: `x = clip((raw - earthMin) / (earthMax - earthMin), 0, 1)`; if `invert`, `x = 1 - x`. Use the **fixed bounds in `config.py`**, never the sample min/max.
@@ -236,7 +249,7 @@ FeatureCollection of Points. `properties`:
    - numeric: `s = 1 - abs(site - target)`
    - categorical: `s = 1` if equal; `0.5` if listed in `related` (either direction); else `0`.
    - missing value on either side: `s = null` — skip that criterion (exclude it from both numerator and denominator). A missing value is never treated as 0; `0` always means "measured, no match".
-4. **Overall score:** `score = round_half_up(100 * Σ(w_i * s_i) / Σ(w_i))` over usable criteria with `w_i > 0` (half-up = `floor(x + 0.5)` in both languages). If no criterion is usable, the score is **`null`** (UI: "No score — data pending"), not 0.
+4. **Overall score:** `score = round_half_up(100 * Σ(w_i * s_i) / Σ(w_i))` over usable criteria with `w_i > 0` (half-up = `floor(x + 0.5)` in both languages). If no criterion is usable — or fewer than `min_used` (real bundle: `minCriteria` = 3) — the score is **`null`** (UI: "No score — insufficient data"), not 0. Default `min_used` is 1.
 5. **Contribution:** `contrib_i = w_i * s_i / Σ(w_i)` over the usable criteria, rounded half-up to 4 decimals. `contrib` lists every selected criterion (`w_i > 0`); a selected criterion with missing data is `null`.
 5a. **Coverage:** `coverage = { used, selected }` — how many selected criteria (`w_i > 0`) actually contributed. Shown next to every score.
 6. **Explanations:**

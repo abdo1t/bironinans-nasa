@@ -1,10 +1,11 @@
-import { formatValue, pct } from '../lib/format.js'
+import { describeSiteValue, describeTargetValue, pct } from '../lib/format.js'
 import { similarity } from '../lib/scoring.js'
-import { SourceTag } from './Tags.jsx'
+import { ClippedTag, EvidenceTag, SourceTag } from './Tags.jsx'
 
 /**
  * Per-criterion breakdown for one site vs one target.
- * Distinguishes: not selected (weight 0) · data pending (null) · measured (incl. 0%).
+ * Distinguishes: not selected (weight 0) · data pending (null) · not scored
+ * (value shown but excluded, e.g. unrepresentative grid cell) · measured (incl. 0%).
  */
 export default function ScoreBars({ site, target, weights, features, result }) {
   return (
@@ -24,19 +25,17 @@ export default function ScoreBars({ site, target, weights, features, result }) {
         {features.map((f) => {
           const w = weights[f.id] || 0
           const selected = w > 0
-          const siteVal = site.norm[f.id]
-          const targetVal = target.norm[f.id]
-          const s = selected ? result.sims[f.id] : similarity(f, siteVal, targetVal)
+          const s = selected ? result.sims[f.id] : similarity(f, site.norm[f.id], target.norm[f.id])
           const contrib = result.contrib[f.id]
-          const siteShown = formatValue(f, siteVal)
-          const targetShown = formatValue(f, targetVal)
+          const sv = describeSiteValue(f, site)
+          const tv = describeTargetValue(f, target)
           return (
             <tr key={f.id} className={selected ? undefined : 'is-unselected'}>
               <th scope="row">{f.label}</th>
               <td>{selected ? w : <span className="muted">off</span>}</td>
               <td>
-                {s === null ? (
-                  <span className="tag tag--pending">Data pending</span>
+                {s === null || s === undefined ? (
+                  <span className="tag tag--pending">{sv.excluded ? 'Not scored' : 'Data pending'}</span>
                 ) : (
                   <span className="sim">
                     <span className="sim__track" aria-hidden="true">
@@ -48,11 +47,25 @@ export default function ScoreBars({ site, target, weights, features, result }) {
                 )}
               </td>
               <td>
-                {siteShown ?? <span className="muted">—</span>} <SourceTag source={siteShown ? site.sources?.[f.id] : null} />
+                {sv.text ?? <span className="muted">—</span>}{' '}
+                {sv.status ? (
+                  <EvidenceTag status={sv.status} />
+                ) : (
+                  <SourceTag source={sv.text ? site.sources?.[f.id] : null} />
+                )}
+                {sv.excluded && (
+                  <span className="tag tag--excluded" title={sv.excluded}>
+                    Not used in score
+                  </span>
+                )}
+                {(sv.excluded || (sv.status === 'unavailable' && sv.note)) && (
+                  <span className="cell-note">{sv.excluded || sv.note}</span>
+                )}
               </td>
               <td>
-                {targetShown ?? <span className="muted">—</span>}{' '}
-                <SourceTag source={targetShown ? target.refs?.[f.id] : null} />
+                {tv.text ?? <span className="muted">—</span>}{' '}
+                {tv.status ? <EvidenceTag status={tv.status} /> : <SourceTag source={tv.text ? target.refs?.[f.id] : null} />}
+                <ClippedTag direction={tv.clipped} />
               </td>
               <td>
                 {!selected || contrib === undefined ? (

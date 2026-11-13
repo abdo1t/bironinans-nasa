@@ -1,14 +1,14 @@
 [
   {
     "id": "terrain",
-    "label": "Terrain roughness",
+    "label": "Terrain relief",
     "kind": "numeric",
-    "unit": "m relief within ~5 km box",
+    "unit": "m (P99 − P1 elevation in a 10 × 10 km window)",
     "earthMin": 0,
     "earthMax": 1500,
     "invert": false,
-    "description": "Higher = rougher, more relief.",
-    "source": "SRTMGL1 v003"
+    "description": "Higher = more relief. Same window and method for every site.",
+    "source": "SRTMGL1 v003 (56°S–60°N), else ASTER GDEM v3"
   },
   {
     "id": "aridity",
@@ -18,30 +18,30 @@
     "earthMin": 0,
     "earthMax": 2000,
     "invert": true,
-    "description": "Drier is more Moon/Mars-like.",
-    "source": "NASA POWER"
+    "description": "Drier is more Moon/Mars-like. Wetter than 2000 mm/yr counts as 0.",
+    "source": "NASA POWER PRECTOTCORR (MERRA-2 climatology)"
   },
   {
     "id": "temp",
-    "label": "Temperature",
+    "label": "Surface temperature",
     "kind": "numeric",
-    "unit": "°C annual mean",
-    "earthMin": -30,
-    "earthMax": 30,
+    "unit": "°C annual-mean surface (skin) temperature",
+    "earthMin": -60,
+    "earthMax": 35,
     "invert": false,
-    "description": "0 = coldest Earth bound; Moon/Mars targets are clipped to 0.",
-    "source": "NASA POWER"
+    "description": "0 = Earth's coldest annual mean (~−59 °C, Antarctic plateau). Colder targets are clipped.",
+    "source": "NASA POWER TS (MERRA-2 climatology)"
   },
   {
     "id": "temp_range",
-    "label": "Temperature swing",
+    "label": "Daily temperature swing",
     "kind": "numeric",
-    "unit": "°C (T2M_MAX − T2M_MIN)",
+    "unit": "°C mean daily surface-temperature range",
     "earthMin": 0,
-    "earthMax": 30,
+    "earthMax": 35,
     "invert": false,
-    "description": "Larger day–night / seasonal swing is more Moon/Mars-like.",
-    "source": "NASA POWER"
+    "description": "Larger day–night swing is more Moon/Mars-like. Larger target swings are clipped.",
+    "source": "NASA POWER TS_RANGE (MERRA-2 climatology)"
   },
   {
     "id": "veg",
@@ -52,7 +52,7 @@
     "earthMax": 0.8,
     "invert": true,
     "description": "1 = no vegetation.",
-    "source": "NDVI or literature"
+    "source": "MODIS NDVI (not yet acquired)"
   },
   {
     "id": "geology",

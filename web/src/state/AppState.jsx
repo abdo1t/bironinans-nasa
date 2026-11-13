@@ -59,7 +59,7 @@ export function AppStateProvider({ children }) {
 
   const ranking = useMemo(() => {
     if (!target) return []
-    return rankSites(target, data.sites, state.weights, data.features).map((r, i) => ({
+    return rankSites(target, data.sites, state.weights, data.features, data.minCriteria).map((r, i) => ({
       ...r,
       rank: r.score === null ? null : i + 1,
     }))

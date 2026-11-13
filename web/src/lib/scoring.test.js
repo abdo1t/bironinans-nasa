@@ -75,7 +75,7 @@ describe('hand-checked values', () => {
 describe('independent hand-calculated cases (shared with pytest)', () => {
   for (const c of fixture.handCases) {
     it(c.name, () => {
-      const r = scoreSite({ norm: c.target }, { norm: c.site }, c.weights, features)
+      const r = scoreSite({ norm: c.target }, { norm: c.site }, c.weights, features, c.minUsed ?? 1)
       for (const [key, value] of Object.entries(c.expect)) {
         expect(r[key], `${key}: ${c.working}`).toEqual(value)
       }
@@ -84,7 +84,7 @@ describe('independent hand-calculated cases (shared with pytest)', () => {
 
   for (const c of fixture.rankCases) {
     it(c.name, () => {
-      const ranked = rankSites({ norm: c.target }, c.sites, c.weights, features)
+      const ranked = rankSites({ norm: c.target }, c.sites, c.weights, features, c.minUsed ?? 1)
       expect(ranked.map((r) => [r.site, r.score])).toEqual(c.expect)
     })
   }
