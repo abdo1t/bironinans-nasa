@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13T18:55:11+00:00",
+  "generatedAt": "2026-11-13T19:57:32+00:00",
   "defaultPreset": "balanced",
   "minCriteria": 3,
   "byTarget": {
@@ -7,6 +7,10 @@
       {
         "site": "mcmurdo",
         "score": 68,
+        "scoreRange": [
+          39,
+          82
+        ],
         "contrib": {
           "terrain": null,
           "aridity": 0.3483,
@@ -29,6 +33,10 @@
       {
         "site": "iceland-lava",
         "score": 63,
+        "scoreRange": [
+          45,
+          74
+        ],
         "contrib": {
           "terrain": null,
           "aridity": 0.1707,
@@ -45,11 +53,15 @@
         "why": [
           "Strongest match: geology match (basalt)"
         ],
-        "gap": "Much smaller temperature swing than the target"
+        "gap": "Much warmer than the target"
       },
       {
         "site": "atacama",
         "score": 51,
+        "scoreRange": [
+          40,
+          61
+        ],
         "contrib": {
           "terrain": null,
           "aridity": 0.2717,
@@ -66,13 +78,17 @@
         "why": [
           "Strongest match: aridity",
           "Ground ice / permafrost: no",
-          "Daily temperature swing close to target"
+          "Daily temperature swing near Earth's extreme (target is beyond Earth's range)"
         ],
         "gap": "Geology match: sulfate vs the target's basalt"
       },
       {
         "site": "wadi-rum",
         "score": 49,
+        "scoreRange": [
+          39,
+          60
+        ],
         "contrib": {
           "terrain": null,
           "aridity": 0.2672,
@@ -89,13 +105,17 @@
         "why": [
           "Strongest match: aridity",
           "Ground ice / permafrost: no",
-          "Daily temperature swing close to target"
+          "Daily temperature swing near Earth's extreme (target is beyond Earth's range)"
         ],
         "gap": "Geology match: sedimentary vs the target's basalt"
       },
       {
         "site": "mdrs-utah",
         "score": 48,
+        "scoreRange": [
+          37,
+          59
+        ],
         "contrib": {
           "terrain": null,
           "aridity": 0.2399,
@@ -118,6 +138,10 @@
       {
         "site": "white-desert",
         "score": 48,
+        "scoreRange": [
+          37,
+          59
+        ],
         "contrib": {
           "terrain": null,
           "aridity": 0.2707,
@@ -140,6 +164,10 @@
       {
         "site": "rio-tinto",
         "score": 42,
+        "scoreRange": [
+          33,
+          54
+        ],
         "contrib": {
           "terrain": null,
           "aridity": 0.209,
@@ -162,6 +190,10 @@
       {
         "site": "haughton",
         "score": 41,
+        "scoreRange": [
+          32,
+          54
+        ],
         "contrib": {
           "terrain": null,
           "aridity": 0.2289,
@@ -183,6 +215,7 @@
       {
         "site": "danakil",
         "score": null,
+        "scoreRange": null,
         "contrib": {
           "terrain": null,
           "aridity": null,
@@ -202,6 +235,7 @@
       {
         "site": "death-valley",
         "score": null,
+        "scoreRange": null,
         "contrib": {
           "terrain": null,
           "aridity": null,
@@ -221,6 +255,7 @@
       {
         "site": "lanzarote",
         "score": null,
+        "scoreRange": null,
         "contrib": {
           "terrain": null,
           "aridity": null,
@@ -242,6 +277,10 @@
       {
         "site": "mcmurdo",
         "score": 86,
+        "scoreRange": [
+          46,
+          92
+        ],
         "contrib": {
           "terrain": null,
           "aridity": 0.3981,
@@ -257,14 +296,18 @@
         },
         "why": [
           "Strongest match: aridity",
-          "Surface temperature close to target",
+          "Surface temperature near Earth's extreme (target is beyond Earth's range)",
           "Ground ice / permafrost: yes"
         ],
-        "gap": "Warmer than the target"
+        "gap": "No gaps on the selected criteria"
       },
       {
         "site": "haughton",
         "score": 51,
+        "scoreRange": [
+          39,
+          62
+        ],
         "contrib": {
           "terrain": null,
           "aridity": 0.2518,
@@ -287,6 +330,10 @@
       {
         "site": "iceland-lava",
         "score": 49,
+        "scoreRange": [
+          34,
+          65
+        ],
         "contrib": {
           "terrain": null,
           "aridity": 0.1897,
@@ -301,11 +348,15 @@
           "selected": 7
         },
         "why": [],
-        "gap": "Much warmer than the target"
+        "gap": "Much warmer than the target (target is beyond Earth's range)"
       },
       {
         "site": "atacama",
         "score": 35,
+        "scoreRange": [
+          27,
+          50
+        ],
         "contrib": {
           "terrain": null,
           "aridity": 0.2989,
@@ -327,6 +378,10 @@
       {
         "site": "mdrs-utah",
         "score": 34,
+        "scoreRange": [
+          26,
+          49
+        ],
         "contrib": {
           "terrain": null,
           "aridity": 0.2638,
@@ -348,6 +403,10 @@
       {
         "site": "wadi-rum",
         "score": 34,
+        "scoreRange": [
+          26,
+          49
+        ],
         "contrib": {
           "terrain": null,
           "aridity": 0.294,
@@ -369,6 +428,10 @@
       {
         "site": "white-desert",
         "score": 34,
+        "scoreRange": [
+          26,
+          49
+        ],
         "contrib": {
           "terrain": null,
           "aridity": 0.2978,
@@ -390,6 +453,10 @@
       {
         "site": "rio-tinto",
         "score": 28,
+        "scoreRange": [
+          22,
+          45
+        ],
         "contrib": {
           "terrain": null,
           "aridity": 0.2299,
@@ -411,6 +478,7 @@
       {
         "site": "danakil",
         "score": null,
+        "scoreRange": null,
         "contrib": {
           "terrain": null,
           "aridity": null,
@@ -430,6 +498,7 @@
       {
         "site": "death-valley",
         "score": null,
+        "scoreRange": null,
         "contrib": {
           "terrain": null,
           "aridity": null,
@@ -449,6 +518,7 @@
       {
         "site": "lanzarote",
         "score": null,
+        "scoreRange": null,
         "contrib": {
           "terrain": null,
           "aridity": null,

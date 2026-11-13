@@ -204,6 +204,10 @@
         {
           "site": "bravo",
           "score": 86,
+          "scoreRange": [
+            81,
+            87
+          ],
           "contrib": {
             "terrain": 0.1875,
             "aridity": 0.1406,
@@ -222,11 +226,15 @@
             "Geology match: clay",
             "Aridity close to target"
           ],
-          "gap": "Wetter than the target"
+          "gap": "No gaps on the selected criteria"
         },
         {
           "site": "echo",
           "score": 86,
+          "scoreRange": [
+            81,
+            87
+          ],
           "contrib": {
             "terrain": 0.1875,
             "aridity": 0.1406,
@@ -245,11 +253,15 @@
             "Geology match: clay",
             "Aridity close to target"
           ],
-          "gap": "Wetter than the target"
+          "gap": "No gaps on the selected criteria"
         },
         {
           "site": "alpha",
           "score": 71,
+          "scoreRange": [
+            71,
+            71
+          ],
           "contrib": {
             "terrain": 0.0882,
             "aridity": 0.1765,
@@ -273,6 +285,10 @@
         {
           "site": "charlie",
           "score": 53,
+          "scoreRange": [
+            53,
+            53
+          ],
           "contrib": {
             "terrain": 0.1324,
             "aridity": 0.0882,
@@ -296,6 +312,10 @@
         {
           "site": "delta",
           "score": 14,
+          "scoreRange": [
+            12,
+            29
+          ],
           "contrib": {
             "terrain": null,
             "aridity": 0.0536,
@@ -319,6 +339,10 @@
         {
           "site": "charlie",
           "score": 74,
+          "scoreRange": [
+            74,
+            74
+          ],
           "contrib": {
             "terrain": 0.1765,
             "aridity": 0.0882,
@@ -342,6 +366,10 @@
         {
           "site": "alpha",
           "score": 62,
+          "scoreRange": [
+            62,
+            62
+          ],
           "contrib": {
             "terrain": 0.1324,
             "aridity": 0.1765,
@@ -365,6 +393,10 @@
         {
           "site": "bravo",
           "score": 56,
+          "scoreRange": [
+            53,
+            59
+          ],
           "contrib": {
             "terrain": 0.1406,
             "aridity": 0.1406,
@@ -388,6 +420,10 @@
         {
           "site": "echo",
           "score": 56,
+          "scoreRange": [
+            53,
+            59
+          ],
           "contrib": {
             "terrain": 0.1406,
             "aridity": 0.1406,
@@ -411,6 +447,10 @@
         {
           "site": "delta",
           "score": 9,
+          "scoreRange": [
+            7,
+            25
+          ],
           "contrib": {
             "terrain": null,
             "aridity": 0.0536,
@@ -434,6 +474,10 @@
         {
           "site": "alpha",
           "score": 88,
+          "scoreRange": [
+            88,
+            88
+          ],
           "contrib": {
             "terrain": 0.125,
             "aridity": 0.75
@@ -450,6 +494,10 @@
         {
           "site": "bravo",
           "score": 81,
+          "scoreRange": [
+            81,
+            81
+          ],
           "contrib": {
             "terrain": 0.25,
             "aridity": 0.5625
@@ -462,11 +510,15 @@
             "Strongest match: aridity",
             "Terrain roughness close to target"
           ],
-          "gap": "Wetter than the target"
+          "gap": "No gaps on the selected criteria"
         },
         {
           "site": "echo",
           "score": 81,
+          "scoreRange": [
+            81,
+            81
+          ],
           "contrib": {
             "terrain": 0.25,
             "aridity": 0.5625
@@ -479,11 +531,15 @@
             "Strongest match: aridity",
             "Terrain roughness close to target"
           ],
-          "gap": "Wetter than the target"
+          "gap": "No gaps on the selected criteria"
         },
         {
           "site": "charlie",
           "score": 56,
+          "scoreRange": [
+            56,
+            56
+          ],
           "contrib": {
             "terrain": 0.1875,
             "aridity": 0.375
@@ -500,6 +556,10 @@
         {
           "site": "delta",
           "score": 25,
+          "scoreRange": [
+            19,
+            44
+          ],
           "contrib": {
             "terrain": null,
             "aridity": 0.25
@@ -516,6 +576,10 @@
         {
           "site": "alpha",
           "score": 94,
+          "scoreRange": [
+            94,
+            94
+          ],
           "contrib": {
             "terrain": 0.1875,
             "aridity": 0.75
@@ -528,11 +592,15 @@
             "Strongest match: aridity",
             "Terrain roughness close to target"
           ],
-          "gap": "Smoother than the target"
+          "gap": "No gaps on the selected criteria"
         },
         {
           "site": "bravo",
           "score": 75,
+          "scoreRange": [
+            75,
+            75
+          ],
           "contrib": {
             "terrain": 0.1875,
             "aridity": 0.5625
@@ -545,11 +613,15 @@
             "Strongest match: aridity",
             "Terrain roughness close to target"
           ],
-          "gap": "Rougher than the target"
+          "gap": "No gaps on the selected criteria"
         },
         {
           "site": "echo",
           "score": 75,
+          "scoreRange": [
+            75,
+            75
+          ],
           "contrib": {
             "terrain": 0.1875,
             "aridity": 0.5625
@@ -562,11 +634,15 @@
             "Strongest match: aridity",
             "Terrain roughness close to target"
           ],
-          "gap": "Rougher than the target"
+          "gap": "No gaps on the selected criteria"
         },
         {
           "site": "charlie",
           "score": 63,
+          "scoreRange": [
+            63,
+            63
+          ],
           "contrib": {
             "terrain": 0.25,
             "aridity": 0.375
@@ -583,6 +659,10 @@
         {
           "site": "delta",
           "score": 25,
+          "scoreRange": [
+            19,
+            44
+          ],
           "contrib": {
             "terrain": null,
             "aridity": 0.25
@@ -626,12 +706,16 @@
         "why": [
           "Strongest match: aridity"
         ],
-        "gap": "Rougher than the target"
+        "gap": "Rougher than the target",
+        "scoreRange": [
+          70,
+          70
+        ]
       }
     },
     {
       "name": "categorical related and mismatch",
-      "working": "geology sedimentary~clay related -> 0.5; ice no vs yes -> 0; (4*0.5 + 1*0)/5 = 0.40 -> 40",
+      "working": "geology sedimentary~clay related -> 0.5; ice no vs yes -> 0; (4*0.5 + 1*0)/5 = 0.40 -> 40; gap = most points lost among s<0.7: geology 4*(1-0.5)=2 > ice 1*(1-0)=1 -> geology",
       "target": {
         "geology": "clay",
         "ice": "yes"
@@ -655,12 +739,16 @@
           "ice": 0.0
         },
         "why": [],
-        "gap": "Ground ice / permafrost: no vs the target's yes"
+        "gap": "Geology match: sedimentary is only related to the target's clay",
+        "scoreRange": [
+          40,
+          40
+        ]
       }
     },
     {
       "name": "missing value is excluded, not scored as zero",
-      "working": "temp missing -> skipped; only terrain (s=1, w=1) -> 1/1 -> 100. Treating missing as 0 would give 1/5 = 20.",
+      "working": "temp missing -> skipped; only terrain (s=1, w=1) -> 1/1 -> 100. Treating missing as 0 would give 1/5 = 20.; scoreRange: temp missing on the site side (w=4): lo 1/5 = 20, hi 5/5 = 100",
       "target": {
         "terrain": 0.5,
         "temp": 0.5
@@ -686,7 +774,11 @@
         "why": [
           "Strongest match: terrain roughness"
         ],
-        "gap": "No gaps on the selected criteria"
+        "gap": "No gaps on the selected criteria",
+        "scoreRange": [
+          20,
+          100
+        ]
       }
     },
     {
@@ -711,7 +803,11 @@
           "terrain": 0.0
         },
         "why": [],
-        "gap": "Much rougher than the target"
+        "gap": "Much rougher than the target",
+        "scoreRange": [
+          0,
+          0
+        ]
       }
     },
     {
@@ -736,7 +832,8 @@
           "terrain": null
         },
         "why": [],
-        "gap": "No usable data for the selected criteria"
+        "gap": "No usable data for the selected criteria",
+        "scoreRange": null
       }
     },
     {
@@ -767,7 +864,11 @@
         "why": [
           "Strongest match: terrain roughness"
         ],
-        "gap": "Much wetter than the target"
+        "gap": "Much wetter than the target",
+        "scoreRange": [
+          63,
+          63
+        ]
       }
     },
     {
@@ -797,7 +898,11 @@
         "why": [
           "Strongest match: aridity"
         ],
-        "gap": "No gaps on the selected criteria"
+        "gap": "No gaps on the selected criteria",
+        "scoreRange": [
+          100,
+          100
+        ]
       }
     },
     {
@@ -831,7 +936,43 @@
           "geology": null
         },
         "why": [],
-        "gap": "Insufficient data: 2 of 3 selected criteria have data (minimum 3)"
+        "gap": "Insufficient data: 2 of 3 selected criteria have data (minimum 3)",
+        "scoreRange": null
+      }
+    },
+    {
+      "name": "clipped target criteria are worded as Earth's extreme, not a match",
+      "working": "sims terrain 1-|0.25-0.5|=0.75, aridity 1, temp_range 1-|0.75-1|=0.75 -> (0.75+1+0.75)/3 = 83.3 -> 83; why sorted by w*s (ties keep feature order): aridity, terrain, temp_range (clipped); no criterion < 0.7 -> no gap",
+      "target": {
+        "terrain": 0.5,
+        "aridity": 1.0,
+        "temp_range": 1.0
+      },
+      "clipped": {
+        "temp_range": "above"
+      },
+      "site": {
+        "terrain": 0.25,
+        "aridity": 1.0,
+        "temp_range": 0.75
+      },
+      "weights": {
+        "terrain": 1,
+        "aridity": 1,
+        "temp_range": 1
+      },
+      "expect": {
+        "score": 83,
+        "scoreRange": [
+          83,
+          83
+        ],
+        "why": [
+          "Strongest match: aridity",
+          "Terrain roughness close to target",
+          "Temperature swing near Earth's extreme (target is beyond Earth's range)"
+        ],
+        "gap": "No gaps on the selected criteria"
       }
     }
   ],

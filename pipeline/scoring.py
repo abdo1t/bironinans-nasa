@@ -28,6 +28,7 @@ DEFAULT_GAP_WORDS = ("higher", "lower")
 NO_CRITERIA_GAP = "No criteria selected"
 NO_DATA_GAP = "No usable data for the selected criteria"
 NO_GAP = "No gaps on the selected criteria"
+CLIPPED_NOTE = "target is beyond Earth's range"
 
 
 def is_missing(v):
@@ -92,16 +93,20 @@ def similarity(feature, site_val, target_val):
     return 0.0
 
 
-def _why_phrase(feature, site_val, first):
+def _why_phrase(feature, site_val, first, clipped=False):
     label = feature["label"]
     if feature["kind"] == "numeric":
+        if clipped:  # target lies beyond Earth's bounds: a match means "near Earth's extreme"
+            if first:
+                return f"Strongest match: {label.lower()} (near Earth's extreme; {CLIPPED_NOTE})"
+            return f"{label} near Earth's extreme ({CLIPPED_NOTE})"
         return f"Strongest match: {label.lower()}" if first else f"{label} close to target"
     if first:
         return f"Strongest match: {label.lower()} ({site_val})"
     return f"{label}: {site_val}"
 
 
-def _gap_phrase(feature, s, site_val, target_val):
+def _gap_phrase(feature, s, site_val, target_val, clipped=False):
     if s >= 1:
         return NO_GAP
     label = feature["label"]
@@ -110,7 +115,7 @@ def _gap_phrase(feature, s, site_val, target_val):
         higher, lower = GAP_WORDS.get(feature["id"], DEFAULT_GAP_WORDS)
         word = higher if d > 0 else lower
         text = f"Much {word}" if abs(d) >= MUCH_DIFF else _cap(word)
-        return f"{text} than the target"
+        return f"{text} than the target" + (f" ({CLIPPED_NOTE})" if clipped else "")
     if s > 0:
         return f"{label}: {site_val} is only related to the target's {target_val}"
     return f"{label}: {site_val} vs the target's {target_val}"
@@ -123,7 +128,17 @@ def insufficient_gap(used, selected, min_used):
 def score_site(target, site, weights, features, min_used=1):
     """Score one site against one target (§5.3–5.6).
 
-    Returns {score, contrib, coverage, why, gap, sims}.
+    Returns {score, scoreRange, contrib, coverage, why, gap, sims}.
+      * scoreRange = [lo, hi]: the score if every selected criterion that is
+        missing ON THE SITE SIDE (target value known) were a total mismatch
+        (s = 0) or a perfect match (s = 1). Equal to [score, score] when the site
+        has no such gaps; None when score is None. Shows how much missing data
+        could move the score — a narrow range means the score is data-backed.
+      * why lists criteria with s >= WHY_MIN_SIM; criteria whose target value lies
+        beyond Earth's bounds (target["clipped"]) are worded "near Earth's extreme".
+      * gap = the selected usable criterion that loses the most points,
+        max w * (1 - s), among criteria with s < WHY_MIN_SIM (so it never
+        contradicts `why`); ties -> first in feature order; none -> NO_GAP.
       * Only selected criteria (weight > 0) appear in contrib / sims.
       * A selected criterion with a missing value on either side is `None` in
         contrib / sims — never 0. A 0 always means "measured, and no match".
@@ -135,6 +150,7 @@ def score_site(target, site, weights, features, min_used=1):
     `sims` is for the UI and is not exported to scores.json.
     """
     tnorm, snorm = target["norm"], site["norm"]
+    clipped = target.get("clipped") or {}
     selected = []  # (feature, weight, similarity-or-None) in feature order, w > 0
     num = 0.0
     den = 0
@@ -161,6 +177,7 @@ def score_site(target, site, weights, features, min_used=1):
             gap = insufficient_gap(len(rows), len(selected), min_used)
         return {
             "score": None,
+            "scoreRange": None,
             "contrib": {f["id"]: None for f, w, s in selected},
             "coverage": coverage,
             "why": [],
@@ -171,20 +188,34 @@ def score_site(target, site, weights, features, min_used=1):
     score = round_half_up(100 * num / den)
     contrib = {f["id"]: (None if s is None else round_to(w * s / den, 4)) for f, w, s in selected}
 
+    # Missing on the site side only (target value known): bound what the gap could do.
+    w_missing = 0
+    for f, w, s in selected:
+        if s is None and not is_missing(tnorm.get(f["id"])) and is_missing(snorm.get(f["id"])):
+            w_missing += w
+    score_range = [
+        round_half_up(100 * num / (den + w_missing)),
+        round_half_up(100 * (num + w_missing) / (den + w_missing)),
+    ]
+
     strong = sorted((r for r in rows if r[2] >= WHY_MIN_SIM), key=lambda r: -(r[1] * r[2]))
     why = [
-        _why_phrase(f, snorm.get(f["id"]), i == 0)
+        _why_phrase(f, snorm.get(f["id"]), i == 0, f["id"] in clipped)
         for i, (f, w, s) in enumerate(strong[:WHY_MAX_ITEMS])
     ]
 
-    worst = rows[0]
-    for r in rows[1:]:
-        if r[2] < worst[2]:
+    worst = None
+    for r in rows:
+        if r[2] < WHY_MIN_SIM and (worst is None or r[1] * (1 - r[2]) > worst[1] * (1 - worst[2])):
             worst = r
-    wf = worst[0]
-    gap = _gap_phrase(wf, worst[2], snorm.get(wf["id"]), tnorm.get(wf["id"]))
+    if worst is None:
+        gap = NO_GAP
+    else:
+        wf = worst[0]
+        gap = _gap_phrase(wf, worst[2], snorm.get(wf["id"]), tnorm.get(wf["id"]), wf["id"] in clipped)
 
-    return {"score": score, "contrib": contrib, "coverage": coverage, "why": why, "gap": gap, "sims": sims}
+    return {"score": score, "scoreRange": score_range, "contrib": contrib, "coverage": coverage,
+            "why": why, "gap": gap, "sims": sims}
 
 
 def rank_sites(target, sites, weights, features, min_used=1):
@@ -199,6 +230,7 @@ def rank_sites(target, sites, weights, features, min_used=1):
         scored.append((site["name"], site["id"], {
             "site": site["id"],
             "score": r["score"],
+            "scoreRange": r["scoreRange"],
             "contrib": r["contrib"],
             "coverage": r["coverage"],
             "why": r["why"],

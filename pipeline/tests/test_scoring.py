@@ -88,7 +88,7 @@ def test_no_criteria_selected():
 
 @pytest.mark.parametrize("case", FIXTURE["handCases"], ids=lambda c: c["name"])
 def test_hand_case(case):
-    r = score_site({"norm": case["target"]}, {"norm": case["site"]}, case["weights"], FEATURES, case.get("minUsed", 1))
+    r = score_site({"norm": case["target"], "clipped": case.get("clipped", {})}, {"norm": case["site"]}, case["weights"], FEATURES, case.get("minUsed", 1))
     for key, value in case["expect"].items():
         assert r[key] == value, f"{key}: {case['working']}"
 
