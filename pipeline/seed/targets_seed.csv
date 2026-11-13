@@ -1,0 +1,7 @@
+id,body,name,lat,lon,summary,geology,ice,trekUrl,coord_note,cat_note
+moon-south-pole,moon,Lunar South Pole (Shackleton rim / Artemis region),-89.5,0,"Extreme cold, low sun angle, rough terrain; water ice in permanently shadowed cold traps.",anorthosite,yes,https://trek.nasa.gov/moon/,approx — verify,literature — verify + cite
+moon-mare,moon,Mare Tranquillitatis,8.5,31.4,"Flat basaltic plain with a large day-night temperature swing.",basalt,no,https://trek.nasa.gov/moon/,approx — verify,literature — verify + cite
+moon-lava-tube,moon,Marius Hills skylight,14.1,-56.7,"Volcanic region with a lava-tube skylight offering natural shelter.",basalt,no,https://trek.nasa.gov/moon/,approx — verify,literature — verify + cite
+mars-jezero,mars,Jezero Crater,18.4,77.5,"Ancient lake delta with clays and carbonates; Perseverance landing site.",clay,no,https://trek.nasa.gov/mars/,approx — verify,literature — verify + cite
+mars-gale,mars,Gale Crater,-5.4,137.8,"Layered sediments with sulfates and clays; Curiosity landing site.",sulfate,no,https://trek.nasa.gov/mars/,approx — verify,literature — verify + cite
+mars-arcadia,mars,Arcadia Planitia,46.7,-168,"Mid-latitude plains with shallow subsurface ice.",,yes,https://trek.nasa.gov/mars/,approx — verify,geology TODO; ice: literature — verify + cite

@@ -1,0 +1,12 @@
+{
+  "generatedAt": "MOCK",
+  "defaultPreset": "balanced",
+  "byTarget": {
+    "moon-south-pole": [],
+    "moon-mare": [],
+    "moon-lava-tube": [],
+    "mars-jezero": [],
+    "mars-gale": [],
+    "mars-arcadia": []
+  }
+}

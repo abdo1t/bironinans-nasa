@@ -1,0 +1,41 @@
+id,name,country,lat,lon,knownAnalog,geology,ice,coord_note,cat_note
+atacama,Atacama Desert (Yungay),Chile,-24.1,-70.0,true,evaporite,no,approx — verify,literature — verify
+haughton,Haughton Crater / Devon Island,Canada,75.38,-89.68,true,sedimentary,yes,approx — verify,literature — verify
+death-valley,Death Valley,USA,36.46,-116.87,true,evaporite,no,approx — verify,literature — verify
+mcmurdo,McMurdo Dry Valleys,Antarctica,-77.5,161.9,true,,yes,approx — verify,geology TODO; ice: literature — verify
+mojave,Mojave Desert,USA,35.1,-115.5,true,,no,approx — verify,geology TODO; ice: literature — verify
+mdrs-utah,Mars Desert Research Station area (Hanksville),USA,38.41,-110.79,true,sedimentary,no,approx — verify,literature — verify
+iceland-lava,Iceland lava fields (Holuhraun),Iceland,64.87,-16.83,true,basalt,no,approx — verify,literature — verify
+mauna-kea,Mauna Kea / Hawaiʻi volcanics,USA,19.82,-155.47,true,basalt,no,approx — verify,literature — verify
+rio-tinto,Río Tinto,Spain,37.69,-6.56,true,sulfate,no,approx — verify,literature — verify
+svalbard,Svalbard (Bockfjorden),Norway,79.4,13.4,true,,yes,approx — verify,geology TODO; ice: literature — verify
+pilbara,Pilbara (North Pole Dome),Australia,-21.17,119.4,true,sedimentary,no,approx — verify,literature — verify
+lanzarote,Lanzarote (Timanfaya),Spain,29.0,-13.75,true,basalt,no,approx — verify,literature — verify
+lonar,Lonar Crater,India,19.98,76.51,true,basalt,no,approx — verify,literature — verify
+ladakh,Ladakh (Tso Kar / Puga),India,33.3,78.0,true,,,approx — verify,geology TODO; ice TODO
+dhofar,Dhofar desert,Oman,19.0,54.5,true,sedimentary,no,approx — verify,literature — verify
+white-desert,White Desert (Farafra),Egypt,27.36,28.17,false,sedimentary,no,approx — verify,literature — verify
+gilf-kebir,Gilf Kebir,Egypt,23.4,25.9,false,sedimentary,no,approx — verify,literature — verify
+wadi-rum,Wadi Rum,Jordan,29.58,35.42,false,sedimentary,no,approx — verify,literature — verify
+danakil,Danakil Depression (Dallol),Ethiopia,14.24,40.3,false,evaporite,no,approx — verify,literature — verify
+namib,Namib Desert (Gobabeb),Namibia,-23.56,15.04,false,sedimentary,no,approx — verify,literature — verify
+uyuni,Salar de Uyuni (Altiplano),Bolivia,-20.13,-67.49,false,evaporite,no,approx — verify,literature — verify
+gobi,Gobi Desert,Mongolia,43.5,104.0,false,sedimentary,no,approx — verify,literature — verify
+taklamakan,Taklamakan Desert,China,38.8,83.0,false,sedimentary,no,approx — verify,literature — verify
+lut,Lut Desert (Kaluts),Iran,30.5,58.3,false,sedimentary,no,approx — verify,literature — verify
+rub-al-khali,Rub' al Khali,Saudi Arabia,20.0,51.0,false,sedimentary,no,approx — verify,literature — verify
+makgadikgadi,Makgadikgadi Pans,Botswana,-20.75,25.5,false,evaporite,no,approx — verify,literature — verify
+dasht-e-kavir,Dasht-e Kavir,Iran,34.7,54.5,false,evaporite,no,approx — verify,literature — verify
+tassili,Tassili n'Ajjer,Algeria,25.5,9.0,false,sedimentary,no,approx — verify,literature — verify
+emi-koussi,Emi Koussi (Tibesti),Chad,19.79,18.55,false,basalt,no,approx — verify,literature — verify
+hoggar,Hoggar / Atakor volcanic field,Algeria,23.25,5.6,false,basalt,no,approx — verify,literature — verify
+harrat-khaybar,Harrat Khaybar,Saudi Arabia,25.0,39.9,false,basalt,no,approx — verify,literature — verify
+chott-el-djerid,Chott el Djerid,Tunisia,33.75,8.4,false,evaporite,no,approx — verify,literature — verify
+kati-thanda,Kati Thanda–Lake Eyre,Australia,-28.4,137.3,false,evaporite,no,approx — verify,literature — verify
+changtang,Changtang Plateau,China,34.0,85.0,false,,yes,approx — verify,geology TODO; ice: literature — verify
+kangerlussuaq,Kangerlussuaq ice-free margin,Greenland,67.0,-50.5,false,,yes,approx — verify,geology TODO; ice: literature — verify
+batagaika,Batagaika crater (Yakutia),Russia,67.58,134.77,false,sedimentary,yes,approx — verify,literature — verify
+tolbachik,Tolbachik lava fields,Russia,55.83,160.33,false,basalt,no,approx — verify,literature — verify
+bayuda,Bayuda volcanic field,Sudan,18.33,32.75,false,basalt,no,approx — verify,literature — verify
+aorounga,Aorounga Crater,Chad,19.1,19.25,false,sedimentary,no,approx — verify,literature — verify
+thar,Thar Desert,India,27.0,71.0,false,sedimentary,no,approx — verify,literature — verify

@@ -1,0 +1,1713 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -70.0,
+          -24.1
+        ]
+      },
+      "properties": {
+        "id": "atacama",
+        "name": "Atacama Desert (Yungay)",
+        "country": "Chile",
+        "knownAnalog": true,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.04,
+          "aridity": 0.46,
+          "temp": 0.12,
+          "temp_range": 0.08,
+          "veg": 0.63,
+          "geology": "evaporite",
+          "ice": "no"
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -89.68,
+          75.38
+        ]
+      },
+      "properties": {
+        "id": "haughton",
+        "name": "Haughton Crater / Devon Island",
+        "country": "Canada",
+        "knownAnalog": true,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.89,
+          "aridity": 0.36,
+          "temp": 0.19,
+          "temp_range": null,
+          "veg": 0.77,
+          "geology": "sedimentary",
+          "ice": "yes"
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -116.87,
+          36.46
+        ]
+      },
+      "properties": {
+        "id": "death-valley",
+        "name": "Death Valley",
+        "country": "USA",
+        "knownAnalog": true,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.99,
+          "aridity": 0.86,
+          "temp": 0.87,
+          "temp_range": 0.45,
+          "veg": 0.16,
+          "geology": "evaporite",
+          "ice": "no"
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          161.9,
+          -77.5
+        ]
+      },
+      "properties": {
+        "id": "mcmurdo",
+        "name": "McMurdo Dry Valleys",
+        "country": "Antarctica",
+        "knownAnalog": true,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.36,
+          "aridity": 0.67,
+          "temp": 0.7,
+          "temp_range": 0.07,
+          "veg": 0.53,
+          "geology": "anorthosite",
+          "ice": "yes"
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -115.5,
+          35.1
+        ]
+      },
+      "properties": {
+        "id": "mojave",
+        "name": "Mojave Desert",
+        "country": "USA",
+        "knownAnalog": true,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.16,
+          "aridity": 0.38,
+          "temp": 0.99,
+          "temp_range": 0.56,
+          "veg": 0.84,
+          "geology": "ice",
+          "ice": "no"
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.79,
+          38.41
+        ]
+      },
+      "properties": {
+        "id": "mdrs-utah",
+        "name": "Mars Desert Research Station area (Hanksville)",
+        "country": "USA",
+        "knownAnalog": true,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.06,
+          "aridity": 0.82,
+          "temp": 0.81,
+          "temp_range": 0.07,
+          "veg": 0.57,
+          "geology": "sedimentary",
+          "ice": "no"
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -16.83,
+          64.87
+        ]
+      },
+      "properties": {
+        "id": "iceland-lava",
+        "name": "Iceland lava fields (Holuhraun)",
+        "country": "Iceland",
+        "knownAnalog": true,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.72,
+          "aridity": 0.21,
+          "temp": 0.5,
+          "temp_range": 0.64,
+          "veg": 0.14,
+          "geology": "basalt",
+          "ice": "no"
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -155.47,
+          19.82
+        ]
+      },
+      "properties": {
+        "id": "mauna-kea",
+        "name": "Mauna Kea / Hawaiʻi volcanics",
+        "country": "USA",
+        "knownAnalog": true,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.74,
+          "aridity": 0.54,
+          "temp": 0.75,
+          "temp_range": 0.58,
+          "veg": 1.0,
+          "geology": "basalt",
+          "ice": "no"
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -6.56,
+          37.69
+        ]
+      },
+      "properties": {
+        "id": "rio-tinto",
+        "name": "Río Tinto",
+        "country": "Spain",
+        "knownAnalog": true,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.14,
+          "aridity": 0.49,
+          "temp": 0.76,
+          "temp_range": 0.15,
+          "veg": 0.68,
+          "geology": "sulfate",
+          "ice": "no"
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.4,
+          79.4
+        ]
+      },
+      "properties": {
+        "id": "svalbard",
+        "name": "Svalbard (Bockfjorden)",
+        "country": "Norway",
+        "knownAnalog": true,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.6,
+          "aridity": 0.38,
+          "temp": 0.6,
+          "temp_range": 0.25,
+          "veg": 0.94,
+          "geology": "sedimentary",
+          "ice": "yes"
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          119.4,
+          -21.17
+        ]
+      },
+      "properties": {
+        "id": "pilbara",
+        "name": "Pilbara (North Pole Dome)",
+        "country": "Australia",
+        "knownAnalog": true,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.72,
+          "aridity": 0.68,
+          "temp": 0.54,
+          "temp_range": 0.64,
+          "veg": 0.43,
+          "geology": "sedimentary",
+          "ice": "no"
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -13.75,
+          29.0
+        ]
+      },
+      "properties": {
+        "id": "lanzarote",
+        "name": "Lanzarote (Timanfaya)",
+        "country": "Spain",
+        "knownAnalog": true,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.45,
+          "aridity": 0.95,
+          "temp": 0.88,
+          "temp_range": 0.5,
+          "veg": 0.91,
+          "geology": "basalt",
+          "ice": "no"
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.51,
+          19.98
+        ]
+      },
+      "properties": {
+        "id": "lonar",
+        "name": "Lonar Crater",
+        "country": "India",
+        "knownAnalog": true,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.87,
+          "aridity": 0.3,
+          "temp": 0.64,
+          "temp_range": 0.15,
+          "veg": 0.54,
+          "geology": "basalt",
+          "ice": "no"
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          78.0,
+          33.3
+        ]
+      },
+      "properties": {
+        "id": "ladakh",
+        "name": "Ladakh (Tso Kar / Puga)",
+        "country": "India",
+        "knownAnalog": true,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.78,
+          "aridity": 0.53,
+          "temp": 0.0,
+          "temp_range": 0.02,
+          "veg": 0.88,
+          "geology": "ice",
+          "ice": "no"
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          54.5,
+          19.0
+        ]
+      },
+      "properties": {
+        "id": "dhofar",
+        "name": "Dhofar desert",
+        "country": "Oman",
+        "knownAnalog": true,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.24,
+          "aridity": 0.24,
+          "temp": 0.57,
+          "temp_range": null,
+          "veg": 0.82,
+          "geology": "sedimentary",
+          "ice": "no"
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.17,
+          27.36
+        ]
+      },
+      "properties": {
+        "id": "white-desert",
+        "name": "White Desert (Farafra)",
+        "country": "Egypt",
+        "knownAnalog": false,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.98,
+          "aridity": 0.53,
+          "temp": 0.13,
+          "temp_range": 0.95,
+          "veg": 0.53,
+          "geology": "sedimentary",
+          "ice": "no"
+        },
+        "novelKm": 2840,
+        "isNewCandidate": true,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.9,
+          23.4
+        ]
+      },
+      "properties": {
+        "id": "gilf-kebir",
+        "name": "Gilf Kebir",
+        "country": "Egypt",
+        "knownAnalog": false,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.61,
+          "aridity": 0.96,
+          "temp": 0.93,
+          "temp_range": 0.69,
+          "veg": 0.4,
+          "geology": "sedimentary",
+          "ice": "no"
+        },
+        "novelKm": 3000,
+        "isNewCandidate": true,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.42,
+          29.58
+        ]
+      },
+      "properties": {
+        "id": "wadi-rum",
+        "name": "Wadi Rum",
+        "country": "Jordan",
+        "knownAnalog": false,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.67,
+          "aridity": 0.37,
+          "temp": 0.9,
+          "temp_range": 0.25,
+          "veg": null,
+          "geology": "sedimentary",
+          "ice": "no"
+        },
+        "novelKm": 2258,
+        "isNewCandidate": true,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          40.3,
+          14.24
+        ]
+      },
+      "properties": {
+        "id": "danakil",
+        "name": "Danakil Depression (Dallol)",
+        "country": "Ethiopia",
+        "knownAnalog": false,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.02,
+          "aridity": 0.55,
+          "temp": 0.59,
+          "temp_range": null,
+          "veg": 0.06,
+          "geology": "evaporite",
+          "ice": "no"
+        },
+        "novelKm": 1602,
+        "isNewCandidate": true,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          15.04,
+          -23.56
+        ]
+      },
+      "properties": {
+        "id": "namib",
+        "name": "Namib Desert (Gobabeb)",
+        "country": "Namibia",
+        "knownAnalog": false,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.07,
+          "aridity": 0.03,
+          "temp": 0.33,
+          "temp_range": 0.28,
+          "veg": 0.54,
+          "geology": "sedimentary",
+          "ice": "no"
+        },
+        "novelKm": 6381,
+        "isNewCandidate": true,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -67.49,
+          -20.13
+        ]
+      },
+      "properties": {
+        "id": "uyuni",
+        "name": "Salar de Uyuni (Altiplano)",
+        "country": "Bolivia",
+        "knownAnalog": false,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.72,
+          "aridity": 0.88,
+          "temp": 0.58,
+          "temp_range": 0.47,
+          "veg": 0.09,
+          "geology": "evaporite",
+          "ice": "no"
+        },
+        "novelKm": 512,
+        "isNewCandidate": true,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          104.0,
+          43.5
+        ]
+      },
+      "properties": {
+        "id": "gobi",
+        "name": "Gobi Desert",
+        "country": "Mongolia",
+        "knownAnalog": false,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.66,
+          "aridity": 0.35,
+          "temp": 0.41,
+          "temp_range": 0.05,
+          "veg": 0.65,
+          "geology": "sedimentary",
+          "ice": "no"
+        },
+        "novelKm": 2519,
+        "isNewCandidate": true,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          83.0,
+          38.8
+        ]
+      },
+      "properties": {
+        "id": "taklamakan",
+        "name": "Taklamakan Desert",
+        "country": "China",
+        "knownAnalog": false,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.06,
+          "aridity": 0.73,
+          "temp": 0.8,
+          "temp_range": 0.19,
+          "veg": 0.14,
+          "geology": "sedimentary",
+          "ice": "no"
+        },
+        "novelKm": 759,
+        "isNewCandidate": true,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          58.3,
+          30.5
+        ]
+      },
+      "properties": {
+        "id": "lut",
+        "name": "Lut Desert (Kaluts)",
+        "country": "Iran",
+        "knownAnalog": false,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.18,
+          "aridity": 0.46,
+          "temp": 0.87,
+          "temp_range": null,
+          "veg": 0.86,
+          "geology": "sedimentary",
+          "ice": "no"
+        },
+        "novelKm": 1335,
+        "isNewCandidate": true,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          51.0,
+          20.0
+        ]
+      },
+      "properties": {
+        "id": "rub-al-khali",
+        "name": "Rub' al Khali",
+        "country": "Saudi Arabia",
+        "knownAnalog": false,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.1,
+          "aridity": 0.65,
+          "temp": 0.54,
+          "temp_range": null,
+          "veg": null,
+          "geology": "sedimentary",
+          "ice": "no"
+        },
+        "novelKm": 383,
+        "isNewCandidate": true,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.5,
+          -20.75
+        ]
+      },
+      "properties": {
+        "id": "makgadikgadi",
+        "name": "Makgadikgadi Pans",
+        "country": "Botswana",
+        "knownAnalog": false,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.75,
+          "aridity": 0.24,
+          "temp": 0.41,
+          "temp_range": 0.86,
+          "veg": 0.16,
+          "geology": "evaporite",
+          "ice": "no"
+        },
+        "novelKm": 5432,
+        "isNewCandidate": true,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          54.5,
+          34.7
+        ]
+      },
+      "properties": {
+        "id": "dasht-e-kavir",
+        "name": "Dasht-e Kavir",
+        "country": "Iran",
+        "knownAnalog": false,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.0,
+          "aridity": 0.39,
+          "temp": 0.93,
+          "temp_range": 0.29,
+          "veg": 0.73,
+          "geology": "evaporite",
+          "ice": "no"
+        },
+        "novelKm": 1746,
+        "isNewCandidate": true,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.0,
+          25.5
+        ]
+      },
+      "properties": {
+        "id": "tassili",
+        "name": "Tassili n'Ajjer",
+        "country": "Algeria",
+        "knownAnalog": false,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.78,
+          "aridity": 0.66,
+          "temp": 0.49,
+          "temp_range": 0.22,
+          "veg": null,
+          "geology": "sedimentary",
+          "ice": "no"
+        },
+        "novelKm": 1997,
+        "isNewCandidate": true,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.55,
+          19.79
+        ]
+      },
+      "properties": {
+        "id": "emi-koussi",
+        "name": "Emi Koussi (Tibesti)",
+        "country": "Chad",
+        "knownAnalog": false,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.74,
+          "aridity": 0.06,
+          "temp": 0.31,
+          "temp_range": null,
+          "veg": 0.92,
+          "geology": "basalt",
+          "ice": "no"
+        },
+        "novelKm": 3137,
+        "isNewCandidate": true,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.6,
+          23.25
+        ]
+      },
+      "properties": {
+        "id": "hoggar",
+        "name": "Hoggar / Atakor volcanic field",
+        "country": "Algeria",
+        "knownAnalog": false,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.53,
+          "aridity": 0.06,
+          "temp": 0.51,
+          "temp_range": 0.07,
+          "veg": null,
+          "geology": "basalt",
+          "ice": "no"
+        },
+        "novelKm": 1980,
+        "isNewCandidate": true,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          39.9,
+          25.0
+        ]
+      },
+      "properties": {
+        "id": "harrat-khaybar",
+        "name": "Harrat Khaybar",
+        "country": "Saudi Arabia",
+        "knownAnalog": false,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.86,
+          "aridity": 0.4,
+          "temp": 0.94,
+          "temp_range": 0.58,
+          "veg": null,
+          "geology": "basalt",
+          "ice": "no"
+        },
+        "novelKm": 1645,
+        "isNewCandidate": true,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.4,
+          33.75
+        ]
+      },
+      "properties": {
+        "id": "chott-el-djerid",
+        "name": "Chott el Djerid",
+        "country": "Tunisia",
+        "knownAnalog": false,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.08,
+          "aridity": 0.66,
+          "temp": 0.57,
+          "temp_range": 0.26,
+          "veg": 0.31,
+          "geology": "evaporite",
+          "ice": "no"
+        },
+        "novelKm": 1418,
+        "isNewCandidate": true,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          137.3,
+          -28.4
+        ]
+      },
+      "properties": {
+        "id": "kati-thanda",
+        "name": "Kati Thanda–Lake Eyre",
+        "country": "Australia",
+        "knownAnalog": false,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.27,
+          "aridity": 0.13,
+          "temp": 0.65,
+          "temp_range": 0.93,
+          "veg": 0.01,
+          "geology": "evaporite",
+          "ice": "no"
+        },
+        "novelKm": 1975,
+        "isNewCandidate": true,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          85.0,
+          34.0
+        ]
+      },
+      "properties": {
+        "id": "changtang",
+        "name": "Changtang Plateau",
+        "country": "China",
+        "knownAnalog": false,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.62,
+          "aridity": 0.56,
+          "temp": 0.1,
+          "temp_range": 0.51,
+          "veg": 0.35,
+          "geology": "basalt",
+          "ice": "yes"
+        },
+        "novelKm": 652,
+        "isNewCandidate": true,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -50.5,
+          67.0
+        ]
+      },
+      "properties": {
+        "id": "kangerlussuaq",
+        "name": "Kangerlussuaq ice-free margin",
+        "country": "Greenland",
+        "knownAnalog": false,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.88,
+          "aridity": 0.37,
+          "temp": 0.16,
+          "temp_range": 0.7,
+          "veg": 0.99,
+          "geology": "sedimentary",
+          "ice": "yes"
+        },
+        "novelKm": 1525,
+        "isNewCandidate": true,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          134.77,
+          67.58
+        ]
+      },
+      "properties": {
+        "id": "batagaika",
+        "name": "Batagaika crater (Yakutia)",
+        "country": "Russia",
+        "knownAnalog": false,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.53,
+          "aridity": 0.67,
+          "temp": 0.55,
+          "temp_range": 0.1,
+          "veg": 0.26,
+          "geology": "sedimentary",
+          "ice": "yes"
+        },
+        "novelKm": 3257,
+        "isNewCandidate": true,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          160.33,
+          55.83
+        ]
+      },
+      "properties": {
+        "id": "tolbachik",
+        "name": "Tolbachik lava fields",
+        "country": "Russia",
+        "knownAnalog": false,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.89,
+          "aridity": 0.74,
+          "temp": 0.16,
+          "temp_range": 0.21,
+          "veg": 0.69,
+          "geology": "basalt",
+          "ice": "no"
+        },
+        "novelKm": 4584,
+        "isNewCandidate": true,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.75,
+          18.33
+        ]
+      },
+      "properties": {
+        "id": "bayuda",
+        "name": "Bayuda volcanic field",
+        "country": "Sudan",
+        "knownAnalog": false,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.85,
+          "aridity": 0.51,
+          "temp": 0.25,
+          "temp_range": 0.05,
+          "veg": 0.83,
+          "geology": "basalt",
+          "ice": "no"
+        },
+        "novelKm": 2291,
+        "isNewCandidate": true,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.25,
+          19.1
+        ]
+      },
+      "properties": {
+        "id": "aorounga",
+        "name": "Aorounga Crater",
+        "country": "Chad",
+        "knownAnalog": false,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.04,
+          "aridity": 0.33,
+          "temp": 0.13,
+          "temp_range": 0.16,
+          "veg": 0.71,
+          "geology": "sedimentary",
+          "ice": "no"
+        },
+        "novelKm": 3243,
+        "isNewCandidate": true,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "veg": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          71.0,
+          27.0
+        ]
+      },
+      "properties": {
+        "id": "thar",
+        "name": "Thar Desert",
+        "country": "India",
+        "knownAnalog": false,
+        "raw": {
+          "precip_mm": null,
+          "tmean_c": null,
+          "trange_c": null,
+          "relief_m": null,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.56,
+          "aridity": 0.11,
+          "temp": 0.95,
+          "temp_range": 0.15,
+          "veg": null,
+          "geology": "sedimentary",
+          "ice": "no"
+        },
+        "novelKm": 961,
+        "isNewCandidate": true,
+        "sources": {
+          "terrain": "MOCK",
+          "aridity": "MOCK",
+          "temp": "MOCK",
+          "temp_range": "MOCK",
+          "geology": "MOCK",
+          "ice": "MOCK"
+        }
+      }
+    }
+  ]
+}
