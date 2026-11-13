@@ -19,8 +19,9 @@ export const GAP_WORDS = {
 }
 const DEFAULT_GAP_WORDS = ['higher', 'lower']
 
-export const NO_DATA_GAP = 'No usable data for the weighted criteria'
-export const NO_GAP = 'No gaps on the weighted criteria'
+export const NO_CRITERIA_GAP = 'No criteria selected'
+export const NO_DATA_GAP = 'No usable data for the selected criteria'
+export const NO_GAP = 'No gaps on the selected criteria'
 export const LIMITATIONS_NOTE = 'No Earth site reproduces lunar/Martian gravity, vacuum or radiation.'
 
 export function isMissing(v) {
@@ -75,33 +76,51 @@ function gapPhrase(feature, s, siteVal, targetVal) {
 
 /**
  * Score one site against one target (§5.3–5.6).
- * Returns { score, contrib, why, gap, sims }. `sims` is for the UI only.
+ * Returns { score, contrib, coverage, why, gap, sims }.
+ *   - Only selected criteria (weight > 0) appear in contrib / sims.
+ *   - A selected criterion with a missing value is null in contrib / sims — never 0.
+ *   - score is null when no selected criterion is usable (not 0).
+ *   - coverage = { used, selected }.
+ * `sims` is for the UI only.
  */
 export function scoreSite(target, site, weights, features) {
   const tnorm = target.norm
   const snorm = site.norm
-  const rows = [] // { f, w, s } for usable criteria with w > 0
+  const selected = [] // { f, w, s } in feature order, w > 0; s may be null
   let num = 0.0
   let den = 0
   for (const f of features) {
     const w = weights[f.id] || 0
     if (w <= 0) continue
     const s = similarity(f, snorm[f.id], tnorm[f.id])
-    if (s === null) continue
-    rows.push({ f, w, s })
-    num += w * s
-    den += w
+    selected.push({ f, w, s })
+    if (s !== null) {
+      num += w * s
+      den += w
+    }
   }
 
-  if (den === 0) return { score: 0, contrib: {}, why: [], gap: NO_DATA_GAP, sims: {} }
+  const rows = selected.filter((r) => r.s !== null)
+  const coverage = { used: rows.length, selected: selected.length }
+  const sims = {}
+  for (const { f, s } of selected) sims[f.id] = s
+
+  if (den === 0) {
+    const contrib = {}
+    for (const { f } of selected) contrib[f.id] = null
+    return {
+      score: null,
+      contrib,
+      coverage,
+      why: [],
+      gap: selected.length ? NO_DATA_GAP : NO_CRITERIA_GAP,
+      sims,
+    }
+  }
 
   const score = roundHalfUp((100 * num) / den)
   const contrib = {}
-  const sims = {}
-  for (const { f, w, s } of rows) {
-    contrib[f.id] = roundTo((w * s) / den, 4)
-    sims[f.id] = s
-  }
+  for (const { f, w, s } of selected) contrib[f.id] = s === null ? null : roundTo((w * s) / den, 4)
 
   // Array.prototype.sort is stable, matching Python's sorted().
   const strong = rows.filter((r) => r.s >= WHY_MIN_SIM).sort((a, b) => b.w * b.s - a.w * a.s)
@@ -112,20 +131,34 @@ export function scoreSite(target, site, weights, features) {
   const wf = worst.f
   const gap = gapPhrase(wf, worst.s, snorm[wf.id], tnorm[wf.id])
 
-  return { score, contrib, why, gap, sims }
+  return { score, contrib, coverage, why, gap, sims }
 }
 
 function compareStr(a, b) {
   return a < b ? -1 : a > b ? 1 : 0
 }
 
-/** Rank site objects (with id, name, norm) for one target (§5.8): score desc, then name asc. */
+function compareScore(a, b) {
+  if (a === null || b === null) return (a === null) - (b === null) // null sorts last
+  return b - a
+}
+
+/**
+ * Rank site objects (with id, name, norm) for one target (§5.8): score desc, then
+ * name asc, then id. Sites with a null score (no usable data) sort last.
+ */
 export function rankSites(target, sites, weights, features) {
   return sites
     .map((site) => {
       const r = scoreSite(target, site, weights, features)
-      return { name: site.name, out: { site: site.id, score: r.score, contrib: r.contrib, why: r.why, gap: r.gap } }
+      return {
+        name: site.name,
+        out: { site: site.id, score: r.score, contrib: r.contrib, coverage: r.coverage, why: r.why, gap: r.gap },
+      }
     })
-    .sort((a, b) => b.out.score - a.out.score || compareStr(a.name, b.name) || compareStr(a.out.site, b.out.site))
+    .sort(
+      (a, b) =>
+        compareScore(a.out.score, b.out.score) || compareStr(a.name, b.name) || compareStr(a.out.site, b.out.site),
+    )
     .map((x) => x.out)
 }

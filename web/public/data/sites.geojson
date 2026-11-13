@@ -34,13 +34,13 @@
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -77,12 +77,12 @@
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -119,13 +119,13 @@
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -162,13 +162,13 @@
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "MOCK — synthetic placeholder, not a measurement",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -205,13 +205,13 @@
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "MOCK — synthetic placeholder, not a measurement",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -248,13 +248,13 @@
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -291,13 +291,13 @@
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -334,13 +334,13 @@
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -377,13 +377,13 @@
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -420,13 +420,13 @@
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "MOCK — synthetic placeholder, not a measurement",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -463,13 +463,13 @@
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -506,13 +506,13 @@
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -549,13 +549,13 @@
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -592,13 +592,13 @@
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "MOCK — synthetic placeholder, not a measurement",
+          "ice": "MOCK — synthetic placeholder, not a measurement"
         }
       }
     },
@@ -635,12 +635,12 @@
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -677,13 +677,13 @@
         "novelKm": 2840,
         "isNewCandidate": true,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -720,13 +720,13 @@
         "novelKm": 3000,
         "isNewCandidate": true,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -763,12 +763,12 @@
         "novelKm": 2258,
         "isNewCandidate": true,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -805,12 +805,12 @@
         "novelKm": 1602,
         "isNewCandidate": true,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -847,13 +847,13 @@
         "novelKm": 6381,
         "isNewCandidate": true,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -890,13 +890,13 @@
         "novelKm": 512,
         "isNewCandidate": true,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -933,13 +933,13 @@
         "novelKm": 2519,
         "isNewCandidate": true,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -976,13 +976,13 @@
         "novelKm": 759,
         "isNewCandidate": true,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -1019,12 +1019,12 @@
         "novelKm": 1335,
         "isNewCandidate": true,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -1061,11 +1061,11 @@
         "novelKm": 383,
         "isNewCandidate": true,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -1102,13 +1102,13 @@
         "novelKm": 5432,
         "isNewCandidate": true,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -1145,13 +1145,13 @@
         "novelKm": 1746,
         "isNewCandidate": true,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -1188,12 +1188,12 @@
         "novelKm": 1997,
         "isNewCandidate": true,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -1230,12 +1230,12 @@
         "novelKm": 3137,
         "isNewCandidate": true,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -1272,12 +1272,12 @@
         "novelKm": 1980,
         "isNewCandidate": true,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -1314,12 +1314,12 @@
         "novelKm": 1645,
         "isNewCandidate": true,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -1356,13 +1356,13 @@
         "novelKm": 1418,
         "isNewCandidate": true,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -1399,13 +1399,13 @@
         "novelKm": 1975,
         "isNewCandidate": true,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -1442,13 +1442,13 @@
         "novelKm": 652,
         "isNewCandidate": true,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "MOCK — synthetic placeholder, not a measurement",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -1485,13 +1485,13 @@
         "novelKm": 1525,
         "isNewCandidate": true,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "MOCK — synthetic placeholder, not a measurement",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -1528,13 +1528,13 @@
         "novelKm": 3257,
         "isNewCandidate": true,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -1571,13 +1571,13 @@
         "novelKm": 4584,
         "isNewCandidate": true,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -1614,13 +1614,13 @@
         "novelKm": 2291,
         "isNewCandidate": true,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -1657,13 +1657,13 @@
         "novelKm": 3243,
         "isNewCandidate": true,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "veg": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "veg": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     },
@@ -1700,12 +1700,12 @@
         "novelKm": 961,
         "isNewCandidate": true,
         "sources": {
-          "terrain": "MOCK",
-          "aridity": "MOCK",
-          "temp": "MOCK",
-          "temp_range": "MOCK",
-          "geology": "MOCK",
-          "ice": "MOCK"
+          "terrain": "MOCK — synthetic placeholder, not a measurement",
+          "aridity": "MOCK — synthetic placeholder, not a measurement",
+          "temp": "MOCK — synthetic placeholder, not a measurement",
+          "temp_range": "MOCK — synthetic placeholder, not a measurement",
+          "geology": "Seed CSV class (literature, unverified)",
+          "ice": "Seed CSV class (literature, unverified)"
         }
       }
     }

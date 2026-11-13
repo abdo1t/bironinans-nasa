@@ -203,6 +203,8 @@ FeatureCollection of Points. `properties`:
 }
 ```
 
+**Source labels for non-measured values.** Every non-null `norm` value has a `sources` entry (targets: `refs`). Synthetic values use `"MOCK — synthetic placeholder, not a measurement"`; categorical classes copied from the seed CSVs use `"Seed CSV class (literature, unverified)"` (constants in `config.py`). The UI flags any source starting with `MOCK` as synthetic and `Seed` as unverified, and shows `features.json` `source` only as the *planned* source. Synthetic values must never be presented as NASA observations.
+
 ### 4.5 `scores.json` (default ranking per target, computed with the `balanced` preset)
 
 ```json
@@ -214,7 +216,8 @@ FeatureCollection of Points. `properties`:
       {
         "site": "atacama",
         "score": 0,
-        "contrib": { "terrain": 0.0, "aridity": 0.0 },
+        "contrib": { "terrain": 0.0, "aridity": 0.0, "temp_range": null },
+        "coverage": { "used": 2, "selected": 3 },
         "why": ["Strongest match: aridity", "Bare ground close to target"],
         "gap": "Much warmer than the target"
       }
@@ -232,15 +235,16 @@ FeatureCollection of Points. `properties`:
 3. **Per-criterion similarity:**
    - numeric: `s = 1 - abs(site - target)`
    - categorical: `s = 1` if equal; `0.5` if listed in `related` (either direction); else `0`.
-   - missing value on either side: skip that criterion (exclude it from both numerator and denominator).
-4. **Overall score:** `score = round(100 * Σ(w_i * s_i) / Σ(w_i))` over usable criteria with `w_i > 0`. If no criterion is usable, the score is 0.
-5. **Contribution:** `contrib_i = w_i * s_i / Σ(w)`.
+   - missing value on either side: `s = null` — skip that criterion (exclude it from both numerator and denominator). A missing value is never treated as 0; `0` always means "measured, no match".
+4. **Overall score:** `score = round_half_up(100 * Σ(w_i * s_i) / Σ(w_i))` over usable criteria with `w_i > 0` (half-up = `floor(x + 0.5)` in both languages). If no criterion is usable, the score is **`null`** (UI: "No score — data pending"), not 0.
+5. **Contribution:** `contrib_i = w_i * s_i / Σ(w_i)` over the usable criteria, rounded half-up to 4 decimals. `contrib` lists every selected criterion (`w_i > 0`); a selected criterion with missing data is `null`.
+5a. **Coverage:** `coverage = { used, selected }` — how many selected criteria (`w_i > 0`) actually contributed. Shown next to every score.
 6. **Explanations:**
    - `why` = the top 2–3 criteria by contribution (only those with `s_i ≥ 0.7`), as short phrases built from feature labels.
    - `gap` = the weighted criterion with the lowest `s_i`.
    - The UI always shows a fixed limitations note: *No Earth site reproduces lunar/Martian gravity, vacuum or radiation.*
-7. **Novelty:** `novelKm` = great-circle distance to the nearest site in `known_analogs.csv`; `isNewCandidate = novelKm > 300` (constant in `config.py`).
-8. **Ranking:** sort by score desc; tie-break by name asc.
+7. **Novelty:** `novelKm` = great-circle distance to the nearest site in `known_analogs.csv`; `isNewCandidate = novelKm > 300` (constant in `config.py`). In the UI this is an **"uncatalogued candidate"** — far from every catalogued analog, *not* a scientifically validated new analog. Never call it "new analog" or "discovered".
+8. **Ranking:** sort by score desc; tie-break by name asc (code-point order, not locale), then id. `null` scores sort after all scored sites.
 
 ### Presets (`web/src/lib/presets.js`, mirrored in `config.py`)
 
@@ -255,7 +259,7 @@ Weights range from 0 to 5.
 
 ### Parity test (required)
 
-- `pipeline/tests/test_scoring.py` and `web/src/lib/scoring.test.js` run the **same fixture** (`pipeline/tests/fixture.json`: 2 targets, 5 sites, 2 weight sets) and assert identical scores and order.
+- `pipeline/tests/test_scoring.py` and `web/src/lib/scoring.test.js` run the **same fixture** (`pipeline/tests/fixture.json`: 2 targets, 5 sites, 2 weight sets) and assert identical scores and order. The fixture also holds `handCases` / `rankCases` whose expected values were worked out by hand (independent of either implementation).
 - In dev mode the app recomputes the default ranking and `console.warn`s on any mismatch with `scores.json`.
 
 ---
@@ -288,8 +292,8 @@ Claude Code: write these to CSV with best-known approximate coordinates and a `c
 | Route | View | Must have |
 |---|---|---|
 | `/` | Home | Two world cards (Moon, Mars) → target dropdown filtered by world → "Find Earth analogs" button |
-| `/explore?target=…&preset=…` | Explore — Map | Left: CriteriaPanel (target name, preset dropdown, one slider per criterion, reset). Right: Leaflet map. Marker colour/opacity = score. A ring marker means `isNewCandidate`. Popup shows name, score, "known / new", and a "View details" link. Legend. Map/List toggle. |
-| `/explore?view=list` | Explore — List | Ranked table: rank, site, score bar, one-line `why`, known/new tag, checkbox to shortlist (max 3). "Compare (n)" button. |
+| `/explore?target=…&preset=…` | Explore — Map | Left: CriteriaPanel (target name, preset dropdown, one slider per criterion, reset). Right: Leaflet map. Marker colour/opacity = score. A ring marker means `isNewCandidate` (uncatalogued candidate). Popup shows name, score, coverage, "catalogued analog / uncatalogued candidate", and a "View details" link. Legend. Map/List toggle. |
+| `/explore?view=list` | Explore — List | Ranked table: rank, site, score bar, coverage (`used/selected`), one-line `why`, catalogued/uncatalogued tag, checkbox to shortlist (max 3). "Compare (n)" button. |
 | `/site/:id?target=…` | Site details | Name, score badge, ScoreBars per criterion, Why it was selected, Where it falls short, limitations note, data sources list, "Add to compare". Optional: Moon/Mars Trek link for the target. |
 | `/compare?sites=a,b,c&target=…` | Compare | Recharts RadarChart (one series per site) plus a table of criteria × sites plus an overall row and a one-line verdict (best overall, best per top-weighted criterion). |
 | `/about` | About | Method (plain-English scoring), limitations, data sources with links, team. |
@@ -392,7 +396,7 @@ Work through the phases in order. After each phase, run the listed checks, commi
 3. The map lights up; open the top site and read its "why" and sources.
 4. Shortlist 3 sites → Compare.
 5. Drag the Temperature slider; the ranking reorders live.
-6. Close on a **new candidate** the tool surfaced.
+6. Close on an **uncatalogued candidate** the tool surfaced (a lead worth field validation, not a confirmed analog).
 
 ## 12. References
 

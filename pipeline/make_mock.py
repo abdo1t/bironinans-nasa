@@ -25,7 +25,11 @@ def read_csv(path):
 
 
 def mock_norm(rng, row, allow_null):
-    norm = {}
+    """Return (norm, sources). Every non-null value gets a source label:
+    synthetic values -> config.MOCK_SOURCE; categorical classes copied from the
+    seed CSV -> config.SEED_CLASS_SOURCE (unverified literature class, not NASA data).
+    """
+    norm, sources = {}, {}
     for f in config.FEATURES:
         fid = f["id"]
         if f["kind"] == "numeric":
@@ -33,11 +37,13 @@ def mock_norm(rng, row, allow_null):
                 norm[fid] = None
             else:
                 norm[fid] = round(rng.random(), 2)
+                sources[fid] = config.MOCK_SOURCE
         else:
             seeded = (row.get(fid) or "").strip()
             choices = config.GEOLOGY_CLASSES if fid == "geology" else config.ICE_CLASSES
             norm[fid] = seeded or rng.choice(choices)
-    return norm
+            sources[fid] = config.SEED_CLASS_SOURCE if seeded else config.MOCK_SOURCE
+    return norm, sources
 
 
 def build_features():
@@ -48,6 +54,7 @@ def build_features():
 def build_targets(rng):
     out = []
     for row in read_csv(config.TARGETS_SEED):
+        norm, refs = mock_norm(rng, row, allow_null=False)
         out.append({
             "id": row["id"],
             "body": row["body"],
@@ -55,8 +62,8 @@ def build_targets(rng):
             "lat": float(row["lat"]),
             "lon": float(row["lon"]),
             "summary": row["summary"],
-            "norm": mock_norm(rng, row, allow_null=False),
-            "refs": {fid: "MOCK — TODO citation" for fid in config.FEATURE_IDS},
+            "norm": norm,
+            "refs": refs,
             "trekUrl": row["trekUrl"],
         })
     return out
@@ -68,7 +75,7 @@ def build_sites(rng):
     for row in read_csv(config.SITES_SEED):
         lat, lon = float(row["lat"]), float(row["lon"])
         novel_km = novelty_km(lat, lon, known)
-        norm = mock_norm(rng, row, allow_null=True)
+        norm, sources = mock_norm(rng, row, allow_null=True)
         features.append({
             "type": "Feature",
             "geometry": {"type": "Point", "coordinates": [lon, lat]},
@@ -81,7 +88,7 @@ def build_sites(rng):
                 "norm": norm,
                 "novelKm": novel_km,
                 "isNewCandidate": novel_km > config.NOVELTY_KM,
-                "sources": {fid: "MOCK" for fid, v in norm.items() if v is not None},
+                "sources": sources,
             },
         })
     return {"type": "FeatureCollection", "features": features}

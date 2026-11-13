@@ -44,8 +44,10 @@ def test_balanced_hand_computed():
     # (3 + 2.25*3 + 3 + 1) / 16 = 85.9375 -> 86
     r = score_site(TARGETS["t-mars"], SITES["bravo"], config.PRESETS["balanced"], FEATURES)
     assert r["score"] == 86
-    assert "temp_range" not in r["contrib"]
-    assert sum(r["contrib"].values()) == pytest.approx(0.859375, abs=1e-3)
+    assert r["contrib"]["temp_range"] is None          # missing -> null, not 0
+    assert r["coverage"] == {"used": 6, "selected": 7}
+    used = [v for v in r["contrib"].values() if v is not None]
+    assert sum(used) == pytest.approx(0.859375, abs=1e-3)
 
 
 def test_tie_breaks_by_name_not_input_order():
@@ -65,12 +67,36 @@ def test_categorical_similarity():
     assert similarity(geo, "", "clay") is None
 
 
-def test_zero_weight_and_missing_are_skipped():
+def test_no_usable_data_is_null_not_zero():
     w = {"terrain": 5}
     r = score_site(TARGETS["t-mars"], SITES["delta"], w, FEATURES)  # delta terrain is null
-    assert r["score"] == 0
-    assert r["contrib"] == {}
+    assert r["score"] is None
+    assert r["contrib"] == {"terrain": None}
+    assert r["sims"] == {"terrain": None}
+    assert r["coverage"] == {"used": 0, "selected": 1}
     assert r["why"] == []
+
+
+def test_no_criteria_selected():
+    r = score_site(TARGETS["t-mars"], SITES["alpha"], {}, FEATURES)
+    assert r["score"] is None
+    assert r["coverage"] == {"used": 0, "selected": 0}
+    assert r["gap"] == "No criteria selected"
+
+
+# ------------------------------------------------------------------ independent hand cases
+
+@pytest.mark.parametrize("case", FIXTURE["handCases"], ids=lambda c: c["name"])
+def test_hand_case(case):
+    r = score_site({"norm": case["target"]}, {"norm": case["site"]}, case["weights"], FEATURES)
+    for key, value in case["expect"].items():
+        assert r[key] == value, f"{key}: {case['working']}"
+
+
+@pytest.mark.parametrize("case", FIXTURE["rankCases"], ids=lambda c: c["name"])
+def test_rank_case(case):
+    ranked = rank_sites({"norm": case["target"]}, case["sites"], case["weights"], FEATURES)
+    assert [[r["site"], r["score"]] for r in ranked] == case["expect"]
 
 
 def test_why_requires_high_similarity():

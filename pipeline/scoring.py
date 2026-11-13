@@ -24,8 +24,9 @@ GAP_WORDS = {
 }
 DEFAULT_GAP_WORDS = ("higher", "lower")
 
-NO_DATA_GAP = "No usable data for the weighted criteria"
-NO_GAP = "No gaps on the weighted criteria"
+NO_CRITERIA_GAP = "No criteria selected"
+NO_DATA_GAP = "No usable data for the selected criteria"
+NO_GAP = "No gaps on the selected criteria"
 
 
 def is_missing(v):
@@ -117,11 +118,16 @@ def _gap_phrase(feature, s, site_val, target_val):
 def score_site(target, site, weights, features):
     """Score one site against one target (§5.3–5.6).
 
-    Returns {score, contrib, why, gap, sims}. `sims` (per-criterion similarity of
-    usable weighted criteria) is for the UI and is not exported to scores.json.
+    Returns {score, contrib, coverage, why, gap, sims}.
+      * Only selected criteria (weight > 0) appear in contrib / sims.
+      * A selected criterion with a missing value on either side is `None` in
+        contrib / sims — never 0. A 0 always means "measured, and no match".
+      * score is `None` when no selected criterion is usable (not 0).
+      * coverage = {"used": usable selected criteria, "selected": criteria with w > 0}.
+    `sims` is for the UI and is not exported to scores.json.
     """
     tnorm, snorm = target["norm"], site["norm"]
-    rows = []  # (feature, weight, similarity) for usable criteria with w > 0
+    selected = []  # (feature, weight, similarity-or-None) in feature order, w > 0
     num = 0.0
     den = 0
     for f in features:
@@ -129,18 +135,27 @@ def score_site(target, site, weights, features):
         if w <= 0:
             continue
         s = similarity(f, snorm.get(f["id"]), tnorm.get(f["id"]))
-        if s is None:
-            continue
-        rows.append((f, w, s))
-        num += w * s
-        den += w
+        selected.append((f, w, s))
+        if s is not None:
+            num += w * s
+            den += w
+
+    rows = [r for r in selected if r[2] is not None]
+    coverage = {"used": len(rows), "selected": len(selected)}
+    sims = {f["id"]: s for f, w, s in selected}
 
     if den == 0:
-        return {"score": 0, "contrib": {}, "why": [], "gap": NO_DATA_GAP, "sims": {}}
+        return {
+            "score": None,
+            "contrib": {f["id"]: None for f, w, s in selected},
+            "coverage": coverage,
+            "why": [],
+            "gap": NO_DATA_GAP if selected else NO_CRITERIA_GAP,
+            "sims": sims,
+        }
 
     score = round_half_up(100 * num / den)
-    contrib = {f["id"]: round_to(w * s / den, 4) for f, w, s in rows}
-    sims = {f["id"]: s for f, w, s in rows}
+    contrib = {f["id"]: (None if s is None else round_to(w * s / den, 4)) for f, w, s in selected}
 
     strong = sorted((r for r in rows if r[2] >= WHY_MIN_SIM), key=lambda r: -(r[1] * r[2]))
     why = [
@@ -155,11 +170,15 @@ def score_site(target, site, weights, features):
     wf = worst[0]
     gap = _gap_phrase(wf, worst[2], snorm.get(wf["id"]), tnorm.get(wf["id"]))
 
-    return {"score": score, "contrib": contrib, "why": why, "gap": gap, "sims": sims}
+    return {"score": score, "contrib": contrib, "coverage": coverage, "why": why, "gap": gap, "sims": sims}
 
 
 def rank_sites(target, sites, weights, features):
-    """Rank site property dicts for one target (§5.8): score desc, then name asc."""
+    """Rank site property dicts for one target (§5.8).
+
+    Score desc, then name asc (code point), then id. Sites with score None
+    (no usable data) sort after every scored site.
+    """
     scored = []
     for site in sites:
         r = score_site(target, site, weights, features)
@@ -167,8 +186,9 @@ def rank_sites(target, sites, weights, features):
             "site": site["id"],
             "score": r["score"],
             "contrib": r["contrib"],
+            "coverage": r["coverage"],
             "why": r["why"],
             "gap": r["gap"],
         }))
-    scored.sort(key=lambda t: (-t[2]["score"], t[0], t[1]))
+    scored.sort(key=lambda t: (t[2]["score"] is None, -(t[2]["score"] or 0), t[0], t[1]))
     return [t[2] for t in scored]

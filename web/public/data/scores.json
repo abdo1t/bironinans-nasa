@@ -10,9 +10,14 @@
           "terrain": 0.1688,
           "aridity": 0.1819,
           "temp": 0.1819,
+          "temp_range": null,
           "veg": 0.1538,
           "geology": 0.0938,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -29,8 +34,13 @@
           "aridity": 0.2079,
           "temp": 0.165,
           "temp_range": 0.0607,
+          "veg": null,
           "geology": 0.1071,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -51,6 +61,10 @@
           "geology": 0.1765,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: geology match (anorthosite)",
           "Bare ground close to target",
@@ -69,6 +83,10 @@
           "veg": 0.1606,
           "geology": 0.0882,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: temperature",
@@ -89,6 +107,10 @@
           "geology": 0.0882,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness",
           "Temperature close to target",
@@ -103,9 +125,14 @@
           "terrain": 0.1406,
           "aridity": 0.1256,
           "temp": 0.1706,
+          "temp_range": null,
           "veg": 0.1819,
           "geology": 0.0,
           "ice": 0.0625
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: bare ground",
@@ -126,6 +153,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness",
           "Bare ground close to target",
@@ -145,6 +176,10 @@
           "geology": 0.0882,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground",
           "Terrain roughness close to target",
@@ -163,6 +198,10 @@
           "veg": 0.1412,
           "geology": 0.0,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -183,6 +222,10 @@
           "geology": 0.0882,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground",
           "Temperature close to target",
@@ -201,6 +244,10 @@
           "veg": 0.0706,
           "geology": 0.0882,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -221,6 +268,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: temperature",
           "Terrain roughness close to target",
@@ -239,6 +290,10 @@
           "veg": 0.1412,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -259,6 +314,10 @@
           "geology": 0.0882,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness",
           "Bare ground close to target"
@@ -277,6 +336,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground",
           "Temperature close to target",
@@ -291,9 +354,14 @@
           "terrain": 0.1125,
           "aridity": 0.1481,
           "temp": 0.1331,
+          "temp_range": null,
           "veg": 0.1725,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: bare ground",
@@ -314,6 +382,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness",
           "Bare ground close to target",
@@ -332,6 +404,10 @@
           "veg": 0.0918,
           "geology": 0.0,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -352,6 +428,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness",
           "Temperature close to target",
@@ -371,6 +451,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground",
           "Temperature close to target",
@@ -386,8 +470,13 @@
           "aridity": 0.135,
           "temp": 0.0729,
           "temp_range": 0.0457,
+          "veg": null,
           "geology": 0.1071,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness"
@@ -402,8 +491,13 @@
           "aridity": 0.1971,
           "temp": 0.0707,
           "temp_range": 0.0664,
+          "veg": null,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -424,6 +518,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness",
           "Temperature close to target"
@@ -442,6 +540,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: temperature",
           "Bare ground close to target"
@@ -459,6 +561,10 @@
           "veg": 0.1465,
           "geology": 0.0882,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: bare ground",
@@ -479,6 +585,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground",
           "Temperature swing close to target"
@@ -493,8 +603,13 @@
           "aridity": 0.0793,
           "temp": 0.1693,
           "temp_range": 0.0714,
+          "veg": null,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -511,8 +626,13 @@
           "aridity": 0.1414,
           "temp": 0.0814,
           "temp_range": 0.0693,
+          "veg": null,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -532,6 +652,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground",
           "Temperature swing close to target"
@@ -550,6 +674,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground"
         ],
@@ -567,6 +695,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: aridity"
         ],
@@ -579,9 +711,14 @@
           "terrain": 0.1013,
           "aridity": 0.1069,
           "temp": 0.0769,
+          "temp_range": null,
           "veg": 0.165,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: bare ground"
@@ -600,6 +737,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: temperature",
           "Temperature swing close to target"
@@ -617,6 +758,10 @@
           "veg": 0.0618,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -637,6 +782,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness"
         ],
@@ -654,6 +803,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground",
           "Temperature swing close to target"
@@ -667,8 +820,14 @@
           "terrain": 0.1062,
           "aridity": 0.0877,
           "temp": 0.1708,
+          "temp_range": null,
+          "veg": null,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 5,
+          "selected": 7
         },
         "why": [
           "Strongest match: temperature"
@@ -682,9 +841,14 @@
           "terrain": 0.0713,
           "aridity": 0.09,
           "temp": 0.1294,
+          "temp_range": null,
           "veg": 0.06,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [],
         "gap": "Geology match: evaporite vs the target's anorthosite"
@@ -700,6 +864,10 @@
           "veg": 0.0741,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: temperature swing"
@@ -717,6 +885,10 @@
           "veg": 0.0706,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: temperature swing"
@@ -737,6 +909,10 @@
           "geology": 0.1765,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: geology match (basalt)",
           "Temperature close to target",
@@ -755,6 +931,10 @@
           "veg": 0.06,
           "geology": 0.1765,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: geology match (basalt)",
@@ -775,6 +955,10 @@
           "geology": 0.1765,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: geology match (basalt)",
           "Terrain roughness close to target",
@@ -793,6 +977,10 @@
           "veg": 0.0353,
           "geology": 0.1765,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: geology match (basalt)",
@@ -813,6 +1001,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: aridity",
           "Terrain roughness close to target",
@@ -828,8 +1020,13 @@
           "aridity": 0.0364,
           "temp": 0.1243,
           "temp_range": 0.0464,
+          "veg": null,
           "geology": 0.2143,
           "ice": 0.0714
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: geology match (basalt)",
@@ -846,8 +1043,13 @@
           "aridity": 0.1093,
           "temp": 0.0321,
           "temp_range": 0.06,
+          "veg": null,
           "geology": 0.2143,
           "ice": 0.0714
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: geology match (basalt)",
@@ -868,6 +1070,10 @@
           "geology": 0.1765,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: geology match (basalt)",
           "Terrain roughness close to target",
@@ -887,6 +1093,10 @@
           "geology": 0.1765,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: geology match (basalt)",
           "Aridity close to target",
@@ -901,9 +1111,14 @@
           "terrain": 0.1763,
           "aridity": 0.0319,
           "temp": 0.1463,
+          "temp_range": null,
           "veg": 0.0206,
           "geology": 0.1875,
           "ice": 0.0625
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: geology match (basalt)",
@@ -924,6 +1139,10 @@
           "geology": 0.1765,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: geology match (basalt)",
           "Terrain roughness close to target",
@@ -943,6 +1162,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness",
           "Aridity close to target",
@@ -958,8 +1181,13 @@
           "aridity": 0.165,
           "temp": 0.1286,
           "temp_range": 0.0571,
+          "veg": null,
           "geology": 0.0,
           "ice": 0.0714
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -980,6 +1208,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: aridity",
           "Bare ground close to target",
@@ -998,6 +1230,10 @@
           "veg": 0.1535,
           "geology": 0.0,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -1018,6 +1254,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: temperature",
           "Terrain roughness close to target",
@@ -1036,6 +1276,10 @@
           "veg": 0.1112,
           "geology": 0.0,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -1056,6 +1300,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness",
           "Aridity close to target",
@@ -1074,6 +1322,10 @@
           "veg": 0.0265,
           "geology": 0.0,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: temperature",
@@ -1094,6 +1346,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness",
           "Ground ice / permafrost: no"
@@ -1112,6 +1368,10 @@
           "geology": 0.0882,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: aridity"
         ],
@@ -1129,6 +1389,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: aridity",
           "Bare ground close to target",
@@ -1143,9 +1407,14 @@
           "terrain": 0.0638,
           "aridity": 0.1238,
           "temp": 0.0938,
+          "temp_range": null,
           "veg": 0.1819,
           "geology": 0.0,
           "ice": 0.0625
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: bare ground",
@@ -1164,6 +1433,10 @@
           "veg": 0.1571,
           "geology": 0.0,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: bare ground",
@@ -1184,6 +1457,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: temperature",
           "Ground ice / permafrost: no"
@@ -1198,8 +1475,13 @@
           "aridity": 0.1029,
           "temp": 0.0407,
           "temp_range": 0.0593,
+          "veg": null,
           "geology": 0.0,
           "ice": 0.0714
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -1220,6 +1502,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground",
           "Ground ice / permafrost: no"
@@ -1233,8 +1519,14 @@
           "terrain": 0.0969,
           "aridity": 0.1754,
           "temp": 0.1269,
+          "temp_range": null,
+          "veg": null,
           "geology": 0.0,
           "ice": 0.0769
+        },
+        "coverage": {
+          "used": 5,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -1253,6 +1545,10 @@
           "veg": 0.0565,
           "geology": 0.0,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: temperature",
@@ -1273,6 +1569,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: aridity",
           "Ground ice / permafrost: no"
@@ -1286,9 +1586,14 @@
           "terrain": 0.1481,
           "aridity": 0.0881,
           "temp": 0.1688,
+          "temp_range": null,
           "veg": 0.0488,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: temperature",
@@ -1307,6 +1612,10 @@
           "veg": 0.0071,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: temperature",
@@ -1327,6 +1636,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: temperature",
           "Ground ice / permafrost: no",
@@ -1346,6 +1659,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: ground ice / permafrost (no)",
           "Temperature swing close to target"
@@ -1364,6 +1681,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness",
           "Temperature swing close to target"
@@ -1378,8 +1699,13 @@
           "aridity": 0.0471,
           "temp": 0.03,
           "temp_range": 0.0521,
+          "veg": null,
           "geology": 0.0,
           "ice": 0.0714
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -1395,9 +1721,14 @@
           "terrain": 0.105,
           "aridity": 0.0656,
           "temp": 0.0975,
+          "temp_range": null,
           "veg": 0.0394,
           "geology": 0.0,
           "ice": 0.0625
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: ground ice / permafrost (no)"
@@ -1416,6 +1747,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: ground ice / permafrost (no)",
           "Temperature swing close to target"
@@ -1429,9 +1764,14 @@
           "terrain": 0.0938,
           "aridity": 0.1069,
           "temp": 0.0412,
+          "temp_range": null,
           "veg": 0.0319,
           "geology": 0.0,
           "ice": 0.0625
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: ground ice / permafrost (no)"
@@ -1449,6 +1789,10 @@
           "veg": 0.0335,
           "geology": 0.0,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: ground ice / permafrost (no)",
@@ -1470,6 +1814,10 @@
           "geology": 0.1765,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: aridity",
           "Geology match: basalt",
@@ -1488,6 +1836,10 @@
           "veg": 0.1694,
           "geology": 0.1765,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: geology match (basalt)",
@@ -1508,6 +1860,10 @@
           "geology": 0.1765,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: geology match (basalt)",
           "Aridity close to target",
@@ -1526,6 +1882,10 @@
           "veg": 0.1729,
           "geology": 0.0,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: bare ground",
@@ -1546,6 +1906,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground",
           "Temperature close to target",
@@ -1560,9 +1924,14 @@
           "terrain": 0.09,
           "aridity": 0.1031,
           "temp": 0.135,
+          "temp_range": null,
           "veg": 0.1369,
           "geology": 0.1875,
           "ice": 0.0625
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: geology match (basalt)",
@@ -1579,8 +1948,13 @@
           "aridity": 0.1179,
           "temp": 0.1114,
           "temp_range": 0.0621,
+          "veg": null,
           "geology": 0.2143,
           "ice": 0.0714
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: geology match (basalt)",
@@ -1601,6 +1975,10 @@
           "geology": 0.1765,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: geology match (basalt)",
           "Bare ground close to target",
@@ -1619,6 +1997,10 @@
           "veg": 0.1147,
           "geology": 0.1765,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: geology match (basalt)",
@@ -1639,6 +2021,10 @@
           "geology": 0.1765,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: geology match (basalt)",
           "Terrain roughness close to target",
@@ -1657,6 +2043,10 @@
           "veg": 0.1712,
           "geology": 0.0,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -1677,6 +2067,10 @@
           "geology": 0.1765,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: geology match (basalt)",
           "Aridity close to target",
@@ -1695,6 +2089,10 @@
           "veg": 0.1359,
           "geology": 0.0,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -1715,6 +2113,10 @@
           "geology": 0.0882,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground",
           "Terrain roughness close to target",
@@ -1733,6 +2135,10 @@
           "veg": 0.1765,
           "geology": 0.0,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: bare ground",
@@ -1753,6 +2159,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground",
           "Terrain roughness close to target",
@@ -1767,9 +2177,14 @@
           "terrain": 0.1838,
           "aridity": 0.1369,
           "temp": 0.0863,
+          "temp_range": null,
           "veg": 0.1556,
           "geology": 0.0,
           "ice": 0.0625
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -1786,8 +2201,13 @@
           "aridity": 0.1907,
           "temp": 0.0193,
           "temp_range": 0.0443,
+          "veg": null,
           "geology": 0.2143,
           "ice": 0.0714
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: geology match (basalt)",
@@ -1808,6 +2228,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness",
           "Aridity close to target",
@@ -1822,9 +2246,14 @@
           "terrain": 0.18,
           "aridity": 0.1781,
           "temp": 0.03,
+          "temp_range": null,
           "veg": 0.1481,
           "geology": 0.0,
           "ice": 0.0625
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -1845,6 +2274,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: aridity",
           "Temperature close to target",
@@ -1864,6 +2297,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground",
           "Aridity close to target",
@@ -1878,8 +2315,14 @@
           "terrain": 0.2031,
           "aridity": 0.1985,
           "temp": 0.1131,
+          "temp_range": null,
+          "veg": null,
           "geology": 0.0,
           "ice": 0.0769
+        },
+        "coverage": {
+          "used": 5,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -1900,6 +2343,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground",
           "Terrain roughness close to target",
@@ -1919,6 +2366,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness",
           "Aridity close to target",
@@ -1933,9 +2384,14 @@
           "terrain": 0.15,
           "aridity": 0.18,
           "temp": 0.0825,
+          "temp_range": null,
           "veg": 0.0769,
           "geology": 0.0,
           "ice": 0.0625
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -1956,6 +2412,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: aridity",
           "Bare ground close to target",
@@ -1970,9 +2430,14 @@
           "terrain": 0.0619,
           "aridity": 0.1594,
           "temp": 0.1575,
+          "temp_range": null,
           "veg": 0.165,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: bare ground",
@@ -1993,6 +2458,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness",
           "Aridity close to target",
@@ -2008,8 +2477,13 @@
           "aridity": 0.1821,
           "temp": 0.1157,
           "temp_range": 0.07,
+          "veg": null,
           "geology": 0.0,
           "ice": 0.0714
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -2030,6 +2504,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: aridity",
           "Temperature swing close to target"
@@ -2047,6 +2525,10 @@
           "veg": 0.1253,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -2067,6 +2549,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: temperature",
           "Aridity close to target"
@@ -2084,6 +2570,10 @@
           "veg": 0.09,
           "geology": 0.0,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -2103,6 +2593,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness",
           "Ground ice / permafrost: no"
@@ -2117,8 +2611,13 @@
           "aridity": 0.1843,
           "temp": 0.0279,
           "temp_range": 0.0679,
+          "veg": null,
           "geology": 0.0,
           "ice": 0.0714
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -2139,6 +2638,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: ground ice / permafrost (no)",
           "Temperature swing close to target"
@@ -2157,6 +2660,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground",
           "Ground ice / permafrost: no"
@@ -2171,8 +2678,13 @@
           "aridity": 0.1286,
           "temp": 0.0171,
           "temp_range": 0.0679,
+          "veg": null,
           "geology": 0.0,
           "ice": 0.0714
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: ground ice / permafrost (no)",
@@ -2191,6 +2703,10 @@
           "veg": 0.09,
           "geology": 0.0,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: ground ice / permafrost (no)",
@@ -2212,6 +2728,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: aridity",
           "Temperature close to target",
@@ -2231,6 +2751,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground",
           "Temperature close to target",
@@ -2246,8 +2770,13 @@
           "aridity": 0.1907,
           "temp": 0.1371,
           "temp_range": 0.0243,
+          "veg": null,
           "geology": 0.1071,
           "ice": 0.0714
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -2264,8 +2793,13 @@
           "aridity": 0.1821,
           "temp": 0.1479,
           "temp_range": 0.0314,
+          "veg": null,
           "geology": 0.1071,
           "ice": 0.0714
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -2286,6 +2820,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: aridity",
           "Bare ground close to target",
@@ -2305,6 +2843,10 @@
           "geology": 0.0882,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: temperature",
           "Terrain roughness close to target",
@@ -2319,9 +2861,14 @@
           "terrain": 0.1312,
           "aridity": 0.1838,
           "temp": 0.1838,
+          "temp_range": null,
           "veg": 0.0356,
           "geology": 0.0938,
           "ice": 0.0625
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -2342,6 +2889,10 @@
           "geology": 0.0882,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness",
           "Temperature close to target",
@@ -2361,6 +2912,10 @@
           "geology": 0.0882,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness",
           "Aridity close to target",
@@ -2376,8 +2931,13 @@
           "aridity": 0.18,
           "temp": 0.1971,
           "temp_range": 0.0186,
+          "veg": null,
           "geology": 0.0,
           "ice": 0.0714
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -2394,8 +2954,13 @@
           "aridity": 0.12,
           "temp": 0.1929,
           "temp_range": 0.0293,
+          "veg": null,
           "geology": 0.1071,
           "ice": 0.0714
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: temperature",
@@ -2411,8 +2976,14 @@
           "terrain": 0.1292,
           "aridity": 0.1315,
           "temp": 0.2192,
+          "temp_range": null,
+          "veg": null,
           "geology": 0.1154,
           "ice": 0.0769
+        },
+        "coverage": {
+          "used": 5,
+          "selected": 7
         },
         "why": [
           "Strongest match: temperature",
@@ -2427,9 +2998,14 @@
           "terrain": 0.09,
           "aridity": 0.1256,
           "temp": 0.1875,
+          "temp_range": null,
           "veg": 0.1781,
           "geology": 0.0,
           "ice": 0.0625
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: temperature",
@@ -2450,6 +3026,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: temperature",
           "Bare ground close to target",
@@ -2468,6 +3048,10 @@
           "veg": 0.1535,
           "geology": 0.0882,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: bare ground",
@@ -2488,6 +3072,10 @@
           "geology": 0.0882,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness",
           "Ground ice / permafrost: no",
@@ -2506,6 +3094,10 @@
           "veg": 0.0829,
           "geology": 0.0882,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -2526,6 +3118,10 @@
           "geology": 0.0882,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: temperature",
           "Terrain roughness close to target",
@@ -2544,6 +3140,10 @@
           "veg": 0.0829,
           "geology": 0.0,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: temperature",
@@ -2564,6 +3164,10 @@
           "geology": 0.0882,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: ground ice / permafrost (no)",
           "Temperature swing close to target"
@@ -2578,8 +3182,13 @@
           "aridity": 0.1757,
           "temp": 0.1393,
           "temp_range": 0.055,
+          "veg": null,
           "geology": 0.0,
           "ice": 0.0714
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -2600,6 +3209,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: temperature",
           "Bare ground close to target",
@@ -2614,9 +3227,14 @@
           "terrain": 0.12,
           "aridity": 0.1425,
           "temp": 0.135,
+          "temp_range": null,
           "veg": 0.0281,
           "geology": 0.0938,
           "ice": 0.0625
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -2637,6 +3255,10 @@
           "geology": 0.0882,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: aridity",
           "Ground ice / permafrost: no"
@@ -2654,6 +3276,10 @@
           "veg": 0.0776,
           "geology": 0.0882,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: temperature",
@@ -2673,6 +3299,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness",
           "Temperature swing close to target"
@@ -2691,6 +3321,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground",
           "Temperature close to target",
@@ -2705,9 +3339,14 @@
           "terrain": 0.1219,
           "aridity": 0.1613,
           "temp": 0.1125,
+          "temp_range": null,
           "veg": 0.045,
           "geology": 0.0938,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity"
@@ -2721,9 +3360,14 @@
           "terrain": 0.15,
           "aridity": 0.1575,
           "temp": 0.135,
+          "temp_range": null,
           "veg": 0.0169,
           "geology": 0.0,
           "ice": 0.0625
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -2744,6 +3388,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: temperature",
           "Terrain roughness close to target",
@@ -2762,6 +3410,10 @@
           "veg": 0.0582,
           "geology": 0.0,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: temperature",
@@ -2782,6 +3434,10 @@
           "geology": 0.0882,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: aridity",
           "Temperature swing close to target"
@@ -2800,6 +3456,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: temperature",
           "Terrain roughness close to target"
@@ -2817,6 +3477,10 @@
           "veg": 0.03,
           "geology": 0.0,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -2837,6 +3501,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: aridity",
           "Ground ice / permafrost: no"
@@ -2854,6 +3522,10 @@
           "veg": 0.0318,
           "geology": 0.0,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -2873,6 +3545,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: aridity",
           "Ground ice / permafrost: no"
@@ -2890,6 +3566,10 @@
           "veg": 0.0176,
           "geology": 0.0,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -2910,6 +3590,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: ground ice / permafrost (no)"
         ],
@@ -2926,6 +3610,10 @@
           "veg": 0.0229,
           "geology": 0.0,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -2947,6 +3635,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness",
           "Temperature close to target",
@@ -2962,8 +3654,13 @@
           "aridity": 0.2057,
           "temp": 0.1821,
           "temp_range": 0.0671,
+          "veg": null,
           "geology": 0.0,
           "ice": 0.0714
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -2984,6 +3681,10 @@
           "geology": 0.1765,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: geology match (sulfate)",
           "Aridity close to target",
@@ -3002,6 +3703,10 @@
           "veg": 0.1288,
           "geology": 0.0,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -3022,6 +3727,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness",
           "Bare ground close to target",
@@ -3041,6 +3750,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground",
           "Terrain roughness close to target",
@@ -3055,9 +3768,14 @@
           "terrain": 0.1744,
           "aridity": 0.0675,
           "temp": 0.1819,
+          "temp_range": null,
           "veg": 0.18,
           "geology": 0.0,
           "ice": 0.0625
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: temperature",
@@ -3078,6 +3796,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: temperature",
           "Terrain roughness close to target",
@@ -3096,6 +3818,10 @@
           "veg": 0.0829,
           "geology": 0.0,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -3116,6 +3842,10 @@
           "geology": 0.0882,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness",
           "Aridity close to target",
@@ -3134,6 +3864,10 @@
           "veg": 0.1182,
           "geology": 0.0882,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: temperature",
@@ -3154,6 +3888,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground",
           "Terrain roughness close to target",
@@ -3172,6 +3910,10 @@
           "veg": 0.0353,
           "geology": 0.0882,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -3192,6 +3934,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground",
           "Terrain roughness close to target",
@@ -3211,6 +3957,10 @@
           "geology": 0.0882,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: aridity",
           "Temperature close to target",
@@ -3225,9 +3975,14 @@
           "terrain": 0.1725,
           "aridity": 0.1238,
           "temp": 0.1594,
+          "temp_range": null,
           "veg": 0.1519,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -3248,6 +4003,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness",
           "Temperature close to target",
@@ -3266,6 +4025,10 @@
           "veg": 0.0353,
           "geology": 0.0882,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -3286,6 +4049,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness",
           "Aridity close to target",
@@ -3304,6 +4071,10 @@
           "veg": 0.1676,
           "geology": 0.0,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: bare ground",
@@ -3324,6 +4095,10 @@
           "geology": 0.0882,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground",
           "Ground ice / permafrost: no",
@@ -3339,8 +4114,13 @@
           "aridity": 0.1436,
           "temp": 0.0943,
           "temp_range": 0.065,
+          "veg": null,
           "geology": 0.0,
           "ice": 0.0714
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -3361,6 +4141,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: aridity",
           "Temperature close to target",
@@ -3375,9 +4159,14 @@
           "terrain": 0.0806,
           "aridity": 0.1013,
           "temp": 0.1444,
+          "temp_range": null,
           "veg": 0.1613,
           "geology": 0.0,
           "ice": 0.0625
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: bare ground",
@@ -3394,8 +4183,13 @@
           "aridity": 0.15,
           "temp": 0.0857,
           "temp_range": 0.0414,
+          "veg": null,
           "geology": 0.0,
           "ice": 0.0714
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -3412,8 +4206,13 @@
           "aridity": 0.0771,
           "temp": 0.1779,
           "temp_range": 0.065,
+          "veg": null,
           "geology": 0.0,
           "ice": 0.0714
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: temperature",
@@ -3429,8 +4228,14 @@
           "terrain": 0.0669,
           "aridity": 0.2192,
           "temp": 0.1846,
+          "temp_range": null,
+          "veg": null,
           "geology": 0.0,
           "ice": 0.0769
+        },
+        "coverage": {
+          "used": 5,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -3451,6 +4256,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: temperature",
           "Bare ground close to target",
@@ -3469,6 +4278,10 @@
           "veg": 0.0688,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -3489,6 +4302,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: aridity",
           "Temperature swing close to target"
@@ -3502,9 +4319,14 @@
           "terrain": 0.0694,
           "aridity": 0.1425,
           "temp": 0.0881,
+          "temp_range": null,
           "veg": 0.1688,
           "geology": 0.0,
           "ice": 0.0625
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: bare ground",
@@ -3525,6 +4347,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness",
           "Temperature close to target",
@@ -3539,9 +4365,14 @@
           "terrain": 0.0394,
           "aridity": 0.1594,
           "temp": 0.1406,
+          "temp_range": null,
           "veg": 0.0188,
           "geology": 0.0938,
           "ice": 0.0625
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -3562,6 +4393,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness",
           "Aridity close to target",
@@ -3580,6 +4415,10 @@
           "veg": 0.1076,
           "geology": 0.0,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -3600,6 +4439,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground",
           "Ground ice / permafrost: no"
@@ -3618,6 +4461,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: temperature",
           "Ground ice / permafrost: no",
@@ -3633,8 +4480,13 @@
           "aridity": 0.0879,
           "temp": 0.0836,
           "temp_range": 0.0707,
+          "veg": null,
           "geology": 0.0,
           "ice": 0.0714
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -3655,6 +4507,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: aridity",
           "Ground ice / permafrost: no",
@@ -3673,6 +4529,10 @@
           "veg": 0.0088,
           "geology": 0.0882,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: ground ice / permafrost (no)"
@@ -3693,6 +4553,10 @@
           "geology": 0.1765,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: geology match (ice)",
           "Temperature close to target",
@@ -3711,6 +4575,10 @@
           "veg": 0.1341,
           "geology": 0.1765,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: geology match (ice)",
@@ -3731,6 +4599,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: temperature",
           "Bare ground close to target",
@@ -3750,6 +4622,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground",
           "Aridity close to target",
@@ -3764,9 +4640,14 @@
           "terrain": 0.0844,
           "aridity": 0.1369,
           "temp": 0.1706,
+          "temp_range": null,
           "veg": 0.1556,
           "geology": 0.0,
           "ice": 0.0625
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: temperature",
@@ -3787,6 +4668,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: temperature",
           "Bare ground close to target",
@@ -3805,6 +4690,10 @@
           "veg": 0.1712,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: temperature",
@@ -3825,6 +4714,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: temperature",
           "Aridity close to target",
@@ -3839,9 +4732,14 @@
           "terrain": 0.1687,
           "aridity": 0.1594,
           "temp": 0.0994,
+          "temp_range": null,
           "veg": 0.1463,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -3857,9 +4755,14 @@
           "terrain": 0.1125,
           "aridity": 0.1819,
           "temp": 0.1481,
+          "temp_range": null,
           "veg": 0.1275,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -3879,6 +4782,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground",
           "Aridity close to target"
@@ -3896,6 +4803,10 @@
           "veg": 0.1641,
           "geology": 0.0,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -3916,6 +4827,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: temperature",
           "Bare ground close to target",
@@ -3934,6 +4849,10 @@
           "veg": 0.0724,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -3954,6 +4873,10 @@
           "geology": 0.0,
           "ice": 0.0588
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness",
           "Aridity close to target",
@@ -3973,6 +4896,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: aridity",
           "Temperature swing close to target"
@@ -3987,8 +4914,13 @@
           "aridity": 0.2079,
           "temp": 0.1264,
           "temp_range": 0.0157,
+          "veg": null,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -4008,6 +4940,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: aridity",
           "Temperature swing close to target"
@@ -4025,6 +4961,10 @@
           "veg": 0.1165,
           "geology": 0.0,
           "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -4044,6 +4984,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: temperature",
           "Bare ground close to target"
@@ -4061,6 +5005,10 @@
           "veg": 0.1659,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: bare ground",
@@ -4080,6 +5028,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground",
           "Terrain roughness close to target"
@@ -4097,6 +5049,10 @@
           "veg": 0.1606,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: temperature",
@@ -4116,6 +5072,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground",
           "Temperature swing close to target"
@@ -4129,9 +5089,14 @@
           "terrain": 0.1575,
           "aridity": 0.1181,
           "temp": 0.0431,
+          "temp_range": null,
           "veg": 0.1387,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness",
@@ -4151,6 +5116,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness",
           "Bare ground close to target"
@@ -4169,6 +5138,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground",
           "Aridity close to target"
@@ -4183,8 +5156,13 @@
           "aridity": 0.21,
           "temp": 0.0321,
           "temp_range": 0.0214,
+          "veg": null,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity",
@@ -4199,9 +5177,14 @@
           "terrain": 0.1275,
           "aridity": 0.1012,
           "temp": 0.0956,
+          "temp_range": null,
           "veg": 0.0862,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [],
         "gap": "Geology match: evaporite vs the target's ice"
@@ -4217,6 +5200,10 @@
           "veg": 0.1712,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [
           "Strongest match: bare ground",
@@ -4236,6 +5223,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: temperature swing"
         ],
@@ -4248,8 +5239,14 @@
           "terrain": 0.1754,
           "aridity": 0.1015,
           "temp": 0.1292,
+          "temp_range": null,
+          "veg": null,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 5,
+          "selected": 7
         },
         "why": [
           "Strongest match: terrain roughness"
@@ -4268,6 +5265,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness"
         ],
@@ -4285,6 +5286,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: bare ground",
           "Terrain roughness close to target",
@@ -4300,8 +5305,13 @@
           "aridity": 0.0921,
           "temp": 0.1307,
           "temp_range": 0.0264,
+          "veg": null,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [],
         "gap": "Geology match: sedimentary vs the target's ice"
@@ -4314,8 +5324,13 @@
           "aridity": 0.1543,
           "temp": 0.0429,
           "temp_range": 0.0286,
+          "veg": null,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: aridity"
@@ -4334,6 +5349,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [],
         "gap": "Geology match: evaporite vs the target's ice"
       },
@@ -4349,6 +5368,10 @@
           "geology": 0.0,
           "ice": 0.0
         },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
         "why": [
           "Strongest match: terrain roughness"
         ],
@@ -4362,8 +5385,13 @@
           "aridity": 0.1479,
           "temp": 0.0343,
           "temp_range": 0.0521,
+          "veg": null,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
         },
         "why": [
           "Strongest match: temperature swing"
@@ -4381,6 +5409,10 @@
           "veg": 0.0988,
           "geology": 0.0,
           "ice": 0.0
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
         },
         "why": [],
         "gap": "Geology match: evaporite vs the target's ice"

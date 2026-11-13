@@ -16,13 +16,13 @@
       "ice": "yes"
     },
     "refs": {
-      "terrain": "MOCK — TODO citation",
-      "aridity": "MOCK — TODO citation",
-      "temp": "MOCK — TODO citation",
-      "temp_range": "MOCK — TODO citation",
-      "veg": "MOCK — TODO citation",
-      "geology": "MOCK — TODO citation",
-      "ice": "MOCK — TODO citation"
+      "terrain": "MOCK — synthetic placeholder, not a measurement",
+      "aridity": "MOCK — synthetic placeholder, not a measurement",
+      "temp": "MOCK — synthetic placeholder, not a measurement",
+      "temp_range": "MOCK — synthetic placeholder, not a measurement",
+      "veg": "MOCK — synthetic placeholder, not a measurement",
+      "geology": "Seed CSV class (literature, unverified)",
+      "ice": "Seed CSV class (literature, unverified)"
     },
     "trekUrl": "https://trek.nasa.gov/moon/"
   },
@@ -43,13 +43,13 @@
       "ice": "no"
     },
     "refs": {
-      "terrain": "MOCK — TODO citation",
-      "aridity": "MOCK — TODO citation",
-      "temp": "MOCK — TODO citation",
-      "temp_range": "MOCK — TODO citation",
-      "veg": "MOCK — TODO citation",
-      "geology": "MOCK — TODO citation",
-      "ice": "MOCK — TODO citation"
+      "terrain": "MOCK — synthetic placeholder, not a measurement",
+      "aridity": "MOCK — synthetic placeholder, not a measurement",
+      "temp": "MOCK — synthetic placeholder, not a measurement",
+      "temp_range": "MOCK — synthetic placeholder, not a measurement",
+      "veg": "MOCK — synthetic placeholder, not a measurement",
+      "geology": "Seed CSV class (literature, unverified)",
+      "ice": "Seed CSV class (literature, unverified)"
     },
     "trekUrl": "https://trek.nasa.gov/moon/"
   },
@@ -70,13 +70,13 @@
       "ice": "no"
     },
     "refs": {
-      "terrain": "MOCK — TODO citation",
-      "aridity": "MOCK — TODO citation",
-      "temp": "MOCK — TODO citation",
-      "temp_range": "MOCK — TODO citation",
-      "veg": "MOCK — TODO citation",
-      "geology": "MOCK — TODO citation",
-      "ice": "MOCK — TODO citation"
+      "terrain": "MOCK — synthetic placeholder, not a measurement",
+      "aridity": "MOCK — synthetic placeholder, not a measurement",
+      "temp": "MOCK — synthetic placeholder, not a measurement",
+      "temp_range": "MOCK — synthetic placeholder, not a measurement",
+      "veg": "MOCK — synthetic placeholder, not a measurement",
+      "geology": "Seed CSV class (literature, unverified)",
+      "ice": "Seed CSV class (literature, unverified)"
     },
     "trekUrl": "https://trek.nasa.gov/moon/"
   },
@@ -97,13 +97,13 @@
       "ice": "no"
     },
     "refs": {
-      "terrain": "MOCK — TODO citation",
-      "aridity": "MOCK — TODO citation",
-      "temp": "MOCK — TODO citation",
-      "temp_range": "MOCK — TODO citation",
-      "veg": "MOCK — TODO citation",
-      "geology": "MOCK — TODO citation",
-      "ice": "MOCK — TODO citation"
+      "terrain": "MOCK — synthetic placeholder, not a measurement",
+      "aridity": "MOCK — synthetic placeholder, not a measurement",
+      "temp": "MOCK — synthetic placeholder, not a measurement",
+      "temp_range": "MOCK — synthetic placeholder, not a measurement",
+      "veg": "MOCK — synthetic placeholder, not a measurement",
+      "geology": "Seed CSV class (literature, unverified)",
+      "ice": "Seed CSV class (literature, unverified)"
     },
     "trekUrl": "https://trek.nasa.gov/mars/"
   },
@@ -124,13 +124,13 @@
       "ice": "no"
     },
     "refs": {
-      "terrain": "MOCK — TODO citation",
-      "aridity": "MOCK — TODO citation",
-      "temp": "MOCK — TODO citation",
-      "temp_range": "MOCK — TODO citation",
-      "veg": "MOCK — TODO citation",
-      "geology": "MOCK — TODO citation",
-      "ice": "MOCK — TODO citation"
+      "terrain": "MOCK — synthetic placeholder, not a measurement",
+      "aridity": "MOCK — synthetic placeholder, not a measurement",
+      "temp": "MOCK — synthetic placeholder, not a measurement",
+      "temp_range": "MOCK — synthetic placeholder, not a measurement",
+      "veg": "MOCK — synthetic placeholder, not a measurement",
+      "geology": "Seed CSV class (literature, unverified)",
+      "ice": "Seed CSV class (literature, unverified)"
     },
     "trekUrl": "https://trek.nasa.gov/mars/"
   },
@@ -151,13 +151,13 @@
       "ice": "yes"
     },
     "refs": {
-      "terrain": "MOCK — TODO citation",
-      "aridity": "MOCK — TODO citation",
-      "temp": "MOCK — TODO citation",
-      "temp_range": "MOCK — TODO citation",
-      "veg": "MOCK — TODO citation",
-      "geology": "MOCK — TODO citation",
-      "ice": "MOCK — TODO citation"
+      "terrain": "MOCK — synthetic placeholder, not a measurement",
+      "aridity": "MOCK — synthetic placeholder, not a measurement",
+      "temp": "MOCK — synthetic placeholder, not a measurement",
+      "temp_range": "MOCK — synthetic placeholder, not a measurement",
+      "veg": "MOCK — synthetic placeholder, not a measurement",
+      "geology": "MOCK — synthetic placeholder, not a measurement",
+      "ice": "Seed CSV class (literature, unverified)"
     },
     "trekUrl": "https://trek.nasa.gov/mars/"
   }

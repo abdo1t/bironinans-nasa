@@ -16,8 +16,15 @@ SITES_SEED = SEED_DIR / "sites_seed.csv"
 KNOWN_ANALOGS = SEED_DIR / "known_analogs.csv"
 SITES_RAW = DATA_DIR / "sites_raw.csv"
 
-# Great-circle distance (km) beyond which a site counts as a new candidate (§5.7).
+# Great-circle distance (km) beyond which a site is flagged `isNewCandidate` (§5.7).
+# This only means "uncatalogued: far from every catalogued analog". It is NOT a
+# scientific validation of the site as an analog.
 NOVELTY_KM = 300
+
+# Source labels for values that are not real measurements. The UI flags any
+# source starting with "MOCK" as synthetic and "Seed" as unverified.
+MOCK_SOURCE = "MOCK — synthetic placeholder, not a measurement"
+SEED_CLASS_SOURCE = "Seed CSV class (literature, unverified)"
 
 # Explanation thresholds (WHY_MIN_SIM etc.) live in scoring.py / scoring.js so the
 # two implementations share one definition each.
