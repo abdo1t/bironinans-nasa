@@ -4,7 +4,7 @@ NASA Space Apps Challenge 2026 — *Identify Earth Locations that Analog the Per
 
 Pick a Moon or Mars base site, weight what matters, and get a ranked, explainable list of Earth analog sites you can compare side by side. The build plan and data contract live in [CLAUDE.md](CLAUDE.md).
 
-> **Status:** Phase 1 (scoring core). The app runs on a **mock** data bundle — all numbers are placeholders, not measurements.
+> **Status:** Phase 2 (all screens working on mock data). The app runs on a **mock** data bundle — all numbers are placeholders, not measurements.
 
 ## Layout
 

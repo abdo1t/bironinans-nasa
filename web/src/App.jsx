@@ -1,58 +1,78 @@
 import { NavLink, Route, Routes } from 'react-router-dom'
+import { MockTag } from './components/Tags.jsx'
 import { useBundle } from './data/useBundle.js'
+import { AppStateProvider, useAppState } from './state/AppState.jsx'
 import Home from './pages/Home.jsx'
 import Explore from './pages/Explore.jsx'
 import SiteDetails from './pages/SiteDetails.jsx'
 import Compare from './pages/Compare.jsx'
 import About from './pages/About.jsx'
 
-function BundleGate({ children }) {
-  const { status, error } = useBundle()
-  if (status === 'loading') return <p className="status">Loading data…</p>
-  if (status === 'error') {
-    return (
-      <p className="status status--error" role="alert">
-        Could not load the data bundle: {error.message}
-      </p>
-    )
-  }
-  return children
+function Header() {
+  const app = useAppState()
+  const n = app.shortlist.length
+  return (
+    <header className="app-header">
+      <NavLink to={app.linkTo('/')} className="brand">
+        Earth Analog Finder
+      </NavLink>
+      <nav className="app-nav" aria-label="Main">
+        <NavLink to={app.linkTo('/explore')}>Explore</NavLink>
+        <NavLink to={app.linkTo('/compare')}>Compare{n ? ` (${n})` : ''}</NavLink>
+        <NavLink to={app.linkTo('/about')}>About</NavLink>
+      </nav>
+    </header>
+  )
+}
+
+function MockBanner() {
+  return (
+    <div className="mock-banner" role="note">
+      <MockTag /> <strong>Mock data.</strong> All scores and site values are synthetic placeholders — not NASA
+      observations. Do not use for planning.
+    </div>
+  )
 }
 
 export default function App() {
-  const { data } = useBundle()
+  const { status, error, data } = useBundle()
 
   return (
     <div className="app">
-      <header className="app-header">
-        <NavLink to="/" className="brand">
-          Earth Analog Finder
-        </NavLink>
-        <nav className="app-nav">
-          <NavLink to="/explore">Explore</NavLink>
-          <NavLink to="/compare">Compare</NavLink>
-          <NavLink to="/about">About</NavLink>
-        </nav>
-      </header>
-
-      {data?.isMock && (
-        <div className="mock-banner" role="note">
-          Mock data: values are placeholders, not measurements.
-        </div>
+      <a className="skip-link" href="#main">
+        Skip to content
+      </a>
+      {status !== 'ready' ? (
+        <>
+          <header className="app-header">
+            <span className="brand">Earth Analog Finder</span>
+          </header>
+          <main id="main" className="app-main">
+            {status === 'loading' ? (
+              <p className="status">Loading data…</p>
+            ) : (
+              <p className="status status--error" role="alert">
+                Could not load the data bundle: {error.message}
+              </p>
+            )}
+          </main>
+        </>
+      ) : (
+        <AppStateProvider>
+          <Header />
+          {data.isMock && <MockBanner />}
+          <main id="main" className="app-main" tabIndex={-1}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/explore" element={<Explore />} />
+              <Route path="/site/:id" element={<SiteDetails />} />
+              <Route path="/compare" element={<Compare />} />
+              <Route path="/about" element={<About />} />
+              <Route path="*" element={<p className="status">Page not found.</p>} />
+            </Routes>
+          </main>
+        </AppStateProvider>
       )}
-
-      <main className="app-main">
-        <BundleGate>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/explore" element={<Explore />} />
-            <Route path="/site/:id" element={<SiteDetails />} />
-            <Route path="/compare" element={<Compare />} />
-            <Route path="/about" element={<About />} />
-            <Route path="*" element={<p className="status">Page not found.</p>} />
-          </Routes>
-        </BundleGate>
-      </main>
     </div>
   )
 }
