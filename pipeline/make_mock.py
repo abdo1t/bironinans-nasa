@@ -8,11 +8,10 @@ Uses only the standard library so it runs before the pipeline env is installed:
 """
 import csv
 import json
-import math
 import random
-import sys
 
 import config
+from scoring import novelty_km, rank_sites
 
 SEED = 42
 NULL_RATE = 0.1  # share of optional numeric values left null, to exercise "data pending"
@@ -23,14 +22,6 @@ RAW_KEYS = ["precip_mm", "tmean_c", "trange_c", "relief_m", "ndvi"]
 def read_csv(path):
     with open(path, newline="", encoding="utf-8") as f:
         return list(csv.DictReader(f))
-
-
-def haversine_km(lat1, lon1, lat2, lon2):
-    r = 6371.0088
-    p1, p2 = math.radians(lat1), math.radians(lat2)
-    dp, dl = p2 - p1, math.radians(lon2 - lon1)
-    a = math.sin(dp / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(dl / 2) ** 2
-    return 2 * r * math.asin(math.sqrt(a))
 
 
 def mock_norm(rng, row, allow_null):
@@ -76,7 +67,7 @@ def build_sites(rng):
     features = []
     for row in read_csv(config.SITES_SEED):
         lat, lon = float(row["lat"]), float(row["lon"])
-        novel_km = round(min(haversine_km(lat, lon, klat, klon) for klat, klon in known))
+        novel_km = novelty_km(lat, lon, known)
         norm = mock_norm(rng, row, allow_null=True)
         features.append({
             "type": "Feature",
@@ -96,21 +87,16 @@ def build_sites(rng):
     return {"type": "FeatureCollection", "features": features}
 
 
-def build_scores(targets, sites):
-    try:
-        from scoring import rank_sites  # added in Phase 1
-    except ImportError:
-        print("scoring.py not available yet; writing empty rankings", file=sys.stderr)
-        return {t["id"]: [] for t in targets}
+def build_scores(targets, sites, features):
     weights = config.PRESETS[config.DEFAULT_PRESET]
     site_props = [f["properties"] for f in sites["features"]]
-    return {t["id"]: rank_sites(t, site_props, weights) for t in targets}
+    return {t["id"]: rank_sites(t, site_props, weights, features) for t in targets}
 
 
 def write_json(name, obj):
     config.BUNDLE_DIR.mkdir(parents=True, exist_ok=True)
     path = config.BUNDLE_DIR / name
-    with open(path, "w", encoding="utf-8") as f:
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
         json.dump(obj, f, ensure_ascii=False, indent=2)
         f.write("\n")
     print(f"wrote {path.relative_to(config.ROOT.parent).as_posix()}")
@@ -120,13 +106,14 @@ def main():
     rng = random.Random(SEED)
     targets = build_targets(rng)
     sites = build_sites(rng)
-    write_json("features.json", build_features())
+    features = build_features()
+    write_json("features.json", features)
     write_json("targets.json", targets)
     write_json("sites.geojson", sites)
     write_json("scores.json", {
         "generatedAt": "MOCK",
         "defaultPreset": config.DEFAULT_PRESET,
-        "byTarget": build_scores(targets, sites),
+        "byTarget": build_scores(targets, sites, features),
     })
 
 

@@ -4,7 +4,7 @@ NASA Space Apps Challenge 2026 — *Identify Earth Locations that Analog the Per
 
 Pick a Moon or Mars base site, weight what matters, and get a ranked, explainable list of Earth analog sites you can compare side by side. The build plan and data contract live in [CLAUDE.md](CLAUDE.md).
 
-> **Status:** Phase 0 (scaffold). The app runs on a **mock** data bundle — all numbers are placeholders, not measurements.
+> **Status:** Phase 1 (scoring core). The app runs on a **mock** data bundle — all numbers are placeholders, not measurements.
 
 ## Layout
 
@@ -36,6 +36,17 @@ python pipeline/fetch_power.py
 python pipeline/fetch_terrain.py      # needs a NASA Earthdata login
 python pipeline/build_bundle.py
 ```
+
+## Tests
+
+Scoring lives in `pipeline/scoring.py` (source of truth) and `web/src/lib/scoring.js` (exact port). Both run the shared fixture `pipeline/tests/fixture.json` and must agree exactly.
+
+```bash
+python -m pytest pipeline/tests     # needs: pip install pytest
+cd web && npm test
+```
+
+In dev mode the app also recomputes the default ranking and `console.warn`s on any mismatch with `scores.json`.
 
 ## Data sources
 

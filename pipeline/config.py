@@ -19,9 +19,8 @@ SITES_RAW = DATA_DIR / "sites_raw.csv"
 # Great-circle distance (km) beyond which a site counts as a new candidate (§5.7).
 NOVELTY_KM = 300
 
-# Minimum per-criterion similarity for a criterion to appear in `why` (§5.6).
-WHY_MIN_SIM = 0.7
-WHY_MAX_ITEMS = 3
+# Explanation thresholds (WHY_MIN_SIM etc.) live in scoring.py / scoring.js so the
+# two implementations share one definition each.
 
 GEOLOGY_CLASSES = ["basalt", "anorthosite", "clay", "sulfate", "evaporite", "sedimentary", "ice"]
 ICE_CLASSES = ["yes", "no"]
