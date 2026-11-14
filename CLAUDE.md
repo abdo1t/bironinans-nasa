@@ -224,6 +224,7 @@ FeatureCollection of Points. `properties`:
         "score": 0,
         "contrib": { "terrain": 0.0, "aridity": 0.0, "temp_range": null },
         "coverage": { "used": 2, "selected": 3 },
+        "scoreRange": [0, 33],
         "why": ["Strongest match: aridity", "Bare ground close to target"],
         "gap": "Much warmer than the target"
       }
