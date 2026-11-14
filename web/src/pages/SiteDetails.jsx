@@ -379,6 +379,12 @@ export default function SiteDetails() {
               Compare ({app.shortlist.length})
             </Link>
           )}
+          {app.target && (
+            <Link className="btn btn--ghost" to={app.linkTo('/mirror', { site: site.id })}>
+              Mirror with {app.target.body === 'moon' ? 'the Moon' : 'Mars'}
+              <span className="sr-only">: see {site.name} beside {app.target.name}</span>
+            </Link>
+          )}
         </div>
       </header>
 

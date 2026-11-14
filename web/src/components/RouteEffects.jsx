@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom'
 import { useBundle } from '../data/useBundle.js'
 
 const APP = 'Earth Analog Finder'
-const TITLES = { '/': 'Start', '/explore': 'Explore', '/compare': 'Compare', '/about': 'About' }
+const TITLES = { '/': 'Start', '/explore': 'Explore', '/compare': 'Compare', '/mirror': 'Planetary Mirror', '/about': 'About' }
 
 /**
  * On a PATHNAME change (not on query-only changes, so slider drags and URL sync are

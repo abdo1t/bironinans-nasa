@@ -124,6 +124,11 @@ export default function SiteCards({
               Show on map<span className="sr-only">: {site.name}</span>
             </button>
           )}
+          {s.scored && (
+            <Link className="btn btn--small btn--ghost" to={linkTo('/mirror', { site: site.id })}>
+              Mirror<span className="sr-only">: see {site.name} beside {target.name}</span>
+            </Link>
+          )}
         </div>
       </li>
     )

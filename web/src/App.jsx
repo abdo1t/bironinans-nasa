@@ -14,6 +14,8 @@ import './styles/app.css'
 
 // The radar chart (Recharts) is only needed on Compare: load it on demand.
 const Compare = lazy(() => import('./pages/Compare.jsx'))
+// Planetary Mirror (terrain images, evidence panel): also on demand, off the main journey.
+const Mirror = lazy(() => import('./pages/Mirror.jsx'))
 
 /** Original mark: a target point on an orbit ring (no agency insignia). */
 function BrandMark() {
@@ -44,6 +46,7 @@ function Header() {
           Compare{n ? ` (${n})` : ''}
           {n > 0 && <span className="sr-only"> sites selected</span>}
         </NavLink>
+        <NavLink to={app.linkTo('/mirror')}>Mirror</NavLink>
         <NavLink to={app.linkTo('/about')}>About</NavLink>
       </nav>
     </header>
@@ -157,6 +160,7 @@ export default function App() {
                   <Route path="/explore" element={<Explore />} />
                   <Route path="/site/:id" element={<SiteDetails />} />
                   <Route path="/compare" element={<Compare />} />
+                  <Route path="/mirror" element={<Mirror />} />
                   <Route path="/about" element={<About />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
