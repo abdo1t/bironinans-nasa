@@ -14,7 +14,7 @@ export default function TargetReference({ target, features, isMock, open = false
     <Disclosure
       className={`target-ref ${className}`.trim()}
       defaultOpen={open}
-      title={`Target reference values for ${target.name}`}
+      title={`What we know about ${target.name}`}
       hint={
         <>
           {usable} of {features.length} criteria {isMock ? 'set' : 'verified; the rest are excluded from scores'}{' '}

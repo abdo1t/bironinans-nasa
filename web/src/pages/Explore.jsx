@@ -16,7 +16,7 @@ import { availabilityNotice, dataAvailability } from '../lib/explain.js'
 import { bodyLabel } from '../lib/format.js'
 import { missionTitle } from '../lib/missions.js'
 import { PRESETS } from '../lib/presets.js'
-import { RANK_METHODS, RANK_ORDER } from '../lib/rankMethods.js'
+import { RANK_METHODS } from '../lib/rankMethods.js'
 import { SCENARIO_LIMITATION, matchScenario } from '../lib/scenarios.js'
 import { LIMITATIONS_NOTE } from '../lib/scoring.js'
 import { useAppState } from '../state/AppState.jsx'
@@ -44,8 +44,8 @@ function MissionBrief({ scenario, features, availability }) {
   return (
     <Disclosure
       className="mission-brief"
-      title={`Mission brief: ${scenario.label}`}
-      hint="ranks resemblance, not mission suitability"
+      title={`About this example: ${scenario.label}`}
+      hint="what drives the ranking, and its limits"
     >
       <p>
         <strong>Screening for:</strong> {scenario.screening}
@@ -134,6 +134,30 @@ export default function Explore() {
     : missionTitle(app.presetId)
   const topIds = scoredEntries.slice(0, 3).map((r) => r.site)
   const method = RANK_METHODS[app.rankBy] || RANK_METHODS.score
+  // Plain-language ranking explanation shared by the map and list views. Missing data is
+  // stated in ordinary words whenever any scored place rests on incomplete measurements.
+  const partial = scoredEntries.filter((r) => r.coverage.used < r.coverage.selected).length
+  const rankingHelp = (
+    <div id="rankby-help" className="ranking-help">
+      <p>
+        Ranked by how closely each place’s measured characteristics match this site.{' '}
+        <Term id="score">Higher score</Term> = closer match, not mission suitability.
+      </p>
+      {app.rankBy === 'min' && (
+        <p className="ranking-help__method">
+          <strong>Most complete evidence first</strong> — places with missing data move down.
+          <span className="sr-only"> {method.help}</span>
+        </p>
+      )}
+      {partial > 0 && (
+        <p className="ranking-help__gaps">
+          <span aria-hidden="true">⚠ </span>
+          {partial === 1 ? '1 place is' : `${partial} places are`} missing some measurements, so this ranking may
+          change. <Term id="range">Why?</Term>
+        </p>
+      )}
+    </div>
+  )
   const tray = (
     <ShortlistBar
       shortlist={app.shortlist}
@@ -161,12 +185,17 @@ export default function Explore() {
       <aside id="explore-panel" className="explore__panel" aria-label="Mission and criteria" hidden={!panelOpen}>
         <div className="explore__panel-inner">
           <div className="explore__panel-head">
-            <h2>Mission</h2>
+            <h2>Your search</h2>
             <button type="button" className="btn btn--ghost btn--small" onClick={() => setPanelOpen(false)}>
-              Hide<span className="sr-only"> mission controls</span>
+              Hide<span className="sr-only"> search options</span>
             </button>
           </div>
-          <CriteriaPanel advancedOpen={advancedOpen} onAdvancedToggle={onAdvancedToggle} />
+          <CriteriaPanel
+            advancedOpen={advancedOpen}
+            onAdvancedToggle={onAdvancedToggle}
+            rankBy={app.rankBy}
+            onRankBy={app.setRankBy}
+          />
         </div>
       </aside>
 
@@ -174,7 +203,8 @@ export default function Explore() {
         <header className="explore__head">
           <div className="explore__title">
             <h1 id="explore-title">
-              Earth analogs for {app.target.name} <span className="muted">({bodyLabel(app.target.body)})</span>
+              Places on Earth like {app.target.name}{' '}
+              <span className="muted">({bodyLabel(app.target.body)})</span>
             </h1>
             <p className="explore__sub">
               {!panelOpen && (
@@ -185,14 +215,14 @@ export default function Explore() {
                   aria-controls="explore-panel"
                   onClick={() => setPanelOpen(true)}
                 >
-                  Change mission
+                  Change search
                 </button>
               )}
               <span>
-                Mission: <strong>{missionLabel}</strong>
+                Objective: <strong>{missionLabel}</strong>
               </span>
               <span className="muted">
-                {scoredCount} of {data.sites.length} sites scored
+                {scoredCount} of {data.sites.length} places scored
               </span>
               {data.isMock && (
                 <span>
@@ -202,24 +232,13 @@ export default function Explore() {
             </p>
           </div>
           <div className="explore__controls">
-            <div className="rankby">
-              <span id="rankby-label" className="rankby__label">
-                <Term id="rankBy">Rank by</Term>
-              </span>
-              <div className="seg" role="group" aria-labelledby="rankby-label" aria-describedby="rankby-help">
-                {RANK_ORDER.map((id) => (
-                  <button key={id} type="button" aria-pressed={app.rankBy === id} onClick={() => app.setRankBy(id)}>
-                    {RANK_METHODS[id].label}
-                  </button>
-                ))}
-              </div>
-            </div>
+            {/* The ranking method lives in Advanced options; the list is the non-map alternative. */}
             <div className="seg" role="group" aria-label="View">
               <button type="button" aria-pressed={view === 'map'} onClick={() => setView('map')}>
                 Map
               </button>
               <button type="button" aria-pressed={view === 'list'} onClick={() => setView('list')}>
-                Table
+                List
               </button>
             </div>
           </div>
@@ -229,7 +248,7 @@ export default function Explore() {
 
         {notice && (
           <p className="avail-notice" role="note">
-            <strong>Data availability:</strong> {notice}
+            <strong>Some measurements aren’t available yet.</strong> {notice}
           </p>
         )}
 
@@ -252,18 +271,8 @@ export default function Explore() {
             <MapView {...shared} isMock={data.isMock} active={active} onActive={onActive} focus={focus} />
             <section className="explore__results" aria-labelledby="results-title">
               <header className="explore__results-head">
-                <h2 id="results-title">Recommended sites</h2>
-                <p id="rankby-help" className="hint">
-                  {method.short}
-                  <span className="sr-only"> {method.help}</span>
-                </p>
-                <p className="explore__key">
-                  <span>How to read:</span>
-                  <Term id="score">Score</Term>
-                  <Term id="range">Range</Term>
-                  <Term id="evidence">Evidence</Term>
-                  <Term id="catalogued">Catalogued</Term>
-                </p>
+                <h2 id="results-title">Recommended places</h2>
+                {rankingHelp}
               </header>
               <SiteCards {...shared} rankBy={app.rankBy} active={active} onActive={onActive} onShowOnMap={onShowOnMap} />
               {tray}
@@ -271,9 +280,7 @@ export default function Explore() {
           </div>
         ) : (
           <>
-            <p id="rankby-help" className="hint explore__table-help">
-              {method.help}
-            </p>
+            <div className="explore__table-help">{rankingHelp}</div>
             <ResultsList {...shared} />
             {tray}
           </>
@@ -282,8 +289,8 @@ export default function Explore() {
         {!data.isMock && (
           <Disclosure
             className="explore__terrain"
-            title={`Terrain of the target site — ${app.target.name}`}
-            hint="shaded-relief elevation map, generated offline from the scored dataset"
+            title={`Explore the terrain of ${app.target.name}`}
+            hint="shaded-relief elevation map of the Moon/Mars site you are matching"
           >
             <TerrainPreview targetId={app.targetId} isMock={data.isMock} />
           </Disclosure>

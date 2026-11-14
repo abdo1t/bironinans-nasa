@@ -11,11 +11,12 @@ export default function ShortlistBar({ shortlist, siteById, onRemove, onClear, l
   const canQuick = n === 0 && topIds.length >= 2
   return (
     <section className="shortlist" aria-label="Compare shortlist">
-      <span className="shortlist__label" aria-live="polite">
+      {/* With nothing picked the hint says it all; the count stays announced for screen readers. */}
+      <span className={`shortlist__label${n === 0 ? ' sr-only' : ''}`} aria-live="polite">
         Compare {n}/{SHORTLIST_MAX}
       </span>
-      {n === 0 && <span className="muted shortlist__empty">Add 2–3 sites, or compare the leaders.</span>}
-      {n === 1 && <span className="muted shortlist__empty">Add at least one more site.</span>}
+      {n === 0 && <span className="muted shortlist__empty">Select two places to see how they compare.</span>}
+      {n === 1 && <span className="muted shortlist__empty">Add one more place to compare.</span>}
       {n > 0 && (
         <ul className="shortlist__chips">
           {shortlist.map((id) => (
@@ -35,7 +36,7 @@ export default function ShortlistBar({ shortlist, siteById, onRemove, onClear, l
       )}
       {n >= 2 ? (
         <Link className="btn btn--primary" to={linkTo('/compare')}>
-          Compare {n} sites
+          Compare {n} places
         </Link>
       ) : canQuick ? (
         <Link className="btn btn--primary" to={linkTo('/compare', { sites: topIds.join(',') })}>
@@ -46,7 +47,7 @@ export default function ShortlistBar({ shortlist, siteById, onRemove, onClear, l
           Compare
           <span id="shortlist-need" className="sr-only">
             {' '}
-            — pick at least 2 sites first
+            — pick at least 2 places first
           </span>
         </button>
       )}

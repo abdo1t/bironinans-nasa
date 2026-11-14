@@ -1,7 +1,7 @@
 import { useBundle } from '../data/useBundle.js'
 import { dataAvailability, featureScaleText } from '../lib/explain.js'
-import { MISSION_CAVEAT } from '../lib/missions.js'
 import { PRESETS, WEIGHT_MAX, WEIGHT_MIN } from '../lib/presets.js'
+import { RANK_METHODS, RANK_ORDER } from '../lib/rankMethods.js'
 import { weightsEqual } from '../lib/urlState.js'
 import { useAppState } from '../state/AppState.jsx'
 import Disclosure from './Disclosure.jsx'
@@ -14,7 +14,7 @@ import Term from './Term.jsx'
  * Advanced (collapsed by default): one weight slider per criterion. Both drive the
  * same weights in AppState, so there is a single scoring system.
  */
-export default function CriteriaPanel({ advancedOpen = false, onAdvancedToggle }) {
+export default function CriteriaPanel({ advancedOpen = false, onAdvancedToggle, rankBy, onRankBy }) {
   const { data } = useBundle()
   const app = useAppState()
   const atBase = weightsEqual(app.weights, PRESETS[app.basePresetId].weights, data.features)
@@ -25,7 +25,7 @@ export default function CriteriaPanel({ advancedOpen = false, onAdvancedToggle }
     <div className="criteria">
       <TargetSelect
         id="criteria-target"
-        label="Target site"
+        label="Compared with"
         targets={data.targets}
         value={app.targetId}
         onChange={app.setTarget}
@@ -53,17 +53,37 @@ export default function CriteriaPanel({ advancedOpen = false, onAdvancedToggle }
           {rationale}
         </p>
       )}
-      <p className="preset-why preset-why--caveat">{MISSION_CAVEAT}</p>
+      <p className="preset-why preset-why--caveat">
+        An objective only changes what counts most. A high score means resemblance, not mission suitability.
+      </p>
 
+      {!advancedOpen && <p className="criteria__more">Want more control? Open Advanced options.</p>}
       <Disclosure
         className="disclosure--flush criteria__advanced"
-        title="Advanced: criterion weights"
-        hint={app.isCustom ? 'custom' : 'optional'}
+        title="Advanced options"
+        hint={app.isCustom ? 'custom weights active' : 'ranking order and weights'}
         open={advancedOpen}
         onToggle={onAdvancedToggle}
       >
+        {onRankBy && (
+          <fieldset className="rankby-choice">
+            <legend>
+              <Term id="rankBy">Order places by</Term>
+            </legend>
+            {RANK_ORDER.map((id) => (
+              <label key={id} className="rankby-choice__opt">
+                <input type="radio" name="rank-by" value={id} checked={rankBy === id} onChange={() => onRankBy(id)} />
+                <span>
+                  <strong>{id === 'min' ? 'Most complete evidence first' : 'Best match first'}</strong>{' '}
+                  <span className="muted">({RANK_METHODS[id].label})</span>
+                  <span className="rankby-choice__help">{RANK_METHODS[id].help}</span>
+                </span>
+              </label>
+            ))}
+          </fieldset>
+        )}
         <fieldset className="sliders">
-          <legend className="sr-only">Criterion weights</legend>
+          <legend className="sliders__legend">Criterion weights</legend>
           <p className="hint">
             <Term id="weight">0 = ignore · 5 = most important.</Term> The ranking updates as you drag.
           </p>

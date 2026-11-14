@@ -542,6 +542,8 @@
 }
 
 .shortlist__empty {
+  flex: 1 1 9rem;
+  min-width: 0;
   font-size: var(--fs-sm);
 }
 
@@ -642,3 +644,77 @@
   }
 }
 .explore__terrain.disclosure { margin: 0; }
+
+/* ---------------------------------------------------------------- plain-language ranking help */
+
+.ranking-help {
+  font-size: var(--fs-xs);
+  line-height: 1.45;
+  color: var(--text-2);
+}
+
+.ranking-help p {
+  margin: 0.15rem 0 0;
+}
+
+.ranking-help__method {
+  color: var(--text);
+}
+
+/* missing data, in words: the ⚠ mark is decorative, the sentence carries the meaning */
+.ranking-help__gaps {
+  padding: 0.25rem 0.45rem;
+  border-left: 3px solid var(--warn-text);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--panel-2);
+  color: var(--text);
+}
+
+.ranking-help__next {
+  color: var(--muted);
+}
+
+/* ---------------------------------------------------------------- Advanced options */
+
+.criteria__more {
+  margin: var(--space-2) 0 0;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+}
+
+.rankby-choice {
+  margin: 0 0 var(--space-3);
+  padding: 0;
+  border: 0;
+}
+
+.rankby-choice legend,
+.sliders__legend {
+  margin-bottom: 0.3rem;
+  padding: 0;
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  color: var(--text);
+}
+
+.rankby-choice__opt {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.5rem;
+  align-items: start;
+  padding: 0.4rem 0.2rem;
+  min-height: 44px;
+  font-size: var(--fs-sm);
+  cursor: pointer;
+}
+
+.rankby-choice__opt input {
+  margin-top: 0.2rem;
+}
+
+.rankby-choice__help {
+  display: block;
+  margin-top: 0.1rem;
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}

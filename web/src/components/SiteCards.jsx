@@ -73,7 +73,7 @@ export default function SiteCards({
                 </span>
                 {s.hasRange ? (
                   <span className="site-card__range">
-                    <span className="sr-only">possible </span>range{' '}
+                    <span className="sr-only">possible range: </span>could be{' '}
                     <span className={rankBy === 'min' ? 'site-card__lo is-key' : 'site-card__lo'}>
                       {s.min}
                       <span className="sr-only"> (guaranteed minimum)</span>

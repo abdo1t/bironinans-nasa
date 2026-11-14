@@ -132,7 +132,7 @@ export function CoverageBadge({ coverage }) {
       className={`coverage${partial ? ' coverage--partial' : ''}`}
       title={`${used} of ${selected} selected criteria had data for this site and target`}
     >
-      {used}/{selected} criteria
+      {used} of {selected} measured
       <span className="sr-only">{partial ? ' — some data pending' : ''}</span>
     </span>
   )
