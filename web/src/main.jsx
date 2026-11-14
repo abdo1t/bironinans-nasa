@@ -1,9 +1,11 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
+// Base styles first, so page-level stylesheets imported by components can override them.
+import './index.css'
+import './styles/system.css'
 import { BundleProvider } from './data/useBundle.js'
 import App from './App.jsx'
-import './index.css'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

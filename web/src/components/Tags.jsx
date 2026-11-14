@@ -103,15 +103,15 @@ export function SourceTag({ source }) {
   return null
 }
 
-/** Catalogued analog vs a site not in the reference catalogue (NOT a validated new analog). */
+/** Catalogued analog vs uncatalogued candidate (far from every catalogued analog — NOT a validated analog). */
 export function NoveltyTag({ site }) {
   if (site.isNewCandidate) {
     return (
       <span
         className="tag tag--uncatalogued"
-        title={`Not in this project's analog reference catalogue: the nearest catalogued analog is ${site.novelKm} km away. A lead for field validation — not a validated analog.`}
+        title={`Not in this project's analog reference catalogue: the nearest catalogued analog is ${site.novelKm} km away. A lead for field checking — not a validated analog.`}
       >
-        Not in reference catalogue
+        Uncatalogued candidate
       </span>
     )
   }

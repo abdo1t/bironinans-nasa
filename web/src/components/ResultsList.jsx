@@ -1,31 +1,7 @@
 import { Link } from 'react-router-dom'
-import { whyGapSummary } from '../lib/explain.js'
 import { CoverageBadge, EvidenceCoverageTag, NoveltyTag, ScoreBar, ScoreRange } from './Tags.jsx'
-
-function WhyCell({ r }) {
-  const { match, short } = whyGapSummary(r.why, r.gap, r.score)
-  if (r.score === null) return <span className="muted">{short}</span>
-  return (
-    <span className="why-gap">
-      {match && (
-        <span className="why-gap__match">
-          <span aria-hidden="true">✓ </span>
-          <span className="sr-only">Closest match: </span>
-          {match}
-        </span>
-      )}
-      {match && short && <span aria-hidden="true"> · </span>}
-      {short && (
-        <span className="why-gap__short">
-          <span aria-hidden="true">✗ </span>
-          <span className="sr-only">Largest shortfall: </span>
-          {short}
-        </span>
-      )}
-      {!match && !short && <span className="muted">No criterion reaches 70% similarity</span>}
-    </span>
-  )
-}
+import Term from './Term.jsx'
+import WhyGap from './WhyGap.jsx'
 
 export default function ResultsList({
   ranking,
@@ -48,10 +24,16 @@ export default function ResultsList({
           <tr>
             <th scope="col">Rank</th>
             <th scope="col">Site</th>
-            <th scope="col">Score</th>
-            <th scope="col">Coverage</th>
+            <th scope="col">
+              <Term id="score">Score</Term>
+            </th>
+            <th scope="col">
+              <Term id="evidence">Evidence</Term>
+            </th>
             <th scope="col">Why it ranks here</th>
-            <th scope="col">Status</th>
+            <th scope="col">
+              <Term id="catalogued">Known analog?</Term>
+            </th>
             <th scope="col">Compare</th>
           </tr>
         </thead>
@@ -83,7 +65,7 @@ export default function ResultsList({
                   )}
                 </td>
                 <td className="results__why">
-                  <WhyCell r={r} />
+                  <WhyGap entry={r} />
                 </td>
                 <td>
                   <NoveltyTag site={site} />
@@ -95,7 +77,7 @@ export default function ResultsList({
                     checked={listed}
                     disabled={disabled}
                     onChange={() => onToggleShortlist(site.id)}
-                    aria-label={`Add ${site.name} to compare`}
+                    aria-label={`Compare ${site.name}`}
                     title={disabled ? 'You can compare up to 3 sites' : undefined}
                   />
                 </td>

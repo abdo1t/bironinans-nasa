@@ -1,0 +1,143 @@
+import { useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
+import { scoreColor } from '../lib/format.js'
+import { entrySummary } from '../lib/summary.js'
+import { CoverageBadge, EvidenceCoverageTag, NoveltyTag } from './Tags.jsx'
+import WhyGap from './WhyGap.jsx'
+
+/**
+ * Ranked recommendation cards beside the map: the keyboard- and screen-reader-friendly
+ * twin of the map markers (same order, same rank numbers, same status labels).
+ * `active` = { id, source } is the site highlighted on both; a marker click scrolls its
+ * card into view, hovering or focusing a card highlights its marker.
+ */
+export default function SiteCards({
+  ranking,
+  siteById,
+  target,
+  weights,
+  features,
+  shortlist,
+  shortlistFull,
+  onToggleShortlist,
+  linkTo,
+  rankBy,
+  active,
+  onActive,
+  onShowOnMap,
+}) {
+  const refs = useRef({})
+
+  useEffect(() => {
+    if (active?.source !== 'map' || !active.id) return
+    refs.current[active.id]?.scrollIntoView({ block: 'nearest' })
+  }, [active])
+
+  const scored = ranking.filter((r) => r.score !== null)
+  const unscored = ranking.filter((r) => r.score === null)
+
+  const card = (r) => {
+    const site = siteById[r.site]
+    const s = entrySummary(r)
+    const listed = shortlist.includes(site.id)
+    const isActive = active?.id === site.id
+    return (
+      <li
+        key={site.id}
+        ref={(el) => {
+          refs.current[site.id] = el
+        }}
+        className={`site-card${isActive ? ' is-active' : ''}${listed ? ' is-listed' : ''}${s.scored ? '' : ' site-card--none'}`}
+        onMouseEnter={() => onActive(site.id, 'list')}
+        onMouseLeave={() => onActive(null, 'list')}
+        onFocus={() => onActive(site.id, 'list')}
+      >
+        <div className="site-card__head">
+          <span className="site-card__rank" style={{ '--pin': scoreColor(r.score) }} aria-hidden="true">
+            {r.rank ?? '–'}
+          </span>
+          <div className="site-card__id">
+            <h3 className="site-card__name">
+              <span className="sr-only">{r.rank ? `Rank ${r.rank}: ` : 'Not ranked: '}</span>
+              <Link to={linkTo(`/site/${site.id}`)}>{site.name}</Link>
+            </h3>
+            <span className="site-card__country">{site.country}</span>
+          </div>
+          <div className="site-card__score">
+            {s.scored ? (
+              <>
+                <span className="site-card__num">
+                  <span className="sr-only">Score </span>
+                  {s.score}
+                  <span className="site-card__max">/100</span>
+                </span>
+                {s.hasRange ? (
+                  <span className="site-card__range">
+                    <span className="sr-only">possible </span>range{' '}
+                    <span className={rankBy === 'min' ? 'site-card__lo is-key' : 'site-card__lo'}>
+                      {s.min}
+                      <span className="sr-only"> (guaranteed minimum)</span>
+                    </span>
+                    –{s.max}
+                  </span>
+                ) : (
+                  <span className="site-card__range site-card__range--full">no data gaps</span>
+                )}
+              </>
+            ) : (
+              <span className="site-card__noscore">No score</span>
+            )}
+          </div>
+        </div>
+
+        <p className="site-card__meta">
+          {s.scored && <EvidenceCoverageTag target={target} site={site} weights={weights} features={features} />}
+          <CoverageBadge coverage={r.coverage} />
+          <NoveltyTag site={site} />
+        </p>
+
+        <p className="site-card__why">
+          <WhyGap entry={r} />
+        </p>
+
+        <div className="site-card__actions">
+          <Link className="btn btn--small" to={linkTo(`/site/${site.id}`)}>
+            View details<span className="sr-only"> for {site.name}</span>
+          </Link>
+          <button
+            type="button"
+            className={`btn btn--small${listed ? ' is-on' : ''}`}
+            aria-pressed={listed}
+            disabled={!listed && shortlistFull}
+            title={!listed && shortlistFull ? 'You can compare up to 3 sites' : undefined}
+            onClick={() => onToggleShortlist(site.id)}
+          >
+            {listed ? '✓ In compare' : shortlistFull ? 'Compare full (3)' : '+ Compare'}
+            <span className="sr-only"> {site.name}</span>
+          </button>
+          {onShowOnMap && (
+            <button type="button" className="btn btn--small btn--ghost" onClick={() => onShowOnMap(site.id)}>
+              Show on map<span className="sr-only">: {site.name}</span>
+            </button>
+          )}
+        </div>
+      </li>
+    )
+  }
+
+  return (
+    <div className="site-cards">
+      <ol className="site-cards__list" aria-label={`Earth sites ranked for ${target.name}`}>
+        {scored.map(card)}
+      </ol>
+      {unscored.length > 0 && (
+        <>
+          <h3 className="site-cards__sub">Not scored — insufficient evidence</h3>
+          <ul className="site-cards__list" aria-label="Sites without a score">
+            {unscored.map(card)}
+          </ul>
+        </>
+      )}
+    </div>
+  )
+}

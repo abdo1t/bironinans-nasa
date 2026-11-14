@@ -272,6 +272,11 @@ select {
   cursor: pointer;
 }
 
+/* inset ring: the group clips an outside outline */
+.toggle button:focus-visible {
+  outline-offset: -3px;
+}
+
 .toggle button[aria-pressed='true'] {
   background: var(--panel-2);
   color: var(--text);
@@ -441,6 +446,8 @@ select {
 }
 
 .chip__x {
+  min-width: 24px; /* WCAG 2.5.8 target size */
+  min-height: 24px;
   border: 0;
   background: transparent;
   color: var(--muted);
@@ -535,52 +542,8 @@ select {
   margin-top: -0.25rem;
 }
 
-/* ---------------------------------------------------------------- explore */
-
-.app-main:has(.explore) {
-  padding: 0;
-}
-
-.explore {
-  display: grid;
-  grid-template-columns: 300px minmax(0, 1fr);
-  min-height: calc(100vh - 90px);
-}
-
-.explore__panel {
-  background: var(--panel);
-  border-right: 1px solid var(--border);
-  padding: 1rem 1.25rem;
-  overflow-y: auto;
-  max-height: calc(100vh - 90px);
-  position: sticky;
-  top: 0;
-}
-
-.explore__main {
-  padding: 1rem 1.25rem;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.explore__head {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1rem;
-}
-
-.explore__head h1 {
-  font-size: 1.3rem;
-  margin: 0;
-}
-
-.explore__head p {
-  margin: 0.2rem 0 0;
-  font-size: 0.9rem;
-}
+/* ---------------------------------------------------------------- explore
+   Layout, map, markers, legend, cards and the compare tray live in styles/explore.css. */
 
 .criteria .sliders {
   border: 0;
@@ -618,6 +581,7 @@ select {
 }
 
 .slider input[type='range'] {
+  min-height: 24px;
   width: 100%;
   accent-color: var(--accent);
   margin: 0.25rem 0 0;
@@ -627,86 +591,6 @@ select {
   margin: 0;
   font-size: 0.75rem;
   color: var(--muted);
-}
-
-.shortlist {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-}
-
-.shortlist__label {
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.shortlist__chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  flex: 1;
-}
-
-.shortlist .btn--primary {
-  margin-left: auto;
-}
-
-/* map */
-
-.map-wrap {
-  position: relative;
-  flex: 1;
-  min-height: 420px;
-  border-radius: var(--radius);
-  overflow: hidden;
-  border: 1px solid var(--border);
-}
-
-.map {
-  position: absolute;
-  inset: 0;
-  background: #1e1e1e;
-}
-
-.legend {
-  position: absolute;
-  right: 0.75rem;
-  bottom: 1.75rem;
-  z-index: 500;
-  background: rgba(24, 27, 36, 0.94);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 0.6rem 0.8rem;
-  font-size: 0.8rem;
-}
-
-.legend__title {
-  margin: 0 0 0.35rem;
-  font-weight: 600;
-  display: flex;
-  gap: 0.4rem;
-  align-items: center;
-}
-
-.legend ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 0.2rem;
-}
-
-.legend li {
-  display: flex;
-  align-items: center;
 }
 
 .leaflet-popup-content-wrapper,
@@ -880,9 +764,11 @@ thead th {
   margin: 0 0 0.25rem;
 }
 
-.bars tr.is-unselected,
-.compare-table tr.is-unselected {
-  opacity: 0.6;
+/* Weight-0 / unavailable rows: dimmed by colour, not opacity (keeps text >= 4.5:1). */
+.bars tr.is-unselected > *,
+.compare-table tr.is-unselected > *,
+.target-ref__table tr.is-unselected > * {
+  color: var(--text-2);
 }
 
 .bars th[scope='row'] {
@@ -991,21 +877,6 @@ thead th {
 }
 
 @media (max-width: 900px) {
-  .explore {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .explore__panel {
-    position: static;
-    max-height: none;
-    border-right: 0;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .map-wrap {
-    min-height: 60vh;
-  }
-
   .two-col {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -1025,15 +896,8 @@ thead th {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .explore__head,
   .site__head {
     flex-direction: column;
-  }
-
-  .legend {
-    font-size: 0.72rem;
-    right: 0.5rem;
-    bottom: 1.5rem;
   }
 }
 
@@ -1159,8 +1023,12 @@ thead th {
 .why-gap {
   display: flex;
   flex-wrap: wrap;
-  gap: 0 0.25rem;
+  gap: 0 0.7rem;
   font-size: 0.85rem;
+}
+
+.why-gap--none {
+  color: var(--warn-text);
 }
 
 .why-gap__match {
@@ -1209,35 +1077,6 @@ thead th {
   color: var(--warn-text);
   background: var(--warn-bg);
   font-size: 0.85rem;
-}
-
-.mission-brief {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--accent);
-  border-radius: var(--radius);
-  padding: 0.6rem 0.9rem;
-  font-size: 0.85rem;
-}
-
-.mission-brief h2 {
-  font-size: 0.95rem;
-  margin: 0;
-}
-
-.mission-brief p {
-  margin: 0.3rem 0 0;
-}
-
-.mission-brief__head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.mission-brief__limit {
-  color: var(--text-2);
 }
 
 .scenarios {
@@ -1307,24 +1146,3 @@ thead th {
   font-size: 0.75rem;
 }
 
-.explore__controls {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
-  flex-wrap: wrap;
-  flex-shrink: 0;
-}
-
-.rankby {
-  font-size: 0.85rem;
-  color: var(--text-2);
-}
-
-.rankby select {
-  padding: 0.3rem 0.4rem;
-  margin-left: 0.3rem;
-}
-
-.rankby__help {
-  margin: -0.25rem 0 0;
-}

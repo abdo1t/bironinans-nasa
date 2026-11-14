@@ -1,0 +1,643 @@
+/* Explore: mission controls | map | recommended sites.
+   Desktop: the controls stay in view (sticky, own scroll) so a weight change and the
+   re-ranked map/list are visible together. Small screens: everything stacks and the
+   controls collapse behind "Change mission". */
+
+.app-main:has(.explore) {
+  padding: 0;
+}
+
+.explore {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+}
+
+.explore--collapsed {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* ---------------------------------------------------------------- controls panel */
+
+.explore__panel {
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  min-width: 0;
+}
+
+.explore__panel-inner {
+  position: sticky;
+  top: 0;
+  max-height: 100dvh;
+  overflow-y: auto;
+  padding: 0.75rem 1rem 1.5rem;
+}
+
+.explore__panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.6rem;
+}
+
+.explore__panel-head h2 {
+  margin: 0;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.criteria .field {
+  margin-bottom: 0.85rem;
+}
+
+.criteria .missions {
+  margin-bottom: 0.6rem;
+}
+
+.criteria__custom {
+  margin: 0 0 0.5rem;
+  padding: 0.4rem 0.6rem;
+  font-size: var(--fs-sm);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+}
+
+.preset-why--caveat {
+  color: var(--muted);
+  margin-bottom: 0.85rem;
+}
+
+.criteria__advanced .sliders {
+  margin-bottom: 0.75rem;
+}
+
+.criteria__advanced .hint {
+  margin: 0 0 0.4rem;
+  font-size: var(--fs-xs);
+}
+
+.criteria__advanced .hint .term {
+  white-space: normal;
+}
+
+/* ---------------------------------------------------------------- main column */
+
+.explore__main {
+  padding: 0.75rem 1rem 1rem;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.explore__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 0.6rem 1rem;
+}
+
+.explore__title {
+  min-width: 0;
+}
+
+.explore__head h1 {
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.explore__sub {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.9rem;
+  margin: 0.25rem 0 0;
+  font-size: 0.88rem;
+}
+
+.explore__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.9rem;
+}
+
+.rankby {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+}
+
+.explore__controls .seg button {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.9rem;
+}
+
+.mission-brief.disclosure {
+  margin: 0;
+  border-left: 3px solid var(--accent);
+  font-size: var(--fs-sm);
+}
+
+.mission-brief .disclosure__body p {
+  margin: 0 0 0.35rem;
+}
+
+.mission-brief__limit {
+  color: var(--text-2);
+}
+
+.avail-notice {
+  font-size: var(--fs-sm);
+}
+
+.explore__table-help {
+  margin: 0;
+}
+
+/* ---------------------------------------------------------------- map + results */
+
+.explore__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+  gap: 0.75rem;
+  height: clamp(440px, calc(100dvh - 276px), 860px);
+}
+
+.map-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+  min-height: 0;
+}
+
+.map-wrap {
+  position: relative;
+  isolation: isolate; /* keep Leaflet's z-indexes (400–1000) inside the map */
+  flex: 1;
+  min-height: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.map {
+  position: absolute;
+  inset: 0;
+  background: #1e1e1e;
+}
+
+.explore__results {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.explore__results-head {
+  padding: 0.5rem 0.8rem 0.35rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.explore__results-head h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.explore__results-head .hint {
+  margin: 0.1rem 0 0;
+  font-size: 0.78rem;
+}
+
+.explore__key {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 0.45rem;
+  margin: 0.1rem 0 0;
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+/* ---------------------------------------------------------------- recommendation cards */
+
+.site-cards {
+  position: relative; /* clips absolutely-positioned .sr-only text inside the scroller */
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+
+.site-cards__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.site-cards__sub {
+  margin: 0.9rem 0.2rem 0.4rem;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.site-card {
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.5rem 0.65rem;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  scroll-margin: 0.5rem;
+}
+
+.site-card.is-listed {
+  border-left: 3px solid var(--accent);
+}
+
+.site-card.is-active {
+  border-color: var(--accent);
+  background: var(--panel-3);
+}
+
+.site-card--none {
+  background: transparent;
+  border-style: dashed;
+}
+
+.site-card__head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.6rem;
+  align-items: start;
+}
+
+/* same ring-and-number look as the map marker */
+.site-card__rank {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  border: 3px solid var(--pin, var(--border-strong));
+  background: var(--bg);
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.site-card--none .site-card__rank {
+  border: 2px dashed var(--pin, var(--muted));
+  color: var(--muted);
+}
+
+.site-card__name {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.25;
+}
+
+.site-card__name a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.site-card__name a:hover {
+  text-decoration: underline;
+}
+
+.site-card__country {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.site-card__score {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.site-card__num {
+  font-size: 1.35rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.site-card__max {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--muted);
+  margin-left: 0.1rem;
+}
+
+.site-card__range {
+  font-size: var(--fs-xs);
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Conservative ranking orders by the low end of the range: underline it */
+.site-card__lo.is-key {
+  color: var(--text);
+  font-weight: 700;
+  border-bottom: 2px solid var(--accent);
+}
+
+.site-card__range--full {
+  color: var(--muted);
+}
+
+.site-card__noscore {
+  color: var(--muted);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.site-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem 0.5rem;
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--text-2);
+}
+
+.site-card__why {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.7rem;
+  margin: 0;
+  font-size: 0.82rem;
+}
+
+.site-card__match {
+  color: var(--ok);
+}
+
+.site-card__short {
+  color: var(--warn-text);
+}
+
+.site-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.btn.is-on {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* ---------------------------------------------------------------- map markers */
+
+.leaflet-div-icon.pin-wrap,
+.pin-wrap {
+  background: none;
+  border: 0;
+}
+
+.pin {
+  position: relative;
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 4px solid var(--pin);
+  background: #0f1117;
+  color: #fff;
+  font: 700 12px/1 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-variant-numeric: tabular-nums;
+  /* light hairline keeps the darkest score band visible on the dark basemap */
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.6),
+    0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.pin--none {
+  border: 2px dashed var(--pin);
+  background: rgba(15, 17, 23, 0.75);
+  color: #c3c2b7;
+  box-shadow: none;
+}
+
+/* "not in reference catalogue": dashed outer ring (shape, not colour) */
+.pin--uncat::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border: 1.5px dashed #f0efec;
+  border-radius: 50%;
+}
+
+/* in the compare shortlist: accent dot */
+.pin--listed::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 1.5px solid #0f1117;
+}
+
+.pin-wrap.is-active .pin {
+  transform: scale(1.2);
+  box-shadow:
+    0 0 0 3px var(--accent),
+    0 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+.pin-wrap:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
+  border-radius: 50%;
+}
+
+/* ---------------------------------------------------------------- map key */
+
+.map-key {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.15rem 0.8rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: var(--fs-xs);
+  color: var(--text-2);
+}
+
+.map-key li {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.map-key__head {
+  color: var(--muted);
+  gap: 0.35rem;
+}
+
+.map-key .swatch {
+  margin-right: 0.3rem;
+}
+
+.swatch--hollow {
+  border-width: 3px;
+}
+
+.swatch--dashed {
+  border: 2px dashed;
+  background: transparent;
+}
+
+.swatch--dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  margin: 0 0.5rem 0 0.12rem;
+  background: var(--accent);
+}
+
+/* ---------------------------------------------------------------- compare tray */
+
+.shortlist {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--panel-2);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  box-shadow: 0 -6px 16px rgba(0, 0, 0, 0.35);
+}
+
+.shortlist__label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.shortlist__empty {
+  font-size: var(--fs-sm);
+}
+
+.shortlist__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  min-width: 0;
+}
+
+.shortlist .btn--primary {
+  margin-left: auto;
+}
+
+/* In the map view the tray is the footer of the results column (always in view). */
+.explore__results .shortlist {
+  position: static;
+  border: 0;
+  border-top: 1px solid var(--border-strong);
+  border-radius: 0 0 var(--radius) var(--radius);
+  box-shadow: none;
+  padding: 0.45rem 0.6rem;
+}
+
+/* ---------------------------------------------------------------- responsive */
+
+@media (max-width: 1180px) {
+  .explore {
+    grid-template-columns: 270px minmax(0, 1fr);
+  }
+
+  .explore--collapsed {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .explore__body {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 320px);
+  }
+}
+
+@media (max-width: 900px) {
+  .explore,
+  .explore--collapsed {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .explore__panel {
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .explore__panel-inner {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .explore__body {
+    grid-template-columns: minmax(0, 1fr);
+    height: auto;
+  }
+
+  .map-wrap {
+    flex: none;
+    height: 56vh;
+    min-height: 320px;
+  }
+
+  .site-cards {
+    overflow: visible;
+  }
+
+  .explore__results .shortlist {
+    position: sticky;
+    bottom: 0;
+    box-shadow: 0 -6px 16px rgba(0, 0, 0, 0.35);
+  }
+
+  .explore__controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 640px) {
+  .explore__main {
+    padding: 0.6rem 0.75rem 0.75rem;
+  }
+
+  .shortlist .btn--primary {
+    margin-left: 0;
+    flex: 1;
+    justify-content: center;
+  }
+}
