@@ -512,3 +512,16 @@
   font-size: var(--fs-md);
   color: var(--text);
 }
+
+/* Mission Control v2: dossier */
+.site__kicker {
+  margin: 0.25rem 0 0.15rem;
+}
+
+.site__terrain {
+  margin: var(--space-4) 0;
+}
+
+.site__terrain .tpair__grid {
+  max-width: 640px;
+}

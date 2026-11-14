@@ -4,6 +4,7 @@ import Disclosure from '../components/Disclosure.jsx'
 import ScoreBars from '../components/ScoreBars.jsx'
 import TargetReference from '../components/TargetReference.jsx'
 import TargetSelect from '../components/TargetSelect.jsx'
+import TerrainPair from '../components/TerrainPair.jsx'
 import TerrainPreview from '../components/TerrainPreview.jsx'
 import Term from '../components/Term.jsx'
 import {
@@ -334,6 +335,7 @@ export default function SiteDetails() {
         <Link to={app.linkTo('/explore')}>← Back to results</Link>
       </p>
 
+      <p className="kicker site__kicker">Research dossier · Earth candidate</p>
       <header className="site__head">
         <div className="site__id">
           <h1>{site.name}</h1>
@@ -645,6 +647,12 @@ export default function SiteDetails() {
             </p>
           </section>
         </>
+      )}
+
+      {target && (
+        <div className="site__terrain">
+          <TerrainPair target={target} site={site} isMock={data.isMock} linkTo={app.linkTo} />
+        </div>
       )}
 
       <p className="card card--accent site-limit" role="note">

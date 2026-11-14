@@ -6,7 +6,7 @@ import Term from '../components/Term.jsx'
 import WorldCard from '../components/WorldCard.jsx'
 import { useBundle } from '../data/useBundle.js'
 import { bodyLabel } from '../lib/format.js'
-import { MISSION_CAVEAT, missionTitle } from '../lib/missions.js'
+import { missionTitle } from '../lib/missions.js'
 import { PRESETS } from '../lib/presets.js'
 import { RANK_METHODS } from '../lib/rankMethods.js'
 import { SCENARIOS, matchScenario, scenarioQuery } from '../lib/scenarios.js'
@@ -43,6 +43,41 @@ function StepTitle({ n, done, id, children }) {
  * first-time visitor makes two choices; both steps are visible from the start;
  * the examples below the button are shortcuts to documented scenarios.
  */
+/** Decorative "two worlds, one exploration" emblem: a planet and Earth joined by a measured bridge. */
+function MirrorEmblem() {
+  return (
+    <svg className="home-emblem" viewBox="0 0 320 200" aria-hidden="true" focusable="false">
+      <defs>
+        <radialGradient id="em-planet" cx="35%" cy="35%" r="70%">
+          <stop offset="0" stopColor="#f0a07a" />
+          <stop offset="1" stopColor="#8a3d1f" />
+        </radialGradient>
+        <radialGradient id="em-earth" cx="35%" cy="35%" r="70%">
+          <stop offset="0" stopColor="#7fe3d3" />
+          <stop offset="1" stopColor="#14506b" />
+        </radialGradient>
+      </defs>
+      <ellipse cx="160" cy="100" rx="150" ry="62" fill="none" stroke="#1e3557" strokeWidth="1" />
+      <ellipse cx="160" cy="100" rx="118" ry="44" fill="none" stroke="#1e3557" strokeWidth="1" strokeDasharray="3 5" />
+      <circle cx="72" cy="100" r="42" fill="url(#em-planet)" />
+      <circle cx="248" cy="100" r="42" fill="url(#em-earth)" />
+      <line x1="160" y1="44" x2="160" y2="156" stroke="#2fd6f0" strokeWidth="1.25" strokeDasharray="2 4" />
+      {[70, 86, 102, 118, 134].map((y, i) => (
+        <g key={y}>
+          <line x1="118" y1={y} x2="202" y2={y} stroke="#2b4a74" strokeWidth="1" />
+          <rect x="148" y={y - 3} width={[22, 18, 9, 14, 20][i]} height="6" rx="3" fill={i === 2 ? '#f2a65a' : '#3cc9b0'} />
+        </g>
+      ))}
+      <text x="72" y="170" textAnchor="middle" fill="#8ea3c2" fontSize="10" fontFamily="ui-monospace, monospace" letterSpacing="1.5">
+        MOON · MARS
+      </text>
+      <text x="248" y="170" textAnchor="middle" fill="#8ea3c2" fontSize="10" fontFamily="ui-monospace, monospace" letterSpacing="1.5">
+        EARTH
+      </text>
+    </svg>
+  )
+}
+
 export default function Home() {
   const { data } = useBundle()
   const app = useAppState()
@@ -101,6 +136,7 @@ export default function Home() {
   return (
     <section className="page home">
       <header className="home-hero">
+        <div className="home-hero__text">
         <p className="kicker">NASA Space Apps Challenge 2026 · research prototype</p>
         <h1>Find places on Earth that resemble the Moon and Mars</h1>
         <p className="home-hero__lede">
@@ -112,6 +148,19 @@ export default function Home() {
           Shows resemblance, not mission readiness. {LIMITATIONS_NOTE}{' '}
           <Link to={app.linkTo('/about')}>How it works</Link>
         </p>
+        <ul className="home-questions" aria-label="What each result answers">
+          <li>
+            <span className="home-questions__q">Where</span> the closest Earth places are, on a map
+          </li>
+          <li>
+            <span className="home-questions__q">Why</span> they match — and where they differ
+          </li>
+          <li>
+            <span className="home-questions__q">How reliable</span> the evidence behind each score is
+          </li>
+        </ul>
+        </div>
+        <MirrorEmblem />
       </header>
 
       <div className="home-flow">
