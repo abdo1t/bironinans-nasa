@@ -63,3 +63,25 @@ export function keyDifferences(sites, target, features, weights, { limit = 3, mi
   differences.sort((a, b) => b.weight * b.spread - a.weight * a.spread)
   return { differences: differences.slice(0, limit), notComparable }
 }
+
+/**
+ * "How reliable is this result?" in plain words, from one scoreSite / ranking entry.
+ * Display only. `minCriteria` = the bundle's minimum usable criteria for a score.
+ * Missing data is described as missing, never as a low value.
+ */
+export function plainReliability(entry, minCriteria = 1) {
+  if (!entry?.coverage) return null
+  const { used, selected } = entry.coverage
+  const scored = entry.score !== null && entry.score !== undefined
+  if (!scored) {
+    return `Not enough measurements to score this place: ${used} of ${selected} are available and at least ${minCriteria} are needed. This is missing data, not a poor match.`
+  }
+  if (used === selected) {
+    return `Based on all ${selected} selected measurements, so missing data cannot move this score.`
+  }
+  if (hasOpenRange(entry)) {
+    const [lo, hi] = entry.scoreRange
+    return `Based on ${used} of ${selected} measurements. The missing ones could put the score anywhere from ${lo} to ${hi}, so treat this result with caution until they are measured.`
+  }
+  return `Based on ${used} of ${selected} measurements. The others have no value for the Moon/Mars site, so they are left out and cannot move this score.`
+}

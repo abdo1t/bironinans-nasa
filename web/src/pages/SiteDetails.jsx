@@ -25,7 +25,7 @@ import { PRESETS } from '../lib/presets.js'
 import { RANK_METHODS } from '../lib/rankMethods.js'
 import { SCENARIO_LIMITATION, matchScenario } from '../lib/scenarios.js'
 import { LIMITATIONS_NOTE, WHY_MIN_SIM, isMissing, scoreSite } from '../lib/scoring.js'
-import { guaranteedMin, hasOpenRange } from '../lib/summary.js'
+import { entrySummary, guaranteedMin, hasOpenRange, plainReliability } from '../lib/summary.js'
 import { useAppState } from '../state/AppState.jsx'
 import '../styles/site.css'
 
@@ -325,6 +325,7 @@ export default function SiteDetails() {
   const scenario = target && !app.isCustom ? matchScenario(app.targetId, app.presetId) : null
   const diff = result ? readDifferences(result, site, target, app.weights, data.features) : null
   const openRange = scored && hasOpenRange(result)
+  const summary = entrySummary(result)
   const fullCoverage = Boolean(result) && result.coverage.used === result.coverage.selected
 
   return (
@@ -405,11 +406,44 @@ export default function SiteDetails() {
               </p>
             </div>
 
+            {/* The plain questions come first; the expert figures follow in the same card. */}
+            <div className="site-answers">
+              <section className="site-answer" aria-labelledby="site-why-title">
+                <h3 id="site-why-title">Why this place?</h3>
+                <p>
+                  {scored ? (
+                    <>
+                      {ranked?.rank ? `Ranked #${ranked.rank} of ${scoredCount}` : 'Scored'} with a match score of{' '}
+                      <strong>{result.score}/100</strong>.{' '}
+                      {summary.match ? (
+                        <>
+                          Strongest similarity: <strong>{summary.match}</strong>.
+                        </>
+                      ) : (
+                        'No characteristic is a close match.'
+                      )}
+                    </>
+                  ) : (
+                    'It could not be scored, so it is listed but not recommended.'
+                  )}{' '}
+                  {site.knownAnalog
+                    ? 'It is also a published analog site.'
+                    : site.isNewCandidate
+                      ? 'It is an uncatalogued candidate: a lead worth field checking, not a validated analog.'
+                      : ''}
+                </p>
+              </section>
+              <section className="site-answer site-answer--reliability" aria-labelledby="site-reliable-title">
+                <h3 id="site-reliable-title">How reliable is this result?</h3>
+                <p>{plainReliability(result, data.minCriteria)}</p>
+              </section>
+            </div>
+
             {scored ? (
               <dl className="site-stats">
                 <div className="stat">
                   <dt className="stat__label">
-                    <Term id="score">Similarity score</Term>
+                    <Term id="score">Match score</Term>
                   </dt>
                   <dd className="stat__value">
                     <ScoreBadge score={result.score} large />
@@ -496,7 +530,7 @@ export default function SiteDetails() {
 
           <div className="two-col site-two">
             <section className="card" aria-labelledby="site-match-title">
-              <h2 id="site-match-title">What matches</h2>
+              <h2 id="site-match-title">What matches?</h2>
               {result.why.length ? (
                 <ul className="site-list site-list--match">
                   {result.why.map((w) => (
@@ -511,14 +545,17 @@ export default function SiteDetails() {
             </section>
 
             <section className="card" aria-labelledby="site-differ-title">
-              <h2 id="site-differ-title">What differs</h2>
+              <h2 id="site-differ-title">What’s different?</h2>
               <p className="site-gap">
                 {diff.gapRow && 'Largest shortfall: '}
-                {result.gap}
+                {/* Display only: "No gaps" would read as "nothing missing" when some criteria have no data. */}
+                {scored && !diff.gapRow && diff.leftOut.length > 0 ? 'No large differences where data exist' : result.gap}
                 {scored && !diff.gapRow && (
                   <span className="site-gap__detail">
                     Every selected criterion with data is at least {Math.round(WHY_MIN_SIM * 100)}% similar to the
                     target.
+                    {diff.leftOut.length > 0 &&
+                      ` But ${diff.leftOut.length} ${diff.leftOut.length === 1 ? 'characteristic was' : 'characteristics were'} not measured or not usable here (listed below), so differences there are unknown.`}
                   </span>
                 )}
                 {diff.gapRow && (
@@ -541,7 +578,7 @@ export default function SiteDetails() {
               )}
               {diff.leftOut.length > 0 && (
                 <>
-                  <h3>Not counted in the score</h3>
+                  <h3>Not measured or not usable here</h3>
                   <ul className="site-list site-list--pending">
                     {diff.leftOut.map((row) => (
                       <li key={row.f.id}>
@@ -555,7 +592,7 @@ export default function SiteDetails() {
           </div>
 
           <section className="card site-relevance" aria-labelledby="site-relevance-title">
-            <h2 id="site-relevance-title">Research relevance</h2>
+            <h2 id="site-relevance-title">What this means for research</h2>
             {app.isCustom ? (
               <p>
                 <strong>Custom weights:</strong> this comparison uses custom criterion weights, so it reflects those priorities rather
@@ -608,7 +645,7 @@ export default function SiteDetails() {
         <strong>Limitation:</strong> {LIMITATIONS_NOTE} {jump('limitations', 'More limitations')}
       </p>
 
-      <h2 className="site__more-title">Technical detail</h2>
+      <h2 className="site__more-title">Full scientific detail</h2>
 
       <Disclosure
         id="evidence"

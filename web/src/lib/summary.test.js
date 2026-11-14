@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { missionEmphasis, MISSION_ORDER } from './missions.js'
 import { PRESETS } from './presets.js'
 import { RANK_METHODS, RANK_ORDER } from './rankMethods.js'
-import { entrySummary, guaranteedMin, hasOpenRange, keyDifferences } from './summary.js'
+import { entrySummary, guaranteedMin, hasOpenRange, keyDifferences, plainReliability } from './summary.js'
 
 const features = [
   { id: 'terrain', label: 'Terrain relief', kind: 'numeric' },
@@ -119,5 +119,28 @@ describe('missions and rank methods (labels only)', () => {
   it('rank methods cover exactly the two URL values', () => {
     expect(RANK_ORDER).toEqual(['score', 'min'])
     for (const id of RANK_ORDER) expect(RANK_METHODS[id].label).toBeTruthy()
+  })
+})
+
+describe('plainReliability', () => {
+  it('says when missing data cannot move the score', () => {
+    expect(plainReliability({ score: 80, coverage: { used: 6, selected: 6 }, scoreRange: [80, 80] })).toMatch(
+      /all 6 selected measurements/,
+    )
+  })
+  it('gives the possible range when site data is missing', () => {
+    const text = plainReliability({ score: 95, coverage: { used: 4, selected: 7 }, scoreRange: [56, 97] })
+    expect(text).toMatch(/4 of 7 measurements/)
+    expect(text).toMatch(/from 56 to 97/)
+  })
+  it('explains criteria left out on the target side', () => {
+    expect(plainReliability({ score: 70, coverage: { used: 5, selected: 6 }, scoreRange: [70, 70] })).toMatch(
+      /no value for the Moon\/Mars site/,
+    )
+  })
+  it('calls an unscored site missing data, not a poor match', () => {
+    const text = plainReliability({ score: null, coverage: { used: 2, selected: 6 }, scoreRange: null }, 3)
+    expect(text).toMatch(/at least 3 are needed/)
+    expect(text).toMatch(/not a poor match/)
   })
 })
