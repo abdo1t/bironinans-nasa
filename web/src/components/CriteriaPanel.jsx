@@ -10,7 +10,7 @@ import TargetSelect from './TargetSelect.jsx'
 import Term from './Term.jsx'
 
 /**
- * Explore side panel. Quick: reference site + mission objective (a weight preset).
+ * Explore side panel. Quick: reference site + research objective (a weight preset).
  * Advanced (collapsed by default): one weight slider per criterion. Both drive the
  * same weights in AppState, so there is a single scoring system.
  */
@@ -33,7 +33,7 @@ export default function CriteriaPanel({ advancedOpen = false, onAdvancedToggle }
 
       <MissionPicker
         name="criteria-mission"
-        legend="Mission objective"
+        legend="Research objective"
         value={app.presetId}
         onChange={app.setPreset}
         features={data.features}

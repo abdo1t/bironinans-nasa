@@ -2,11 +2,11 @@ import { joinLabels } from '../lib/explain.js'
 import { MISSIONS, MISSION_ORDER, missionEmphasis, missionTitle } from '../lib/missions.js'
 
 /**
- * Mission objective = weight preset, as a radio group of cards (native radios, so
+ * Research objective = weight preset, as a radio group of cards (native radios, so
  * arrow keys and screen readers work). `value` may be 'custom' (no card selected).
  * `compact` drops the question line for the Explore side panel.
  */
-export default function MissionPicker({ name, value, onChange, features, legend = 'Mission objective', compact = false }) {
+export default function MissionPicker({ name, value, onChange, features, legend = 'Research objective', compact = false }) {
   return (
     <fieldset className={`missions${compact ? ' missions--compact' : ''}`}>
       <legend className="missions__legend">{legend}</legend>

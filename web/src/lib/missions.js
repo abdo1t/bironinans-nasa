@@ -22,7 +22,7 @@ export const MISSIONS = {
 export const MISSION_ORDER = ['rover', 'habitat', 'ice', 'balanced'].filter((id) => PRESETS[id])
 
 export const MISSION_CAVEAT =
-  'A mission objective sets screening priorities (criterion weights). It is not a validated set of mission requirements, and a high score means resemblance — not mission suitability.'
+  'A research objective sets screening priorities (criterion weights). It is not a validated set of mission requirements, and a high score means resemblance — not mission suitability.'
 
 /** Display title of a mission (the preset label; Balanced is also the general-research screen). */
 export function missionTitle(presetId) {

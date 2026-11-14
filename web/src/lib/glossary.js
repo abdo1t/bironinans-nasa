@@ -40,7 +40,7 @@ export const GLOSSARY = {
   },
   weight: {
     title: 'Criterion weight',
-    text: 'How much a criterion counts toward the score, from 0 (ignored) to 5 (most important). A mission objective is simply a preset of weights.',
+    text: 'How much a criterion counts toward the score, from 0 (ignored) to 5 (most important). A research objective is simply a preset of weights.',
   },
   similarity: {
     title: 'Similarity to target',

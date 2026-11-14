@@ -19,9 +19,9 @@ const WORLDS = ['moon', 'mars']
 const plural = (n, one, many = `${one}s`) => `${n} ${n === 1 ? one : many}`
 
 /** Numbered step heading; a finished step gets a filled badge and a check mark. */
-function StepTitle({ n, done, children }) {
+function StepTitle({ n, done, id, children }) {
   return (
-    <h2 className="home-step__title">
+    <h2 className="home-step__title" id={id}>
       <span className="home-step__num" aria-hidden="true">
         {n}
       </span>
@@ -38,8 +38,9 @@ function StepTitle({ n, done, children }) {
 }
 
 /**
- * Guided start: world -> target site -> mission objective -> "Find Earth analogs".
- * All three steps are visible from the start so a first-time visitor sees the whole path;
+ * Guided start: world -> research objective -> "Find matching places on Earth". The Moon/Mars
+ * reference (target) site is picked with the world and named under the world cards, so a
+ * first-time visitor makes two choices; both steps are visible from the start;
  * the examples below the button are shortcuts to documented scenarios.
  */
 export default function Home() {
@@ -53,6 +54,7 @@ export default function Home() {
 
   const chooseBody = (b) => {
     setPickedBody(b)
+    setNudge(false)
     const list = data.targets.filter((t) => t.body === b)
     // One target for this world: nothing to choose, so select it (no one-option dropdown).
     if (list.length === 1) app.setTarget(list[0].id)
@@ -63,7 +65,17 @@ export default function Home() {
   // else opens by score. `rank` is always written so no earlier ranking method sticks.
   const scenario = app.isCustom ? null : matchScenario(app.targetId, app.presetId)
   const rank = scenario?.rankBy === 'min' ? 'min' : 'score'
-  const findAnalogs = () => navigate(app.linkTo('/explore', { rank }))
+  // The button stays focusable when nothing is chosen yet: a click explains what is missing
+  // instead of a silent, greyed-out control.
+  const [nudge, setNudge] = useState(false)
+  const findAnalogs = () => {
+    if (!app.target) {
+      setNudge(true)
+      document.querySelector(body ? '#home-target' : '.world-card')?.focus()
+      return
+    }
+    navigate(app.linkTo('/explore', { rank }))
+  }
 
   const scenarios = SCENARIOS.filter((sc) => data.targetById[sc.targetId] && PRESETS[sc.presetId])
   const scenarioHref = (sc) => {
@@ -77,37 +89,35 @@ export default function Home() {
   const iceFreeTarget = app.presetId === 'ice' && app.target?.norm?.ice === 'no'
 
   let ctaHint
-  if (!body) ctaHint = 'Choose a world (step 1) to continue.'
-  else if (!app.target) ctaHint = 'Choose a target site (step 2) to continue.'
+  if (!body) ctaHint = 'Choose the Moon or Mars first (step 1).'
+  else if (!app.target) ctaHint = 'Choose which site to compare with (step 1).'
   else {
-    ctaHint = 'Opens a map and a ranked list of Earth sites for this target site and mission objective.'
+    ctaHint = 'You’ll see a map and a short list of the closest matches, each with a reason.'
     if (rank === 'min') {
-      ctaHint += ` This pairing opens in the conservative order (ranked by ${RANK_METHODS.min.label}); you can switch to ${RANK_METHODS.score.label} there.`
+      ctaHint += ` Sites with the most complete measurements come first (${RANK_METHODS.min.label}).`
     }
   }
 
   return (
     <section className="page home">
       <header className="home-hero">
-        <p className="kicker">NASA Space Apps Challenge 2026 · hackathon project</p>
-        <h1>Find places on Earth that resemble a Moon or Mars site</h1>
+        <p className="kicker">NASA Space Apps Challenge 2026 · research prototype</p>
+        <h1>Find places on Earth that resemble the Moon and Mars</h1>
         <p className="home-hero__lede">
-          Mission teams rehearse at Earth <Term id="analog">analog sites</Term> before they fly. This tool compares
-          Earth sites with one Moon or Mars site on a common scale — terrain, climate, bare ground, rock type and
-          ground ice — and shows why each one ranks where it does.
+          Mission teams rehearse at <Term id="analog">Earth analog sites</Term> before they fly. Pick a world and a
+          research goal: we rank {plural(data.sites.length, 'Earth location')} by how closely their terrain, climate,
+          bare ground, rock type and ground ice match a Moon or Mars site — and show you why.
         </p>
         <p className="home-hero__scope">
-          <strong>Research screening prototype:</strong> currently {plural(data.sites.length, 'Earth site')} compared
-          with {plural(data.targets.length, 'target site')} on up to{' '}
-          {plural(data.features.length, 'criterion', 'criteria')}.{' '}
-          {LIMITATIONS_NOTE} <Link to={app.linkTo('/about')}>Method and limitations</Link>
+          Shows resemblance, not mission readiness. {LIMITATIONS_NOTE}{' '}
+          <Link to={app.linkTo('/about')}>How it works</Link>
         </p>
       </header>
 
       <div className="home-flow">
         <div className="home-flow__col">
-          <section className={`home-step${body ? ' is-done' : ''}`}>
-            <StepTitle n={1} done={Boolean(body)}>
+          <section className={`home-step${body ? ' is-done' : ''}`} aria-labelledby="home-step-world">
+            <StepTitle n={1} done={Boolean(body)} id="home-step-world">
               Choose a world
             </StepTitle>
             <div className="world-cards" role="group" aria-label="World">
@@ -122,30 +132,22 @@ export default function Home() {
                 />
               ))}
             </div>
-          </section>
-
-          <section className={`home-step${app.target ? ' is-done' : ''}`}>
-            <StepTitle n={2} done={Boolean(app.target)}>
-              Target site
-            </StepTitle>
-            {/* polite live region: choosing a world announces the target that was selected with it */}
+            {/* The Moon/Mars reference site works behind the scenes; it is named here and can be changed
+                when a world has more than one. Polite live region: choosing a world announces it. */}
             <div className="home-target" aria-live="polite">
               {!body ? (
-                <p className="home-target__empty">Choose the Moon or Mars first — its target site appears here.</p>
+                <p className="home-target__empty">Start by choosing a world to explore.</p>
               ) : bodyTargets.length === 1 && app.target ? (
-                <div className="home-target__card card card--raised card--accent">
-                  <p className="eyebrow">{bodyLabel(body)} target site</p>
-                  <h3 className="home-target__name">{app.target.name}</h3>
-                  <p className="home-target__summary">{app.target.summary}</p>
-                  <p className="home-target__note">
-                    <strong>✓ Selected</strong> — the only {bodyLabel(body)} target site in this prototype’s data.
-                  </p>
-                </div>
+                <p className="home-target__line">
+                  <span className="home-target__label">Compared with</span>{' '}
+                  <strong className="home-target__name">{app.target.name}</strong>
+                  <span className="home-target__summary"> — {app.target.summary}</span>
+                </p>
               ) : (
                 <>
                   <TargetSelect
                     id="home-target"
-                    label={`${bodyLabel(body)} target site`}
+                    label={`Compare with this ${bodyLabel(body)} site`}
                     targets={data.targets}
                     body={body}
                     value={app.targetId}
@@ -159,38 +161,41 @@ export default function Home() {
         </div>
 
         <div className="home-flow__col">
-          <section className="home-step is-done">
-            <StepTitle n={3} done>
-              Mission objective
+          <section className="home-step is-done" aria-labelledby="home-step-goal">
+            <StepTitle n={2} done id="home-step-goal">
+              Choose a research objective
             </StepTitle>
             <MissionPicker name="home-mission" value={app.presetId} onChange={app.setPreset} features={data.features} />
             <div className="home-notes" aria-live="polite">
               {app.isCustom && (
                 <p className="home-note home-note--custom">
-                  <strong>Custom weights</strong> are active. Choosing a mission objective here replaces them.
+                  <strong>Custom weights</strong> are active. Choosing a research objective here replaces them.
                 </p>
               )}
               {iceFreeTarget && (
                 <p className="home-note">
-                  This target site has no ground ice, so with {missionTitle('ice')} the ground-ice criterion will
-                  favour ice-free Earth sites: it rewards matching the target, not ice itself.
+                  This site has no ground ice, so with {missionTitle('ice')} the ground-ice criterion will favour
+                  ice-free Earth sites: it rewards matching the site, not ice itself.
                 </p>
               )}
             </div>
-            <p className="hint home-caveat">{MISSION_CAVEAT}</p>
+            <p className="hint home-caveat">
+              <Term id="weight">An objective only changes what counts most</Term> in the ranking. It is not a validated
+              set of mission requirements.
+            </p>
           </section>
 
           <div className="home-cta">
             <button
               type="button"
               className="btn btn--primary btn--large"
-              disabled={!app.target}
+              aria-disabled={!app.target}
               aria-describedby="home-cta-hint"
               onClick={findAnalogs}
             >
-              Find Earth analogs
+              Find matching places on Earth
             </button>
-            <p id="home-cta-hint" className="home-cta__hint">
+            <p id="home-cta-hint" className={`home-cta__hint${nudge ? ' is-nudge' : ''}`} role={nudge ? 'alert' : undefined}>
               {ctaHint}
             </p>
           </div>
@@ -204,7 +209,7 @@ export default function Home() {
               Or try an example
             </h2>
             <p className="hint home-examples__hint">
-              An example opens with a target site and a mission objective already chosen. Rankings show resemblance,
+              An example opens with a target site and a research objective already chosen. Rankings show resemblance,
               not mission suitability.
             </p>
           </div>

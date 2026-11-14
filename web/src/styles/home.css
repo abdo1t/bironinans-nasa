@@ -230,18 +230,28 @@
   font-size: var(--fs-sm);
 }
 
-.home-target__card {
-  padding: 0.65rem 0.9rem;
+.home-target {
+  margin-top: var(--space-3);
 }
 
-.home-target__card .eyebrow {
+/* "Compared with Jezero Crater — ...": the reference site, named but not a separate step */
+.home-target__line {
   margin: 0;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--panel);
+  font-size: var(--fs-sm);
+  line-height: 1.45;
+}
+
+.home-target__label {
+  color: var(--muted);
 }
 
 .home-target__name {
-  margin: 0.1rem 0 0.2rem;
-  font-size: var(--fs-md);
-  line-height: 1.3;
+  color: var(--text);
 }
 
 .home-target__summary {
@@ -351,6 +361,21 @@
   margin: 0;
   color: var(--text-2);
   font-size: var(--fs-sm);
+}
+
+/* nothing chosen yet: the button stays focusable and explains what is missing when pressed */
+.home-cta .btn[aria-disabled='true'] {
+  opacity: 0.7;
+}
+
+.home-cta__hint.is-nudge {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.home-cta__hint.is-nudge::before {
+  content: '→ ';
+  color: var(--accent);
 }
 
 /* ---------------------------------------------------------------- examples (secondary) */

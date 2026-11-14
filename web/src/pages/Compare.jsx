@@ -152,7 +152,7 @@ export default function Compare() {
             Compare Earth sites for {app.target.name} <span className="muted">({bodyLabel(app.target.body)})</span>
           </h1>
           <p className="compare__sub">
-            Mission objective: <strong>{missionLabel}</strong>
+            Research objective: <strong>{missionLabel}</strong>
             {data.isMock && (
               <>
                 {' '}

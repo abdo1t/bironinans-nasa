@@ -5,8 +5,8 @@ const BLURB = {
 
 /** "1 target site" / "3 target sites" — how many Moon/Mars reference sites the bundle holds for this world. */
 function countText(count) {
-  if (!count) return 'No target sites yet'
-  return `${count} target site${count === 1 ? '' : 's'}`
+  if (!count) return 'No sites to compare with yet'
+  return count === 1 ? '1 site to compare with' : `${count} sites to compare with`
 }
 
 /**

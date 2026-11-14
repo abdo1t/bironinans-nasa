@@ -161,7 +161,7 @@ export default function About() {
           <li>Choose the Moon or Mars.</li>
           <li>Pick the target site (the Moon or Mars reference location).</li>
           <li>
-            Choose a <strong>mission objective</strong> (Rover testing, Habitat &amp; construction, Ice drilling or
+            Choose a <strong>research objective</strong> (Rover testing, Habitat &amp; construction, Ice drilling or
             General research). Each one is a preset of criterion weights; nothing else changes.
           </li>
           <li>See the recommended Earth sites on the map and in the ranked list beside it.</li>
@@ -183,7 +183,7 @@ export default function About() {
             For each criterion the site gets a similarity to the target: 100 % is identical, 0 % is the opposite end of
             Earth’s range (rock type and ground ice: same class 100 %, related class 50 %, otherwise 0 %).
           </li>
-          <li>The score is the weighted average of those similarities; the mission objective sets the weights.</li>
+          <li>The score is the weighted average of those similarities; the research objective sets the weights.</li>
           <li>
             A missing value is <strong>left out</strong> of the score — never counted as zero. A score needs at least{' '}
             {data.minCriteria} criteria with data; otherwise the site shows “No score — insufficient data”.

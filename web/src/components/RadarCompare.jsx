@@ -96,7 +96,7 @@ export default function RadarCompare({ sites, target, features }) {
       )}
       <figcaption className="hint">
         Similarity to {target.name} on each criterion: 100% = the same as the target site, 0% = the opposite end of
-        Earth’s range. The mission objective changes the overall score, not these values.
+        Earth’s range. The research objective changes the overall score, not these values.
         {skipped.length > 0 && (
           <>
             {' '}

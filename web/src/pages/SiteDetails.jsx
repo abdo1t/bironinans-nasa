@@ -395,7 +395,7 @@ export default function SiteDetails() {
                 Compared with {target.name} <span className="muted">({bodyLabel(target.body)})</span>
               </h2>
               <p className="site-summary__mission">
-                Mission objective: <strong>{missionLabel}</strong>
+                Research objective: <strong>{missionLabel}</strong>
                 {data.isMock && (
                   <>
                     {' '}
@@ -559,11 +559,11 @@ export default function SiteDetails() {
             {app.isCustom ? (
               <p>
                 <strong>Custom weights:</strong> this comparison uses custom criterion weights, so it reflects those priorities rather
-                than a preset mission objective.
+                than a preset research objective.
               </p>
             ) : (
               <p>
-                <strong>Mission objective — {missionLabel}:</strong> {PRESETS[app.presetId]?.rationale}
+                <strong>Research objective — {missionLabel}:</strong> {PRESETS[app.presetId]?.rationale}
               </p>
             )}
             {scenario && (
@@ -577,7 +577,7 @@ export default function SiteDetails() {
                 {site.analogRef ? (
                   <>
                     this site has a published analog reference — <CitationText text={site.analogRef} />. The reference
-                    belongs to the site: it is the same whichever target site and mission objective you choose, so
+                    belongs to the site: it is the same whichever target site and research objective you choose, so
                     check what it actually studied.
                   </>
                 ) : (
