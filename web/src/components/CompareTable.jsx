@@ -1,13 +1,14 @@
 import { Link } from 'react-router-dom'
 import { SERIES_COLORS, describeSiteValue, pct } from '../lib/format.js'
 import { similarity } from '../lib/scoring.js'
-import { CoverageBadge, EvidenceCoverageTag, NoveltyTag, ScoreBadge, ScoreRange } from './Tags.jsx'
+import { guaranteedMin, hasOpenRange } from '../lib/summary.js'
+import { CoverageBadge, EvidenceCoverageTag, NoveltyTag, ScoreBadge } from './Tags.jsx'
 
 export default function CompareTable({ sites, target, features, weights, rankBySite, linkTo }) {
   return (
     <div className="compare-table-wrap">
       <table className="compare-table">
-        <caption className="sr-only">Criteria by site for {target.name}. Each cell shows similarity to the target and the site’s measured value. Best value per row is marked “best”.</caption>
+        <caption className="sr-only">Criteria by site for {target.name}. Each cell shows similarity to the target and the site’s measured value. The site closest to the target on each criterion is marked “closest”. Data pending means the value is missing and left out of the score, not zero.</caption>
         <thead>
           <tr>
             <th scope="col">Criterion (weight)</th>
@@ -28,7 +29,8 @@ export default function CompareTable({ sites, target, features, weights, rankByS
             return (
               <tr key={f.id} className={w === 0 ? 'is-unselected' : undefined}>
                 <th scope="row">
-                  {f.label} <span className="muted">({w === 0 ? 'off' : w})</span>
+                  {f.label}{' '}
+                  <span className="muted">{w === 0 ? '(off — not in this mission)' : `(weight ${w})`}</span>
                 </th>
                 {sites.map((s, i) => {
                   const v = sims[i]
@@ -45,7 +47,7 @@ export default function CompareTable({ sites, target, features, weights, rankByS
                     <td key={s.id} className={isBest ? 'is-best' : undefined}>
                       {pct(v)}
                       {value && <span className="muted"> · {value}</span>}
-                      {isBest && <span className="best-mark"> best</span>}
+                      {isBest && <span className="best-mark"> closest</span>}
                     </td>
                   )
                 })}
@@ -57,13 +59,33 @@ export default function CompareTable({ sites, target, features, weights, rankByS
             {sites.map((s) => (
               <td key={s.id}>
                 <ScoreBadge score={rankBySite[s.id]?.score ?? null} />
-                <ScoreRange score={rankBySite[s.id]?.score ?? null} range={rankBySite[s.id]?.scoreRange} />
                 {rankBySite[s.id]?.rank && <span className="muted"> #{rankBySite[s.id].rank}</span>}
               </td>
             ))}
           </tr>
           <tr>
-            <th scope="row">Coverage</th>
+            <th scope="row">Guaranteed minimum</th>
+            {sites.map((s) => {
+              const e = rankBySite[s.id]
+              const lo = guaranteedMin(e)
+              return (
+                <td key={s.id}>
+                  {lo === null ? (
+                    <span className="muted">—</span>
+                  ) : (
+                    <>
+                      {lo}
+                      <span className="muted">
+                        {hasOpenRange(e) ? ` (possible range ${e.scoreRange[0]}–${e.scoreRange[1]})` : ' (no missing site data)'}
+                      </span>
+                    </>
+                  )}
+                </td>
+              )
+            })}
+          </tr>
+          <tr>
+            <th scope="row">Evidence coverage</th>
             {sites.map((s) => (
               <td key={s.id}>
                 <CoverageBadge coverage={rankBySite[s.id]?.coverage} />{' '}
@@ -74,7 +96,7 @@ export default function CompareTable({ sites, target, features, weights, rankByS
             ))}
           </tr>
           <tr>
-            <th scope="row">Status</th>
+            <th scope="row">Known analog?</th>
             {sites.map((s) => (
               <td key={s.id}>
                 <NoveltyTag site={s} />
@@ -82,7 +104,7 @@ export default function CompareTable({ sites, target, features, weights, rankByS
             ))}
           </tr>
           <tr>
-            <th scope="row">Where it falls short</th>
+            <th scope="row">Largest limitation</th>
             {sites.map((s) => (
               <td key={s.id} className="muted">
                 {rankBySite[s.id]?.gap}
