@@ -1,0 +1,475 @@
+/* Site details: plain-English summary first (who, how similar, what matches, what
+   differs, why it matters), technical detail one click away in three disclosures
+   (#evidence, #similarity, #limitations). Also styles TargetReference, which
+   Explore renders as a collapsed block under its results. */
+
+/* ---------------------------------------------------------------- header */
+
+.site .crumbs {
+  margin: 0 0 var(--space-2);
+  font-size: var(--fs-sm);
+}
+
+.site__head {
+  margin-bottom: var(--space-3);
+}
+
+.site__id {
+  min-width: 0;
+}
+
+.site__head h1 {
+  margin-bottom: 0.15rem;
+}
+
+.site__where {
+  color: var(--text-2);
+}
+
+.site__status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2rem 0.6rem;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+}
+
+.site__ref {
+  max-width: 72ch;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+  overflow-wrap: anywhere;
+}
+
+.site__actions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.site__prompt {
+  max-width: 560px;
+}
+
+/* ---------------------------------------------------------------- summary card */
+
+.site-summary {
+  margin-bottom: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+}
+
+.site-summary__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.2rem 1rem;
+  margin-bottom: var(--space-3);
+}
+
+.site-summary__head h2 {
+  margin: 0;
+  font-size: var(--fs-md);
+}
+
+.site-summary__mission {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+}
+
+.site-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-3) var(--space-4);
+  margin: 0;
+}
+
+.site-stats .stat {
+  padding-left: var(--space-3);
+  border-left: 2px solid var(--border-strong);
+}
+
+/* the figure the active ranking method orders by (also said in words in its note) */
+.site-stats .stat.is-key {
+  border-left-color: var(--accent);
+}
+
+.site-stats dd {
+  margin: 0;
+}
+
+.site-stats .stat__value {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  align-content: flex-end;
+  gap: 0 0.3rem;
+  min-height: 2.4rem; /* sits the smaller figures on the same line as the large score */
+}
+
+.site-stats .stat__value .score-badge--large {
+  line-height: 1.2;
+}
+
+.site-stats__of {
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.site-stats .stat__note {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 0.25rem;
+}
+
+.site-summary__none {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2rem 0.5rem;
+  margin: 0 0 var(--space-2);
+}
+
+.site-summary__reason {
+  margin: 0 0 var(--space-1);
+  color: var(--warn-text);
+}
+
+.site-summary__more {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 1.2rem;
+  margin: var(--space-3) 0 0;
+  font-size: var(--fs-sm);
+}
+
+/* ---------------------------------------------------------------- matches / differences */
+
+.site-two {
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.site .card {
+  padding: var(--space-3) var(--space-4);
+  min-width: 0;
+}
+
+.site .card > h2 {
+  margin: 0 0 var(--space-2);
+  font-size: var(--fs-md);
+}
+
+.site .card h3 {
+  margin: var(--space-3) 0 var(--space-1);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* :where keeps this default below the more specific paragraph rules in this file */
+:where(.site .card) p {
+  margin: 0 0 var(--space-2);
+}
+
+.site .card > :last-child {
+  margin-bottom: 0;
+}
+
+.site-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.92rem;
+}
+
+.site-list li {
+  position: relative;
+  padding-left: 1.4rem;
+  overflow-wrap: anywhere;
+}
+
+/* decorative markers: the heading above each list carries the meaning */
+.site-list li::before {
+  position: absolute;
+  left: 0.1rem;
+  font-weight: 700;
+}
+
+.site-list--match li::before {
+  content: '✓';
+  content: '✓' / '';
+  color: var(--ok);
+}
+
+.site-list--differ li::before {
+  content: '✗';
+  content: '✗' / '';
+  color: var(--warn-text);
+}
+
+.site-list--pending li::before {
+  content: '–';
+  content: '–' / '';
+  color: var(--muted);
+}
+
+.site-gap {
+  font-weight: 600;
+}
+
+.site-gap__detail {
+  display: block;
+  font-weight: 400;
+  font-size: 0.92rem;
+  color: var(--text-2);
+  overflow-wrap: anywhere;
+}
+
+.site-list .tag {
+  margin-right: 0.25rem;
+}
+
+.site-list__why {
+  display: block;
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+/* ---------------------------------------------------------------- relevance + limitation strip */
+
+.site-relevance {
+  margin-bottom: var(--space-3);
+  font-size: 0.92rem;
+}
+
+.site-relevance p {
+  max-width: 90ch;
+  overflow-wrap: anywhere;
+}
+
+.site-relevance__caveat {
+  color: var(--text-2);
+}
+
+.site .site-limit {
+  margin: 0 0 var(--space-5);
+  padding: 0.6rem var(--space-4);
+  font-size: var(--fs-sm);
+}
+
+/* ---------------------------------------------------------------- technical detail */
+
+.site__more-title {
+  margin: 0 0 var(--space-2);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.site-detail {
+  scroll-margin-top: var(--space-3);
+}
+
+.site-detail > .disclosure__body > :first-child {
+  margin-top: 0;
+}
+
+.site-detail h3 {
+  margin: var(--space-5) 0 var(--space-2);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.site-detail p {
+  max-width: 90ch;
+}
+
+.site-detail__lead {
+  margin: 0 0 var(--space-3);
+  font-size: 0.92rem;
+}
+
+.site-detail__lead .term {
+  display: inline; /* keeps the "?" on the text line inside running prose */
+}
+
+.site-detail__list {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 0.4rem;
+  max-width: 90ch;
+  font-size: 0.92rem;
+}
+
+/* one block per criterion: value and source type up front, provenance as label/value rows */
+.ev-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.ev {
+  min-width: 0;
+  padding: 0.6rem 0.8rem;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.ev__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2rem 0.6rem;
+  margin: 0 0 0.4rem;
+}
+
+.ev__name {
+  font-weight: 600;
+}
+
+.ev__value {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.ev__facts {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  gap: 0.2rem 0.6rem;
+  margin: 0;
+  font-size: var(--fs-sm);
+}
+
+.ev__facts > div {
+  display: contents;
+}
+
+.ev__facts dt {
+  color: var(--muted);
+}
+
+.ev__facts dd {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.ev__facts--wide {
+  max-width: 90ch;
+}
+
+.site-detail__links {
+  margin: var(--space-4) 0 0;
+  font-size: 0.92rem;
+}
+
+/* ---------------------------------------------------------------- score breakdown table */
+
+.bars-wrap {
+  margin-top: var(--space-3);
+}
+
+.bars {
+  min-width: 860px; /* keeps seven columns readable; the wrapper scrolls on narrow screens */
+}
+
+.bars thead .term {
+  white-space: nowrap;
+}
+
+.bars__notes {
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.25rem;
+  max-width: 90ch;
+  font-size: var(--fs-xs);
+  color: var(--text-2);
+}
+
+.bars__notes strong {
+  color: var(--text);
+}
+
+/* ---------------------------------------------------------------- target reference (also on Explore) */
+
+/* Disclosure supplies the spacing; cancel the older .target-ref box padding */
+.disclosure.target-ref {
+  padding: 0;
+}
+
+.target-ref .disclosure__summary {
+  font-size: 0.9rem;
+}
+
+.target-ref .disclosure__hint {
+  font-weight: 400;
+}
+
+.target-ref__table {
+  min-width: 640px;
+  margin-top: 0;
+}
+
+.target-ref__src {
+  overflow-wrap: anywhere;
+}
+
+.target-ref__point {
+  margin: var(--space-3) 0 0;
+  overflow-wrap: anywhere;
+}
+
+/* ---------------------------------------------------------------- responsive */
+
+@media (max-width: 900px) {
+  .ev-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .site__actions {
+    justify-content: flex-start;
+  }
+
+  .site-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+
+  .site-stats .stat__value {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .ev__facts {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .ev__facts dt {
+    margin-top: 0.35rem;
+    font-size: var(--fs-xs);
+  }
+}

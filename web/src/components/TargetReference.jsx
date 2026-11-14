@@ -1,20 +1,30 @@
 import { describeTargetValue } from '../lib/format.js'
+import Disclosure from './Disclosure.jsx'
 import { CitationText, ClippedTag, EvidenceTag, MockTag } from './Tags.jsx'
+import '../styles/site.css'
 
-/** The target's reference values, each with evidence type, citation and caveat. */
-export default function TargetReference({ target, features, isMock, open = false }) {
+/**
+ * The target's reference values, each with evidence type, citation and caveat.
+ * Collapsed by default (`open` starts it expanded); `className` passes a Disclosure
+ * variant such as "disclosure--flush" when it sits inside another section.
+ */
+export default function TargetReference({ target, features, isMock, open = false, className = '' }) {
   const usable = features.filter((f) => target.norm[f.id] !== null && target.norm[f.id] !== undefined).length
   return (
-    <details className="target-ref" open={open}>
-      <summary>
-        Target reference values for {target.name}{' '}
-        <span className="muted">
-          ({usable} of {features.length} criteria {isMock ? 'set' : 'verified; the rest are excluded from scores'})
-        </span>{' '}
-        {isMock && <MockTag />}
-      </summary>
+    <Disclosure
+      className={`target-ref ${className}`.trim()}
+      defaultOpen={open}
+      title={`Target reference values for ${target.name}`}
+      hint={
+        <>
+          {usable} of {features.length} criteria {isMock ? 'set' : 'verified; the rest are excluded from scores'}{' '}
+          {isMock && <MockTag />}
+        </>
+      }
+    >
       <div className="table-scroll">
         <table className="target-ref__table">
+          <caption className="sr-only">Reference values used for {target.name}</caption>
           <thead>
             <tr>
               <th scope="col">Criterion</th>
@@ -40,7 +50,8 @@ export default function TargetReference({ target, features, isMock, open = false
                       <>
                         {' '}
                         <a href={p.url} target="_blank" rel="noreferrer">
-                          source ↗
+                          source<span className="sr-only"> for {f.label} (opens in new tab)</span>
+                          <span aria-hidden="true"> ↗</span>
                         </a>
                       </>
                     )}
@@ -54,10 +65,10 @@ export default function TargetReference({ target, features, isMock, open = false
         </table>
       </div>
       {target.coord?.source && (
-        <p className="hint">
+        <p className="hint target-ref__point">
           Reference point {target.lat}°, {target.lon}° — {target.coord.source}. {target.coord.note}
         </p>
       )}
-    </details>
+    </Disclosure>
   )
 }

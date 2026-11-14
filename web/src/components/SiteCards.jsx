@@ -81,7 +81,11 @@ export default function SiteCards({
                     –{s.max}
                   </span>
                 ) : (
-                  <span className="site-card__range site-card__range--full">no data gaps</span>
+                  // Closed range: nothing is missing on the site side. Criteria missing on the
+                  // target side (e.g. no verified target value) cannot move the score either.
+                  <span className="site-card__range site-card__range--full">
+                    {r.coverage.used === r.coverage.selected ? 'no data gaps' : 'no missing site data'}
+                  </span>
                 )}
               </>
             ) : (
