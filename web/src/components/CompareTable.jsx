@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom'
-import { SERIES_COLORS, formatValue, pct } from '../lib/format.js'
+import { SERIES_COLORS, describeSiteValue, pct } from '../lib/format.js'
 import { similarity } from '../lib/scoring.js'
-import { ConfidenceTag, CoverageBadge, NoveltyTag, ScoreBadge } from './Tags.jsx'
+import { CoverageBadge, EvidenceCoverageTag, NoveltyTag, ScoreBadge, ScoreRange } from './Tags.jsx'
 
 export default function CompareTable({ sites, target, features, weights, rankBySite, linkTo }) {
   return (
     <div className="compare-table-wrap">
       <table className="compare-table">
-        <caption className="sr-only">Criteria by site for {target.name}. Best value per row is marked “best”.</caption>
+        <caption className="sr-only">Criteria by site for {target.name}. Each cell shows similarity to the target and the site’s measured value. Best value per row is marked “best”.</caption>
         <thead>
           <tr>
             <th scope="col">Criterion (weight)</th>
@@ -40,10 +40,11 @@ export default function CompareTable({ sites, target, features, weights, rankByS
                     )
                   }
                   const isBest = best !== null && v === best && present.some((p) => p !== best)
+                  const value = describeSiteValue(f, s).text
                   return (
                     <td key={s.id} className={isBest ? 'is-best' : undefined}>
                       {pct(v)}
-                      <span className="muted"> · {formatValue(f, s.norm[f.id])}</span>
+                      {value && <span className="muted"> · {value}</span>}
                       {isBest && <span className="best-mark"> best</span>}
                     </td>
                   )
@@ -56,6 +57,7 @@ export default function CompareTable({ sites, target, features, weights, rankByS
             {sites.map((s) => (
               <td key={s.id}>
                 <ScoreBadge score={rankBySite[s.id]?.score ?? null} />
+                <ScoreRange score={rankBySite[s.id]?.score ?? null} range={rankBySite[s.id]?.scoreRange} />
                 {rankBySite[s.id]?.rank && <span className="muted"> #{rankBySite[s.id].rank}</span>}
               </td>
             ))}
@@ -65,7 +67,9 @@ export default function CompareTable({ sites, target, features, weights, rankByS
             {sites.map((s) => (
               <td key={s.id}>
                 <CoverageBadge coverage={rankBySite[s.id]?.coverage} />{' '}
-                {rankBySite[s.id]?.score !== null && <ConfidenceTag coverage={rankBySite[s.id]?.coverage} />}
+                {rankBySite[s.id]?.score !== null && (
+                  <EvidenceCoverageTag target={target} site={s} weights={weights} features={features} />
+                )}
               </td>
             ))}
           </tr>

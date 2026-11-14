@@ -5,13 +5,14 @@ import { DEFAULT_PRESET, PRESETS, WEIGHT_MAX, WEIGHT_MIN } from './presets.js'
 
 export const SHORTLIST_MAX = 3
 export const CUSTOM_PRESET = 'custom'
-const OWN_KEYS = ['target', 'preset', 'w', 'sites']
+const OWN_KEYS = ['target', 'preset', 'w', 'sites', 'rank']
 
 export function defaultState() {
   return {
     targetId: null,
     presetId: DEFAULT_PRESET,
     basePresetId: DEFAULT_PRESET, // what "Reset" returns to
+    rankBy: 'score', // 'score' | 'min' (guaranteed minimum = lower end of scoreRange)
     weights: { ...PRESETS[DEFAULT_PRESET].weights },
     shortlist: [],
   }
@@ -68,6 +69,8 @@ export function parseQuery(search, bundle, prev = defaultState()) {
     next.weights = { ...PRESETS[next.presetId].weights }
   }
 
+  if (params.has('rank')) next.rankBy = params.get('rank') === 'min' ? 'min' : 'score'
+
   if (params.has('sites')) {
     const ids = params
       .get('sites')
@@ -85,6 +88,7 @@ export function stateToParams(state, features) {
   if (state.presetId === CUSTOM_PRESET) out.w = encodeWeights(state.weights, features)
   else out.preset = state.presetId
   if (state.shortlist.length) out.sites = state.shortlist.join(',')
+  if (state.rankBy === 'min') out.rank = 'min'
   return out
 }
 
@@ -113,6 +117,7 @@ export function sameState(a, b, features) {
     a.presetId === b.presetId &&
     a.basePresetId === b.basePresetId &&
     weightsEqual(a.weights, b.weights, features) &&
-    a.shortlist.join(',') === b.shortlist.join(',')
+    a.shortlist.join(',') === b.shortlist.join(',') &&
+    (a.rankBy || 'score') === (b.rankBy || 'score')
   )
 }

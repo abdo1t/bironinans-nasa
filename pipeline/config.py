@@ -25,6 +25,8 @@ SITES_REAL = SEED_DIR / "sites_real.csv"
 TARGETS_REAL = SEED_DIR / "targets_real.json"
 POWER_CSV = DATA_DIR / "power.csv"
 TERRAIN_CSV = DATA_DIR / "terrain.csv"
+PLANETARY_TERRAIN_CSV = DATA_DIR / "planetary_terrain.csv"
+NDVI_CSV = DATA_DIR / "ndvi.csv"
 
 # Great-circle distance (km) beyond which a site is flagged `isNewCandidate` (§5.7).
 # This only means "uncatalogued: far from every catalogued analog". It is NOT a
@@ -61,8 +63,9 @@ FEATURES = [
         "earthMin": 0,
         "earthMax": 1500,
         "invert": False,
-        "description": "Higher = more relief. Same window and method for every site.",
-        "source": "SRTMGL1 v003 (56°S–60°N), else ASTER GDEM v3",
+        "description": "Higher = more relief. Same 10 km window and ~200 m common scale for Earth, Mars and Moon.",
+        "source": "Earth: NASADEM v001 (NASA JPL), Copernicus GLO-30 where NASADEM has no coverage; "
+                  "Mars: USGS Mars 2020 CTX DTM; Moon: LRO LOLA LDEM",
         "raw": "relief_m",
     },
     {
@@ -110,7 +113,7 @@ FEATURES = [
         "earthMax": 0.8,
         "invert": True,
         "description": "1 = no vegetation.",
-        "source": "MODIS NDVI (not yet acquired)",
+        "source": "MODIS MOD13Q1 v061 NDVI (NASA LP DAAC), 2022–2023",
         "raw": "ndvi",
     },
     {
@@ -126,7 +129,8 @@ FEATURES = [
         "label": "Ground ice / permafrost",
         "kind": "categorical",
         "related": {},
-        "description": "Whether ground ice or permafrost is present.",
+        "description": "Whether ground ice or permafrost is present; scores a match to the TARGET's state "
+                       "(an ice-free target rewards ice-free sites).",
         "source": "Literature",
     },
 ]

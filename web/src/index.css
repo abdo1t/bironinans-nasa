@@ -1142,3 +1142,189 @@ thead th {
   color: var(--warn-text);
   font-size: 0.8rem;
 }
+
+/* ---------------------------------------------------------------- explainability */
+
+.score-range {
+  font-size: 0.78rem;
+  color: var(--muted);
+  white-space: nowrap;
+  cursor: help;
+}
+
+.score-bar + .score-range {
+  display: block;
+}
+
+.why-gap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.25rem;
+  font-size: 0.85rem;
+}
+
+.why-gap__match {
+  color: #9ee0c4;
+}
+
+.why-gap__short {
+  color: var(--warn-text);
+}
+
+.pts-lost {
+  color: var(--text-2);
+  white-space: nowrap;
+}
+
+.pts-lost--big {
+  color: var(--warn-text);
+  font-weight: 600;
+}
+
+.tag--nodata {
+  color: var(--muted);
+  border-style: dashed;
+  font-weight: 500;
+  margin-left: 0.35rem;
+}
+
+.slider__scale {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--muted);
+  opacity: 0.9;
+}
+
+.preset-why {
+  font-size: 0.78rem;
+  color: var(--text-2);
+  margin: 0.35rem 0 0;
+}
+
+.avail-notice {
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  border: 1px dashed var(--warn-text);
+  border-radius: var(--radius);
+  color: var(--warn-text);
+  background: var(--warn-bg);
+  font-size: 0.85rem;
+}
+
+.mission-brief {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 0.6rem 0.9rem;
+  font-size: 0.85rem;
+}
+
+.mission-brief h2 {
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.mission-brief p {
+  margin: 0.3rem 0 0;
+}
+
+.mission-brief__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.mission-brief__limit {
+  color: var(--text-2);
+}
+
+.scenarios {
+  margin-top: 2rem;
+}
+
+.scenarios__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.scenario-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  padding: 0.75rem 1rem;
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-align: left;
+  min-width: 260px;
+}
+
+.scenario-card:hover {
+  border-color: var(--accent);
+}
+
+.scenario-card__title {
+  font-weight: 600;
+}
+
+.scenario-card__meta {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.source-list li {
+  margin-bottom: 0.6rem;
+}
+
+.source-list__cite,
+.source-list__url {
+  display: block;
+  font-size: 0.82rem;
+  overflow-wrap: anywhere;
+}
+
+.source-list__cite {
+  color: var(--text-2);
+}
+
+.criteria-defs td,
+.criteria-defs th {
+  font-size: 0.82rem;
+  vertical-align: top;
+}
+
+.app-footer {
+  padding: 0.4rem 1.5rem;
+  border-top: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.explore__controls {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.rankby {
+  font-size: 0.85rem;
+  color: var(--text-2);
+}
+
+.rankby select {
+  padding: 0.3rem 0.4rem;
+  margin-left: 0.3rem;
+}
+
+.rankby__help {
+  margin: -0.25rem 0 0;
+}

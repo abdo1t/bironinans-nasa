@@ -3,12 +3,14 @@ import ScoreBars from '../components/ScoreBars.jsx'
 import TargetReference from '../components/TargetReference.jsx'
 import TargetSelect from '../components/TargetSelect.jsx'
 import {
-  ConfidenceTag,
+  CitationText,
   CoverageBadge,
+  EvidenceCoverageTag,
   EvidenceTag,
   MockTag,
   NoveltyTag,
   ScoreBadge,
+  ScoreRange,
   SourceTag,
 } from '../components/Tags.jsx'
 import { useBundle } from '../data/useBundle.js'
@@ -38,6 +40,7 @@ export default function SiteDetails() {
   const result = target ? scoreSite(target, site, app.weights, data.features, data.minCriteria) : null
   const ranked = target ? app.rankBySite[site.id] : null
   const listed = app.shortlist.includes(site.id)
+  const scoredCount = app.ranking.filter((r) => r.score !== null).length
 
   return (
     <article className="page site">
@@ -63,8 +66,16 @@ export default function SiteDetails() {
             </span>
             {data.isMock && <MockTag />}
           </p>
-          {site.analogRef && <p className="hint">Analog reference: {site.analogRef}</p>}
-          {site.notes && <p className="hint">Note: {site.notes}</p>}
+          {site.analogRef && (
+            <p className="hint">
+              Analog reference: <CitationText text={site.analogRef} />
+            </p>
+          )}
+          {site.notes && (
+            <p className="hint">
+              Note: <CitationText text={site.notes} />
+            </p>
+          )}
         </div>
         <div className="site__actions">
           <button
@@ -97,18 +108,22 @@ export default function SiteDetails() {
                 {app.isCustom ? 'custom weights' : PRESETS[app.presetId].label}
               </p>
               <ScoreBadge score={result.score} large />
+              <ScoreRange score={result.score} range={result.scoreRange} />
               {ranked?.rank && (
                 <span className="muted">
                   {' '}
-                  Rank #{ranked.rank} of {data.sites.length}
+                  Rank #{ranked.rank} of {scoredCount} scored
                 </span>
               )}
             </div>
             <div>
-              <CoverageBadge coverage={result.coverage} /> {result.score !== null && <ConfidenceTag coverage={result.coverage} />}
+              <CoverageBadge coverage={result.coverage} /> {result.score !== null && (
+                <EvidenceCoverageTag target={target} site={site} weights={app.weights} features={data.features} />
+              )}
               <p className="hint">
                 Criteria with missing data are left out of the score, not counted as zero. A score needs at least{' '}
-                {data.minCriteria} criteria with data.
+                {data.minCriteria} criteria with data. The range beside the score shows where it could land if the
+                missing criteria were a total mismatch or a perfect match.
               </p>
             </div>
           </section>
@@ -124,7 +139,7 @@ export default function SiteDetails() {
 
           <div className="two-col">
             <section className="panel">
-              <h2>Why it was selected</h2>
+              <h2>Closest matches</h2>
               {result.why.length ? (
                 <ul className="why">
                   {result.why.map((w) => (
@@ -161,7 +176,7 @@ export default function SiteDetails() {
         )}
         {site.isNewCandidate && (
           <p>
-            “Uncatalogued candidate” means only that this site is more than 300 km from every site in this project’s
+            “Not in reference catalogue” means only that this site is more than 300 km from every site in this project’s
             analog reference list and we found no peer-reviewed analog study of it. It has not been validated as an
             analog.
           </p>
@@ -207,7 +222,18 @@ export default function SiteDetails() {
                       {p.status === 'unavailable' ? (
                         <span className="muted">{p.note}</span>
                       ) : p.citation ? (
-                        <span>{p.citation}</span>
+                        <span>
+                          <CitationText text={p.citation} />
+                          {p.url && !p.citation.includes(p.url) && (
+                            <>
+                              {' '}
+                              ·{' '}
+                              <a href={p.url} target="_blank" rel="noreferrer">
+                                source ↗
+                              </a>
+                            </>
+                          )}
+                        </span>
                       ) : (
                         <span>
                           {p.dataset}

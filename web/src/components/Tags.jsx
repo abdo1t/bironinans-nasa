@@ -1,4 +1,5 @@
-import { EVIDENCE, NO_SCORE_COLOR, confidence, scoreColor, sourceKind } from '../lib/format.js'
+import { SCORE_RANGE_HELP, evidenceCoverage, linkifyCitation, scoreRangeText } from '../lib/explain.js'
+import { EVIDENCE, NO_SCORE_COLOR, scoreColor, sourceKind } from '../lib/format.js'
 
 /** Evidence type of a real value (Reanalysis, In-situ, Literature, ...). */
 export function EvidenceTag({ status }) {
@@ -22,18 +23,58 @@ export function ClippedTag({ direction }) {
   )
 }
 
-/** High / Medium / Low confidence from coverage. */
-export function ConfidenceTag({ coverage }) {
-  const level = confidence(coverage)
-  if (!level) return null
-  const label = { high: 'High confidence', medium: 'Medium confidence', low: 'Low confidence' }[level]
+/**
+ * Evidence: High / Medium / Low — share of the selected WEIGHT whose criteria have data
+ * on both sides (see evidenceCoverage in lib/explain.js).
+ */
+export function EvidenceCoverageTag({ target, site, weights, features }) {
+  if (!target || !site) return null
+  const ev = evidenceCoverage(target, site, weights, features)
+  if (!ev.level) return null
+  const label = { high: 'High', medium: 'Medium', low: 'Low' }[ev.level]
   return (
     <span
-      className={`tag tag--conf tag--conf-${level}`}
-      title={`${coverage.used} of ${coverage.selected} selected criteria had data on both sides`}
+      className={`tag tag--conf tag--conf-${ev.level}`}
+      title={
+        `Evidence coverage: ${ev.usedWeight} of ${ev.selectedWeight} selected weight points ` +
+        `(${ev.used} of ${ev.selected} criteria) have data for both the site and the target. ` +
+        'High: at least 80 %. Low: under 50 % or fewer than 3 criteria. ' +
+        'It says how much of the score rests on data, not how accurate the data are.'
+      }
     >
-      {label}
+      Evidence: {label}
     </span>
+  )
+}
+
+/** "· range 49–77" beside a score; nothing when missing data cannot move it. */
+export function ScoreRange({ score, range }) {
+  const text = scoreRangeText(score, range)
+  if (!text) return null
+  return (
+    <span className="score-range" title={SCORE_RANGE_HELP}>
+      {' '}
+      · {text}
+      <span className="sr-only"> (possible range, depending on missing data)</span>
+    </span>
+  )
+}
+
+/** Citation text with URLs and doi:10.xxxx/... turned into links. */
+export function CitationText({ text }) {
+  if (!text) return null
+  return (
+    <>
+      {linkifyCitation(text).map((seg, i) =>
+        seg.href ? (
+          <a key={i} href={seg.href} target="_blank" rel="noreferrer">
+            {seg.text}
+          </a>
+        ) : (
+          <span key={i}>{seg.text}</span>
+        ),
+      )}
+    </>
   )
 }
 
@@ -62,15 +103,15 @@ export function SourceTag({ source }) {
   return null
 }
 
-/** Catalogued analog vs uncatalogued candidate (NOT a validated new analog). */
+/** Catalogued analog vs a site not in the reference catalogue (NOT a validated new analog). */
 export function NoveltyTag({ site }) {
   if (site.isNewCandidate) {
     return (
       <span
         className="tag tag--uncatalogued"
-        title={`Nearest catalogued analog is ${site.novelKm} km away. A lead for field validation — not a confirmed analog.`}
+        title={`Not in this project's analog reference catalogue: the nearest catalogued analog is ${site.novelKm} km away. A lead for field validation — not a validated analog.`}
       >
-        Uncatalogued candidate
+        Not in reference catalogue
       </span>
     )
   }

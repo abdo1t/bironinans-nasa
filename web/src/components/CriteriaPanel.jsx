@@ -1,4 +1,5 @@
 import { useBundle } from '../data/useBundle.js'
+import { dataAvailability, featureScaleText } from '../lib/explain.js'
 import { PRESETS, WEIGHT_MAX, WEIGHT_MIN } from '../lib/presets.js'
 import { weightsEqual } from '../lib/urlState.js'
 import { useAppState } from '../state/AppState.jsx'
@@ -8,6 +9,8 @@ export default function CriteriaPanel() {
   const { data } = useBundle()
   const app = useAppState()
   const atBase = weightsEqual(app.weights, PRESETS[app.basePresetId].weights, data.features)
+  const avail = app.target ? dataAvailability(app.target, data.sites, app.weights, data.features) : null
+  const rationale = PRESETS[app.isCustom ? app.basePresetId : app.presetId]?.rationale
 
   return (
     <div className="criteria">
@@ -21,7 +24,12 @@ export default function CriteriaPanel() {
 
       <div className="field">
         <label htmlFor="criteria-preset">What matters</label>
-        <select id="criteria-preset" value={app.presetId} onChange={(e) => app.setPreset(e.target.value)}>
+        <select
+          id="criteria-preset"
+          value={app.presetId}
+          aria-describedby="criteria-preset-why"
+          onChange={(e) => app.setPreset(e.target.value)}
+        >
           {Object.entries(PRESETS).map(([id, p]) => (
             <option key={id} value={id}>
               {p.label}
@@ -33,6 +41,12 @@ export default function CriteriaPanel() {
             </option>
           )}
         </select>
+        {rationale && (
+          <p id="criteria-preset-why" className="preset-why">
+            {app.isCustom && <>Based on {PRESETS[app.basePresetId].label}: </>}
+            {rationale}
+          </p>
+        )}
       </div>
 
       <fieldset className="sliders">
@@ -41,10 +55,24 @@ export default function CriteriaPanel() {
         {data.features.map((f) => {
           const w = app.weights[f.id] || 0
           const inputId = `w-${f.id}`
+          const noData = avail?.byFeature[f.id] || null
+          const scale = featureScaleText(f)
           return (
             <div key={f.id} className={`slider${w === 0 ? ' slider--off' : ''}`}>
               <div className="slider__head">
                 <label htmlFor={inputId}>{f.label}</label>
+                {noData && (
+                  <span
+                    className="tag tag--nodata"
+                    title={
+                      noData === 'target'
+                        ? 'The target has no value for this criterion, so its weight cannot change the ranking.'
+                        : 'No candidate site has a value for this criterion yet, so its weight cannot change the ranking.'
+                    }
+                  >
+                    no data — no effect
+                  </span>
+                )}
                 <output htmlFor={inputId} className="slider__value">
                   {w === 0 ? 'off' : w}
                 </output>
@@ -62,6 +90,13 @@ export default function CriteriaPanel() {
               />
               <p id={`${inputId}-desc`} className="slider__desc">
                 {f.description}
+                {scale && <span className="slider__scale">{scale}</span>}
+                {noData && (
+                  <span className="sr-only">
+                    {' '}
+                    No data {noData === 'target' ? 'for this target' : 'for any site'}: this weight has no effect.
+                  </span>
+                )}
               </p>
             </div>
           )

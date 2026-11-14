@@ -1,0 +1,5 @@
+id,precip_mm_yr,ts_mean_c,ts_range_c,cell_elev_m,power_period,relief_m,dem,elev_m,ndvi,ndvi_n,note,retrieved_at
+ctrl-manaus,1957.7,27.88,4.88,51.37,25-year Meteorological and Solar Monthly & Annual Climatologies (January 2001 - December 2025),65.1,NASADEM_HGT.001,37.0,0.2852,11,,2026-11-14T05:16:10+00:00
+ctrl-freiburg,1260.1,7.5,9.63,702.23,25-year Meteorological and Solar Monthly & Annual Climatologies (January 2001 - December 2025),493.2,NASADEM_HGT.001,309.0,0.7196,44,,2026-11-14T05:16:10+00:00
+ctrl-can-tho,1442.7,28.07,11.18,1.91,25-year Meteorological and Solar Monthly & Annual Climatologies (January 2001 - December 2025),8.3,NASADEM_HGT.001,3.0,,5,NDVI: only 5 of 45 composites have >= 50% good pixels (need 6); 45 of 45 Terra composites read; usable = >= 50% good pixels; ~,2026-11-14T05:16:10+00:00
+ctrl-galway,1135.9,9.67,8.23,52.52,25-year Meteorological and Solar Monthly & Annual Climatologies (January 2001 - December 2025),73.5,NASADEM_HGT.001,8.0,0.645,28,,2026-11-14T05:16:10+00:00

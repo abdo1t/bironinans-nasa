@@ -3,7 +3,7 @@ import { CircleMarker, MapContainer, Popup, TileLayer } from 'react-leaflet'
 import { Link } from 'react-router-dom'
 import 'leaflet/dist/leaflet.css'
 import { NO_SCORE_COLOR, SCORE_BINS, scoreColor } from '../lib/format.js'
-import { ConfidenceTag, CoverageBadge, MockTag, NoveltyTag } from './Tags.jsx'
+import { CoverageBadge, EvidenceCoverageTag, MockTag, NoveltyTag, ScoreRange } from './Tags.jsx'
 
 // Basemap tiles are the only external requests the app makes (no API key).
 const TILE_URL = 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}'
@@ -13,7 +13,18 @@ function radiusFor(score) {
   return score === null ? 6 : 6 + (score / 100) * 6 // 6–12 px: size repeats the colour cue
 }
 
-export default function MapView({ ranking, siteById, shortlist, shortlistFull, onToggleShortlist, linkTo, isMock }) {
+export default function MapView({
+  ranking,
+  siteById,
+  target,
+  weights,
+  features,
+  shortlist,
+  shortlistFull,
+  onToggleShortlist,
+  linkTo,
+  isMock,
+}) {
   // Draw low scores first so the best matches sit on top.
   const drawOrder = [...ranking].reverse()
 
@@ -59,9 +70,12 @@ export default function MapView({ ranking, siteById, shortlist, shortlistFull, o
                     <span className="popup__country">{site.country}</span>
                     <span className="popup__score">
                       {hasScore ? `Score ${r.score}/100 · #${r.rank}` : 'No score — data pending'}
+                      <ScoreRange score={r.score} range={r.scoreRange} />
                     </span>
                     <span>
-                      <CoverageBadge coverage={r.coverage} /> {hasScore && <ConfidenceTag coverage={r.coverage} />}
+                      <CoverageBadge coverage={r.coverage} /> {hasScore && (
+                        <EvidenceCoverageTag target={target} site={site} weights={weights} features={features} />
+                      )}
                     </span>
                     {!hasScore && <span className="popup__gap">{r.gap}</span>}
                     <span className="popup__tags">
@@ -102,7 +116,7 @@ export default function MapView({ ranking, siteById, shortlist, shortlistFull, o
           </li>
           <li>
             <span className="swatch swatch--ring" aria-hidden="true" />
-            Uncatalogued candidate
+            Not in reference catalogue
           </li>
         </ul>
       </div>

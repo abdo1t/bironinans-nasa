@@ -86,12 +86,49 @@ def aggregation_factors(pixel_y_m, pixel_x_m, target_m=COMMON_POSTING_M):
     return max(1, round(target_m / pixel_y_m)), max(1, round(target_m / pixel_x_m))
 
 
-def common_scale_relief(values, pixel_y_m, pixel_x_m, nodata=None, target_m=COMMON_POSTING_M):
-    """Relief at ~target_m posting. Returns (relief, median, valid_frac, (eff_y_m, eff_x_m))."""
+def common_scale_relief_detail(values, pixel_y_m, pixel_x_m, nodata=None, target_m=COMMON_POSTING_M):
+    """Relief at ~target_m posting, independent of where the aggregation blocks start.
+
+    Box-mean aggregation depends on the block phase (which pixel the first block
+    starts at): on a coastal or ridge window that alone can move P99 − P1 by a few
+    percent. We therefore aggregate at EVERY (row, col) block offset and report the
+    mean relief, plus the min/max over offsets as an alignment-uncertainty range.
+    Returns dict(relief, relief_min, relief_max, median, valid_frac, posting=(y_m, x_m), n_offsets).
+    """
+    import numpy as np
+
+    arr = np.asarray(values, dtype="float64")
     fy, fx = aggregation_factors(pixel_y_m, pixel_x_m, target_m)
-    agg = block_mean(values, fy, fx, nodata=nodata)
-    relief, median, frac = relief_stats(agg)
-    return relief, median, frac, (round(pixel_y_m * fy, 1), round(pixel_x_m * fx, 1))
+    reliefs, medians, fracs = [], [], []
+    for oy in range(fy):
+        for ox in range(fx):
+            relief, median, frac = relief_stats(block_mean(arr[oy:, ox:], fy, fx, nodata=nodata))
+            if relief is not None:
+                reliefs.append(relief)
+                medians.append(median)
+                fracs.append(frac)
+    posting = (round(pixel_y_m * fy, 1), round(pixel_x_m * fx, 1))
+    if not reliefs:
+        return {"relief": None, "relief_min": None, "relief_max": None, "median": None,
+                "valid_frac": 0.0, "posting": posting, "n_offsets": fy * fx}
+    return {
+        "relief": round(float(np.mean(reliefs)), 1),
+        "relief_min": round(float(min(reliefs)), 1),
+        "relief_max": round(float(max(reliefs)), 1),
+        "median": round(float(np.median(medians)), 1),
+        "valid_frac": round(float(min(fracs)), 4),
+        "posting": posting,
+        "n_offsets": fy * fx,
+    }
+
+
+def common_scale_relief(values, pixel_y_m, pixel_x_m, nodata=None, target_m=COMMON_POSTING_M):
+    """Relief at ~target_m posting (mean over block offsets).
+
+    Returns (relief, median, valid_frac, (eff_y_m, eff_x_m)); see common_scale_relief_detail.
+    """
+    d = common_scale_relief_detail(values, pixel_y_m, pixel_x_m, nodata=nodata, target_m=target_m)
+    return d["relief"], d["median"], d["valid_frac"], d["posting"]
 
 
 def configure_gdal_ssl():

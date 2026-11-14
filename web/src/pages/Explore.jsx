@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import CriteriaPanel from '../components/CriteriaPanel.jsx'
 import MapView from '../components/MapView.jsx'
@@ -7,15 +8,50 @@ import TargetReference from '../components/TargetReference.jsx'
 import TargetSelect from '../components/TargetSelect.jsx'
 import { MockTag } from '../components/Tags.jsx'
 import { useBundle } from '../data/useBundle.js'
+import { availabilityNotice, dataAvailability } from '../lib/explain.js'
 import { bodyLabel } from '../lib/format.js'
 import { PRESETS } from '../lib/presets.js'
+import { SCENARIO_LIMITATION, matchScenario } from '../lib/scenarios.js'
+import { LIMITATIONS_NOTE } from '../lib/scoring.js'
 import { useAppState } from '../state/AppState.jsx'
+
+function MissionBrief({ scenario, features, availability, onDismiss }) {
+  const labels = scenario.carriedBy
+    .map((id) => {
+      const f = features.find((x) => x.id === id)
+      if (!f) return null
+      return availability.byFeature[id] ? `${f.label} (no data yet — no effect)` : f.label
+    })
+    .filter(Boolean)
+  return (
+    <section className="mission-brief" aria-labelledby="mission-brief-title">
+      <div className="mission-brief__head">
+        <h2 id="mission-brief-title">Mission brief: {scenario.label}</h2>
+        <button type="button" className="btn btn--ghost btn--small" onClick={onDismiss}>
+          Dismiss<span className="sr-only"> mission brief</span>
+        </button>
+      </div>
+      <p>
+        <strong>Screening for:</strong> {scenario.screening}
+      </p>
+      <p>
+        <strong>Carried by:</strong> {labels.join(', ')} (highest weights in this preset; adjust the sliders to test
+        other priorities).
+      </p>
+      <p className="mission-brief__limit">
+        <strong>Limitation:</strong> {SCENARIO_LIMITATION} A high score means “resembles the target on these criteria”,
+        not “suitable for the mission”. {LIMITATIONS_NOTE}
+      </p>
+    </section>
+  )
+}
 
 export default function Explore() {
   const { data } = useBundle()
   const app = useAppState()
   const [params, setParams] = useSearchParams()
   const view = params.get('view') === 'list' ? 'list' : 'map'
+  const [dismissedBrief, setDismissedBrief] = useState(null)
 
   const setView = (v) =>
     setParams(
@@ -39,10 +75,16 @@ export default function Explore() {
   }
 
   const top = app.ranking.find((r) => r.score !== null)
+  const avail = dataAvailability(app.target, data.sites, app.weights, data.features)
+  const notice = availabilityNotice(avail)
+  const scenario = app.isCustom ? null : matchScenario(app.targetId, app.presetId)
   const scoredCount = app.ranking.filter((r) => r.score !== null).length
   const shared = {
     ranking: app.ranking,
     siteById: data.siteById,
+    target: app.target,
+    weights: app.weights,
+    features: data.features,
     shortlist: app.shortlist,
     shortlistFull: app.shortlistFull,
     onToggleShortlist: app.toggleShortlist,
@@ -73,15 +115,47 @@ export default function Explore() {
               )}
             </p>
           </div>
-          <div className="toggle" role="group" aria-label="View">
-            <button type="button" aria-pressed={view === 'map'} onClick={() => setView('map')}>
-              Map
-            </button>
-            <button type="button" aria-pressed={view === 'list'} onClick={() => setView('list')}>
-              List
-            </button>
+          <div className="explore__controls">
+            <label className="rankby">
+              Rank by{' '}
+              <select
+                value={app.rankBy}
+                onChange={(e) => app.setRankBy(e.target.value)}
+                aria-describedby="rankby-help"
+              >
+                <option value="score">Score</option>
+                <option value="min">Guaranteed minimum</option>
+              </select>
+            </label>
+            <div className="toggle" role="group" aria-label="View">
+              <button type="button" aria-pressed={view === 'map'} onClick={() => setView('map')}>
+                Map
+              </button>
+              <button type="button" aria-pressed={view === 'list'} onClick={() => setView('list')}>
+                List
+              </button>
+            </div>
           </div>
         </header>
+        <p id="rankby-help" className="hint rankby__help">
+          {app.rankBy === 'min'
+            ? 'Ranked by guaranteed minimum: the score each site keeps if every criterion missing for it were a total mismatch — favours evidence-backed sites.'
+            : 'Ranked by score. Sites with missing data show a range; switch to “Guaranteed minimum” to rank by evidence-backed score.'}
+        </p>
+
+        {scenario && dismissedBrief !== scenario.id && (
+          <MissionBrief
+            scenario={scenario}
+            features={data.features}
+            availability={avail}
+            onDismiss={() => setDismissedBrief(scenario.id)} />
+        )}
+
+        {notice && (
+          <p className="avail-notice" role="note">
+            <strong>Data availability:</strong> {notice}
+          </p>
+        )}
 
         <TargetReference target={app.target} features={data.features} isMock={data.isMock} />
 
@@ -97,7 +171,7 @@ export default function Explore() {
           linkTo={app.linkTo}
         />
 
-        {view === 'map' ? <MapView {...shared} isMock={data.isMock} /> : <ResultsList {...shared} target={app.target} />}
+        {view === 'map' ? <MapView {...shared} isMock={data.isMock} /> : <ResultsList {...shared} />}
       </section>
     </div>
   )

@@ -1,5 +1,5 @@
 import { describeTargetValue } from '../lib/format.js'
-import { ClippedTag, EvidenceTag, MockTag } from './Tags.jsx'
+import { CitationText, ClippedTag, EvidenceTag, MockTag } from './Tags.jsx'
 
 /** The target's reference values, each with evidence type, citation and caveat. */
 export default function TargetReference({ target, features, isMock, open = false }) {
@@ -35,14 +35,15 @@ export default function TargetReference({ target, features, isMock, open = false
                   </td>
                   <td>{tv.status ? <EvidenceTag status={tv.status} /> : isMock ? <MockTag /> : null}</td>
                   <td className="target-ref__src">
-                    {p?.citation &&
-                      (p.url ? (
+                    {p?.citation && <CitationText text={p.citation} />}
+                    {p?.url && !p.citation?.includes(p.url) && (
+                      <>
+                        {' '}
                         <a href={p.url} target="_blank" rel="noreferrer">
-                          {p.citation}
+                          source ↗
                         </a>
-                      ) : (
-                        p.citation
-                      ))}
+                      </>
+                    )}
                     {p?.note && <span className="cell-note">{p.note}</span>}
                     {!p && <span className="muted">{target.refs?.[f.id] || '—'}</span>}
                   </td>

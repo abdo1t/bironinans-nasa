@@ -1,0 +1,5 @@
+id,name,country,lat,lon,coord_source,why_control
+ctrl-manaus,Manaus (Amazon rainforest),Brazil,-3.119,-60.022,Wikipedia infobox (city reference point),"Humid tropical rainforest: wet, warm, densely vegetated; expected to be a poor analog"
+ctrl-freiburg,Freiburg / Black Forest edge,Germany,47.996,7.852,Wikipedia infobox (city reference point),"Temperate, wet, forested mid-latitude site; expected to be a poor analog"
+ctrl-can-tho,Can Tho (Mekong Delta),Vietnam,10.045,105.747,Wikipedia infobox (city reference point),"Wet, warm, flat, vegetated delta lowland; expected to be a poor analog"
+ctrl-galway,Galway (Atlantic Ireland),Ireland,53.271,-9.057,Wikipedia infobox (city reference point),"Mild, very wet, vegetated maritime climate; expected to be a poor analog"

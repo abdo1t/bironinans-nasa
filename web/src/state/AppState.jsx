@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useBundle } from '../data/useBundle.js'
 import { PRESETS } from '../lib/presets.js'
+import { orderRanking } from '../lib/explain.js'
 import { rankSites } from '../lib/scoring.js'
 import {
   CUSTOM_PRESET,
@@ -59,11 +60,12 @@ export function AppStateProvider({ children }) {
 
   const ranking = useMemo(() => {
     if (!target) return []
-    return rankSites(target, data.sites, state.weights, data.features, data.minCriteria).map((r, i) => ({
+    const ranked = rankSites(target, data.sites, state.weights, data.features, data.minCriteria)
+    return orderRanking(ranked, state.rankBy, data.siteById).map((r, i) => ({
       ...r,
       rank: r.score === null ? null : i + 1,
     }))
-  }, [target, state.weights, data])
+  }, [target, state.weights, state.rankBy, data])
 
   const rankBySite = useMemo(() => Object.fromEntries(ranking.map((r) => [r.site, r])), [ranking])
 
@@ -102,6 +104,8 @@ export function AppStateProvider({ children }) {
 
   const clearShortlist = useCallback(() => setState((s) => ({ ...s, shortlist: [] })), [])
 
+  const setRankBy = useCallback((rankBy) => setState((s) => ({ ...s, rankBy })), [])
+
   /** Build a link that carries the current target/weights/shortlist. */
   const linkTo = useCallback(
     (pathname, extra = {}) => {
@@ -126,6 +130,7 @@ export function AppStateProvider({ children }) {
     resetWeights,
     toggleShortlist,
     clearShortlist,
+    setRankBy,
     linkTo,
   }
 

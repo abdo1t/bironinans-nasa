@@ -4,6 +4,8 @@ import WorldCard from '../components/WorldCard.jsx'
 import TargetSelect from '../components/TargetSelect.jsx'
 import { useBundle } from '../data/useBundle.js'
 import { bodyLabel } from '../lib/format.js'
+import { PRESETS } from '../lib/presets.js'
+import { SCENARIOS, scenarioQuery } from '../lib/scenarios.js'
 import { useAppState } from '../state/AppState.jsx'
 
 export default function Home() {
@@ -11,6 +13,14 @@ export default function Home() {
   const app = useAppState()
   const navigate = useNavigate()
   const [body, setBody] = useState(app.target?.body ?? null)
+
+  const scenarios = SCENARIOS.filter((sc) => data.targetById[sc.targetId] && PRESETS[sc.presetId])
+  const openScenario = (sc) => {
+    // Plain preset link (not linkTo): custom weights in the current URL must not override the scenario preset.
+    const params = new URLSearchParams(scenarioQuery(sc))
+    if (app.shortlist.length) params.set('sites', app.shortlist.join(','))
+    navigate(`/explore?${params.toString().replace(/%2C/g, ',')}`)
+  }
 
   const chooseBody = (b) => {
     setBody(b)
@@ -64,6 +74,28 @@ export default function Home() {
       >
         Find Earth analogs
       </button>
+
+      {scenarios.length > 0 && (
+        <section className="scenarios" aria-labelledby="scenarios-title">
+          <h2 id="scenarios-title" className="step">
+            Mission scenarios
+          </h2>
+          <div className="scenarios__list">
+            {scenarios.map((sc) => (
+              <button key={sc.id} type="button" className="scenario-card" onClick={() => openScenario(sc)}>
+                <span className="scenario-card__title">{sc.label}</span>
+                <span className="scenario-card__meta">
+                  {data.targetById[sc.targetId].name} · {PRESETS[sc.presetId].label} preset
+                </span>
+              </button>
+            ))}
+          </div>
+          <p className="hint">
+            Scenarios pre-select a target and weights for a screening question. They rank resemblance, not mission
+            suitability.
+          </p>
+        </section>
+      )}
     </section>
   )
 }

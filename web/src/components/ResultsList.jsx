@@ -1,12 +1,48 @@
 import { Link } from 'react-router-dom'
-import { ConfidenceTag, CoverageBadge, NoveltyTag, ScoreBar } from './Tags.jsx'
+import { whyGapSummary } from '../lib/explain.js'
+import { CoverageBadge, EvidenceCoverageTag, NoveltyTag, ScoreBar, ScoreRange } from './Tags.jsx'
 
-export default function ResultsList({ ranking, siteById, target, shortlist, shortlistFull, onToggleShortlist, linkTo }) {
+function WhyCell({ r }) {
+  const { match, short } = whyGapSummary(r.why, r.gap, r.score)
+  if (r.score === null) return <span className="muted">{short}</span>
+  return (
+    <span className="why-gap">
+      {match && (
+        <span className="why-gap__match">
+          <span aria-hidden="true">✓ </span>
+          <span className="sr-only">Closest match: </span>
+          {match}
+        </span>
+      )}
+      {match && short && <span aria-hidden="true"> · </span>}
+      {short && (
+        <span className="why-gap__short">
+          <span aria-hidden="true">✗ </span>
+          <span className="sr-only">Largest shortfall: </span>
+          {short}
+        </span>
+      )}
+      {!match && !short && <span className="muted">No criterion reaches 70% similarity</span>}
+    </span>
+  )
+}
+
+export default function ResultsList({
+  ranking,
+  siteById,
+  target,
+  weights,
+  features,
+  shortlist,
+  shortlistFull,
+  onToggleShortlist,
+  linkTo,
+}) {
   return (
     <div className="results">
       <table className="results__table">
         <caption className="sr-only">
-          Earth sites ranked by similarity to {target.name}. Missing data is excluded from a score, not counted as zero.
+          Earth sites ranked by similarity to {target.name}. Missing data is excluded from a score, not counted as zero; the range shows how far missing data could move it.
         </caption>
         <thead>
           <tr>
@@ -35,17 +71,20 @@ export default function ResultsList({ ranking, siteById, target, shortlist, shor
                 </td>
                 <td className="results__score">
                   <ScoreBar score={r.score} />
+                  <ScoreRange score={r.score} range={r.scoreRange} />
                 </td>
                 <td>
                   <CoverageBadge coverage={r.coverage} />
                   {r.score !== null && (
                     <>
                       <br />
-                      <ConfidenceTag coverage={r.coverage} />
+                      <EvidenceCoverageTag target={target} site={site} weights={weights} features={features} />
                     </>
                   )}
                 </td>
-                <td className="results__why">{r.why[0] || <span className="muted">{r.gap}</span>}</td>
+                <td className="results__why">
+                  <WhyCell r={r} />
+                </td>
                 <td>
                   <NoveltyTag site={site} />
                 </td>

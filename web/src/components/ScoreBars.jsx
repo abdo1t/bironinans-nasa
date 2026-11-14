@@ -1,3 +1,4 @@
+import { pointsLost, usableWeightFromSims } from '../lib/explain.js'
 import { describeSiteValue, describeTargetValue, pct } from '../lib/format.js'
 import { similarity } from '../lib/scoring.js'
 import { ClippedTag, EvidenceTag, SourceTag } from './Tags.jsx'
@@ -8,6 +9,8 @@ import { ClippedTag, EvidenceTag, SourceTag } from './Tags.jsx'
  * (value shown but excluded, e.g. unrepresentative grid cell) · measured (incl. 0%).
  */
 export default function ScoreBars({ site, target, weights, features, result }) {
+  const usable = usableWeightFromSims(result.sims, weights)
+  const scored = result.score !== null && result.score !== undefined
   return (
     <table className="bars">
       <caption className="sr-only">Per-criterion similarity of {site.name} to {target.name}</caption>
@@ -19,6 +22,9 @@ export default function ScoreBars({ site, target, weights, features, result }) {
           <th scope="col">Site value</th>
           <th scope="col">Target value</th>
           <th scope="col">Share of score</th>
+          <th scope="col" title="Points (of 100) this criterion costs the site: weight × (1 − similarity) ÷ total weight of criteria with data. Score + all points lost ≈ 100 (rounding).">
+            Points lost
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -27,6 +33,7 @@ export default function ScoreBars({ site, target, weights, features, result }) {
           const selected = w > 0
           const s = selected ? result.sims[f.id] : similarity(f, site.norm[f.id], target.norm[f.id])
           const contrib = result.contrib[f.id]
+          const lost = selected && scored ? pointsLost(w, s, usable) : null
           const sv = describeSiteValue(f, site)
           const tv = describeTargetValue(f, target)
           return (
@@ -74,6 +81,13 @@ export default function ScoreBars({ site, target, weights, features, result }) {
                   <span className="muted">excluded</span>
                 ) : (
                   `${(contrib * 100).toFixed(1)} pts`
+                )}
+              </td>
+              <td>
+                {lost === null ? (
+                  <span className="muted">—</span>
+                ) : (
+                  <span className={lost >= 10 ? 'pts-lost pts-lost--big' : 'pts-lost'}>−{lost.toFixed(1)} pts</span>
                 )}
               </td>
             </tr>

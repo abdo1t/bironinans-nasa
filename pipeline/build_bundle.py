@@ -38,10 +38,14 @@ def _num(v):
 
 
 def _csv_by_id(path):
+    return _csv_by_id_key(path, "id")
+
+
+def _csv_by_id_key(path, key):
     if not path.exists():
         return {}
     with open(path, newline="", encoding="utf-8") as f:
-        return {r["id"]: r for r in csv.DictReader(f)}
+        return {r[key]: r for r in csv.DictReader(f)}
 
 
 def _clip_flag(value, feature):
@@ -60,14 +64,37 @@ def _short_period(period):
 
 # --------------------------------------------------------------------------- targets
 
+def planetary_terrain_entry(prow):
+    """targets_real.json-style feature entry built from a data/planetary_terrain.csv row."""
+    relief = _num(prow.get("relief_m"))
+    if relief is None:
+        return None
+    lo, hi = _num(prow.get("relief_min_m")), _num(prow.get("relief_max_m"))
+    rng = f"; products span {lo:.0f}–{hi:.0f} m" if lo is not None and hi is not None else ""
+    return {
+        "status": "orbital",
+        "basisValue": relief,
+        "display": f"{relief:.0f} m (P99 − P1, 10 × 10 km window at ~200 m)",
+        "range": [lo, hi] if lo is not None and hi is not None else None,
+        "citation": prow.get("citation", ""),
+        "url": prow.get("url", ""),
+        "note": (f"{prow.get('dem_label', '')}; native {prow.get('posting_native_m', '?')} m posting, native-resolution "
+                 f"relief {prow.get('relief_native_m', '?')} m{rng}. Cross-checks: {prow.get('cross_checks', '')}. "
+                 f"{prow.get('note', '')}").strip(),
+    }
+
+
 def build_targets():
     spec = json.loads(config.TARGETS_REAL.read_text(encoding="utf-8"))["targets"]
+    planetary = _csv_by_id_key(config.PLANETARY_TERRAIN_CSV, "target_id")
     out = []
     for t in spec:
         norm, refs, prov, clipped = {}, {}, {}, {}
         for f in config.FEATURES:
             fid = f["id"]
             entry = t["features"].get(fid, {"status": "unavailable", "note": "not provided"})
+            if fid == "terrain" and t["id"] in planetary:
+                entry = planetary_terrain_entry(planetary[t["id"]]) or entry
             p = {k: v for k, v in entry.items() if k != "basisValue"}
             if entry["status"] == "unavailable":
                 norm[fid] = None
@@ -109,11 +136,22 @@ def _power_prov(fid, value, prow, excluded_note):
     }
 
 
-def power_representativeness(row, prow):
+def site_elevation(row, trow):
+    """(elevation m, source): seed value if given, else the DEM-measured window median."""
+    if _num(row.get("elev_m")) is not None:
+        return _num(row.get("elev_m")), row.get("elev_source") or None
+    if _num(trow.get("elev_m")) is not None:
+        return _num(trow.get("elev_m")), f"{trow.get('dem_label', 'DEM')}: median of the 10 × 10 km window"
+    return None, row.get("elev_source") or None
+
+
+def power_representativeness(row, prow, site_elev=None):
     """(is_low, reason). Manual flag in sites_real.csv, or |site - cell elevation| too large."""
     if row.get("power_quality") == "low":
         return True, row.get("power_note") or "grid cell not representative of the site"
-    site_elev, cell_elev = _num(row.get("elev_m")), _num(prow.get("cell_elev_m"))
+    cell_elev = _num(prow.get("cell_elev_m"))
+    if site_elev is None:
+        site_elev = _num(row.get("elev_m"))
     if site_elev is not None and cell_elev is not None:
         diff = abs(site_elev - cell_elev)
         if diff > config.POWER_MAX_ELEV_DIFF_M:
@@ -122,18 +160,20 @@ def power_representativeness(row, prow):
     return False, ""
 
 
-def build_site(row, power, terrain, catalogue):
+def build_site(row, power, terrain, catalogue, ndvi=None):
     sid = row["id"]
     prow = power.get(sid, {})
     trow = terrain.get(sid, {})
+    nrow = (ndvi or {}).get(sid, {})
     raw = {
         "relief_m": _num(trow.get("relief_m")),
         "precip_mm_yr": _num(prow.get("precip_mm_yr")),
         "ts_mean_c": _num(prow.get("ts_mean_c")),
         "ts_range_c": _num(prow.get("ts_range_c")),
-        "ndvi": None,
+        "ndvi": _num(nrow.get("ndvi")),
     }
-    low_power, power_note = power_representativeness(row, prow)
+    elev_m, elev_source = site_elevation(row, trow)
+    low_power, power_note = power_representativeness(row, prow, elev_m)
     norm, sources, prov, clipped = {}, {}, {}, {}
 
     for f in NUMERIC:
@@ -156,15 +196,40 @@ def build_site(row, power, terrain, catalogue):
                     note = f"Not yet acquired: {trow.get('dem_label') or 'DEM'} download needs a NASA Earthdata login"
                 prov[fid] = {"status": "unavailable", "dem": trow.get("dem", ""), "note": note}
                 continue
+            cross = ""
+            if _num(trow.get("cross_relief_m")) is not None:
+                cross = f"{trow.get('cross_dem', 'cross-check')}: {_num(trow.get('cross_relief_m')):.0f} m"
             prov[fid] = {
                 "dataset": trow["dem_label"], "status": "measurement", "value": v, "units": "m",
-                "method": "P99 − P1 elevation in a 10 × 10 km window", "quality": trow.get("quality", ""),
-                "granules": trow.get("granules", ""), "retrievedAt": trow.get("retrieved_at", ""),
+                "method": "P99 − P1 elevation in a 10 × 10 km window, box-mean aggregated to ~200 m "
+                          "(common scale with the planetary DEMs)",
+                "resolution": f"native posting {trow.get('posting_native', '?')}; scored at ~200 m",
+                "nativeValue": _num(trow.get("relief_native_m")),
+                "crossCheck": cross or None,
+                "citation": trow.get("dem_citation", ""),
+                "attribution": trow.get("attribution", ""),
+                "rangeAlignment": [_num(trow.get("relief_m_min")), _num(trow.get("relief_m_max"))],
+                "note": ("Coastal window: part of the 10 km window is sea at ~0 m, so P1 may be sea level and "
+                         "relief may be overstated." if "sea surface" in (trow.get("note") or "") else None),
+                "quality": trow.get("quality", ""),
+                "retrievedAt": trow.get("retrieved_at", ""),
             }
-        else:  # veg: NDVI not acquired yet
-            norm[fid] = None
-            prov[fid] = {"status": "unavailable", "note": "MODIS NDVI not yet acquired (needs Earthdata login)"}
-            continue
+        else:  # veg: MODIS NDVI
+            if v is None:
+                norm[fid] = None
+                prov[fid] = {"status": "unavailable", "note": nrow.get("note") or "MODIS NDVI not acquired"}
+                continue
+            prov[fid] = {
+                "dataset": nrow.get("product_label", "MODIS NDVI"), "status": "measurement", "value": v,
+                "units": "NDVI",
+                "method": "median over 16-day composites of the 10 × 10 km window median (good/marginal pixels)",
+                "period": nrow.get("period", ""),
+                "resolution": "250 m MODIS pixels",
+                "range": [_num(nrow.get("ndvi_p10")), _num(nrow.get("ndvi_p90"))],
+                "nComposites": _num(nrow.get("n_composites")),
+                "citation": nrow.get("citation", ""),
+                "retrievedAt": nrow.get("retrieved_at", ""),
+            }
         norm[fid] = normalize(v, f)
         flag = _clip_flag(v, f)
         if flag:
@@ -198,7 +263,7 @@ def build_site(row, power, terrain, catalogue):
             "isNewCandidate": (not known) and novel_km > config.NOVELTY_KM,
             "sources": sources, "provenance": prov, "clipped": clipped,
             "coord": {"source": row["coord_source"], "precision": row["coord_precision"],
-                      "elevM": _num(row.get("elev_m")), "elevSource": row.get("elev_source") or None},
+                      "elevM": elev_m, "elevSource": elev_source},
             "notes": row.get("note") or None,
         },
     }
@@ -215,7 +280,9 @@ def main():
 
     features = export_features(config.FEATURES)
     targets = build_targets()
-    sites = {"type": "FeatureCollection", "features": [build_site(r, power, terrain, catalogue) for r in rows]}
+    ndvi = _csv_by_id(config.NDVI_CSV)
+    sites = {"type": "FeatureCollection",
+             "features": [build_site(r, power, terrain, catalogue, ndvi) for r in rows]}
     weights = config.PRESETS[config.DEFAULT_PRESET]
     props = [f["properties"] for f in sites["features"]]
     scores = {

@@ -17,35 +17,51 @@
         "knownAnalog": true,
         "analogRef": "Navarro-González et al. 2003, Science, doi:10.1126/science.1089143 (Mars-like soils in the Atacama)",
         "raw": {
-          "relief_m": null,
+          "relief_m": 373.2,
           "precip_mm_yr": 7.3,
           "ts_mean_c": 18.95,
           "ts_range_c": 28.59,
-          "ndvi": null
+          "ndvi": 0.0995
         },
         "norm": {
-          "terrain": null,
+          "terrain": 0.2488,
           "aridity": 0.9964,
           "temp": 0.8311,
           "temp_range": 0.8169,
-          "veg": null,
+          "veg": 0.8756,
           "geology": "sulfate",
           "ice": "no"
         },
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
+          "terrain": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
           "aridity": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
           "temp": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
           "temp_range": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "veg": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
           "geology": "Literature: Voigt et al. 2017 (Goldschmidt abstract #4103): salt suite mainly gypsum, anhydrite, halite and nitr",
           "ice": "Literature: Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation"
         },
         "provenance": {
           "terrain": {
-            "status": "unavailable",
-            "dem": "SRTMGL1.003",
-            "note": "Not yet acquired: NASA SRTM v3 1 arc-second (SRTMGL1 v003) download needs a NASA Earthdata login"
+            "dataset": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+            "status": "measurement",
+            "value": 373.2,
+            "units": "m",
+            "method": "P99 − P1 elevation in a 10 × 10 km window, box-mean aggregated to ~200 m (common scale with the planetary DEMs)",
+            "resolution": "native posting 1x1 arcsec (lon x lat) = 28 m E-W x 31 m N-S; scored at ~200 m",
+            "nativeValue": 377.0,
+            "crossCheck": "COP-DEM_GLO-30: 375 m",
+            "citation": "NASA JPL (2020). NASADEM Merged DEM Global 1 arc second V001. NASA EOSDIS Land Processes DAAC. doi:10.5067/MEaSUREs/NASADEM/NASADEM_HGT.001",
+            "attribution": "NASA JPL (NASADEM_HGT v001), via Microsoft Planetary Computer | cross-check: © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
+            "rangeAlignment": [
+              369.2,
+              378.5
+            ],
+            "note": null,
+            "quality": "primary",
+            "retrievedAt": "2026-11-14T05:11:15+00:00"
           },
           "aridity": {
             "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
@@ -81,8 +97,20 @@
             "retrievedAt": "2026-11-13T18:39:05+00:00"
           },
           "veg": {
-            "status": "unavailable",
-            "note": "MODIS NDVI not yet acquired (needs Earthdata login)"
+            "dataset": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+            "status": "measurement",
+            "value": 0.0995,
+            "units": "NDVI",
+            "method": "median over 16-day composites of the 10 × 10 km window median (good/marginal pixels)",
+            "period": "2022-01-01/2023-12-31",
+            "resolution": "250 m MODIS pixels",
+            "range": [
+              0.0951,
+              0.1033
+            ],
+            "nComposites": 45.0,
+            "citation": "Didan, K. (2021). MODIS/Terra Vegetation Indices 16-Day L3 Global 250m SIN Grid V061. NASA EOSDIS Land Processes DAAC. doi:10.5067/MODIS/MOD13Q1.061; read from the Microsoft Planetary Computer STAC collection 'modis-13Q1-061'",
+            "retrievedAt": "2026-11-14T05:13:15+00:00"
           },
           "geology": {
             "dataset": "Literature",
@@ -123,35 +151,51 @@
         "knownAnalog": true,
         "analogRef": "Stoker et al. 2011, Int. J. Astrobiology, doi:10.1017/S1473550411000115",
         "raw": {
-          "relief_m": null,
+          "relief_m": 195.4,
           "precip_mm_yr": 241.1,
           "ts_mean_c": 12.19,
           "ts_range_c": 21.85,
-          "ndvi": null
+          "ndvi": 0.0985
         },
         "norm": {
-          "terrain": null,
+          "terrain": 0.1303,
           "aridity": 0.8795,
           "temp": 0.7599,
           "temp_range": 0.6243,
-          "veg": null,
+          "veg": 0.8769,
           "geology": "clay",
           "ice": "no"
         },
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
+          "terrain": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
           "aridity": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
           "temp": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
           "temp_range": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "veg": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
           "geology": "Literature: Stoker et al. 2011, Int. J. Astrobiology 10(3), doi:10.1017/S1473550411000115: Mancos and Morrison s",
           "ice": "Literature: Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation"
         },
         "provenance": {
           "terrain": {
-            "status": "unavailable",
-            "dem": "SRTMGL1.003",
-            "note": "Not yet acquired: NASA SRTM v3 1 arc-second (SRTMGL1 v003) download needs a NASA Earthdata login"
+            "dataset": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+            "status": "measurement",
+            "value": 195.4,
+            "units": "m",
+            "method": "P99 − P1 elevation in a 10 × 10 km window, box-mean aggregated to ~200 m (common scale with the planetary DEMs)",
+            "resolution": "native posting 1x1 arcsec (lon x lat) = 24 m E-W x 31 m N-S; scored at ~200 m",
+            "nativeValue": 197.0,
+            "crossCheck": "COP-DEM_GLO-30: 196 m",
+            "citation": "NASA JPL (2020). NASADEM Merged DEM Global 1 arc second V001. NASA EOSDIS Land Processes DAAC. doi:10.5067/MEaSUREs/NASADEM/NASADEM_HGT.001",
+            "attribution": "NASA JPL (NASADEM_HGT v001), via Microsoft Planetary Computer | cross-check: © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
+            "rangeAlignment": [
+              194.4,
+              196.2
+            ],
+            "note": null,
+            "quality": "primary",
+            "retrievedAt": "2026-11-14T05:11:15+00:00"
           },
           "aridity": {
             "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
@@ -187,8 +231,20 @@
             "retrievedAt": "2026-11-13T18:39:08+00:00"
           },
           "veg": {
-            "status": "unavailable",
-            "note": "MODIS NDVI not yet acquired (needs Earthdata login)"
+            "dataset": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+            "status": "measurement",
+            "value": 0.0985,
+            "units": "NDVI",
+            "method": "median over 16-day composites of the 10 × 10 km window median (good/marginal pixels)",
+            "period": "2022-01-01/2023-12-31",
+            "resolution": "250 m MODIS pixels",
+            "range": [
+              0.0931,
+              0.1049
+            ],
+            "nComposites": 45.0,
+            "citation": "Didan, K. (2021). MODIS/Terra Vegetation Indices 16-Day L3 Global 250m SIN Grid V061. NASA EOSDIS Land Processes DAAC. doi:10.5067/MODIS/MOD13Q1.061; read from the Microsoft Planetary Computer STAC collection 'modis-13Q1-061'",
+            "retrievedAt": "2026-11-14T05:13:15+00:00"
           },
           "geology": {
             "dataset": "Literature",
@@ -229,32 +285,48 @@
         "knownAnalog": true,
         "analogRef": "Baldridge et al. 2004, JGR Planets, doi:10.1029/2004JE002315 (Mars remote-sensing analog studies in Badwater Basin)",
         "raw": {
-          "relief_m": null,
+          "relief_m": 242.3,
           "precip_mm_yr": 124.2,
           "ts_mean_c": 19.59,
           "ts_range_c": 25.67,
-          "ndvi": null
+          "ndvi": 0.0811
         },
         "norm": {
-          "terrain": null,
+          "terrain": 0.1615,
           "aridity": null,
           "temp": null,
           "temp_range": null,
-          "veg": null,
+          "veg": 0.8986,
           "geology": "evaporite",
           "ice": "no"
         },
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
+          "terrain": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+          "veg": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
           "geology": "Literature: Baldridge, Farmer & Moersch 2004, JGR Planets 109(E12), doi:10.1029/2004JE002315 (evaporite minerals",
           "ice": "Literature: Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation"
         },
         "provenance": {
           "terrain": {
-            "status": "unavailable",
-            "dem": "SRTMGL1.003",
-            "note": "Not yet acquired: NASA SRTM v3 1 arc-second (SRTMGL1 v003) download needs a NASA Earthdata login"
+            "dataset": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+            "status": "measurement",
+            "value": 242.3,
+            "units": "m",
+            "method": "P99 − P1 elevation in a 10 × 10 km window, box-mean aggregated to ~200 m (common scale with the planetary DEMs)",
+            "resolution": "native posting 1x1 arcsec (lon x lat) = 25 m E-W x 31 m N-S; scored at ~200 m",
+            "nativeValue": 266.0,
+            "crossCheck": "COP-DEM_GLO-30: 242 m",
+            "citation": "NASA JPL (2020). NASADEM Merged DEM Global 1 arc second V001. NASA EOSDIS Land Processes DAAC. doi:10.5067/MEaSUREs/NASADEM/NASADEM_HGT.001",
+            "attribution": "NASA JPL (NASADEM_HGT v001), via Microsoft Planetary Computer | cross-check: © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
+            "rangeAlignment": [
+              220.6,
+              258.2
+            ],
+            "note": null,
+            "quality": "primary",
+            "retrievedAt": "2026-11-14T05:11:15+00:00"
           },
           "aridity": {
             "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
@@ -293,8 +365,20 @@
             "excluded": "POWER grid cell (~50 km) mean elevation 846 m vs site -86 m (difference 932 m > 500 m): cell does not represent the site"
           },
           "veg": {
-            "status": "unavailable",
-            "note": "MODIS NDVI not yet acquired (needs Earthdata login)"
+            "dataset": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+            "status": "measurement",
+            "value": 0.0811,
+            "units": "NDVI",
+            "method": "median over 16-day composites of the 10 × 10 km window median (good/marginal pixels)",
+            "period": "2022-01-01/2023-12-31",
+            "resolution": "250 m MODIS pixels",
+            "range": [
+              0.0776,
+              0.085
+            ],
+            "nComposites": 35.0,
+            "citation": "Didan, K. (2021). MODIS/Terra Vegetation Indices 16-Day L3 Global 250m SIN Grid V061. NASA EOSDIS Land Processes DAAC. doi:10.5067/MODIS/MOD13Q1.061; read from the Microsoft Planetary Computer STAC collection 'modis-13Q1-061'",
+            "retrievedAt": "2026-11-14T05:13:15+00:00"
           },
           "geology": {
             "dataset": "Literature",
@@ -335,35 +419,51 @@
         "knownAnalog": true,
         "analogRef": "Lee & Osinski 2005, Meteoritics & Planetary Science 40(12), doi:10.1111/j.1945-5100.2005.tb00144.x",
         "raw": {
-          "relief_m": null,
+          "relief_m": 159.0,
           "precip_mm_yr": 321.4,
           "ts_mean_c": -15.27,
           "ts_range_c": 6.84,
-          "ndvi": null
+          "ndvi": 0.2038
         },
         "norm": {
-          "terrain": null,
+          "terrain": 0.106,
           "aridity": 0.8393,
           "temp": 0.4708,
           "temp_range": 0.1954,
-          "veg": null,
+          "veg": 0.7453,
           "geology": "sedimentary",
           "ice": "yes"
         },
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
+          "terrain": "Copernicus DEM GLO-30 Public (2021 release), 1 arc-second base posting",
           "aridity": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
           "temp": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
           "temp_range": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "veg": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
           "geology": "Literature: Lindgren et al. 2009, Astrobiology, doi:10.1089/ast.2008.0270: thick target succession of sedimentar",
           "ice": "Literature: Osinski et al., LPSC 2020 abstract (NTRS 20200001979): GPR and shallow drilling confirm ice in polyg"
         },
         "provenance": {
           "terrain": {
-            "status": "unavailable",
-            "dem": "ASTGTM.003",
-            "note": "Not yet acquired: ASTER GDEM v3 1 arc-second (ASTGTM v003) download needs a NASA Earthdata login"
+            "dataset": "Copernicus DEM GLO-30 Public (2021 release), 1 arc-second base posting",
+            "status": "measurement",
+            "value": 159.0,
+            "units": "m",
+            "method": "P99 − P1 elevation in a 10 × 10 km window, box-mean aggregated to ~200 m (common scale with the planetary DEMs)",
+            "resolution": "native posting 3x1 arcsec (lon x lat) = 23 m E-W x 31 m N-S; scored at ~200 m",
+            "nativeValue": 162.7,
+            "crossCheck": "COP-DEM_GLO-90: 160 m",
+            "citation": "European Space Agency, Sinergise (2021). Copernicus Global Digital Elevation Model (COP-DEM), doi:10.5270/ESA-c5d3d65; AWS Open Data registry 'copernicus-dem', s3://copernicus-dem-30m",
+            "attribution": "© DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
+            "rangeAlignment": [
+              157.5,
+              161.0
+            ],
+            "note": null,
+            "quality": "partner-fill",
+            "retrievedAt": "2026-11-14T05:11:15+00:00"
           },
           "aridity": {
             "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
@@ -399,8 +499,20 @@
             "retrievedAt": "2026-11-13T18:39:14+00:00"
           },
           "veg": {
-            "status": "unavailable",
-            "note": "MODIS NDVI not yet acquired (needs Earthdata login)"
+            "dataset": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+            "status": "measurement",
+            "value": 0.2038,
+            "units": "NDVI",
+            "method": "median over 16-day composites of the 10 × 10 km window median (good/marginal pixels)",
+            "period": "2022-01-01/2023-12-31",
+            "resolution": "250 m MODIS pixels",
+            "range": [
+              0.1881,
+              0.2073
+            ],
+            "nComposites": 10.0,
+            "citation": "Didan, K. (2021). MODIS/Terra Vegetation Indices 16-Day L3 Global 250m SIN Grid V061. NASA EOSDIS Land Processes DAAC. doi:10.5067/MODIS/MOD13Q1.061; read from the Microsoft Planetary Computer STAC collection 'modis-13Q1-061'",
+            "retrievedAt": "2026-11-14T05:13:15+00:00"
           },
           "geology": {
             "dataset": "Literature",
@@ -441,14 +553,14 @@
         "knownAnalog": true,
         "analogRef": "Heldmann et al. 2013, Planetary and Space Science, doi:10.1016/j.pss.2013.05.019 (high-elevation Dry Valleys as analogs for subsurface ice on Mars)",
         "raw": {
-          "relief_m": null,
+          "relief_m": 924.4,
           "precip_mm_yr": 142.4,
           "ts_mean_c": -35.25,
           "ts_range_c": 6.46,
           "ndvi": null
         },
         "norm": {
-          "terrain": null,
+          "terrain": 0.6163,
           "aridity": 0.9288,
           "temp": 0.2605,
           "temp_range": 0.1846,
@@ -459,6 +571,7 @@
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
+          "terrain": "Copernicus DEM GLO-30 Public (2021 release), 1 arc-second base posting",
           "aridity": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
           "temp": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
           "temp_range": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
@@ -466,9 +579,23 @@
         },
         "provenance": {
           "terrain": {
-            "status": "unavailable",
-            "dem": "ASTGTM.003",
-            "note": "Not yet acquired: ASTER GDEM v3 1 arc-second (ASTGTM v003) download needs a NASA Earthdata login"
+            "dataset": "Copernicus DEM GLO-30 Public (2021 release), 1 arc-second base posting",
+            "status": "measurement",
+            "value": 924.4,
+            "units": "m",
+            "method": "P99 − P1 elevation in a 10 × 10 km window, box-mean aggregated to ~200 m (common scale with the planetary DEMs)",
+            "resolution": "native posting 3x1 arcsec (lon x lat) = 19 m E-W x 31 m N-S; scored at ~200 m",
+            "nativeValue": 938.5,
+            "crossCheck": "COP-DEM_GLO-90: 927 m",
+            "citation": "European Space Agency, Sinergise (2021). Copernicus Global Digital Elevation Model (COP-DEM), doi:10.5270/ESA-c5d3d65; AWS Open Data registry 'copernicus-dem', s3://copernicus-dem-30m",
+            "attribution": "© DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
+            "rangeAlignment": [
+              916.3,
+              936.3
+            ],
+            "note": null,
+            "quality": "partner-fill",
+            "retrievedAt": "2026-11-14T05:11:15+00:00"
           },
           "aridity": {
             "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
@@ -505,7 +632,7 @@
           },
           "veg": {
             "status": "unavailable",
-            "note": "MODIS NDVI not yet acquired (needs Earthdata login)"
+            "note": "no MOD13Q1 composites found for the window"
           },
           "geology": {
             "status": "unavailable",
@@ -544,35 +671,51 @@
         "knownAnalog": true,
         "analogRef": "Fernández-Remolar et al. 2005, Earth and Planetary Science Letters, doi:10.1016/j.epsl.2005.09.043 (implications for Meridiani Planum, Mars)",
         "raw": {
-          "relief_m": null,
+          "relief_m": 339.6,
           "precip_mm_yr": 467.5,
           "ts_mean_c": 18.78,
           "ts_range_c": 18.89,
-          "ndvi": null
+          "ndvi": 0.483
         },
         "norm": {
-          "terrain": null,
+          "terrain": 0.2264,
           "aridity": 0.7663,
           "temp": 0.8293,
           "temp_range": 0.5397,
-          "veg": null,
+          "veg": 0.3963,
           "geology": "sulfate",
           "ice": "no"
         },
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
+          "terrain": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
           "aridity": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
           "temp": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
           "temp_range": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "veg": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
           "geology": "Literature: Amils & Fernández-Remolar 2014, Life 4:511, doi:10.3390/life4030511 (sulfate and iron-oxide deposits",
           "ice": "Literature: Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation"
         },
         "provenance": {
           "terrain": {
-            "status": "unavailable",
-            "dem": "SRTMGL1.003",
-            "note": "Not yet acquired: NASA SRTM v3 1 arc-second (SRTMGL1 v003) download needs a NASA Earthdata login"
+            "dataset": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+            "status": "measurement",
+            "value": 339.6,
+            "units": "m",
+            "method": "P99 − P1 elevation in a 10 × 10 km window, box-mean aggregated to ~200 m (common scale with the planetary DEMs)",
+            "resolution": "native posting 1x1 arcsec (lon x lat) = 24 m E-W x 31 m N-S; scored at ~200 m",
+            "nativeValue": 347.0,
+            "crossCheck": "COP-DEM_GLO-30: 342 m",
+            "citation": "NASA JPL (2020). NASADEM Merged DEM Global 1 arc second V001. NASA EOSDIS Land Processes DAAC. doi:10.5067/MEaSUREs/NASADEM/NASADEM_HGT.001",
+            "attribution": "NASA JPL (NASADEM_HGT v001), via Microsoft Planetary Computer | cross-check: © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
+            "rangeAlignment": [
+              334.5,
+              344.6
+            ],
+            "note": null,
+            "quality": "primary",
+            "retrievedAt": "2026-11-14T05:11:15+00:00"
           },
           "aridity": {
             "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
@@ -608,8 +751,20 @@
             "retrievedAt": "2026-11-13T18:39:20+00:00"
           },
           "veg": {
-            "status": "unavailable",
-            "note": "MODIS NDVI not yet acquired (needs Earthdata login)"
+            "dataset": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+            "status": "measurement",
+            "value": 0.483,
+            "units": "NDVI",
+            "method": "median over 16-day composites of the 10 × 10 km window median (good/marginal pixels)",
+            "period": "2022-01-01/2023-12-31",
+            "resolution": "250 m MODIS pixels",
+            "range": [
+              0.3651,
+              0.5899
+            ],
+            "nComposites": 44.0,
+            "citation": "Didan, K. (2021). MODIS/Terra Vegetation Indices 16-Day L3 Global 250m SIN Grid V061. NASA EOSDIS Land Processes DAAC. doi:10.5067/MODIS/MOD13Q1.061; read from the Microsoft Planetary Computer STAC collection 'modis-13Q1-061'",
+            "retrievedAt": "2026-11-14T05:13:15+00:00"
           },
           "geology": {
             "dataset": "Literature",
@@ -650,34 +805,50 @@
         "knownAnalog": true,
         "analogRef": "Voigt et al. 2025, Planetary Science Journal, doi:10.3847/PSJ/adb5f1 (Holuhraun as analog for young volcanic terrains in Elysium Planitia)",
         "raw": {
-          "relief_m": null,
+          "relief_m": 164.3,
           "precip_mm_yr": 862.0,
           "ts_mean_c": -4.39,
           "ts_range_c": 4.87,
-          "ndvi": null
+          "ndvi": 0.0161
         },
         "norm": {
-          "terrain": null,
+          "terrain": 0.1095,
           "aridity": 0.569,
           "temp": 0.5854,
           "temp_range": 0.1391,
-          "veg": null,
+          "veg": 0.9799,
           "geology": "basalt",
           "ice": null
         },
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
+          "terrain": "Copernicus DEM GLO-30 Public (2021 release), 1 arc-second base posting",
           "aridity": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
           "temp": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
           "temp_range": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "veg": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
           "geology": "Literature: Pedersen et al. 2017, J. Volcanol. Geotherm. Res., doi:10.1016/j.jvolgeores.2017.02.027 (2014–2015 b"
         },
         "provenance": {
           "terrain": {
-            "status": "unavailable",
-            "dem": "ASTGTM.003",
-            "note": "Not yet acquired: ASTER GDEM v3 1 arc-second (ASTGTM v003) download needs a NASA Earthdata login"
+            "dataset": "Copernicus DEM GLO-30 Public (2021 release), 1 arc-second base posting",
+            "status": "measurement",
+            "value": 164.3,
+            "units": "m",
+            "method": "P99 − P1 elevation in a 10 × 10 km window, box-mean aggregated to ~200 m (common scale with the planetary DEMs)",
+            "resolution": "native posting 2x1 arcsec (lon x lat) = 26 m E-W x 31 m N-S; scored at ~200 m",
+            "nativeValue": 170.9,
+            "crossCheck": "COP-DEM_GLO-90: 164 m",
+            "citation": "European Space Agency, Sinergise (2021). Copernicus Global Digital Elevation Model (COP-DEM), doi:10.5270/ESA-c5d3d65; AWS Open Data registry 'copernicus-dem', s3://copernicus-dem-30m",
+            "attribution": "© DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
+            "rangeAlignment": [
+              158.4,
+              169.6
+            ],
+            "note": null,
+            "quality": "partner-fill",
+            "retrievedAt": "2026-11-14T05:11:15+00:00"
           },
           "aridity": {
             "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
@@ -713,8 +884,20 @@
             "retrievedAt": "2026-11-13T18:39:24+00:00"
           },
           "veg": {
-            "status": "unavailable",
-            "note": "MODIS NDVI not yet acquired (needs Earthdata login)"
+            "dataset": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+            "status": "measurement",
+            "value": 0.0161,
+            "units": "NDVI",
+            "method": "median over 16-day composites of the 10 × 10 km window median (good/marginal pixels)",
+            "period": "2022-01-01/2023-12-31",
+            "resolution": "250 m MODIS pixels",
+            "range": [
+              0.003,
+              0.028
+            ],
+            "nComposites": 17.0,
+            "citation": "Didan, K. (2021). MODIS/Terra Vegetation Indices 16-Day L3 Global 250m SIN Grid V061. NASA EOSDIS Land Processes DAAC. doi:10.5067/MODIS/MOD13Q1.061; read from the Microsoft Planetary Computer STAC collection 'modis-13Q1-061'",
+            "retrievedAt": "2026-11-14T05:13:15+00:00"
           },
           "geology": {
             "dataset": "Literature",
@@ -753,32 +936,48 @@
         "knownAnalog": true,
         "analogRef": "Palma et al. 2024, Science of the Total Environment, doi:10.1016/j.scitotenv.2023.169583 (Lanzarote as a Mars volcanology analog; La Corona lava tubes)",
         "raw": {
-          "relief_m": null,
+          "relief_m": 370.2,
           "precip_mm_yr": 109.6,
           "ts_mean_c": 21.27,
           "ts_range_c": 4.49,
-          "ndvi": null
+          "ndvi": 0.0578
         },
         "norm": {
-          "terrain": null,
+          "terrain": 0.2468,
           "aridity": null,
           "temp": null,
           "temp_range": null,
-          "veg": null,
+          "veg": 0.9278,
           "geology": "basalt",
           "ice": "no"
         },
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
+          "terrain": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+          "veg": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
           "geology": "Literature: Muller et al. 2024, Bull. Volcanol., doi:10.1007/s00445-024-01729-5 (large basaltic fissure eruption",
           "ice": "Literature: Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation"
         },
         "provenance": {
           "terrain": {
-            "status": "unavailable",
-            "dem": "SRTMGL1.003",
-            "note": "Not yet acquired: NASA SRTM v3 1 arc-second (SRTMGL1 v003) download needs a NASA Earthdata login"
+            "dataset": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+            "status": "measurement",
+            "value": 370.2,
+            "units": "m",
+            "method": "P99 − P1 elevation in a 10 × 10 km window, box-mean aggregated to ~200 m (common scale with the planetary DEMs)",
+            "resolution": "native posting 1x1 arcsec (lon x lat) = 27 m E-W x 31 m N-S; scored at ~200 m",
+            "nativeValue": 373.0,
+            "crossCheck": "COP-DEM_GLO-30: 369 m",
+            "citation": "NASA JPL (2020). NASADEM Merged DEM Global 1 arc second V001. NASA EOSDIS Land Processes DAAC. doi:10.5067/MEaSUREs/NASADEM/NASADEM_HGT.001",
+            "attribution": "NASA JPL (NASADEM_HGT v001), via Microsoft Planetary Computer | cross-check: © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
+            "rangeAlignment": [
+              364.3,
+              376.1
+            ],
+            "note": "Coastal window: part of the 10 km window is sea at ~0 m, so P1 may be sea level and relief may be overstated.",
+            "quality": "primary",
+            "retrievedAt": "2026-11-14T05:11:15+00:00"
           },
           "aridity": {
             "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
@@ -817,8 +1016,20 @@
             "excluded": "Island (~60 x 20 km) smaller than the 0.5 x 0.625 deg POWER cell: the cell is mostly ocean (daily skin-temperature range 4.5 C reflects sea surface), so it does not represent the lava field"
           },
           "veg": {
-            "status": "unavailable",
-            "note": "MODIS NDVI not yet acquired (needs Earthdata login)"
+            "dataset": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+            "status": "measurement",
+            "value": 0.0578,
+            "units": "NDVI",
+            "method": "median over 16-day composites of the 10 × 10 km window median (good/marginal pixels)",
+            "period": "2022-01-01/2023-12-31",
+            "resolution": "250 m MODIS pixels",
+            "range": [
+              0.0372,
+              0.0777
+            ],
+            "nComposites": 45.0,
+            "citation": "Didan, K. (2021). MODIS/Terra Vegetation Indices 16-Day L3 Global 250m SIN Grid V061. NASA EOSDIS Land Processes DAAC. doi:10.5067/MODIS/MOD13Q1.061; read from the Microsoft Planetary Computer STAC collection 'modis-13Q1-061'",
+            "retrievedAt": "2026-11-14T05:13:15+00:00"
           },
           "geology": {
             "dataset": "Literature",
@@ -859,32 +1070,48 @@
         "knownAnalog": true,
         "analogRef": "Cavalazzi et al. 2019, Astrobiology, doi:10.1089/ast.2018.1926 (an exceptional planetary field analog)",
         "raw": {
-          "relief_m": null,
+          "relief_m": 36.8,
           "precip_mm_yr": 449.3,
           "ts_mean_c": 27.59,
           "ts_range_c": 22.17,
-          "ndvi": null
+          "ndvi": 0.0777
         },
         "norm": {
-          "terrain": null,
+          "terrain": 0.0245,
           "aridity": null,
           "temp": null,
           "temp_range": null,
-          "veg": null,
+          "veg": 0.9029,
           "geology": "evaporite",
           "ice": "no"
         },
         "novelKm": 0,
         "isNewCandidate": false,
         "sources": {
+          "terrain": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+          "veg": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
           "geology": "Literature: Cavalazzi et al. 2019, Astrobiology, doi:10.1089/ast.2018.1926",
           "ice": "Literature: Cavalazzi et al. 2019: average annual temperature 36–38 °C"
         },
         "provenance": {
           "terrain": {
-            "status": "unavailable",
-            "dem": "SRTMGL1.003",
-            "note": "Not yet acquired: NASA SRTM v3 1 arc-second (SRTMGL1 v003) download needs a NASA Earthdata login"
+            "dataset": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+            "status": "measurement",
+            "value": 36.8,
+            "units": "m",
+            "method": "P99 − P1 elevation in a 10 × 10 km window, box-mean aggregated to ~200 m (common scale with the planetary DEMs)",
+            "resolution": "native posting 1x1 arcsec (lon x lat) = 30 m E-W x 31 m N-S; scored at ~200 m",
+            "nativeValue": 40.0,
+            "crossCheck": "COP-DEM_GLO-30: 34 m",
+            "citation": "NASA JPL (2020). NASADEM Merged DEM Global 1 arc second V001. NASA EOSDIS Land Processes DAAC. doi:10.5067/MEaSUREs/NASADEM/NASADEM_HGT.001",
+            "attribution": "NASA JPL (NASADEM_HGT v001), via Microsoft Planetary Computer | cross-check: © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
+            "rangeAlignment": [
+              36.0,
+              37.6
+            ],
+            "note": null,
+            "quality": "primary",
+            "retrievedAt": "2026-11-14T05:11:15+00:00"
           },
           "aridity": {
             "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
@@ -923,8 +1150,20 @@
             "excluded": "POWER grid cell (~50 km) mean elevation 1063 m vs site -99 m (difference 1162 m > 500 m): cell does not represent the site"
           },
           "veg": {
-            "status": "unavailable",
-            "note": "MODIS NDVI not yet acquired (needs Earthdata login)"
+            "dataset": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+            "status": "measurement",
+            "value": 0.0777,
+            "units": "NDVI",
+            "method": "median over 16-day composites of the 10 × 10 km window median (good/marginal pixels)",
+            "period": "2022-01-01/2023-12-31",
+            "resolution": "250 m MODIS pixels",
+            "range": [
+              0.0555,
+              0.099
+            ],
+            "nComposites": 45.0,
+            "citation": "Didan, K. (2021). MODIS/Terra Vegetation Indices 16-Day L3 Global 250m SIN Grid V061. NASA EOSDIS Land Processes DAAC. doi:10.5067/MODIS/MOD13Q1.061; read from the Microsoft Planetary Computer STAC collection 'modis-13Q1-061'",
+            "retrievedAt": "2026-11-14T05:13:15+00:00"
           },
           "geology": {
             "dataset": "Literature",
@@ -965,35 +1204,51 @@
         "knownAnalog": false,
         "analogRef": null,
         "raw": {
-          "relief_m": null,
+          "relief_m": 44.8,
           "precip_mm_yr": 14.6,
           "ts_mean_c": 22.8,
           "ts_range_c": 21.91,
-          "ndvi": null
+          "ndvi": 0.0832
         },
         "norm": {
-          "terrain": null,
+          "terrain": 0.0299,
           "aridity": 0.9927,
           "temp": 0.8716,
           "temp_range": 0.626,
-          "veg": null,
+          "veg": 0.896,
           "geology": "sedimentary",
           "ice": "no"
         },
         "novelKm": 1917,
         "isNewCandidate": true,
         "sources": {
+          "terrain": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
           "aridity": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
           "temp": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
           "temp_range": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "veg": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
           "geology": "Literature: Kamh 2020, doi:10.19080/etoaj.2020.03.555616 (chalky limestone of the White Desert, Farafra)",
           "ice": "Literature: Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation"
         },
         "provenance": {
           "terrain": {
-            "status": "unavailable",
-            "dem": "SRTMGL1.003",
-            "note": "Not yet acquired: NASA SRTM v3 1 arc-second (SRTMGL1 v003) download needs a NASA Earthdata login"
+            "dataset": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+            "status": "measurement",
+            "value": 44.8,
+            "units": "m",
+            "method": "P99 − P1 elevation in a 10 × 10 km window, box-mean aggregated to ~200 m (common scale with the planetary DEMs)",
+            "resolution": "native posting 1x1 arcsec (lon x lat) = 27 m E-W x 31 m N-S; scored at ~200 m",
+            "nativeValue": 49.0,
+            "crossCheck": "COP-DEM_GLO-30: 44 m",
+            "citation": "NASA JPL (2020). NASADEM Merged DEM Global 1 arc second V001. NASA EOSDIS Land Processes DAAC. doi:10.5067/MEaSUREs/NASADEM/NASADEM_HGT.001",
+            "attribution": "NASA JPL (NASADEM_HGT v001), via Microsoft Planetary Computer | cross-check: © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
+            "rangeAlignment": [
+              44.0,
+              45.9
+            ],
+            "note": null,
+            "quality": "primary",
+            "retrievedAt": "2026-11-14T05:11:15+00:00"
           },
           "aridity": {
             "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
@@ -1029,8 +1284,20 @@
             "retrievedAt": "2026-11-13T18:39:32+00:00"
           },
           "veg": {
-            "status": "unavailable",
-            "note": "MODIS NDVI not yet acquired (needs Earthdata login)"
+            "dataset": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+            "status": "measurement",
+            "value": 0.0832,
+            "units": "NDVI",
+            "method": "median over 16-day composites of the 10 × 10 km window median (good/marginal pixels)",
+            "period": "2022-01-01/2023-12-31",
+            "resolution": "250 m MODIS pixels",
+            "range": [
+              0.0818,
+              0.0853
+            ],
+            "nComposites": 38.0,
+            "citation": "Didan, K. (2021). MODIS/Terra Vegetation Indices 16-Day L3 Global 250m SIN Grid V061. NASA EOSDIS Land Processes DAAC. doi:10.5067/MODIS/MOD13Q1.061; read from the Microsoft Planetary Computer STAC collection 'modis-13Q1-061'",
+            "retrievedAt": "2026-11-14T05:13:15+00:00"
           },
           "geology": {
             "dataset": "Literature",
@@ -1049,8 +1316,8 @@
         "coord": {
           "source": "Wikipedia infobox, White Desert National Park",
           "precision": "park reference point",
-          "elevM": null,
-          "elevSource": "DEM lookup gave 13 m, which looks implausibly low — left blank pending verification"
+          "elevM": 27.0,
+          "elevSource": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second: median of the 10 × 10 km window"
         },
         "notes": "No peer-reviewed planetary-analog study found (not proof of absence)."
       }
@@ -1071,35 +1338,51 @@
         "knownAnalog": false,
         "analogRef": null,
         "raw": {
-          "relief_m": null,
+          "relief_m": 752.9,
           "precip_mm_yr": 40.2,
           "ts_mean_c": 19.72,
           "ts_range_c": 26.94,
-          "ndvi": null
+          "ndvi": 0.1058
         },
         "norm": {
-          "terrain": null,
+          "terrain": 0.5019,
           "aridity": 0.9799,
           "temp": 0.8392,
           "temp_range": 0.7697,
-          "veg": null,
+          "veg": 0.8678,
           "geology": "sedimentary",
           "ice": "no"
         },
         "novelKm": 1779,
         "isNewCandidate": true,
         "sources": {
+          "terrain": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
           "aridity": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
           "temp": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
           "temp_range": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "veg": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
           "geology": "Literature: Wikipedia, Wadi Rum: near-vertical mountains of iron-rich, erosion-resistant Umm Ishrin Sandstone",
           "ice": "Literature: Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation"
         },
         "provenance": {
           "terrain": {
-            "status": "unavailable",
-            "dem": "SRTMGL1.003",
-            "note": "Not yet acquired: NASA SRTM v3 1 arc-second (SRTMGL1 v003) download needs a NASA Earthdata login"
+            "dataset": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+            "status": "measurement",
+            "value": 752.9,
+            "units": "m",
+            "method": "P99 − P1 elevation in a 10 × 10 km window, box-mean aggregated to ~200 m (common scale with the planetary DEMs)",
+            "resolution": "native posting 1x1 arcsec (lon x lat) = 27 m E-W x 31 m N-S; scored at ~200 m",
+            "nativeValue": 758.0,
+            "crossCheck": "COP-DEM_GLO-30: 749 m",
+            "citation": "NASA JPL (2020). NASADEM Merged DEM Global 1 arc second V001. NASA EOSDIS Land Processes DAAC. doi:10.5067/MEaSUREs/NASADEM/NASADEM_HGT.001",
+            "attribution": "NASA JPL (NASADEM_HGT v001), via Microsoft Planetary Computer | cross-check: © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
+            "rangeAlignment": [
+              748.4,
+              756.6
+            ],
+            "note": null,
+            "quality": "primary",
+            "retrievedAt": "2026-11-14T05:11:15+00:00"
           },
           "aridity": {
             "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
@@ -1135,8 +1418,20 @@
             "retrievedAt": "2026-11-13T18:39:35+00:00"
           },
           "veg": {
-            "status": "unavailable",
-            "note": "MODIS NDVI not yet acquired (needs Earthdata login)"
+            "dataset": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+            "status": "measurement",
+            "value": 0.1058,
+            "units": "NDVI",
+            "method": "median over 16-day composites of the 10 × 10 km window median (good/marginal pixels)",
+            "period": "2022-01-01/2023-12-31",
+            "resolution": "250 m MODIS pixels",
+            "range": [
+              0.1026,
+              0.1106
+            ],
+            "nComposites": 45.0,
+            "citation": "Didan, K. (2021). MODIS/Terra Vegetation Indices 16-Day L3 Global 250m SIN Grid V061. NASA EOSDIS Land Processes DAAC. doi:10.5067/MODIS/MOD13Q1.061; read from the Microsoft Planetary Computer STAC collection 'modis-13Q1-061'",
+            "retrievedAt": "2026-11-14T05:13:15+00:00"
           },
           "geology": {
             "dataset": "Literature",

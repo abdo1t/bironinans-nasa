@@ -86,20 +86,7 @@ export const EVIDENCE = {
   unavailable: { label: 'Unavailable', title: 'No verified value — excluded from scores' },
 }
 
-/**
- * Confidence of a score from its coverage (how many selected criteria had data).
- * 'low'    — fewer than 3 criteria, or under half of the selected ones
- * 'medium' — under 80 % of the selected criteria
- * 'high'   — otherwise
- * Returns null when there is no score.
- */
-export function confidence(coverage) {
-  if (!coverage || coverage.used === 0) return null
-  const share = coverage.used / coverage.selected
-  if (coverage.used < 3 || share < 0.5) return 'low'
-  if (share < 0.8) return 'medium'
-  return 'high'
-}
+// Evidence coverage (High / Medium / Low by weight share) lives in explain.js.
 
 export function bodyLabel(body) {
   return body === 'moon' ? 'Moon' : body === 'mars' ? 'Mars' : body
