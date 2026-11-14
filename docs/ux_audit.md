@@ -129,3 +129,7 @@ Guided by the UI UX Pro Max skill (priorities: accessibility, interaction, navig
 Checks: 73 Vitest + 101 pytest passing; `validate_bundle.py` OK for real and mock; real and mock builds pass; no horizontal overflow at 375 px on Home, Explore, Site details and Compare; Advanced options and the order switch are keyboard-operable native radios.
 
 Not done: 3D terrain (the offline 2D shaded-relief preview stays; a 3D view was judged not to add understanding worth the load cost on the main journey); verdict text in `verdict.js` is still the earlier wording; no study with real users.
+
+## 5. Art & Technology pass
+
+Planetary Mirror, Earth terrain previews and ranking-change feedback: see `docs/art_technology.md` (rollback tag `pre-art-tech`).
