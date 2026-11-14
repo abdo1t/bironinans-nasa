@@ -9,7 +9,7 @@ import { SERIES_COLORS, bodyLabel, pct } from '../lib/format.js'
 import { missionTitle } from '../lib/missions.js'
 import { RANK_METHODS, RANK_ORDER } from '../lib/rankMethods.js'
 import { LIMITATIONS_NOTE } from '../lib/scoring.js'
-import { entrySummary, guaranteedMin, keyDifferences } from '../lib/summary.js'
+import { entrySummary, guaranteedMin, keyDifferences, plainComparison } from '../lib/summary.js'
 import { compareVerdict } from '../lib/verdict.js'
 import { useAppState } from '../state/AppState.jsx'
 import '../styles/compare.css'
@@ -26,7 +26,7 @@ function leaders(sites, rankBySite, rankBy) {
 function SummaryCard({ site, index, entry, target, weights, features, isLeader, leadLabel, onRemove, linkTo }) {
   const s = entrySummary(entry)
   const missing = entry ? entry.coverage.selected - entry.coverage.used : 0
-  const closedRange = missing === 0 ? 'no data gaps' : 'no missing site data'
+  const closedRange = missing === 0 ? 'all measured' : 'no missing site data'
   // "No gaps" only speaks for criteria with data; say how many were left out.
   const limitation =
     s.short ||
@@ -82,11 +82,11 @@ function SummaryCard({ site, index, entry, target, weights, features, isLeader, 
       {s.scored ? (
         <dl className="cmp-card__why">
           <div>
-            <dt>Strongest match</dt>
+            <dt>What matches</dt>
             <dd className="cmp-card__match">{s.match || 'No criterion reaches 70% similarity'}</dd>
           </div>
           <div>
-            <dt>Largest limitation</dt>
+            <dt>What’s different</dt>
             <dd className="cmp-card__short">{limitation}</dd>
           </div>
         </dl>
@@ -116,9 +116,9 @@ export default function Compare() {
     const top = app.ranking.filter((r) => r.score !== null).slice(0, 3)
     return (
       <section className="page empty-state">
-        <h1>Compare Earth sites for {app.target.name}</h1>
+        <h1>Compare places for {app.target.name}</h1>
         <p>
-          Pick two or three Earth sites to compare them side by side.
+          Select two or three places to see how they compare.
           {sites.length === 1 && <> So far: {sites[0].name}.</>}
         </p>
         <p className="cmp-empty__actions">
@@ -128,7 +128,7 @@ export default function Compare() {
             </Link>
           )}
           <Link className="btn btn--ghost" to={app.linkTo('/explore')}>
-            Choose sites on the map
+            Choose places on the map
           </Link>
         </p>
       </section>
@@ -141,7 +141,7 @@ export default function Compare() {
     : missionTitle(app.presetId)
   const lines = compareVerdict(sites, app.target, data.features, app.weights, app.rankBySite, app.rankBy)
   const leadIds = leaders(sites, app.rankBySite, app.rankBy)
-  const leadLabel = app.rankBy === 'min' ? 'Leads by guaranteed minimum' : 'Leads by score'
+  const leadLabel = app.rankBy === 'min' ? 'Most complete evidence' : 'Closest match'
   const { differences, notComparable } = keyDifferences(sites, app.target, data.features, app.weights)
 
   return (
@@ -149,7 +149,7 @@ export default function Compare() {
       <header className="compare__head">
         <div>
           <h1>
-            Compare Earth sites for {app.target.name} <span className="muted">({bodyLabel(app.target.body)})</span>
+            Compare places for {app.target.name} <span className="muted">({bodyLabel(app.target.body)})</span>
           </h1>
           <p className="compare__sub">
             Research objective: <strong>{missionLabel}</strong>
@@ -164,26 +164,37 @@ export default function Compare() {
         <div className="compare__controls">
           <div className="rankby">
             <span id="cmp-rankby-label" className="rankby__label">
-              <Term id="rankBy">Rank by</Term>
+              <Term id="rankBy">Order by</Term>
             </span>
             <div className="seg" role="group" aria-labelledby="cmp-rankby-label">
               {RANK_ORDER.map((id) => (
-                <button key={id} type="button" aria-pressed={app.rankBy === id} onClick={() => app.setRankBy(id)}>
-                  {RANK_METHODS[id].label}
+                <button
+                  key={id}
+                  type="button"
+                  aria-pressed={app.rankBy === id}
+                  title={RANK_METHODS[id].help}
+                  onClick={() => app.setRankBy(id)}
+                >
+                  {id === 'min' ? 'Most complete evidence' : 'Best match'}
                 </button>
               ))}
             </div>
           </div>
           <Link className="btn btn--ghost btn--small" to={app.linkTo('/explore')}>
-            Change sites
+            Change places
           </Link>
         </div>
       </header>
 
-      <p className="cmp-key">
-        How to read: <Term id="score">Score</Term> <Term id="min">Guaranteed minimum</Term>{' '}
-        <Term id="range">Possible range</Term> <Term id="evidence">Evidence</Term>
-      </p>
+      <section className="cmp-plain" aria-labelledby="cmp-plain-title">
+        <h2 id="cmp-plain-title">In short</h2>
+        {plainComparison(
+          sites,
+          sites.map((s) => app.rankBySite[s.id]),
+        ).map((line) => (
+          <p key={line}>{line}</p>
+        ))}
+      </section>
       <ul className={`cmp-cards cmp-cards--${sites.length}`} aria-label="Compared sites">
         {sites.map((site, i) => (
           <SummaryCard
@@ -204,7 +215,7 @@ export default function Compare() {
 
       <div className="cmp-findings">
         <section className="card verdict" aria-labelledby="cmp-verdict-title">
-          <h2 id="cmp-verdict-title">What the comparison shows</h2>
+          <h2 id="cmp-verdict-title">Detailed verdict</h2>
           <p className="hint">
             {method.short} This holds under the selected ranking method and the data available — it describes
             resemblance on the selected criteria, not mission suitability.

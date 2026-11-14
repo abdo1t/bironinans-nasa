@@ -235,3 +235,29 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* plain-language summary above the cards */
+.cmp-plain {
+  margin: 0 0 var(--space-3);
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+
+.cmp-plain h2 {
+  margin: 0 0 0.25rem;
+  font-size: var(--fs-md);
+}
+
+.cmp-plain p {
+  margin: 0.15rem 0 0;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+
+.cmp-plain p:first-of-type {
+  color: var(--text);
+  font-weight: 600;
+}

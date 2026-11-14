@@ -85,3 +85,47 @@ export function plainReliability(entry, minCriteria = 1) {
   }
   return `Based on ${used} of ${selected} measurements. The others have no value for the Moon/Mars site, so they are left out and cannot move this score.`
 }
+
+/**
+ * Plain-language summary of 2–3 compared sites (display only; inputs are ranking entries).
+ * Names the closest match, says when it rests on fewer measurements than another site,
+ * names unscored sites as missing data, and never calls a site suitable for a mission.
+ * `entries[i]` belongs to `sites[i]`; each entry has { score, coverage: {used, selected} }.
+ */
+export function plainComparison(sites, entries) {
+  const rows = sites.map((site, i) => ({ site, e: entries[i] })).filter((r) => r.e)
+  const scored = rows.filter((r) => r.e.score !== null && r.e.score !== undefined)
+  const unscored = rows.filter((r) => !scored.includes(r))
+  const out = []
+  const frac = (r) => (r.e.coverage.selected ? r.e.coverage.used / r.e.coverage.selected : 0)
+  const meas = (r) => `${r.e.coverage.used} of ${r.e.coverage.selected}`
+  if (scored.length >= 2) {
+    const byScore = [...scored].sort((a, b) => b.e.score - a.e.score)
+    const best = byScore[0]
+    const next = byScore[1]
+    const bestEvidence = Math.max(...scored.map(frac))
+    const moreComplete = scored.filter((r) => r !== best && frac(r) === bestEvidence && frac(r) > frac(best))
+    if (best.e.score === next.e.score) {
+      out.push(`${best.site.name} and ${next.site.name} match equally closely (${best.e.score}/100).`)
+    } else {
+      out.push(`${best.site.name} is the closest match (${best.e.score}/100 vs ${next.e.score}/100 for ${next.site.name}).`)
+    }
+    if (moreComplete.length) {
+      const other = moreComplete[0]
+      out.push(
+        `But it is based on fewer measurements (${meas(best)}) than ${other.site.name} (${meas(other)}), so ${other.site.name}’s result rests on more complete evidence and ${best.site.name}’s could still change.`,
+      )
+    } else if (frac(best) < 1) {
+      out.push(`Some of its measurements are missing (${meas(best)} available), so its score could still change.`)
+    } else {
+      out.push(`Its result rests on all ${best.e.coverage.selected} selected measurements.`)
+    }
+  } else if (scored.length === 1) {
+    out.push(`Only ${scored[0].site.name} could be scored (${scored[0].e.score}/100).`)
+  }
+  for (const r of unscored) {
+    out.push(`${r.site.name} could not be scored: too few measurements, which is missing data, not a poor match.`)
+  }
+  out.push('These scores describe resemblance only; none of these places is confirmed as suitable for a mission.')
+  return out
+}

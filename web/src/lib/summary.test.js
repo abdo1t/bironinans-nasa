@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { missionEmphasis, MISSION_ORDER } from './missions.js'
 import { PRESETS } from './presets.js'
 import { RANK_METHODS, RANK_ORDER } from './rankMethods.js'
-import { entrySummary, guaranteedMin, hasOpenRange, keyDifferences, plainReliability } from './summary.js'
+import { entrySummary, guaranteedMin, hasOpenRange, keyDifferences, plainComparison, plainReliability } from './summary.js'
 
 const features = [
   { id: 'terrain', label: 'Terrain relief', kind: 'numeric' },
@@ -142,5 +142,45 @@ describe('plainReliability', () => {
     const text = plainReliability({ score: null, coverage: { used: 2, selected: 6 }, scoreRange: null }, 3)
     expect(text).toMatch(/at least 3 are needed/)
     expect(text).toMatch(/not a poor match/)
+  })
+})
+
+describe('plainComparison', () => {
+  const A = { name: 'A' }
+  const B = { name: 'B' }
+  const C = { name: 'C' }
+  it('flags a leader that rests on fewer measurements', () => {
+    const lines = plainComparison(
+      [A, B],
+      [
+        { score: 95, coverage: { used: 4, selected: 7 } },
+        { score: 64, coverage: { used: 7, selected: 7 } },
+      ],
+    )
+    expect(lines[0]).toBe('A is the closest match (95/100 vs 64/100 for B).')
+    expect(lines[1]).toMatch(/fewer measurements \(4 of 7\) than B \(7 of 7\)/)
+    expect(lines.at(-1)).toMatch(/none of these places is confirmed as suitable/)
+  })
+  it('says when the leader has complete data, and names unscored sites as missing data', () => {
+    const lines = plainComparison(
+      [A, B, C],
+      [
+        { score: 80, coverage: { used: 6, selected: 6 } },
+        { score: 70, coverage: { used: 6, selected: 6 } },
+        { score: null, coverage: { used: 1, selected: 6 } },
+      ],
+    )
+    expect(lines[1]).toBe('Its result rests on all 6 selected measurements.')
+    expect(lines[2]).toMatch(/C could not be scored.*not a poor match/)
+  })
+  it('handles ties', () => {
+    const lines = plainComparison(
+      [A, B],
+      [
+        { score: 70, coverage: { used: 6, selected: 6 } },
+        { score: 70, coverage: { used: 6, selected: 6 } },
+      ],
+    )
+    expect(lines[0]).toBe('A and B match equally closely (70/100).')
   })
 })
