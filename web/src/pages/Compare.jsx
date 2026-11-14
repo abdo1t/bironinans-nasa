@@ -38,7 +38,7 @@ export default function Compare() {
     )
   }
 
-  const lines = compareVerdict(sites, app.target, data.features, app.weights, app.rankBySite)
+  const lines = compareVerdict(sites, app.target, data.features, app.weights, app.rankBySite, app.rankBy)
 
   return (
     <section className="page compare">

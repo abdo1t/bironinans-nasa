@@ -10,13 +10,27 @@ import { similarity } from './scoring.js'
  *  - The top-weighted criterion that has data for at least one compared site
  *    (criteria with no data for every compared site are skipped and named).
  */
-export function compareVerdict(sites, target, features, weights, rankBySite) {
+export function compareVerdict(sites, target, features, weights, rankBySite, rankBy = 'score') {
   const lines = []
   const entry = (s) => rankBySite[s.id]
   const scored = sites.filter((s) => entry(s)?.score !== null && entry(s)?.score !== undefined)
 
   if (scored.length === 0) {
     lines.push('None of these sites can be scored yet — data pending.')
+  } else if (rankBy === 'min') {
+    // Same ordering as the list: guaranteed minimum (lower end of the range), then score.
+    const lo = (s) => entry(s).scoreRange?.[0] ?? entry(s).score
+    const bestLo = Math.max(...scored.map(lo))
+    const winners = scored.filter((s) => lo(s) === bestLo)
+    lines.push(
+      `Best guaranteed minimum: ${winners.map((s) => `${s.name} (${bestLo}/100 even if its missing criteria were mismatches; score ${entry(s).score})`).join(' and ')}.`,
+    )
+    const higher = scored.filter((s) => !winners.includes(s) && entry(s).score > Math.max(...winners.map((w) => entry(w).score)))
+    if (higher.length) {
+      lines.push(
+        `Higher headline score but less evidence: ${higher.map((s) => `${s.name} (${entry(s).score}, range ${entry(s).scoreRange?.[0]}–${entry(s).scoreRange?.[1]})`).join(', ')}.`,
+      )
+    }
   } else {
     const best = Math.max(...scored.map((s) => entry(s).score))
     const winners = scored.filter((s) => entry(s).score === best)

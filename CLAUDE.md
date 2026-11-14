@@ -252,9 +252,10 @@ FeatureCollection of Points. `properties`:
 4. **Overall score:** `score = round_half_up(100 * Σ(w_i * s_i) / Σ(w_i))` over usable criteria with `w_i > 0` (half-up = `floor(x + 0.5)` in both languages). If no criterion is usable — or fewer than `min_used` (real bundle: `minCriteria` = 3) — the score is **`null`** (UI: "No score — insufficient data"), not 0. Default `min_used` is 1.
 5. **Contribution:** `contrib_i = w_i * s_i / Σ(w_i)` over the usable criteria, rounded half-up to 4 decimals. `contrib` lists every selected criterion (`w_i > 0`); a selected criterion with missing data is `null`.
 5a. **Coverage:** `coverage = { used, selected }` — how many selected criteria (`w_i > 0`) actually contributed. Shown next to every score.
+5b. **Score range:** `scoreRange = [lo, hi]` — the score if every selected criterion that is missing on the SITE side (target value known) were a total mismatch (`s = 0`) or a perfect match (`s = 1`), both rounded half-up; `[score, score]` when nothing is missing; `null` when `score` is `null`. The app can rank by the lower end ("Guaranteed minimum", URL `rank=min`; display-only ordering in `web/src/lib/explain.js orderRanking`), which favours evidence-backed sites.
 6. **Explanations:**
-   - `why` = the top 2–3 criteria by contribution (only those with `s_i ≥ 0.7`), as short phrases built from feature labels.
-   - `gap` = the weighted criterion with the lowest `s_i`.
+   - `why` = the top 2–3 criteria by contribution (only those with `s_i ≥ 0.7`), as short phrases built from feature labels. A criterion whose target value is clipped to Earth's bounds (`target.clipped`) is worded "near Earth's extreme (target is beyond Earth's range)", never "close to target".
+   - `gap` = among usable criteria with `s_i < 0.7`, the one that loses the most points, max `w_i · (1 − s_i)` (ties: feature order); `"No gaps on the selected criteria"` if none — so it never contradicts `why`. Clipped criteria get the same suffix.
    - The UI always shows a fixed limitations note: *No Earth site reproduces lunar/Martian gravity, vacuum or radiation.*
 7. **Novelty:** `novelKm` = great-circle distance to the nearest site in `known_analogs.csv`; `isNewCandidate = novelKm > 300` (constant in `config.py`). In the UI this is an **"uncatalogued candidate"** — far from every catalogued analog, *not* a scientifically validated new analog. Never call it "new analog" or "discovered".
 8. **Ranking:** sort by score desc; tie-break by name asc (code-point order, not locale), then id. `null` scores sort after all scored sites.
