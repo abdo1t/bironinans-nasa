@@ -138,6 +138,7 @@ export default function About() {
 
   return (
     <article className="page about">
+      <p className="kicker">Methodology · scientific data</p>
       <h1>About Earth Analog Finder</h1>
 
       <section className="panel">
@@ -175,7 +176,7 @@ export default function About() {
         </p>
       </section>
 
-      <section className="panel">
+      <section className="panel" id="method">
         <h2>How the score works</h2>
         <ul>
           <li>Every criterion is put on a common 0–1 scale using fixed Earth bounds, the same for every site.</li>
@@ -249,7 +250,7 @@ export default function About() {
       </section>
 
       {data.isMock ? (
-        <section className="panel">
+        <section className="panel" id="data">
           <h2>
             Data status <MockTag />
           </h2>
@@ -260,8 +261,8 @@ export default function About() {
           </p>
         </section>
       ) : (
-        <section className="panel">
-          <h2>Data status (research prototype)</h2>
+        <section className="panel" id="data">
+          <h2>Scientific data: status and sources</h2>
           <ul>
             <li>
               <strong>{countOf(data.sites.length, 'Earth site')}</strong> with cited coordinates;{' '}
@@ -331,7 +332,7 @@ export default function About() {
         </ul>
       </section>
 
-      <section className="panel">
+      <section className="panel" id="reference">
         <h2>Reference detail</h2>
         <Disclosure title="Criteria definitions" hint="units, Earth bounds, sources">
           <div className="table-scroll">

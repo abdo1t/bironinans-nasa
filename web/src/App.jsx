@@ -1,10 +1,22 @@
-import { Suspense, lazy } from 'react'
-import { Link, NavLink, Route, Routes } from 'react-router-dom'
+import { Suspense, lazy, useEffect, useState } from 'react'
+import { Link, NavLink, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
+import {
+  IconCompare,
+  IconData,
+  IconDataset,
+  IconDiscover,
+  IconMap,
+  IconMenu,
+  IconMethod,
+  IconMirror,
+} from './components/Icons.jsx'
 import RouteEffects from './components/RouteEffects.jsx'
 import { MockTag } from './components/Tags.jsx'
 import { useBundle } from './data/useBundle.js'
 import { featuresMissingEverywhere, joinLabels, shortDate } from './lib/explain.js'
+import { bodyLabel } from './lib/format.js'
+import { missionTitle } from './lib/missions.js'
 import { AppStateProvider, useAppState } from './state/AppState.jsx'
 import Home from './pages/Home.jsx'
 import Explore from './pages/Explore.jsx'
@@ -18,37 +30,157 @@ const Compare = lazy(() => import('./pages/Compare.jsx'))
 const Mirror = lazy(() => import('./pages/Mirror.jsx'))
 
 /** Original mark: a target point on an orbit ring (no agency insignia). */
-function BrandMark() {
+function BrandMark({ size = 30 }) {
   return (
-    <svg className="brand__mark" viewBox="0 0 32 32" width="26" height="26" aria-hidden="true" focusable="false">
-      <circle cx="16" cy="16" r="11" fill="none" stroke="#c3c2b7" strokeWidth="2" />
-      <ellipse cx="16" cy="16" rx="15" ry="5.5" fill="none" stroke="#e8743b" strokeWidth="2" transform="rotate(-25 16 16)" />
-      <circle cx="16" cy="16" r="3.5" fill="#e8743b" />
+    <svg className="brand__mark" viewBox="0 0 32 32" width={size} height={size} aria-hidden="true" focusable="false">
+      <circle cx="16" cy="16" r="10.5" fill="none" stroke="#b4c4dc" strokeWidth="1.75" />
+      <ellipse cx="16" cy="16" rx="15" ry="5.5" fill="none" stroke="#2fd6f0" strokeWidth="1.75" transform="rotate(-25 16 16)" />
+      <circle cx="16" cy="16" r="3.25" fill="#2fd6f0" />
     </svg>
   )
 }
 
-function Header() {
+/** Left navigation rail. Desktop: always visible; small screens: a drawer opened from the top bar. */
+function Rail({ open, onClose }) {
   const app = useAppState()
+  const location = useLocation()
   const n = app.shortlist.length
+  const onAbout = location.pathname === '/about'
+  const items = [
+    { to: '/', label: 'Discover', Icon: IconDiscover, end: true },
+    { to: '/explore', label: 'Explore Map', Icon: IconMap },
+    { to: '/mirror', label: 'Planetary Mirror', Icon: IconMirror },
+    { to: '/compare', label: 'Compare Sites', Icon: IconCompare, count: n },
+    { to: '/about', hash: 'data', label: 'Scientific Data', Icon: IconData, active: onAbout && location.hash === '#data' },
+    { to: '/about', label: 'Methodology', Icon: IconMethod, active: onAbout && location.hash !== '#data' },
+  ]
   return (
-    <header className="app-header">
-      <NavLink to={app.linkTo('/')} className="brand" end>
+    <nav id="rail" className={`rail${open ? ' is-open' : ''}`} aria-label="Main">
+      <Link to={app.linkTo('/')} className="rail__brand" title="Earth Analog Finder — start">
         <BrandMark />
-        <span>Earth Analog Finder</span>
-      </NavLink>
-      <nav className="app-nav" aria-label="Main">
-        <NavLink to={app.linkTo('/')} end>
-          Start
-        </NavLink>
-        <NavLink to={app.linkTo('/explore')}>Explore</NavLink>
-        <NavLink to={app.linkTo('/compare')}>
-          Compare{n ? ` (${n})` : ''}
-          {n > 0 && <span className="sr-only"> sites selected</span>}
-        </NavLink>
-        <NavLink to={app.linkTo('/mirror')}>Mirror</NavLink>
-        <NavLink to={app.linkTo('/about')}>About</NavLink>
-      </nav>
+        <span className="sr-only">Earth Analog Finder — start</span>
+      </Link>
+      <div className="rail__nav">
+        {items.map((it) => {
+          const href = app.linkTo(it.to) + (it.hash ? `#${it.hash}` : '')
+          const content = (
+            <>
+              <it.Icon />
+              <span>{it.label}</span>
+              {it.count > 0 && (
+                <span className="rail__count">
+                  {it.count}
+                  <span className="sr-only"> sites selected</span>
+                </span>
+              )}
+            </>
+          )
+          if (it.active !== undefined) {
+            return (
+              <Link
+                key={it.label}
+                to={href}
+                className={`rail__item${it.active ? ' is-active' : ''}`}
+                aria-current={it.active ? 'page' : undefined}
+                onClick={onClose}
+              >
+                {content}
+              </Link>
+            )
+          }
+          return (
+            <NavLink
+              key={it.label}
+              to={href}
+              end={it.end}
+              className={({ isActive }) => `rail__item${isActive ? ' is-active' : ''}`}
+              onClick={onClose}
+            >
+              {content}
+            </NavLink>
+          )
+        })}
+      </div>
+      <div className="rail__spacer" />
+      <p className="rail__foot">Space Apps 2026 research prototype</p>
+    </nav>
+  )
+}
+
+/** Top bar: brand, the current mission context, one action to change it, and the data mode. */
+function TopBar({ menuOpen, onMenu, manifest, isMock }) {
+  const app = useAppState()
+  const location = useLocation()
+  const navigate = useNavigate()
+  const t = app.target
+  const mission = app.isCustom ? 'Custom weights' : missionTitle(app.presetId)
+  const changeMission = () => {
+    if (!t) return navigate(app.linkTo('/'))
+    if (location.pathname === '/explore') {
+      const params = new URLSearchParams(location.search)
+      params.set('panel', '1')
+      return navigate({ search: params.toString().replace(/%2C/g, ',') }, { replace: true })
+    }
+    navigate(app.linkTo('/explore', { panel: '1' }))
+  }
+  return (
+    <header className="topbar">
+      <button
+        type="button"
+        className="btn btn--ghost topbar__menu"
+        aria-expanded={menuOpen}
+        aria-controls="rail"
+        onClick={onMenu}
+      >
+        <IconMenu size={20} />
+        <span className="sr-only">Menu</span>
+      </button>
+      <Link to={app.linkTo('/')} className="topbar__brand">
+        <span className="topbar__name">Earth Analog Finder</span>
+        <span className="topbar__tag">Planetary analog research console</span>
+      </Link>
+
+      {t ? (
+        <dl className="mission-strip" aria-label="Current search">
+          <div className="mission-strip__cell">
+            <dt>Reference world</dt>
+            <dd>
+              <span className={`world-dot world-dot--${t.body}`} aria-hidden="true" />
+              {bodyLabel(t.body)}
+            </dd>
+          </div>
+          <div className="mission-strip__cell">
+            <dt>Planetary target</dt>
+            <dd title={t.name}>{t.name.split(' — ')[0]}</dd>
+          </div>
+          <div className="mission-strip__cell mission-strip__cell--mission">
+            <dt>Research mission</dt>
+            <dd>{mission}</dd>
+          </div>
+        </dl>
+      ) : null}
+      <button type="button" className="btn btn--small topbar__change" onClick={changeMission}>
+        <span className="btn__long">{t ? 'Change mission' : 'Choose a world'}</span>
+        <span className="btn__short">{t ? 'Change' : 'Start'}</span>
+      </button>
+
+      <span className="topbar__spacer" />
+      <Link
+        to="/about#data"
+        className={`data-mode${isMock ? ' data-mode--mock' : ''}`}
+        aria-label={isMock ? 'Mock data — not measurements. About the data' : `Scientific dataset: static bundle, ${shortDate(manifest?.generatedAt)}. About the data`}
+        title={
+          isMock
+            ? 'Synthetic placeholder bundle — not measurements'
+            : 'A static, validated data bundle prepared offline. The app makes no live connection to NASA or other data services.'
+        }
+      >
+        <IconDataset className="data-mode__icon" size={14} />
+        <span className="data-mode__label">{isMock ? 'Mock data' : 'Scientific dataset'}</span>
+        <span className="data-mode__text">
+          {isMock ? '· not measurements' : `· static bundle, ${shortDate(manifest?.generatedAt)}`}
+        </span>
+      </Link>
     </header>
   )
 }
@@ -99,12 +231,39 @@ function NotFound() {
 
 function StartupHeader() {
   return (
-    <header className="app-header">
-      <span className="brand">
-        <BrandMark />
-        <span>Earth Analog Finder</span>
+    <header className="topbar">
+      <BrandMark />
+      <span className="topbar__brand">
+        <span className="topbar__name">Earth Analog Finder</span>
+        <span className="topbar__tag">Planetary analog research console</span>
       </span>
     </header>
+  )
+}
+
+/** Shell for a loaded bundle: rail + top bar; the drawer closes on navigation and Escape. */
+function Shell({ data, children }) {
+  // The drawer is open only for the page it was opened on, so any navigation closes it.
+  const location = useLocation()
+  const here = location.pathname + location.hash
+  const [openAt, setOpenAt] = useState(null)
+  const menuOpen = openAt === here
+  const setMenuOpen = (open) => setOpenAt(typeof open === 'function' ? (open(menuOpen) ? here : null) : open ? here : null)
+  useEffect(() => {
+    if (!menuOpen) return
+    const onKey = (e) => e.key === 'Escape' && setOpenAt(null)
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [menuOpen])
+  return (
+    <>
+      <Rail open={menuOpen} onClose={() => setMenuOpen(false)} />
+      {menuOpen && (
+        <button type="button" className="rail-scrim" aria-label="Close menu" onClick={() => setMenuOpen(false)} />
+      )}
+      <TopBar menuOpen={menuOpen} onMenu={() => setMenuOpen((o) => !o)} manifest={data.manifest} isMock={data.isMock} />
+      {children}
+    </>
   )
 }
 
@@ -112,7 +271,7 @@ export default function App() {
   const { status, error, data } = useBundle()
 
   return (
-    <div className="app">
+    <div className={`app${status !== 'ready' ? ' app--startup' : ''}`}>
       <a className="skip-link" href="#main">
         Skip to content
       </a>
@@ -144,7 +303,7 @@ export default function App() {
       ) : (
         <AppStateProvider>
           <RouteEffects />
-          <Header />
+          <Shell data={data}>
           {data.isMock ? <MockBanner /> : <DataBanner data={data} />}
           <main id="main" className="app-main" tabIndex={-1}>
             <ErrorBoundary>
@@ -168,6 +327,7 @@ export default function App() {
             </ErrorBoundary>
           </main>
           <Footer manifest={data.manifest} />
+          </Shell>
         </AppStateProvider>
       )}
     </div>

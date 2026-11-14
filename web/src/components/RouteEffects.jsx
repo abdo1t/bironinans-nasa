@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom'
 import { useBundle } from '../data/useBundle.js'
 
 const APP = 'Earth Analog Finder'
-const TITLES = { '/': 'Start', '/explore': 'Explore', '/compare': 'Compare', '/mirror': 'Planetary Mirror', '/about': 'About' }
+const TITLES = { '/': 'Discover', '/explore': 'Explore', '/compare': 'Compare', '/mirror': 'Planetary Mirror', '/about': 'About' }
 
 /**
  * On a PATHNAME change (not on query-only changes, so slider drags and URL sync are
@@ -11,7 +11,7 @@ const TITLES = { '/': 'Start', '/explore': 'Explore', '/compare': 'Compare', '/m
  * keyboard and screen-reader users start at the new page. The first render keeps focus.
  */
 export default function RouteEffects() {
-  const { pathname } = useLocation()
+  const { pathname, hash } = useLocation()
   const { data } = useBundle()
   const first = useRef(true)
 
@@ -27,6 +27,14 @@ export default function RouteEffects() {
     if (!window.location.hash) window.scrollTo(0, 0)
     document.getElementById('main')?.focus({ preventScroll: true })
   }, [pathname, data])
+
+  // In-page sections reached from the rail (e.g. /about#data): scroll once the page has rendered.
+  useEffect(() => {
+    if (!hash) return
+    const id = decodeURIComponent(hash.slice(1))
+    const frame = requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ block: 'start' }))
+    return () => cancelAnimationFrame(frame)
+  }, [pathname, hash])
 
   return null
 }
