@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { scoreColor } from '../lib/format.js'
 import { entrySummary } from '../lib/summary.js'
@@ -33,6 +33,27 @@ export default function SiteCards({
     refs.current[active.id]?.scrollIntoView({ block: 'nearest' })
   }, [active])
 
+  // Ranking-change feedback: after the objective, weights or order change, each card says how
+  // many places it moved (kept until the next change). A new target starts afresh.
+  const prevRanks = useRef({ targetId: null, ranks: null })
+  const [moves, setMoves] = useState({})
+  const rankKey = `${target.id}|${ranking.map((r) => `${r.site}:${r.rank}`).join(',')}`
+  useEffect(() => {
+    const now = Object.fromEntries(ranking.map((r) => [r.site, r.rank]))
+    const prev = prevRanks.current
+    prevRanks.current = { targetId: target.id, ranks: now }
+    if (!prev.ranks || prev.targetId !== target.id) {
+      setMoves({})
+      return
+    }
+    const next = {}
+    for (const [id, rank] of Object.entries(now)) {
+      if (rank && prev.ranks[id] && prev.ranks[id] !== rank) next[id] = prev.ranks[id] - rank
+    }
+    setMoves(next)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rankKey])
+
   const scored = ranking.filter((r) => r.score !== null)
   const unscored = ranking.filter((r) => r.score === null)
 
@@ -61,7 +82,16 @@ export default function SiteCards({
               <span className="sr-only">{r.rank ? `Rank ${r.rank}: ` : 'Not ranked: '}</span>
               <Link to={linkTo(`/site/${site.id}`)}>{site.name}</Link>
             </h3>
-            <span className="site-card__country">{site.country}</span>
+            <span className="site-card__country">
+              {site.country}
+              {moves[site.id] ? (
+                <span className={`site-card__move site-card__move--${moves[site.id] > 0 ? 'up' : 'down'}`}>
+                  <span aria-hidden="true">{moves[site.id] > 0 ? '▲' : '▼'} </span>
+                  {moves[site.id] > 0 ? 'up' : 'down'} {Math.abs(moves[site.id])}
+                  <span className="sr-only"> {Math.abs(moves[site.id]) === 1 ? 'place' : 'places'} after your change</span>
+                </span>
+              ) : null}
+            </span>
           </div>
           <div className="site-card__score">
             {s.scored ? (
