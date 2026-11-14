@@ -130,7 +130,7 @@ export default function Explore() {
   const scenario = app.isCustom ? null : matchScenario(app.targetId, app.presetId)
   const scoredCount = scoredEntries.length
   const missionLabel = app.isCustom
-    ? `Custom weights (based on ${PRESETS[app.basePresetId].label})`
+    ? 'Custom weights'
     : missionTitle(app.presetId)
   const topIds = scoredEntries.slice(0, 3).map((r) => r.site)
   const method = RANK_METHODS[app.rankBy] || RANK_METHODS.score

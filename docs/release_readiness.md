@@ -2,6 +2,24 @@
 
 State checked: commit `7b39a3e` plus uncommitted changes to documentation, `pipeline/seed/analog_evidence.csv` (quoting fix), `CLAUDE.md` notes and the SPA fallback files; real bundle `2026-11-14T05:20:03+00:00`, 2026-11-14.
 
+## 0. UX simplification (branch `ux-simplification`, 2026-11-14)
+
+Rollback point: tag `pre-ux-upgrade` (= `79796f4`). Audit and design record: `docs/ux_audit.md`. Screenshots: `docs/screenshots/`.
+
+| Check | Result |
+|---|---|
+| `pipeline/.venv/Scripts/python -m pytest pipeline/tests -q` | **101 passed** (75 before + 26 terrain-preview tests) |
+| `python validate_bundle.py real` / `mock` (in `pipeline/`) | **OK / OK** (bundle data files unchanged) |
+| `cd web && npx vitest run` | **65 passed** (5 files; 53 before + 12 display-summary tests; one scenario test updated to the explicit `rank=` contract) |
+| `cd web && npx oxlint` | 0 errors, 1 pre-existing warning (`AppState.jsx` exports a hook) |
+| `cd web && npm run build` | **OK**, no chunk-size warning: main JS 455 kB (gzip 142 kB) + Compare chunk 373 kB (gzip 107 kB, Recharts loaded on demand); was one 763 kB chunk |
+| `cd web && npm run build:mock` | **OK**; manifest kind `mock`; no terrain previews in the mock build; the real build's data has 0 `MOCK` strings |
+| Browser, 1280×720 | Home → Mars → Rover testing → Find Earth analogs → Explore (Guaranteed minimum: Holuhraun 83, Atacama 71, MDRS 70, White Desert 69; Lanzarote 94 with range 66–96) → Site details → Compare (3). Advanced → Surface temperature 5 gives Holuhraun 76, Haughton 64, as in the demo script. Map ↔ card highlighting both ways; 11 keyboard-focusable markers; Back restores state; reloading a custom-weights + shortlist URL restores it; no console errors or parity warnings |
+| Browser, 375 px | Home, Explore (map and table), Site details, Compare and About for the Moon target: no horizontal page overflow; Compare radar 309×300 |
+| Lunar terrain preview | Target x/y re-derived by hand and with PROJ (−10919.5, −11874.8 m); marker pixel matches the metadata; Shackleton's centre lies on a deep low (−2789 m) right of the marker; Mars marker correct after the 1/cos(lat) correction |
+
+Not deployed and not submitted (requires the team's approval).
+
 ## 1. Automated checks (run on 2026-11-14)
 
 | Command (from repo root unless noted) | What it verifies | Result |

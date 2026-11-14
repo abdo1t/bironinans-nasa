@@ -41,9 +41,10 @@ export default function CriteriaPanel({ advancedOpen = false, onAdvancedToggle }
       />
       {app.isCustom && (
         <p className="criteria__custom" role="status">
-          <strong>Custom weights</strong> — based on {PRESETS[app.basePresetId].label}.{' '}
+          {/* A shared link stores the weights, not the mission they started from, so name only the reset target. */}
+          <strong>Custom weights</strong> are active.{' '}
           <button type="button" className="link-btn" onClick={app.resetWeights}>
-            Reset
+            Reset to {PRESETS[app.basePresetId].label}
           </button>
         </p>
       )}

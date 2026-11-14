@@ -144,7 +144,7 @@ export default function MapView({
               key={site.id}
               position={[site.lat, site.lon]}
               icon={pinIcon({ rank: r.rank, score: r.score, uncatalogued: site.isNewCandidate, listed, label })}
-              title={site.name}
+              title={label}
               zIndexOffset={baseZ[site.id]}
               ref={(m) => {
                 if (m) markers.current[site.id] = m

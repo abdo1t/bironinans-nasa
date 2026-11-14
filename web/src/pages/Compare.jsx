@@ -7,7 +7,6 @@ import { CoverageBadge, EvidenceCoverageTag, MockTag, NoveltyTag, ScoreBadge } f
 import { useBundle } from '../data/useBundle.js'
 import { SERIES_COLORS, bodyLabel, pct } from '../lib/format.js'
 import { missionTitle } from '../lib/missions.js'
-import { PRESETS } from '../lib/presets.js'
 import { RANK_METHODS, RANK_ORDER } from '../lib/rankMethods.js'
 import { LIMITATIONS_NOTE } from '../lib/scoring.js'
 import { entrySummary, guaranteedMin, keyDifferences } from '../lib/summary.js'
@@ -138,7 +137,7 @@ export default function Compare() {
 
   const method = RANK_METHODS[app.rankBy] || RANK_METHODS.score
   const missionLabel = app.isCustom
-    ? `Custom weights (based on ${PRESETS[app.basePresetId].label})`
+    ? 'Custom weights'
     : missionTitle(app.presetId)
   const lines = compareVerdict(sites, app.target, data.features, app.weights, app.rankBySite, app.rankBy)
   const leadIds = leaders(sites, app.rankBySite, app.rankBy)

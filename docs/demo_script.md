@@ -13,13 +13,13 @@ Setup: production build open at `/` in a 1280×720 or larger window; network tab
 | Time | Section | Action | Say |
 |---|---|---|---|
 | 0:00–0:12 | **Problem** | Home page visible. | "Teams rehearse Moon and Mars operations on Earth first. But comparing candidate Earth sites with a specific base site is usually done by expert judgement, with no common scale." |
-| 0:12–0:25 | **Solution** | Point to the two world cards and **Mission scenarios**. | "We put NASA Earth data and NASA planetary data on one scale: POWER climate, NASADEM terrain and MODIS vegetation for Earth; Mars 2020 CTX and LRO LOLA terrain for the targets." |
-| 0:25–0:50 | **Demonstration** | Click **"Mars rover mobility testing — Jezero"**. The list opens with the Rover testing preset and **Rank by: Guaranteed minimum**. | "Rover testing for Jezero, ranked by guaranteed minimum: the score a site keeps if its missing data were a total mismatch. Holuhraun leads at 83, Atacama 71, MDRS 70." |
+| 0:12–0:25 | **Solution** | Point to the three steps on Home: world, target site, **mission objective**. | "We put NASA Earth data and NASA planetary data on one scale: POWER climate, NASADEM terrain and MODIS vegetation for Earth; Mars 2020 CTX and LRO LOLA terrain for the targets." |
+| 0:25–0:50 | **Demonstration** | Click **Mars**, choose **Rover testing**, click **Find Earth analogs** (or the example "Mars rover mobility testing — Jezero"). Explore opens with the map, the ranked site cards and **Rank by: Guaranteed minimum**. | "Rover testing for Jezero, ranked by guaranteed minimum: the score a site keeps if its missing data were a total mismatch. Holuhraun leads at 83, Atacama 71, MDRS 70." |
 | | | Switch **Rank by** to **Score**. | "By raw score, Lanzarote is 94, but its range is 66 to 96: only 3 of 6 criteria have data." |
-| | | Switch back to **Guaranteed minimum**. Drag **Surface temperature** from 1 to 5. | "Weight temperature higher and the list reorders live: Haughton rises to second." |
-| 0:50–1:10 | **Scientific evidence** | Reset the preset. Open **Holuhraun** → Site details. | "Holuhraun matches on terrain relief, bare ground and basalt; it falls short on aridity, 862 millimetres a year. Every value cites its source." |
-| | | Scroll to **Data sources**. | "Four humid control sites, using the same NASA data, scored below every scorable known analog on numeric criteria: a sanity check, not proof. Nothing was tuned to the rankings." |
-| 1:10–1:30 | **Impact** | Shortlist Holuhraun, Atacama and MDRS → **Compare (3)**. Show the radar. | "Planners get a transparent shortlist with stated limits: 10-kilometre relief and 50-kilometre climate, not rover-scale ground, and no Mars gravity or radiation. White Desert in Egypt is uncatalogued: a lead for field checking, not a validated analog." |
+| | | Switch back to **Guaranteed minimum**. Open **Advanced: criterion weights** and drag **Surface temperature** from 1 to 5. | "Weight temperature higher and the list reorders live: Haughton rises to second." |
+| 0:50–1:10 | **Scientific evidence** | Click **Reset to Rover testing**. Open **Holuhraun** → Site details (summary card, What matches / What differs). | "Holuhraun matches on terrain relief, bare ground and basalt; it falls short on aridity, 862 millimetres a year. Every value cites its source." |
+| | | Open **Scientific evidence** (every value with dataset, period, resolution and citation). | "Four humid control sites, using the same NASA data, scored below every scorable known analog on numeric criteria: a sanity check, not proof. Nothing was tuned to the rankings." |
+| 1:10–1:30 | **Impact** | Add Holuhraun, Atacama and MDRS (**+ Compare** on the cards, or **Compare top 3**) → **Compare 3 sites**. Show the summary cards, then the radar and the limitation line. | "Planners get a transparent shortlist with stated limits: 10-kilometre relief and 50-kilometre climate, not rover-scale ground, and no Mars gravity or radiation. White Desert in Egypt is uncatalogued: a lead for field checking, not a validated analog." |
 
 Backup facts if asked:
 - For the Lunar South Pole, McMurdo Dry Valleys is #1 by score in every preset (86 balanced, range 54–92 on 4/7 criteria; 26 % of the score comes from the clipped temperature). By guaranteed minimum it is #6 with the rover preset.
@@ -37,11 +37,11 @@ Recording: screen capture of the production build with voice-over or English cap
 
 | Time | Screen | Narration / caption (61 words, ≈ 24 s at 2.5 words/s) |
 |---|---|---|
-| 0–5 s | Home → click "Mars rover mobility testing — Jezero" | "Which Earth sites resemble NASA's Jezero landing site for rover tests?" |
-| 5–13 s | Ranked list (Guaranteed minimum): Holuhraun 83, Atacama 71, MDRS 70 | "NASA POWER, NASADEM, MODIS and Mars 2020 terrain data, on one scale. Ranked by guaranteed minimum: Holuhraun leads." |
+| 0–5 s | Home → Mars → Rover testing → Find Earth analogs | "Which Earth sites resemble NASA's Jezero landing site for rover tests?" |
+| 5–13 s | Map + ranked cards (Guaranteed minimum): Holuhraun 83, Atacama 71, MDRS 70 | "NASA POWER, NASADEM, MODIS and Mars 2020 terrain data, on one scale. Ranked by guaranteed minimum: Holuhraun leads." |
 | 13–19 s | Toggle Rank by → Score: Lanzarote 94, range 66–96 | "Missing data is shown: Lanzarote's 94 rests on only 3 of 6 criteria." |
-| 19–25 s | Drag Surface temperature; list reorders | "Change priorities and the ranking updates instantly." |
-| 25–30 s | Compare radar + limitations line | "Checked against control sites. Screening only: no Earth site has Mars gravity." |
+| 19–25 s | Advanced → drag Surface temperature; cards and map markers reorder | "Change priorities and the ranking updates instantly." |
+| 25–30 s | Compare summary cards + limitation line | "Checked against control sites. Screening only: no Earth site has Mars gravity." |
 
 Check before upload: time the voice-over with a stopwatch; the exported file must read ≤ 0:30; English; public link with no login; captions readable at 720p.
 

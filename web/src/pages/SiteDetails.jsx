@@ -320,7 +320,7 @@ export default function SiteDetails() {
   const method = RANK_METHODS[app.rankBy] || RANK_METHODS.score
   // same wording as the Explore header
   const missionLabel = app.isCustom
-    ? `Custom weights (based on ${PRESETS[app.basePresetId].label})`
+    ? 'Custom weights'
     : missionTitle(app.presetId)
   const scenario = target && !app.isCustom ? matchScenario(app.targetId, app.presetId) : null
   const diff = result ? readDifferences(result, site, target, app.weights, data.features) : null
@@ -558,9 +558,8 @@ export default function SiteDetails() {
             <h2 id="site-relevance-title">Research relevance</h2>
             {app.isCustom ? (
               <p>
-                <strong>Custom weights:</strong> this comparison uses custom criterion weights (based on{' '}
-                {PRESETS[app.basePresetId].label}), so it reflects those priorities rather than a preset mission
-                objective.
+                <strong>Custom weights:</strong> this comparison uses custom criterion weights, so it reflects those priorities rather
+                than a preset mission objective.
               </p>
             ) : (
               <p>
