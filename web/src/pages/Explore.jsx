@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import CriteriaPanel from '../components/CriteriaPanel.jsx'
 import Disclosure from '../components/Disclosure.jsx'
@@ -14,11 +14,22 @@ import { useBundle } from '../data/useBundle.js'
 import { availabilityNotice, dataAvailability } from '../lib/explain.js'
 import { bodyLabel } from '../lib/format.js'
 import { missionTitle } from '../lib/missions.js'
+import { PRESETS } from '../lib/presets.js'
 import { RANK_METHODS, RANK_ORDER } from '../lib/rankMethods.js'
 import { SCENARIO_LIMITATION, matchScenario } from '../lib/scenarios.js'
 import { LIMITATIONS_NOTE } from '../lib/scoring.js'
 import { useAppState } from '../state/AppState.jsx'
 import '../styles/explore.css'
+
+/** Value that only updates after `delay` ms of quiet (keeps screen-reader announcements off every slider step). */
+function useDebounced(value, delay) {
+  const [settled, setSettled] = useState(value)
+  useEffect(() => {
+    const id = setTimeout(() => setSettled(value), delay)
+    return () => clearTimeout(id)
+  }, [value, delay])
+  return settled
+}
 
 /** One-line scenario framing; the full brief (what carries the ranking, limits) is one click away. */
 function MissionBrief({ scenario, features, availability }) {
@@ -86,6 +97,20 @@ export default function Explore() {
   const onActive = useCallback((id, source) => setActive((a) => (a.id === id && a.source === source ? a : { id, source })), [])
   const onShowOnMap = useCallback((id) => setFocus({ id, n: Date.now() }), [])
 
+  // Screen-reader summary of the ranking (top three), announced once the weights settle.
+  const scoredEntries = app.ranking.filter((r) => r.score !== null)
+  const announcement = useDebounced(
+    !app.target
+      ? ''
+      : scoredEntries.length
+        ? `Ranking updated. ${scoredEntries
+            .slice(0, 3)
+            .map((r) => `${r.rank}: ${data.siteById[r.site].name}, score ${r.score}`)
+            .join('. ')}.`
+        : 'No site can be scored with these weights.',
+    400,
+  )
+
   if (!app.target) {
     return (
       <section className="page empty-state">
@@ -99,12 +124,14 @@ export default function Explore() {
     )
   }
 
-  const top = app.ranking.find((r) => r.score !== null)
   const avail = dataAvailability(app.target, data.sites, app.weights, data.features)
   const notice = availabilityNotice(avail)
   const scenario = app.isCustom ? null : matchScenario(app.targetId, app.presetId)
-  const scoredCount = app.ranking.filter((r) => r.score !== null).length
-  const missionLabel = app.isCustom ? 'Custom weights' : missionTitle(app.presetId)
+  const scoredCount = scoredEntries.length
+  const missionLabel = app.isCustom
+    ? `Custom weights (based on ${PRESETS[app.basePresetId].label})`
+    : missionTitle(app.presetId)
+  const topIds = scoredEntries.slice(0, 3).map((r) => r.site)
   const method = RANK_METHODS[app.rankBy] || RANK_METHODS.score
   const tray = (
     <ShortlistBar
@@ -113,6 +140,7 @@ export default function Explore() {
       onRemove={app.toggleShortlist}
       onClear={app.clearShortlist}
       linkTo={app.linkTo}
+      topIds={topIds}
     />
   )
   const shared = {
@@ -204,8 +232,18 @@ export default function Explore() {
           </p>
         )}
 
+        {scoredCount === 0 && (
+          <p className="avail-notice" role="status">
+            <strong>No site can be scored with these weights.</strong> A score needs at least {data.minCriteria} selected
+            criteria with data.{' '}
+            <button type="button" className="link-btn" onClick={app.resetWeights}>
+              Reset to {PRESETS[app.basePresetId].label}
+            </button>
+          </p>
+        )}
+
         <p className="sr-only" aria-live="polite">
-          {top ? `Ranking updated. Top site: ${data.siteById[top.site].name}, score ${top.score}.` : 'No site could be scored.'}
+          {announcement}
         </p>
 
         {view === 'map' ? (

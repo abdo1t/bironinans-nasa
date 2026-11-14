@@ -1,0 +1,470 @@
+/* Home: guided start (world -> target site -> mission objective -> one primary action).
+   Desktop: compact hero, then two columns (world + target | mission + action) so the whole
+   path and the button fit a 1280x720 screen. Small screens: one column, full-width button.
+   Loaded after index.css and system.css, so the old .world-card / .scenario-card base
+   rules there are reused and overridden here. */
+
+.app-main:has(.home) {
+  padding-top: 1rem;
+  padding-bottom: 0.75rem;
+}
+
+.home {
+  max-width: 1200px;
+}
+
+/* ---------------------------------------------------------------- hero */
+
+.home-hero {
+  margin-bottom: var(--space-4);
+}
+
+.home-hero .kicker {
+  margin-bottom: var(--space-1);
+}
+
+.home-hero h1 {
+  margin: 0 0 var(--space-2);
+  font-size: clamp(1.45rem, 1rem + 1.4vw, 2rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.home-hero__lede {
+  margin: 0 0 var(--space-2);
+  max-width: 64rem;
+  color: var(--text-2);
+}
+
+.home-hero__scope {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--muted);
+}
+
+.home-hero__scope strong {
+  color: var(--text-2);
+}
+
+/* ---------------------------------------------------------------- flow layout */
+
+.home-flow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+}
+
+.home-flow__col {
+  display: grid;
+  align-content: start;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.home-step {
+  min-width: 0;
+}
+
+/* position: relative keeps the visually hidden "Step n:" text inside the heading box */
+.home-step__title {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-2);
+  font-size: var(--fs-md);
+  color: var(--text);
+}
+
+.home-step__num {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-strong);
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* a finished step: filled badge AND a check mark (never the colour alone) */
+.home-step.is-done .home-step__num {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+.home-step__done {
+  color: var(--ok);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}
+
+/* ---------------------------------------------------------------- step 1: world cards */
+
+.home .world-cards {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  max-width: none;
+}
+
+.world-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'name orb'
+    'blurb orb'
+    'foot foot';
+  align-items: start;
+  gap: 0.15rem var(--space-3);
+  padding: 0.7rem 0.85rem;
+  border-radius: var(--radius-lg);
+  font: inherit;
+}
+
+/* each world gets its own tint as well as its own planet and name */
+.world-card--moon {
+  background: linear-gradient(140deg, var(--panel) 45%, #252932);
+}
+
+.world-card--mars {
+  background: linear-gradient(140deg, var(--panel) 45%, #2e1e18);
+}
+
+.world-card--moon.is-selected {
+  background: linear-gradient(140deg, var(--panel-2) 45%, #2e333f);
+}
+
+.world-card--mars.is-selected {
+  background: linear-gradient(140deg, var(--panel-2) 45%, #3a251c);
+}
+
+.world-card:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.world-card:disabled:hover {
+  border-color: var(--border);
+}
+
+.world-card__name {
+  grid-area: name;
+  font-size: var(--fs-lg);
+  line-height: 1.2;
+}
+
+.world-card__blurb {
+  grid-area: blurb;
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+}
+
+.world-card__foot {
+  grid-area: foot;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.2rem 0.6rem;
+  min-height: 1.5rem; /* no jump when the "Selected" label appears */
+  margin-top: 0.3rem;
+}
+
+.world-card__count {
+  font-size: var(--fs-xs);
+}
+
+.world-card__picked {
+  padding: 0.05rem 0.5rem;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--text);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* CSS-only planets: a shaded sphere plus a few surface marks (craters / dark plains and a polar cap) */
+.world-card__orb {
+  grid-area: orb;
+  width: 56px;
+  height: 56px;
+  margin: 0;
+  border-radius: 50%;
+  box-shadow:
+    inset -10px -8px 14px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.world-card__orb--moon {
+  background:
+    radial-gradient(circle at 30% 36%, rgba(70, 69, 66, 0.6) 0 9%, transparent 10%),
+    radial-gradient(circle at 63% 27%, rgba(70, 69, 66, 0.5) 0 6%, transparent 7%),
+    radial-gradient(circle at 56% 64%, rgba(70, 69, 66, 0.55) 0 12%, transparent 13%),
+    radial-gradient(circle at 25% 70%, rgba(70, 69, 66, 0.45) 0 5%, transparent 6%),
+    radial-gradient(circle at 35% 30%, #ecebe5, #a5a39c 60%, #6c6a64);
+}
+
+.world-card__orb--mars {
+  background:
+    radial-gradient(ellipse 38% 13% at 50% 3%, rgba(255, 245, 236, 0.9) 0 60%, transparent 100%),
+    radial-gradient(ellipse 34% 15% at 40% 52%, rgba(96, 38, 18, 0.6) 0 65%, transparent 100%),
+    radial-gradient(ellipse 22% 10% at 68% 72%, rgba(96, 38, 18, 0.5) 0 65%, transparent 100%),
+    radial-gradient(circle at 35% 30%, #f2aa7a, #c25c32 60%, #7c3219);
+}
+
+/* ---------------------------------------------------------------- step 2: target site */
+
+.home-target__empty {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+  color: var(--muted);
+  font-size: var(--fs-sm);
+}
+
+.home-target__card {
+  padding: 0.65rem 0.9rem;
+}
+
+.home-target__card .eyebrow {
+  margin: 0;
+}
+
+.home-target__name {
+  margin: 0.1rem 0 0.2rem;
+  font-size: var(--fs-md);
+  line-height: 1.3;
+}
+
+.home-target__summary {
+  margin: 0;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  line-height: 1.45;
+}
+
+.home-target__note {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-size: var(--fs-xs);
+}
+
+.home-target__note strong {
+  color: var(--ok);
+}
+
+.home-target .field {
+  margin-bottom: var(--space-2);
+}
+
+.home-target select {
+  width: 100%;
+}
+
+/* ---------------------------------------------------------------- step 3: mission objective */
+
+.home .missions {
+  position: relative;
+}
+
+/* the step heading already says "Mission objective"; keep the legend for assistive tech only */
+.home .missions__legend {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.home .missions__grid {
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2);
+}
+
+.home .mission {
+  padding: 0.55rem 0.8rem 0.55rem 2.3rem;
+}
+
+.home .mission__input {
+  left: 0.8rem;
+  top: 0.75rem;
+}
+
+.home .mission__q {
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+}
+
+.home-notes:empty {
+  display: none;
+}
+
+.home-note {
+  margin: var(--space-2) 0 0;
+  padding: 0.4rem 0.65rem;
+  border: 1px solid var(--border-strong);
+  border-left: 3px solid var(--info);
+  border-radius: var(--radius);
+  background: var(--panel-2);
+  font-size: var(--fs-sm);
+}
+
+.home-note--custom {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.home-caveat {
+  margin: var(--space-2) 0 0;
+  font-size: var(--fs-xs);
+}
+
+/* ---------------------------------------------------------------- primary action */
+
+.home-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border);
+}
+
+.home .btn--large {
+  margin-top: 0;
+}
+
+.home-cta__hint {
+  flex: 1 1 14rem;
+  min-width: 0;
+  margin: 0;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+/* ---------------------------------------------------------------- examples (secondary) */
+
+.home-examples {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2) var(--space-4);
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border);
+}
+
+.home-examples__title {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+}
+
+.home-examples__hint {
+  margin: 0.1rem 0 0;
+  font-size: var(--fs-xs);
+}
+
+.home-examples__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: var(--space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.home-examples__list li {
+  display: flex; /* equal-height cards */
+  min-width: 0;
+}
+
+/* quieter than the primary button: outline only, small type */
+.home .scenario-card {
+  flex: 1;
+  min-width: 0;
+  gap: 0.05rem;
+  padding: 0.45rem 0.75rem;
+  background: transparent;
+  text-decoration: none;
+}
+
+.home .scenario-card__title {
+  font-size: var(--fs-sm);
+}
+
+.home .scenario-card__meta {
+  font-size: var(--fs-xs);
+}
+
+/* ---------------------------------------------------------------- responsive */
+
+@media (min-width: 600px) {
+  .home .missions__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1000px) {
+  .home-flow,
+  .home-examples {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--space-5);
+  }
+
+  .home-flow {
+    align-items: start;
+  }
+
+  .home-examples {
+    align-items: center;
+  }
+}
+
+/* demo laptop (1280x720): tighten the vertical rhythm so the button stays above the fold */
+@media (min-width: 1000px) and (max-height: 780px) {
+  .app-main:has(.home) {
+    padding-top: 0.75rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .home-hero {
+    margin-bottom: var(--space-3);
+  }
+
+  .home-hero h1 {
+    font-size: 1.75rem;
+  }
+
+  .home-flow__col {
+    gap: var(--space-3);
+  }
+
+  .home-examples {
+    margin-top: var(--space-3);
+    padding-top: var(--space-2);
+  }
+}
+
+@media (max-width: 640px) {
+  .home-cta .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 520px) {
+  .home .world-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

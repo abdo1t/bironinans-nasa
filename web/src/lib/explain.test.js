@@ -178,7 +178,10 @@ describe('scenarios', () => {
     for (const s of SCENARIOS) expect(PRESETS[s.presetId]).toBeDefined()
     expect(matchScenario('mars-jezero', 'rover').id).toBe('jezero-rover')
     expect(matchScenario('mars-jezero', 'balanced')).toBeNull()
-    expect(scenarioQuery(SCENARIOS[1])).toEqual({ target: 'moon-south-pole', preset: 'ice', view: 'list' })
+    // rank is always explicit so a scenario never inherits a ranking method from an earlier screen;
+    // the view is left to Explore (map + ranked cards by default).
+    expect(scenarioQuery(SCENARIOS[0])).toEqual({ target: 'mars-jezero', preset: 'rover', rank: 'min' })
+    expect(scenarioQuery(SCENARIOS[1])).toEqual({ target: 'moon-south-pole', preset: 'ice', rank: 'score' })
   })
   it('every preset has a rationale', () => {
     for (const p of Object.values(PRESETS)) expect(p.rationale.length).toBeGreaterThan(20)

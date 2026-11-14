@@ -33,7 +33,11 @@ export function matchScenario(targetId, presetId) {
   return SCENARIOS.find((s) => s.targetId === targetId && s.presetId === presetId) || null
 }
 
-/** Link query for a scenario (list view). */
+/**
+ * Link query for a scenario. `rank` is always emitted so a scenario never inherits
+ * the ranking method left over from an earlier screen; the view is left to Explore
+ * (map + ranked cards by default).
+ */
 export function scenarioQuery(s) {
-  return { target: s.targetId, preset: s.presetId, view: 'list', ...(s.rankBy === 'min' ? { rank: 'min' } : {}) }
+  return { target: s.targetId, preset: s.presetId, rank: s.rankBy === 'min' ? 'min' : 'score' }
 }
