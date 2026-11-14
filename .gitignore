@@ -1,0 +1,7 @@
+# Downloaded datasets are ~2.5 GB: re-create them with data-tools/download_raw_data.py
+# (and data-tools/download_emit.py for EMIT). Only the docs, site list and manifest are tracked.
+Raw Data/Moon/
+Raw Data/Earth/
+Raw Data/download_log.txt
+*.part
+__pycache__/
