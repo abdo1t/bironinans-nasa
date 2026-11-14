@@ -122,7 +122,7 @@ FEATURES = [
         "kind": "categorical",
         "related": {"basalt": ["anorthosite"], "clay": ["sedimentary"], "sulfate": ["evaporite"]},
         "description": "Dominant surface rock / mineral class.",
-        "source": "Literature; EMIT L2B where available",
+        "source": "Peer-reviewed literature, cited per site (EMIT mineral maps not used yet)",
     },
     {
         "id": "ice",

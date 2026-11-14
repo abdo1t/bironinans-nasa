@@ -27,5 +27,6 @@
     "oxlint": "^1.90.0",
     "vite": "^8.3.6",
     "vitest": "^5.1.0"
-  }
+  },
+  "description": "Earth Analog Finder: ranks Earth analog sites for Moon/Mars base locations from NASA data. Developed with assistance from an AI coding assistant (Claude); reviewed by the team."
 }

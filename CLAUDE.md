@@ -362,7 +362,7 @@ Work through the phases in order. After each phase, run the listed checks, commi
 
 ### Phase 4: Validation and compare
 
-- [ ] `03_score_validate.ipynb`: for each Mars target, check whether Atacama, Haughton, Death Valley and Utah (MDRS) rank in the top third; for `moon-south-pole`, check McMurdo and Svalbard. Print a table. If they don't, tune the bounds (not the per-site data) and record the change.
+- [ ] `03_score_validate.ipynb`: for each Mars target, check whether Atacama, Haughton, Death Valley and Utah (MDRS) rank in the top third; for `moon-south-pole`, check McMurdo and Svalbard. Print a table. If they don't, tune the bounds (not the per-site data) and record the change. Superseded: bounds are NOT tuned to rankings; validation is reported as-is (docs/validation_report.md).
 - [ ] Compare page: RadarCompare, CompareTable, verdict.
 - [ ] About page: method, limitations, sources.
 - **Check:** validation table saved as `pipeline/validation.md`; Compare works with 2 and 3 sites.
@@ -405,6 +405,8 @@ Work through the phases in order. After each phase, run the listed checks, commi
 - Ask the human before adding any dependency not listed in §2.
 
 ## 11. Demo script (90 seconds, for reference)
+
+> Official 2026 submission limit: the submitted demo must be a video of ≤ 30 s or a deck of ≤ 7 slides (see docs/demo_script.md); this 90 s script is for live judging only.
 
 1. "Mission teams rehearse on Earth before they fly, but most analog sites aren't well characterized."
 2. Mars → Jezero Crater → preset **Rover testing**.

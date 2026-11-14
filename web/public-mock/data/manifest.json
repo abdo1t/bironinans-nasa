@@ -1,9 +1,9 @@
 {
   "contract": "eaf-bundle/2",
   "kind": "mock",
-  "generatedAt": "2026-11-14T05:15:44+00:00",
+  "generatedAt": "2026-11-14T06:11:37+00:00",
   "files": {
-    "features.json": "c9302e5e232aad481ff513ddade10af8b3da641cda8da434661ba693d0a23e19",
+    "features.json": "9d8b210b67daaa5ad0f58c01cb26407f6f12cee33f01d73dccd7df6de7d4279a",
     "targets.json": "8a108d7d575ffe2fbde9e014b4881f501b37444507ee882767703e206a821f11",
     "sites.geojson": "6df79e2cff57efdf6e50a527e2552f84bfa2e42b68559da5494ca19f0867af00",
     "scores.json": "762409ca74ecb3551be35e1000f7ad521da3e686374705f6097e6e50250e3aba"
