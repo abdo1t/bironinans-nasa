@@ -15,6 +15,7 @@ import { useBundle } from '../data/useBundle.js'
 import { availabilityNotice, dataAvailability } from '../lib/explain.js'
 import { bodyLabel } from '../lib/format.js'
 import { missionTitle } from '../lib/missions.js'
+import { hasOpenRange } from '../lib/summary.js'
 import { PRESETS } from '../lib/presets.js'
 import { RANK_METHODS } from '../lib/rankMethods.js'
 import { SCENARIO_LIMITATION, matchScenario } from '../lib/scenarios.js'
@@ -136,7 +137,9 @@ export default function Explore() {
   const method = RANK_METHODS[app.rankBy] || RANK_METHODS.score
   // Plain-language ranking explanation shared by the map and list views. Missing data is
   // stated in ordinary words whenever any scored place rests on incomplete measurements.
-  const partial = scoredEntries.filter((r) => r.coverage.used < r.coverage.selected).length
+  // Only gaps on the Earth-site side: a criterion the target itself lacks is covered by the
+  // availability notice and cannot move any score (its range stays closed).
+  const partial = scoredEntries.filter(hasOpenRange).length
   const rankingHelp = (
     <div id="rankby-help" className="ranking-help">
       <p>

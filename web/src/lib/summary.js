@@ -115,8 +115,10 @@ export function plainComparison(sites, entries) {
       out.push(
         `But it is based on fewer measurements (${meas(best)}) than ${other.site.name} (${meas(other)}), so ${other.site.name}’s result rests on more complete evidence and ${best.site.name}’s could still change.`,
       )
-    } else if (frac(best) < 1) {
+    } else if (hasOpenRange(best.e)) {
       out.push(`Some of its measurements are missing (${meas(best)} available), so its score could still change.`)
+    } else if (frac(best) < 1) {
+      out.push('Missing data cannot move its score: the only gaps are criteria the Moon/Mars site has no value for.')
     } else {
       out.push(`Its result rests on all ${best.e.coverage.selected} selected measurements.`)
     }

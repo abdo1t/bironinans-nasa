@@ -104,3 +104,28 @@ Test counts and browser checks are recorded in `docs/release_readiness.md` (sect
 - Verdict sentences and why/gap phrases are generated text (`verdict.js`, `scoring.js`) and were not reworded; the verdict still says "(weight 5)".
 - `docs/judge_qa.md`, `docs/award_strategy.md` and CLAUDE.md §7 still mention some old labels (for example "Mission scenarios" and the list view). CLAUDE.md belongs to the team and was not edited.
 - Team names are still "TBD" on the About page.
+
+## 4. Second pass: "simple by default" (2026-11-14)
+
+Guided by the UI UX Pro Max skill (priorities: accessibility, interaction, navigation, plain microcopy). Display and wording only — `scoring.js`, `scoring.py`, presets, the data bundles and the pipeline were not touched (`git diff 7681e96..HEAD` lists only `web/src` UI files and this doc).
+
+| Page | Change | Commit |
+|---|---|---|
+| Home | Two choices and one action: **Choose a world → Choose a research objective → Find matching places on Earth**. The Moon/Mars reference site is named under the world cards ("Compared with …") instead of being a separate step; a select appears only if a world has more than one site. The primary button stays focusable and says what is missing instead of being greyed out. "Mission objective" is now "Research objective" everywhere. | `9ddce17` |
+| Explore | Title "Places on Earth like <site>". One sentence explains the ranking; when any place lacks Earth-side measurements a plain warning says the ranking may change. "Rank by" moved into **Advanced options** as "Best match first / Most complete evidence first" (same `rank=` URL values; the conservative order is still announced above the list when active). Coverage reads "4 of 7 measured", ranges "could be 56–97". "Explore the terrain of <site>". | `5af1c43` |
+| Site details | "Why this place?" and "How reliable is this result?" answered in sentences before the figures (`plainReliability`, tested). "What matches?" / "What's different?"; the difference card no longer says "No gaps" when criteria are unmeasured. | `7c3b436` |
+| Compare | "In short" summary at the top (`plainComparison`, tested): closest match, whether it rests on fewer measurements than another place, unscored places named as missing data, and always "none of these places is confirmed as suitable for a mission". | `495f16f` |
+
+### Persona walkthroughs (simulated in the in-app browser — no real users were observed)
+
+| Persona | Task | Result |
+|---|---|---|
+| A. First-time visitor | Home → results | 2 actions with the default objective (Mars, then the button), 3 when choosing one (Moon → Ice drilling → button). Pressing the button before choosing a world explains what to do instead of doing nothing. |
+| A. | Understand score and uncertainty | Explore: one ranking sentence plus "5 places are missing some measurements, so this ranking may change". Site details: "Based on 4 of 7 measurements … anywhere from 56 to 97". |
+| B. Planetary researcher | Find evidence | Site details keeps the full figures, per-value provenance, citations and limitations in expandable sections below the plain answers. Advanced options holds the ranking method and weights. |
+| C. Mission planner | Compare candidates | "Compare top 3" is visible beside the list at all times; Compare opens with "In short", e.g. McMurdo leads 88 vs 68 but rests on 4 of 7 measurements vs Haughton's 6 of 7. |
+| All | Back navigation | Browser Back from Compare returns to Explore with target, objective and order intact (all state is in the URL). |
+
+Checks: 73 Vitest + 101 pytest passing; `validate_bundle.py` OK for real and mock; real and mock builds pass; no horizontal overflow at 375 px on Home, Explore, Site details and Compare; Advanced options and the order switch are keyboard-operable native radios.
+
+Not done: 3D terrain (the offline 2D shaded-relief preview stays; a 3D view was judged not to add understanding worth the load cost on the main journey); verdict text in `verdict.js` is still the earlier wording; no study with real users.

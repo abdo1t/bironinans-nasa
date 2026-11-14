@@ -183,4 +183,14 @@ describe('plainComparison', () => {
     )
     expect(lines[0]).toBe('A and B match equally closely (70/100).')
   })
+  it('does not call target-side gaps missing site measurements', () => {
+    const lines = plainComparison(
+      [A, B],
+      [
+        { score: 80, coverage: { used: 6, selected: 7 }, scoreRange: [80, 80] },
+        { score: 60, coverage: { used: 6, selected: 7 }, scoreRange: [60, 60] },
+      ],
+    )
+    expect(lines[1]).toMatch(/Missing data cannot move its score/)
+  })
 })
