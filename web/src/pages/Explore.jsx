@@ -8,6 +8,7 @@ import ShortlistBar from '../components/ShortlistBar.jsx'
 import SiteCards from '../components/SiteCards.jsx'
 import TargetReference from '../components/TargetReference.jsx'
 import TargetSelect from '../components/TargetSelect.jsx'
+import TerrainPreview from '../components/TerrainPreview.jsx'
 import Term from '../components/Term.jsx'
 import { MockTag } from '../components/Tags.jsx'
 import { useBundle } from '../data/useBundle.js'
@@ -276,6 +277,16 @@ export default function Explore() {
             <ResultsList {...shared} />
             {tray}
           </>
+        )}
+
+        {!data.isMock && (
+          <Disclosure
+            className="explore__terrain"
+            title={`Terrain of the target site — ${app.target.name}`}
+            hint="shaded-relief elevation map, generated offline from the scored dataset"
+          >
+            <TerrainPreview targetId={app.targetId} isMock={data.isMock} />
+          </Disclosure>
         )}
 
         <TargetReference target={app.target} features={data.features} isMock={data.isMock} />

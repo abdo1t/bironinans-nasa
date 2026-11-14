@@ -4,6 +4,7 @@ import Disclosure from '../components/Disclosure.jsx'
 import ScoreBars from '../components/ScoreBars.jsx'
 import TargetReference from '../components/TargetReference.jsx'
 import TargetSelect from '../components/TargetSelect.jsx'
+import TerrainPreview from '../components/TerrainPreview.jsx'
 import Term from '../components/Term.jsx'
 import {
   CitationText,
@@ -662,6 +663,12 @@ export default function SiteDetails() {
               isMock={data.isMock}
               open
             />
+            {!data.isMock && (
+              <>
+                <h3>Terrain of the target site</h3>
+                <TerrainPreview targetId={target.id} isMock={data.isMock} />
+              </>
+            )}
             {target.trekUrl && (
               <p className="site-detail__links">
                 <a href={target.trekUrl} target="_blank" rel="noreferrer">

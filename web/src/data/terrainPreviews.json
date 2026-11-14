@@ -1,0 +1,285 @@
+{
+  "mars-jezero": {
+    "targetId": "mars-jezero",
+    "title": "Terrain around the Jezero Crater reference point",
+    "description": "The reference point is on the low crater floor; the ground rises to the west (left).",
+    "image": "previews/mars-jezero-terrain.webp",
+    "widthPx": 450,
+    "heightPx": 450,
+    "bytes": 10192,
+    "sha256": "a28a2479a2dd7a57594dcf2d6c8fb5ed64381767fcf055450a0fc0f6cfd1c442",
+    "windowKm": 26.98,
+    "requestedWindowKm": 50.0,
+    "windowNote": "The DTM covers only about 32 x 30 km in map units, so the view is the largest square centred on the target that fits (27.0 km), not 50 km.",
+    "metresPerPixel": 60.0,
+    "pixelGroundM": [
+      60.0,
+      59.955
+    ],
+    "mapBoundsM": [
+      4576603.251,
+      1079533.14,
+      4605043.251,
+      1106533.14
+    ],
+    "markerPx": [
+      225.03,
+      225.13
+    ],
+    "scoringWindowKm": 10.0,
+    "scoringWindowPx": [
+      141.64,
+      141.8,
+      308.43,
+      308.46
+    ],
+    "scaleBarKm": 10.0,
+    "scaleBarPx": 166.79,
+    "pixelOrigin": "markerPx, scoringWindowPx [left, top, right, bottom] and landmark px are measured in image pixels from the top-left corner",
+    "target": {
+      "name": "Jezero Crater — Perseverance landing site",
+      "lat": 18.44,
+      "lon": 77.45,
+      "lonEast360": 77.45,
+      "mapXM": 4590825.3,
+      "mapYM": 1093025.4,
+      "coordSource": "Zafrir et al. 2026, Icarus 460, 117296 (doi:10.1016/j.icarus.2026.117296): Perseverance landed at 18.44 N, 77.45 E"
+    },
+    "projection": {
+      "proj4": "+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +R=3396190 +units=m +no_defs",
+      "frame": "GCS_Mars_2000_Sphere (IAU Mars 2000 body-fixed frame on a 3396.19 km sphere, as named in the file's CRS)",
+      "note": "Equirectangular with true scale at the equator, read from the GeoTIFF's own CRS. Martian latitude/longitude were projected with it (never as Earth WGS84). At the target latitude a 20 m map pixel is 20 m north–south but 18.97 m east–west, so columns were linearly resampled by cos(latitude) = 0.9487 to square 60 m ground pixels (59.96 m east–west after rounding)."
+    },
+    "orientation": "North is up and east is right. The source grid is equirectangular with true scale at the equator, so its columns were resampled to make pixels square on the ground at the target latitude.",
+    "source": {
+      "shortName": "the USGS Mars 2020 CTX stereo terrain model",
+      "dataset": "USGS Mars 2020 TRN CTX DTM mosaic JEZ_ctx_B_soc_008 (stereo-derived elevation of Jezero Crater)",
+      "release": "Mars 2020 Terrain Relative Navigation CTX DTM mosaic, USGS Astrogeology (file JEZ_ctx_B_soc_008)",
+      "url": "https://planetarymaps.usgs.gov/mosaic/mars2020_trn/CTX/JEZ_ctx_B_soc_008_DTM_MOLAtopography_DeltaGeoid_20m_Eqc_latTs0_lon0.tif",
+      "landingUrl": "https://planetarymaps.usgs.gov/mosaic/mars2020_trn/CTX/",
+      "nativePostingM": 20.0,
+      "aggregation": "box mean 3 x 3 from 20 m to 60 m per pixel, then columns resampled to square ground pixels",
+      "heightReference": "height above the MOLA areoid, as supplied by the product",
+      "citation": "Fergason, R.L., Hare, T.M., Mayer, D.P., et al. 2020, Mars 2020 Terrain Relative Navigation Flight Product Generation: Digital Terrain Model and Orthorectified Image Mosaics, 51st LPSC, abstract #2020 (ADS 2020LPI....51.2020F)"
+    },
+    "elevation": {
+      "minM": -2710.4,
+      "maxM": -1516.6,
+      "ramp": [
+        [
+          -2710.4,
+          "#00204d"
+        ],
+        [
+          -2577.8,
+          "#00336f"
+        ],
+        [
+          -2445.1,
+          "#39486b"
+        ],
+        [
+          -2312.5,
+          "#575c6d"
+        ],
+        [
+          -2179.8,
+          "#707173"
+        ],
+        [
+          -2047.2,
+          "#8a8779"
+        ],
+        [
+          -1914.5,
+          "#a69d75"
+        ],
+        [
+          -1781.9,
+          "#c4b56c"
+        ],
+        [
+          -1649.2,
+          "#e4cf5b"
+        ],
+        [
+          -1516.6,
+          "#ffea46"
+        ]
+      ],
+      "rampName": "cividis (colour-blind-safe, lightness increases with elevation)",
+      "note": "range of the 60 m block means shown in the image",
+      "nodataPixels": 0
+    },
+    "hillshade": {
+      "azimuthDeg": 315.0,
+      "altitudeDeg": 45.0,
+      "vertExag": 1.0,
+      "note": "synthetic illumination, not real lighting — the shading only shows which way slopes face; it is not the Sun direction of any image of Jezero"
+    },
+    "relief": {
+      "valueM": 231.1,
+      "rangeM": [
+        229.1,
+        252.0
+      ],
+      "note": "Copied from pipeline/data/planetary_terrain.csv, not recomputed: relief = 99th minus 1st percentile of elevation in the 10 km x 10 km window at a ~200 m posting; the range spans block alignment and the cross-check products."
+    },
+    "landmarks": [],
+    "crossCheck": null,
+    "script": "pipeline/make_target_preview.py",
+    "generatedAt": "2026-11-14T17:06:04+00:00"
+  },
+  "moon-south-pole": {
+    "targetId": "moon-south-pole",
+    "title": "Terrain around the lunar south pole reference point",
+    "description": "The deep crater to the right of the marker is Shackleton; the south pole lies on its rim.",
+    "image": "previews/moon-south-pole-terrain.webp",
+    "widthPx": 833,
+    "heightPx": 833,
+    "bytes": 28658,
+    "sha256": "a5025bad5e771976b681e9a002ab23701a3227fb806e069efe3ad4099522afb7",
+    "windowKm": 49.98,
+    "requestedWindowKm": 50.0,
+    "windowNote": null,
+    "metresPerPixel": 60.0,
+    "pixelGroundM": [
+      60.0,
+      60.0
+    ],
+    "mapBoundsM": [
+      -35920.0,
+      -36860.0,
+      14060.0,
+      13120.0
+    ],
+    "markerPx": [
+      416.68,
+      416.58
+    ],
+    "scoringWindowKm": 10.0,
+    "scoringWindowPx": [
+      333.33,
+      333.33,
+      500.0,
+      500.0
+    ],
+    "scaleBarKm": 10.0,
+    "scaleBarPx": 166.67,
+    "pixelOrigin": "markerPx, scoringWindowPx [left, top, right, bottom] and landmark px are measured in image pixels from the top-left corner",
+    "target": {
+      "name": "Lunar South Pole — Shackleton–de Gerlache connecting ridge (Artemis)",
+      "lat": -89.468,
+      "lon": -137.4,
+      "lonEast360": 222.6,
+      "mapXM": -10919.5,
+      "mapYM": -11874.8,
+      "coordSource": "NASA ACD-50044 Rev A, Lunar Surface Data Book (2023), Fig. 7.3.1: point C1 (89.468° S, 222.6° E) on the Shackleton–de Gerlache connecting ridge"
+    },
+    "projection": {
+      "proj4": "+proj=stere +lat_0=-90 +lat_ts=-90 +lon_0=0 +x_0=0 +y_0=0 +R=1737400 +units=m +no_defs",
+      "frame": "MEAN EARTH/POLAR AXIS OF DE421 (Moon mean-Earth / polar-axis body-fixed frame)",
+      "note": "South polar stereographic on the 1737.4 km sphere, true scale at the pole, central longitude 0, read from the dataset's own label. Lunar latitude/longitude were projected with this projection (never as Earth WGS84). Scale factor at the target 1.000022, so map metres equal ground metres to within 0.03 % across the image."
+    },
+    "orientation": "Up is toward 0° E (the Moon's near side, facing Earth) and right is toward 90° E. The south pole is inside the frame, so every direction away from it is north and there is no single north arrow.",
+    "source": {
+      "shortName": "NASA LRO LOLA laser-altimeter elevations",
+      "dataset": "LRO LOLA LDEM_875S_20M (Lunar Orbiter Laser Altimeter gridded elevation, 87.5° S to the pole)",
+      "release": "PDS LRO-L-LOLA-4-GDR-V1.0, product V2.0 (2017-06-15)",
+      "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/img/ldem_875s_20m.img",
+      "landingUrl": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/img/",
+      "nativePostingM": 20.0,
+      "aggregation": "box mean 3 x 3 from 20 m to 60 m per pixel",
+      "heightReference": "height above the 1737.4 km reference sphere (DN x 0.5 m; the label OFFSET, the sphere radius, is not added)",
+      "citation": "Smith, D.E., et al. 2010, Initial observations from the Lunar Orbiter Laser Altimeter (LOLA), GRL 37, L18204, doi:10.1029/2010GL043751; PDS LRO-L-LOLA-4-GDR-V1.0"
+    },
+    "elevation": {
+      "minM": -2980.8,
+      "maxM": 1958.2,
+      "ramp": [
+        [
+          -2980.8,
+          "#00204d"
+        ],
+        [
+          -2432.1,
+          "#00336f"
+        ],
+        [
+          -1883.3,
+          "#39486b"
+        ],
+        [
+          -1334.5,
+          "#575c6d"
+        ],
+        [
+          -785.7,
+          "#707173"
+        ],
+        [
+          -236.9,
+          "#8a8779"
+        ],
+        [
+          311.8,
+          "#a69d75"
+        ],
+        [
+          860.6,
+          "#c4b56c"
+        ],
+        [
+          1409.4,
+          "#e4cf5b"
+        ],
+        [
+          1958.2,
+          "#ffea46"
+        ]
+      ],
+      "rampName": "cividis (colour-blind-safe, lightness increases with elevation)",
+      "note": "range of the 60 m block means shown in the image",
+      "nodataPixels": 0
+    },
+    "hillshade": {
+      "azimuthDeg": 315.0,
+      "altitudeDeg": 45.0,
+      "vertExag": 1.0,
+      "note": "synthetic illumination, not real lighting — at the pole the Sun is always near the horizon and crater floors shown lit here are permanently shadowed"
+    },
+    "relief": {
+      "valueM": 1106.9,
+      "rangeM": [
+        1093.4,
+        1125.0
+      ],
+      "note": "Copied from pipeline/data/planetary_terrain.csv, not recomputed: relief = 99th minus 1st percentile of elevation in the 10 km x 10 km window at a ~200 m posting; the range spans block alignment and the cross-check products."
+    },
+    "landmarks": [
+      {
+        "name": "Shackleton crater (centre)",
+        "lat": -89.67,
+        "lon": 129.78,
+        "px": [
+          726.8,
+          325.4
+        ],
+        "source": "USGS Gazetteer of Planetary Nomenclature, Feature 5450 (diameter 20.92 km)"
+      },
+      {
+        "name": "South pole",
+        "lat": -90.0,
+        "lon": 0.0,
+        "px": [
+          598.7,
+          218.7
+        ],
+        "source": "projection origin"
+      }
+    ],
+    "crossCheck": "Independent cross-check, not the scored source: NASA GSFC PGDA 'A New View of the Lunar South Pole from LOLA' (LDEM_80S_20MPP_ADJ; Barker et al. 2023, Planet. Sci. J. 4, 183, doi:10.3847/PSJ/acf3e1; https://pgda.gsfc.nasa.gov/products/90) uses the same projection, sphere and frame; in the 10 km scoring window its relief at ~200 m is 1106.8 m against 1106.9 m here (pixel differences: mean +0.40 m, RMS 1.34 m). Measured once by remote window reads during the source review; this script does not download or re-measure it.",
+    "script": "pipeline/make_target_preview.py",
+    "generatedAt": "2026-11-14T17:06:04+00:00"
+  }
+}
