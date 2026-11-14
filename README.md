@@ -22,6 +22,8 @@ Pick a Moon or Mars base site, weight what matters, and get a ranked, explainabl
 > - [Demo scripts](docs/demo_script.md)
 > - [Judge Q&A](docs/judge_qa.md)
 > - [Release readiness](docs/release_readiness.md)
+> - [Art & Technology: Planetary Mirror](docs/art_technology.md)
+> - [Mission Control UI (v2)](docs/mission_control_ui.md)
 
 ## Layout
 
