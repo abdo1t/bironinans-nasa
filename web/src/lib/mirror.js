@@ -51,3 +51,22 @@ export const MIRROR_STATUS = {
   missing: { label: 'No data', symbol: '–', help: 'not scored: a value is missing or excluded' },
   unused: { label: 'Not used', symbol: '·', help: 'weight 0 under this objective' },
 }
+
+// Both images are shown over the same ground width (the Jezero preview window), so one
+// centimetre on screen is the same distance on both worlds.
+export const SHARED_KM = 26.98
+
+/** Crop geometry: the SHARED_KM square around the marker, in fractions of the crop. */
+export function cropOf(entry) {
+  const crop = Math.min(Math.round((SHARED_KM * 1000) / entry.metresPerPixel), entry.widthPx, entry.heightPx)
+  const clamp = (v, max) => Math.max(0, Math.min(v, max))
+  const offX = clamp(entry.markerPx[0] - crop / 2, entry.widthPx - crop)
+  const offY = clamp(entry.markerPx[1] - crop / 2, entry.heightPx - crop)
+  const f = (v) => `${(v / crop) * 100}%`
+  const [l, t, r, b] = entry.scoringWindowPx
+  return {
+    km: (crop * entry.metresPerPixel) / 1000,
+    img: { width: f(entry.widthPx), left: f(-offX), top: f(-offY) },
+    square: { left: f(l - offX), top: f(t - offY), width: f(r - l), height: f(b - t) },
+  }
+}

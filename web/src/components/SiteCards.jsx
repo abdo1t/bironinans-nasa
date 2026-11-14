@@ -24,14 +24,24 @@ export default function SiteCards({
   rankBy,
   active,
   onActive,
-  onShowOnMap,
+  selectedId,
+  onSelect,
 }) {
   const refs = useRef({})
+  const boxRef = useRef(null)
 
+  // A place chosen on the map is brought into view inside this list's own scroller only,
+  // so the page itself never jumps.
   useEffect(() => {
-    if (active?.source !== 'map' || !active.id) return
-    refs.current[active.id]?.scrollIntoView({ block: 'nearest' })
-  }, [active])
+    if (active?.source !== 'map' || !selectedId) return
+    const el = refs.current[selectedId]
+    const box = boxRef.current
+    if (!el || !box || box.scrollHeight <= box.clientHeight) return
+    const top = el.offsetTop // .site-cards is the offsetParent (position: relative)
+    if (top < box.scrollTop || top + el.offsetHeight > box.scrollTop + box.clientHeight) {
+      box.scrollTo({ top: Math.max(top - 8, 0), behavior: 'auto' })
+    }
+  }, [active, selectedId])
 
   // Ranking-change feedback: after the objective, weights or order change, each card says how
   // many places it moved (kept until the next change). A new target starts afresh.
@@ -62,13 +72,14 @@ export default function SiteCards({
     const s = entrySummary(r)
     const listed = shortlist.includes(site.id)
     const isActive = active?.id === site.id
+    const isSelected = selectedId === site.id
     return (
       <li
         key={site.id}
         ref={(el) => {
           refs.current[site.id] = el
         }}
-        className={`site-card${isActive ? ' is-active' : ''}${listed ? ' is-listed' : ''}${s.scored ? '' : ' site-card--none'}`}
+        className={`site-card${isActive ? ' is-active' : ''}${isSelected ? ' is-selected' : ''}${listed ? ' is-listed' : ''}${s.scored ? '' : ' site-card--none'}`}
         onMouseEnter={() => onActive(site.id, 'list')}
         onMouseLeave={() => onActive(null, 'list')}
         onFocus={() => onActive(site.id, 'list')}
@@ -79,8 +90,16 @@ export default function SiteCards({
           </span>
           <div className="site-card__id">
             <h3 className="site-card__name">
-              <span className="sr-only">{r.rank ? `Rank ${r.rank}: ` : 'Not ranked: '}</span>
-              <Link to={linkTo(`/site/${site.id}`)}>{site.name}</Link>
+              <button
+                type="button"
+                className="site-card__select"
+                aria-pressed={isSelected}
+                onClick={() => onSelect(site.id, 'list')}
+              >
+                <span className="sr-only">{r.rank ? `Rank ${r.rank}: ` : 'Not ranked: '}</span>
+                {site.name}
+                <span className="sr-only">{isSelected ? ' (selected, shown in the analysis panel)' : ' — show on map and analyse'}</span>
+              </button>
             </h3>
             <span className="site-card__country">
               {site.country}
@@ -136,7 +155,7 @@ export default function SiteCards({
 
         <div className="site-card__actions">
           <Link className="btn btn--small" to={linkTo(`/site/${site.id}`)}>
-            View details<span className="sr-only"> for {site.name}</span>
+            Details<span className="sr-only"> for {site.name}</span>
           </Link>
           <button
             type="button"
@@ -149,11 +168,6 @@ export default function SiteCards({
             {listed ? '✓ In compare' : shortlistFull ? 'Compare full (3)' : '+ Compare'}
             <span className="sr-only"> {site.name}</span>
           </button>
-          {onShowOnMap && (
-            <button type="button" className="btn btn--small btn--ghost" onClick={() => onShowOnMap(site.id)}>
-              Show on map<span className="sr-only">: {site.name}</span>
-            </button>
-          )}
           {s.scored && (
             <Link className="btn btn--small btn--ghost" to={linkTo('/mirror', { site: site.id })}>
               Mirror<span className="sr-only">: see {site.name} beside {target.name}</span>
@@ -165,7 +179,7 @@ export default function SiteCards({
   }
 
   return (
-    <div className="site-cards">
+    <div className="site-cards" ref={boxRef}>
       <ol className="site-cards__list" aria-label={`Earth sites ranked for ${target.name}`}>
         {scored.map(card)}
       </ol>

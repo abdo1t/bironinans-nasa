@@ -7,32 +7,14 @@ import SITE_PREVIEWS from '../data/sitePreviews.json'
 import TARGET_PREVIEWS from '../data/terrainPreviews.json'
 import { useBundle } from '../data/useBundle.js'
 import { bodyLabel, formatCoord, pct } from '../lib/format.js'
-import { MIRROR_STATUS, defaultCriterion, mirrorRows } from '../lib/mirror.js'
+import { MIRROR_STATUS, SHARED_KM, cropOf, defaultCriterion, mirrorRows } from '../lib/mirror.js'
 import { missionTitle } from '../lib/missions.js'
 import { LIMITATIONS_NOTE } from '../lib/scoring.js'
 import { entrySummary, plainReliability } from '../lib/summary.js'
 import { useAppState } from '../state/AppState.jsx'
 import '../styles/mirror.css'
 
-// Both images are shown over the same ground width (the Jezero preview window), so one
-// centimetre on screen is the same distance on both worlds.
-const SHARED_KM = 26.98
 const fmtM = (v) => `${Math.round(v).toLocaleString('en-US')} m`
-
-/** Crop geometry: the SHARED_KM square around the marker, in fractions of the crop. */
-function cropOf(entry) {
-  const crop = Math.min(Math.round((SHARED_KM * 1000) / entry.metresPerPixel), entry.widthPx, entry.heightPx)
-  const clamp = (v, max) => Math.max(0, Math.min(v, max))
-  const offX = clamp(entry.markerPx[0] - crop / 2, entry.widthPx - crop)
-  const offY = clamp(entry.markerPx[1] - crop / 2, entry.heightPx - crop)
-  const f = (v) => `${(v / crop) * 100}%`
-  const [l, t, r, b] = entry.scoringWindowPx
-  return {
-    km: (crop * entry.metresPerPixel) / 1000,
-    img: { width: f(entry.widthPx), left: f(-offX), top: f(-offY) },
-    square: { left: f(l - offX), top: f(t - offY), width: f(r - l), height: f(b - t) },
-  }
-}
 
 /** One side of the mirror: a real shaded-relief image with its scale, legend and source. */
 function TerrainPanel({ side, world, name, entry, isMock, highlight, notes, sourceLine, orientation = 'north up' }) {

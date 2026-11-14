@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { defaultCriterion, mirrorRows } from './mirror.js'
+import SITE_PREVIEWS from '../data/sitePreviews.json'
+import TARGET_PREVIEWS from '../data/terrainPreviews.json'
+import { SHARED_KM, cropOf, defaultCriterion, mirrorRows } from './mirror.js'
 
 const features = [
   { id: 'terrain', label: 'Terrain relief', kind: 'numeric' },
@@ -31,5 +33,25 @@ describe('mirrorRows', () => {
   })
   it('opens the highest-weight match first', () => {
     expect(defaultCriterion(Object.values(rows))).toBe('terrain')
+  })
+})
+
+describe('cropOf (shared ground scale)', () => {
+  // Real preview entries: the Explore terrain panel and the Mirror crop both use this geometry.
+  const previews = { ...TARGET_PREVIEWS, ...SITE_PREVIEWS }
+
+  it('crops every preview to the same ground width as Jezero (no rescaling between worlds)', () => {
+    for (const [id, entry] of Object.entries(previews)) {
+      const c = cropOf(entry)
+      expect(c.km, id).toBeCloseTo(SHARED_KM, 1)
+    }
+  })
+
+  it('keeps the 10 km scoring square at 10 km after cropping', () => {
+    for (const [id, entry] of Object.entries(previews)) {
+      const c = cropOf(entry)
+      const sideKm = (parseFloat(c.square.width) / 100) * c.km
+      expect(sideKm, id).toBeCloseTo(entry.scoringWindowKm, 0)
+    }
   })
 })

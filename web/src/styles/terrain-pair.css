@@ -1,0 +1,106 @@
+/* Planetary terrain pair (Explore panel B, Site dossier): two shaded-relief tiles at one ground scale. */
+
+.tpair__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.tpair__tile {
+  margin: 0;
+  min-width: 0;
+}
+
+.tpair__cap {
+  display: grid;
+  margin-bottom: 0.3rem;
+}
+
+.tpair__name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tpair__tile--planet .hud-label {
+  color: #e9a27f;
+}
+
+.tpair__tile--earth .hud-label {
+  color: #6fd6c4;
+}
+
+.tpair__frame {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: #050a14;
+}
+
+.tpair__frame--missing {
+  display: grid;
+  place-items: center;
+  padding: 0.6rem;
+  background: repeating-linear-gradient(135deg, rgba(142, 163, 194, 0.12) 0 6px, transparent 6px 12px);
+  font-size: 0.78rem;
+  color: var(--text-2);
+  text-align: center;
+}
+
+.tpair__img {
+  position: absolute;
+  max-width: none;
+  height: auto;
+}
+
+.tpair__square {
+  position: absolute;
+  border: 1.5px solid #fff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6);
+}
+
+.tpair__legend {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.3rem;
+  font-size: 0.68rem;
+  color: var(--text-2);
+}
+
+.tpair__ramp {
+  height: 6px;
+  border-radius: 3px;
+}
+
+.tpair__scale {
+  margin: 0.6rem 0 0.4rem;
+  font-size: 0.76rem;
+  color: var(--text-2);
+}
+
+.tpair__more {
+  font-size: 0.78rem;
+  color: var(--text-2);
+}
+
+.tpair__more summary {
+  cursor: pointer;
+  color: var(--link);
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.tpair__more ul {
+  margin: 0.3rem 0 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.3rem;
+}
+

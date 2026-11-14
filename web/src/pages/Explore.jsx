@@ -1,14 +1,16 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import CriteriaPanel from '../components/CriteriaPanel.jsx'
-import Disclosure from '../components/Disclosure.jsx'
+import { IconList, IconMap } from '../components/Icons.jsx'
+import MatchAnalysis from '../components/MatchAnalysis.jsx'
+import MissionEvidence from '../components/MissionEvidence.jsx'
 import MapView from '../components/MapView.jsx'
 import ResultsList from '../components/ResultsList.jsx'
 import ShortlistBar from '../components/ShortlistBar.jsx'
 import SiteCards from '../components/SiteCards.jsx'
 import TargetReference from '../components/TargetReference.jsx'
 import TargetSelect from '../components/TargetSelect.jsx'
-import TerrainPreview from '../components/TerrainPreview.jsx'
+import TerrainPair from '../components/TerrainPair.jsx'
 import Term from '../components/Term.jsx'
 import { MockTag } from '../components/Tags.jsx'
 import { useBundle } from '../data/useBundle.js'
@@ -18,8 +20,7 @@ import { missionTitle } from '../lib/missions.js'
 import { hasOpenRange } from '../lib/summary.js'
 import { PRESETS } from '../lib/presets.js'
 import { RANK_METHODS } from '../lib/rankMethods.js'
-import { SCENARIO_LIMITATION, matchScenario } from '../lib/scenarios.js'
-import { LIMITATIONS_NOTE } from '../lib/scoring.js'
+import { matchScenario } from '../lib/scenarios.js'
 import { useAppState } from '../state/AppState.jsx'
 import '../styles/explore.css'
 
@@ -33,47 +34,19 @@ function useDebounced(value, delay) {
   return settled
 }
 
-/** One-line scenario framing; the full brief (what carries the ranking, limits) is one click away. */
-function MissionBrief({ scenario, features, availability }) {
-  const labels = scenario.carriedBy
-    .map((id) => {
-      const f = features.find((x) => x.id === id)
-      if (!f) return null
-      return availability.byFeature[id] ? `${f.label} (no data yet — no effect)` : f.label
-    })
-    .filter(Boolean)
-  return (
-    <Disclosure
-      className="mission-brief"
-      title={`About this example: ${scenario.label}`}
-      hint="what drives the ranking, and its limits"
-    >
-      <p>
-        <strong>Screening for:</strong> {scenario.screening}
-      </p>
-      <p>
-        <strong>Carried by:</strong> {labels.join(', ')} (highest weights in this mission; open Advanced to test other
-        priorities).
-      </p>
-      <p className="mission-brief__limit">
-        <strong>Limitation:</strong> {SCENARIO_LIMITATION} A high score means “resembles the target on these criteria”,
-        not “suitable for the mission”. {LIMITATIONS_NOTE}
-      </p>
-    </Disclosure>
-  )
-}
-
 export default function Explore() {
   const { data } = useBundle()
   const app = useAppState()
   const [params, setParams] = useSearchParams()
   const view = params.get('view') === 'list' ? 'list' : 'map'
-  // Advanced (weight sliders) is collapsed by default; custom weights or adv=1 open it.
+  // Research mode = Advanced options open (weights, ranking method, full evidence table).
+  // Quick explore is the default; custom weights or adv=1 switch Research mode on.
   const advParam = params.get('adv')
   const advancedOpen = advParam === '1' || (advParam === null && app.isCustom)
-  // Controls start open on desktop, collapsed on small screens.
-  const [panelOpen, setPanelOpen] = useState(() => window.matchMedia?.('(min-width: 901px)').matches ?? true)
-  // Site highlighted on both the map and the list, and the last "Show on map" request.
+  // Mission controls: hidden in Quick explore until "Change mission" (panel=1); always shown
+  // in Research mode, where they hold the weights.
+  const panelOpen = params.get('panel') === '1' || advancedOpen
+  // Site hovered on the map or in the list, and the last "fly to" request.
   const [active, setActive] = useState({ id: null, source: null })
   const [focus, setFocus] = useState(null)
 
@@ -96,8 +69,20 @@ export default function Explore() {
     if (open === advancedOpen) return
     setParam('adv', open ? '1' : app.isCustom ? '0' : null)
   }
+  const closePanel = () => {
+    setParam('panel', null)
+    if (advancedOpen) onAdvancedToggle(false)
+  }
   const onActive = useCallback((id, source) => setActive((a) => (a.id === id && a.source === source ? a : { id, source })), [])
-  const onShowOnMap = useCallback((id) => setFocus({ id, n: Date.now() }), [])
+  // Selecting a place (map marker or list card) drives the analysis panel and the terrain pair.
+  const onSelect = useCallback(
+    (id, source) => {
+      setParam('sel', id)
+      if (source === 'list') setFocus({ id, n: Date.now() })
+      else setActive({ id, source: 'map' })
+    },
+    [setParam],
+  )
 
   // Screen-reader summary of the ranking (top three), announced once the weights settle.
   const scoredEntries = app.ranking.filter((r) => r.score !== null)
@@ -126,6 +111,10 @@ export default function Explore() {
     )
   }
 
+  const selParam = params.get('sel')
+  const selectedEntry =
+    (selParam && app.ranking.find((r) => r.site === selParam)) || scoredEntries[0] || app.ranking[0] || null
+  const selectedSite = selectedEntry ? data.siteById[selectedEntry.site] : null
   const avail = dataAvailability(app.target, data.sites, app.weights, data.features)
   const notice = availabilityNotice(avail)
   const scenario = app.isCustom ? null : matchScenario(app.targetId, app.presetId)
@@ -185,12 +174,12 @@ export default function Explore() {
 
   return (
     <div className={`explore${panelOpen ? '' : ' explore--collapsed'}`}>
-      <aside id="explore-panel" className="explore__panel" aria-label="Mission and criteria" hidden={!panelOpen}>
+      <aside id="explore-panel" className="explore__panel" aria-label="Mission controls" hidden={!panelOpen}>
         <div className="explore__panel-inner">
           <div className="explore__panel-head">
-            <h2>Your search</h2>
-            <button type="button" className="btn btn--ghost btn--small" onClick={() => setPanelOpen(false)}>
-              Hide<span className="sr-only"> search options</span>
+            <h2>Mission controls</h2>
+            <button type="button" className="btn btn--ghost btn--small" onClick={closePanel}>
+              Close<span className="sr-only"> mission controls</span>
             </button>
           </div>
           <CriteriaPanel
@@ -205,28 +194,19 @@ export default function Explore() {
       <section className="explore__main" aria-labelledby="explore-title">
         <header className="explore__head">
           <div className="explore__title">
+            <p className="hud-label">Explore · mission workspace</p>
             <h1 id="explore-title">
-              Places on Earth like {app.target.name}{' '}
+              Earth analogs for {app.target.name.split(' — ')[0]}{' '}
               <span className="muted">({bodyLabel(app.target.body)})</span>
             </h1>
             <p className="explore__sub">
-              {!panelOpen && (
-                <button
-                  type="button"
-                  className="btn btn--small"
-                  aria-expanded={false}
-                  aria-controls="explore-panel"
-                  onClick={() => setPanelOpen(true)}
-                >
-                  Change search
-                </button>
-              )}
               <span>
-                Objective: <strong>{missionLabel}</strong>
+                Mission: <strong>{missionLabel}</strong>
               </span>
               <span className="muted">
                 {scoredCount} of {data.sites.length} places scored
               </span>
+              <span className="muted">{app.rankBy === 'min' ? 'Most complete evidence first' : 'Best match first'}</span>
               {data.isMock && (
                 <span>
                   <MockTag /> scores from synthetic data
@@ -235,19 +215,26 @@ export default function Explore() {
             </p>
           </div>
           <div className="explore__controls">
-            {/* The ranking method lives in Advanced options; the list is the non-map alternative. */}
+            <div className="seg seg--mode" role="group" aria-label="Detail level">
+              <button type="button" aria-pressed={!advancedOpen} onClick={() => onAdvancedToggle(false)}>
+                Quick
+              </button>
+              <button type="button" aria-pressed={advancedOpen} onClick={() => onAdvancedToggle(true)}>
+                Research
+              </button>
+            </div>
             <div className="seg" role="group" aria-label="View">
               <button type="button" aria-pressed={view === 'map'} onClick={() => setView('map')}>
+                <IconMap size={16} />
                 Map
               </button>
               <button type="button" aria-pressed={view === 'list'} onClick={() => setView('list')}>
+                <IconList size={16} />
                 List
               </button>
             </div>
           </div>
         </header>
-
-        {scenario && <MissionBrief scenario={scenario} features={data.features} availability={avail} />}
 
         {notice && (
           <p className="avail-notice" role="note">
@@ -270,33 +257,71 @@ export default function Explore() {
         </p>
 
         {view === 'map' ? (
-          <div className="explore__body">
-            <MapView {...shared} isMock={data.isMock} active={active} onActive={onActive} focus={focus} />
-            <section className="explore__results" aria-labelledby="results-title">
-              <header className="explore__results-head">
-                <h2 id="results-title">Recommended places</h2>
-                {rankingHelp}
-              </header>
-              <SiteCards {...shared} rankBy={app.rankBy} active={active} onActive={onActive} onShowOnMap={onShowOnMap} />
-              {tray}
-            </section>
-          </div>
+          <>
+            <div className="mc-stage">
+              <MapView
+                ranking={app.ranking}
+                siteById={data.siteById}
+                shortlist={app.shortlist}
+                isMock={data.isMock}
+                active={active}
+                onActive={onActive}
+                focus={focus}
+                selectedId={selectedSite?.id}
+                onSelect={onSelect}
+              />
+              <MatchAnalysis
+                entry={selectedEntry}
+                site={selectedSite}
+                target={app.target}
+                weights={app.weights}
+                features={data.features}
+                minCriteria={data.minCriteria}
+                research={advancedOpen}
+                isMock={data.isMock}
+                linkTo={app.linkTo}
+                onToggleShortlist={app.toggleShortlist}
+                listed={selectedSite ? app.shortlist.includes(selectedSite.id) : false}
+                shortlistFull={app.shortlistFull}
+              />
+            </div>
+            <div className="mc-deck">
+              <section className="mc-panel explore__results" aria-labelledby="results-title">
+                <header className="mc-panel__head">
+                  <h2 id="results-title" className="mc-panel__title">
+                    <IconList />
+                    Recommended Earth sites
+                  </h2>
+                </header>
+                <div className="explore__results-head">{rankingHelp}</div>
+                <SiteCards
+                  {...shared}
+                  rankBy={app.rankBy}
+                  active={active}
+                  onActive={onActive}
+                  selectedId={selectedSite?.id}
+                  onSelect={onSelect}
+                />
+                {tray}
+              </section>
+              <TerrainPair target={app.target} site={selectedSite} isMock={data.isMock} linkTo={app.linkTo} />
+              <MissionEvidence
+                app={app}
+                site={selectedSite}
+                entry={selectedEntry}
+                features={data.features}
+                scenario={scenario}
+                linkTo={app.linkTo}
+                isMock={data.isMock}
+              />
+            </div>
+          </>
         ) : (
           <>
             <div className="explore__table-help">{rankingHelp}</div>
             <ResultsList {...shared} />
             {tray}
           </>
-        )}
-
-        {!data.isMock && (
-          <Disclosure
-            className="explore__terrain"
-            title={`Explore the terrain of ${app.target.name}`}
-            hint="shaded-relief elevation map of the Moon/Mars site you are matching"
-          >
-            <TerrainPreview targetId={app.targetId} isMock={data.isMock} />
-          </Disclosure>
         )}
 
         <TargetReference target={app.target} features={data.features} isMock={data.isMock} />
