@@ -1,0 +1,70 @@
+{
+  "_comment": "Edit thresholds here; no code change needed. Rules: match (abs tol, partial at 2x tol), match_rel (relative tol), at_most / at_least (pass and partial thresholds; pass may be derived from the lunar target), unscored (shown, never scored), evidence (Earth-side data only, at best partial). In a test, an unknown core requirement makes the whole test unknown; an unknown 'supporting' requirement is only counted.",
+  "cannot_reproduce": [
+    "Gravity: the Moon has 1/6 of Earth's gravity; mobility, excavation forces and dust behaviour differ.",
+    "Vacuum: no Earth field site removes the atmosphere (convection, dust settling, outgassing).",
+    "Radiation: no Earth site reproduces the lunar surface radiation environment.",
+    "Regolith mechanics: lunar regolith is sharp, glassy and electrostatically charged; no natural soil matches it.",
+    "Thermal extremes: permanently shadowed floors sit near 40-50 K; the coldest Earth surfaces are about 180 K warmer."
+  ],
+  "requirements": {
+    "slope": {
+      "label": "Slope distribution (95th percentile)", "unit": "deg",
+      "site": "slope_p95_deg", "target": "slope_p95_deg", "rule": "match", "tol": 5,
+      "caveat": "Earth DEM is 30 m resampled to ~90 m, LOLA is 80 m; rover-scale rocks and small craters are not resolved."
+    },
+    "roughness": {
+      "label": "Terrain roughness (RMS height over ~400 m)", "unit": "m",
+      "site": "rough_rms_m", "target": "rough_rms_m", "rule": "match_rel", "tol": 0.35,
+      "caveat": "Roughness is measured at ~90 m spacing; it says nothing about rover-wheel scale roughness."
+    },
+    "bare_ground": {
+      "label": "Bare ground (yearly max NDVI)", "unit": "NDVI",
+      "site": "ndvi_max", "rule": "at_most", "pass": 0.15, "partial": 0.25,
+      "target_text": "no vegetation",
+      "caveat": "MODIS NDVI is not produced for Devon Island and McMurdo, so they show unknown here although both are polar deserts."
+    },
+    "low_sun": {
+      "label": "Low-sun days (noon sun between 0 and 10 deg)", "unit": "days/yr",
+      "site": "low_sun_days", "rule": "at_least", "pass": 45, "partial": 15,
+      "target_text": "sun stays within ~2 deg of the horizon",
+      "caveat": "Earth day length and atmosphere differ; the lighting match is approximate (computed from latitude only)."
+    },
+    "deep_cold": {
+      "label": "Coldest night surface temperature", "unit": "K",
+      "site": "lst_night_min_K", "target": "div_tavg_K", "rule": "at_most",
+      "pass_from_target_plus": 20, "partial": 240,
+      "caveat": "No Earth site reaches lunar polar temperatures; a partial means deep-cold testing is possible, not that lunar cold is reproduced."
+    },
+    "thermal_swing": {
+      "label": "Surface temperature swing over a year", "unit": "K",
+      "site": "lst_annual_range_K", "target": "t_range_K", "rule": "at_least",
+      "pass_from_target_frac": 0.5, "partial": 40,
+      "caveat": "Earth swings are seasonal and buffered by air; lunar swings are driven by direct sunlight in vacuum."
+    },
+    "frozen_ground": {
+      "label": "Mean surface temperature below freezing", "unit": "K",
+      "site": "lst_mean_K", "target": "div_ice_frac", "target_unit": "share of area with stable ice",
+      "rule": "at_most", "pass": 273.15, "partial": 278,
+      "caveat": "A cold mean only makes frozen ground plausible; Earth permafrost ice is not lunar cold-trap ice."
+    },
+    "radar_ice": {
+      "label": "Radar signature of ice-rich ground", "unit": "",
+      "site": "s1_copol_db_mean", "target": "cpr_mean", "rule": "unscored",
+      "caveat": "Mini-RF is S-band polarization ratio, Sentinel-1 is C-band backscatter: the two are not comparable, so this is shown but not scored."
+    },
+    "minerals": {
+      "label": "Surface mineral map available (EMIT)", "unit": "share of pixels mapped",
+      "site": "emit_valid_frac", "note_col": "emit_top_minerals", "rule": "evidence", "min": 0.3,
+      "target_text": "no reliable polar mineral layer",
+      "caveat": "EMIT covers arid low and mid latitudes only, and the lunar pole has no reliable mineral layer: this is Earth-side evidence, never a match."
+    }
+  },
+  "tests": {
+    "rover_traverse": {"name": "Rover traverse", "requirements": ["slope", "roughness", "bare_ground"], "supporting": ["bare_ground"]},
+    "low_sun_ops": {"name": "Low-sun operations", "requirements": ["low_sun"]},
+    "thermal_cycling": {"name": "Thermal cycling", "requirements": ["deep_cold", "thermal_swing"]},
+    "ice_sampling": {"name": "Ice-rich ground sampling", "requirements": ["frozen_ground", "radar_ice"]},
+    "mineral_sampling": {"name": "Mineral / regolith sampling", "requirements": ["minerals", "bare_ground"], "supporting": ["bare_ground"]}
+  }
+}

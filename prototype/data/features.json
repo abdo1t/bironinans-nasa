@@ -7,16 +7,28 @@
     "altitude"
   ],
   "targets": {
-    "shackleton_crater": {
-      "name": "Shackleton crater (rim and floor)",
-      "desc": "South-pole crater, 21 km wide, steep walls, permanently shadowed floor with ice potential.",
+    "shackleton_ridge": {
+      "name": "Shackleton connecting ridge (sunlit work area)",
+      "desc": "",
       "body": "Moon",
       "features": [
-        0.942,
-        0.261,
+        0.536,
+        0.237,
         1.0,
         1.0,
-        0.273
+        1.0
+      ]
+    },
+    "shackleton_floor": {
+      "name": "Shackleton crater floor (permanent shadow)",
+      "desc": "",
+      "body": "Moon",
+      "features": [
+        0.309,
+        0.854,
+        1.0,
+        0.81,
+        0.0
       ]
     },
     "malapert_massif": {
@@ -24,22 +36,22 @@
       "desc": "High massif near the pole with near-continuous Earth view and good sunlight.",
       "body": "Moon",
       "features": [
-        0.843,
-        0.307,
+        0.756,
+        0.415,
         1.0,
         1.0,
         1.0
       ]
     },
-    "haworth_crater": {
-      "name": "Haworth crater",
-      "desc": "South-pole crater with a permanently shadowed, very cold floor.",
+    "haworth_floor": {
+      "name": "Haworth crater floor (permanent shadow)",
+      "desc": "",
       "body": "Moon",
       "features": [
-        0.278,
-        0.258,
+        0.26,
+        0.256,
         1.0,
-        0.702,
+        0.704,
         0.0
       ]
     }
@@ -54,7 +66,7 @@
       "role": "known analog",
       "features": [
         0.21,
-        0.633,
+        0.454,
         1.0,
         0.853,
         0.153
@@ -79,7 +91,7 @@
       "role": "known analog",
       "features": [
         0.305,
-        0.836,
+        0.769,
         0.973,
         0.463,
         0.695
@@ -104,7 +116,7 @@
       "role": "known analog",
       "features": [
         0.082,
-        0.26,
+        0.0,
         0.792,
         0.643,
         1.0
@@ -154,7 +166,7 @@
       "role": "known analog",
       "features": [
         0.307,
-        0.787,
+        0.737,
         0.888,
         0.59,
         0.49
@@ -179,7 +191,7 @@
       "role": "known analog",
       "features": [
         0.086,
-        0.816,
+        0.726,
         1.0,
         0.631,
         0.486
@@ -203,21 +215,21 @@
       "lng": -13.438,
       "role": "candidate",
       "features": [
-        0.278,
-        0.0,
+        0.377,
+        0.425,
         0.507,
         0.242,
-        0.109
+        0.148
       ],
       "why": "Cueva de los Verdes lava tubes, Lanzarote, Spain. Role: candidate.",
       "raw": {
-        "slope_p95_deg": 14.155,
-        "rough_rms_m": 6.295,
-        "relief_m": 587.028,
-        "s1_copol_db_mean": -17.906,
+        "slope_p95_deg": 18.754,
+        "rough_rms_m": 12.573,
+        "relief_m": 587.096,
+        "s1_copol_db_mean": -10.375,
         "lst_mean_K": 296.101,
         "lst_annual_range_K": 21.66,
-        "elev_mean_m": 74.71
+        "elev_mean_m": 144.96
       }
     },
     {
@@ -229,7 +241,7 @@
       "role": "discovery case",
       "features": [
         0.125,
-        0.38,
+        0.08,
         0.994,
         0.391,
         0.248
@@ -254,7 +266,7 @@
       "role": "candidate",
       "features": [
         0.0,
-        0.678,
+        0.521,
         1.0,
         0.108,
         0.0
@@ -279,7 +291,7 @@
       "role": "candidate",
       "features": [
         0.031,
-        0.403,
+        0.224,
         0.768,
         0.78,
         0.255
@@ -304,7 +316,7 @@
       "role": "candidate",
       "features": [
         0.22,
-        0.557,
+        0.523,
         0.627,
         0.297,
         0.2

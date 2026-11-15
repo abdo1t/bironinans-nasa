@@ -3,11 +3,11 @@
 Writes ../Processed/features_earth.csv and ../Processed/features_moon.csv
 (raw physical units, not normalised). Run with:  python data-tools/extract_features.py
 
-Every feature is computed over a ~10 km x 10 km window around the site so Earth
-and Moon values are comparable. Earth DEMs are block-averaged 3x3 (30 m -> ~90 m)
-to match the 80 m lunar DEM before slope/roughness are computed.
-Needs: numpy, scipy, pandas, tifffile, h5py.  (No -I flag: tifffile/h5py live in
-the user site-packages.)
+Earth features use a ~10 km x 10 km window around the site. Earth DEMs are
+block-averaged 3x3 (30 m -> ~90 m) to match the 80 m lunar DEM before slope and
+roughness are computed. Lunar targets are operational zones with their own window.
+A layer that is missing or fails stays empty (NaN) so it becomes "unknown" later.
+Needs: numpy, scipy, pandas, tifffile, imagecodecs, h5py.
 """
 import csv
 import glob
@@ -25,14 +25,18 @@ from scipy.ndimage import uniform_filter
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, "Raw Data")
 OUT = os.path.join(ROOT, "Processed")
-HALF_KM = 5.0          # half-width of the analysis window
+HALF_KM = 5.0          # half-width of the Earth analysis window
 MOON_R = 1737.4e3      # m
 
-# Lunar south-pole candidate regions. Coordinates are approximate (planetocentric).
+# Lunar south-pole operational zones: (id, name, lat, lon, window half-width km).
+# Crater centres are IAU values; the ridge point is the best-lit site near Shackleton
+# (Mazarico et al. 2011). Checked against the data: floors are dark and ~3 km deep,
+# the ridge peaks at 88% illumination.
 MOON_SITES = [
-    ("shackleton_crater", "Shackleton crater (rim and floor)", -89.9, 0.0),
-    ("malapert_massif", "Malapert massif", -85.99, 0.0),
-    ("haworth_crater", "Haworth crater", -87.5, -5.0),
+    ("shackleton_ridge", "Shackleton connecting ridge (sunlit work area)", -89.45, -137.31, 2.5),
+    ("shackleton_floor", "Shackleton crater floor (permanent shadow)", -89.67, 129.78, 2.0),
+    ("malapert_massif", "Malapert massif", -85.99, 2.93, 5.0),
+    ("haworth_floor", "Haworth crater floor (permanent shadow)", -87.45, -5.17, 5.0),
 ]
 
 
@@ -62,26 +66,30 @@ def slope_roughness(dem, dx, dy):
     return slope[2:-2, 2:-2], rough[2:-2, 2:-2]
 
 
-def dem_stats(dem, dx, dy, prefix):
+def dem_stats(dem, dx, dy):
     slope, rough = slope_roughness(dem, dx, dy)
-    return {
-        f"{prefix}relief_m": float(np.nanmax(dem) - np.nanmin(dem)),
-        f"{prefix}slope_mean_deg": float(np.nanmean(slope)),
-        f"{prefix}slope_p95_deg": float(np.nanpercentile(slope, 95)),
-        f"{prefix}rough_rms_m": float(np.nanmean(rough)),
+    ok = np.isfinite(slope)
+    s = slope[ok]
+    out = {
+        "relief_m": float(np.nanmax(dem) - np.nanmin(dem)),
+        "slope_mean_deg": float(s.mean()),
+        "slope_p95_deg": float(np.percentile(s, 95)),
+        "rough_rms_m": float(np.nanmean(rough)),
     }
+    for lim in (10, 15, 20):                 # share of the area a vehicle limited to `lim` deg can use
+        out[f"slope_le{lim}_frac"] = float((s <= lim).mean())
+    return out
 
 
 def block_mean(a, k):
     h, w = (a.shape[0] // k) * k, (a.shape[1] // k) * k
-    return a[:h, :w].reshape(h // k, k, w // k, k).mean(axis=(1, 3))
+    return np.nanmean(a[:h, :w].reshape(h // k, k, w // k, k), axis=(1, 3))
 
 
 # ---------------------------------------------------------------- Earth
 def earth_dem(site_id, lat, lon):
     f = glob.glob(os.path.join(RAW, "Earth", "Copernicus_DEM_GLO30", site_id, "*.tif"))[0]
     dem, tags = read_tiff(f)
-    dem = dem.astype("float64")
     x0, y0, sx, sy = geotransform(tags)
     col = (lon - x0) / sx
     row = (y0 - lat) / sy
@@ -89,19 +97,37 @@ def earth_dem(site_id, lat, lon):
     half_c = HALF_KM * 1000 / (111320 * math.cos(math.radians(lat))) / sx
     r0, r1 = int(max(row - half_r, 0)), int(min(row + half_r, dem.shape[0]))
     c0, c1 = int(max(col - half_c, 0)), int(min(col + half_c, dem.shape[1]))
-    win = dem[r0:r1, c0:c1]
+    win = dem[r0:r1, c0:c1].astype("float64")
     win[win < -1000] = np.nan
+    sea = win == 0                      # GLO-30 sets open water to exactly 0 m
+    sea_frac = float(sea.mean())
+    if sea_frac > 0.01:
+        win[sea] = np.nan
     k = 3
-    win = block_mean(win, k)
+    with np.errstate(invalid="ignore"), __import__("warnings").catch_warnings():
+        __import__("warnings").simplefilter("ignore")
+        small = block_mean(win, k)
     dy = 111320 * sy * k
     dx = 111320 * math.cos(math.radians(lat)) * sx * k
-    out = dem_stats(win, dx, dy, "")
-    out["elev_mean_m"] = float(np.nanmean(win))
-    out["dem_window_km"] = round(win.shape[0] * dy / 1000, 1)
+    out = dem_stats(small, dx, dy)
+    out["elev_mean_m"] = float(np.nanmean(small))
+    out["sea_frac"] = sea_frac
+    out["dem_window_km"] = round(small.shape[0] * dy / 1000, 1)
+    out["_land"] = ~sea if sea_frac > 0.01 else None      # private: reused to mask the radar
     return out
 
 
-def earth_s1(site_id):
+def earth_light(lat):
+    """Sun geometry from latitude only: days per year when the noon sun is up but below 10 deg."""
+    noon = [90 - abs(lat - 23.44 * math.sin(2 * math.pi * (d - 81) / 365)) for d in range(365)]
+    return {
+        "low_sun_days": int(sum(0 < e < 10 for e in noon)),
+        "noon_sun_min_deg": float(min(noon)),
+        "noon_sun_max_deg": float(max(noon)),
+    }
+
+
+def earth_s1(site_id, land=None):
     out = {"s1_copol_db_mean": np.nan, "s1_copol_db_std": np.nan, "s1_cross_db_mean": np.nan}
     for f in glob.glob(os.path.join(RAW, "Earth", "Sentinel1_RTC", site_id, "*.tif")):
         m = re.search(r"_rtc_([a-z]{2})\.tif$", f)
@@ -113,6 +139,10 @@ def earth_s1(site_id):
         ok = np.isfinite(sig) & (sig > 0)
         if arr.shape[-1] > 1:
             ok &= arr[..., 1] > 0
+        if land is not None:            # same 10 km box as the DEM window: drop open water
+            ri = (np.arange(sig.shape[0]) * land.shape[0] / sig.shape[0]).astype(int)
+            ci = (np.arange(sig.shape[1]) * land.shape[1] / sig.shape[1]).astype(int)
+            ok &= land[np.ix_(ri, ci)]
         if ok.sum() < 100:
             continue
         db = 10 * np.log10(sig[ok])
@@ -196,38 +226,33 @@ def earth_emit(site_id, lat, lon):
 
 # ---------------------------------------------------------------- Moon
 def polar_xy(lat, lon):
-    """Spherical south-polar stereographic (PDS convention), metres."""
-    r = 2 * MOON_R * math.tan(math.radians(90 + lat) / 2)
-    return r * math.sin(math.radians(lon)), r * math.cos(math.radians(lon))
-
-
-def polar_xy_arr(lat, lon):
+    """Spherical south-polar stereographic (PDS convention), metres. Works on scalars or arrays."""
     r = 2 * MOON_R * np.tan(np.radians(90 + lat) / 2)
     return r * np.sin(np.radians(lon)), r * np.cos(np.radians(lon))
 
 
-def moon_dem(lat, lon):
+def moon_dem(lat, lon, half_km):
     path = os.path.join(RAW, "Moon", "LOLA_DEM_80S_80m", "ldem_80s_80m_float.img")
     dem = np.memmap(path, dtype="<f4", mode="r", shape=(7600, 7600))
     x, y = polar_xy(lat, lon)
     col, row = 3799.5 + x / 80, 3799.5 - y / 80
-    h = int(HALF_KM * 1000 / 80)
+    h = int(half_km * 1000 / 80)
     r0, r1 = int(max(row - h, 0)), int(min(row + h, 7600))
     c0, c1 = int(max(col - h, 0)), int(min(col + h, 7600))
     win = np.array(dem[r0:r1, c0:c1], dtype="float64") * 1000   # km -> m, vs 1737.4 km sphere
-    out = dem_stats(win, 80.0, 80.0, "")
+    out = dem_stats(win, 80.0, 80.0)
     out["elev_mean_m"] = float(win.mean())
     out["dem_window_km"] = round(win.shape[0] * 0.08, 1)
     return out
 
 
-def moon_illum(lat, lon):
+def moon_illum(lat, lon, half_km):
     path = os.path.join(RAW, "Moon", "LOLA_Illumination_South", "AVGVISIB_85S_060M_201608.TIF")
     arr, tags = read_tiff(path)
     x0, y0, sx, sy = geotransform(tags)
     x, y = polar_xy(lat, lon)
     col, row = (x - x0) / sx, (y0 - y) / sy
-    h = int(HALF_KM * 1000 / sx)
+    h = int(half_km * 1000 / sx)
     r0, r1 = int(max(row - h, 0)), int(min(row + h, arr.shape[0]))
     c0, c1 = int(max(col - h, 0)), int(min(col + h, arr.shape[1]))
     if r1 <= r0 or c1 <= c0:
@@ -237,13 +262,14 @@ def moon_illum(lat, lon):
     if not ok.any():
         return {"illum_frac_mean": np.nan}
     frac = win[ok] * 4e-5           # GDAL SCALE: DN -> fraction of time sunlit
-    return {"illum_frac_mean": float(frac.mean()), "illum_frac_p95": float(np.percentile(frac, 95))}
+    return {"illum_frac_mean": float(frac.mean()), "illum_frac_p95": float(np.percentile(frac, 95)),
+            "illum_frac_max": float(frac.max())}
 
 
-def moon_cpr(lat, lon):
+def moon_cpr(lat, lon, half_km):
     path = os.path.join(RAW, "Moon", "MiniRF_CPR_Global_32ppd", "global_cpr_32ppd_simp_0c.img")
     img = np.memmap(path, dtype="<f4", mode="r", shape=(5760, 11520))
-    half_lat = HALF_KM * 1000 / (MOON_R * math.pi / 180)
+    half_lat = max(half_km, 5.0) * 1000 / (MOON_R * math.pi / 180)   # CPR pixels are ~1 km: keep >= 10 km
     half_lon = min(half_lat / max(math.cos(math.radians(lat)), 1e-3), 180)
     rows = slice(int(2879.5 - (lat + half_lat) * 32), int(2879.5 - (lat - half_lat) * 32) + 1)
     c_lo, c_hi = 5759.5 + (lon - half_lon) * 32, 5759.5 + (lon + half_lon) * 32
@@ -256,17 +282,16 @@ def moon_cpr(lat, lon):
 _DIV = None
 
 
-def moon_diviner(lat, lon):
+def moon_diviner(lat, lon, half_km):
     global _DIV
     if _DIV is None:
         path = os.path.join(RAW, "Moon", "Diviner_PolarResource_South", "dlre_prp_south.tab")
         _DIV = pd.read_csv(path, usecols=[9, 10, 12, 13, 14], skiprows=1, header=None,
                            names=["clon", "clat", "tavg", "tmax", "ice"])
+        _DIV["x"], _DIV["y"] = polar_xy(_DIV.clat.values, _DIV.clon.values)
     d = _DIV
     x, y = polar_xy(lat, lon)
-    xs, ys = polar_xy_arr(d.clat.values, d.clon.values)
-    sel = (np.abs(xs - x) < HALF_KM * 1000) & (np.abs(ys - y) < HALF_KM * 1000)
-    w = d[sel]
+    w = d[(np.abs(d.x - x) < half_km * 1000) & (np.abs(d.y - y) < half_km * 1000)]
     if w.empty:
         return {"div_tavg_K": np.nan, "div_tmax_K": np.nan, "div_ice_frac": np.nan}
     return {
@@ -287,23 +312,34 @@ def main():
         sid, lat, lon = s["site_id"], float(s["lat"]), float(s["lon"])
         print("Earth:", sid, flush=True)
         row = {"site_id": sid, "name": s["name"], "role": s["role"], "lat": lat, "lon": lon}
-        for fn, args in ((earth_dem, (sid, lat, lon)), (earth_s1, (sid,)),
-                         (earth_modis, (sid,)), (earth_ndvi, (sid,)),
-                         (earth_emit, (sid, lat, lon))):
+        land = None
+        steps = (
+            ("dem", lambda: earth_dem(sid, lat, lon)),
+            ("light", lambda: earth_light(lat)),
+            ("s1", lambda: earth_s1(sid, land)),
+            ("modis", lambda: earth_modis(sid)),
+            ("ndvi", lambda: earth_ndvi(sid)),
+            ("emit", lambda: earth_emit(sid, lat, lon)),
+        )
+        for label, fn in steps:
             try:
-                row.update(fn(*args))
+                res = fn()
+                if label == "dem":
+                    land = res.pop("_land")
+                row.update(res)
             except Exception as e:                      # keep going, record the gap
-                print(f"  !! {fn.__name__} failed: {e!r}", file=sys.stderr)
+                print(f"  !! {label} failed: {e!r}", file=sys.stderr)
         rows.append(row)
     pd.DataFrame(rows).to_csv(os.path.join(OUT, "features_earth.csv"), index=False)
 
     rows = []
-    for sid, name, lat, lon in MOON_SITES:
+    for sid, name, lat, lon, half in MOON_SITES:
         print("Moon:", sid, flush=True)
-        row = {"site_id": sid, "name": name, "role": "lunar target", "lat": lat, "lon": lon}
+        row = {"site_id": sid, "name": name, "role": "lunar target", "lat": lat, "lon": lon,
+               "window_half_km": half}
         for fn in (moon_dem, moon_illum, moon_cpr, moon_diviner):
             try:
-                row.update(fn(lat, lon))
+                row.update(fn(lat, lon, half))
             except Exception as e:
                 print(f"  !! {fn.__name__} failed: {e!r}", file=sys.stderr)
         rows.append(row)

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIRONIENS | Analog Portfolio Planner</title>
+<style>
+  :root { --bg:#0b1220; --panel:#131c2e; --line:#26324a; --text:#e5ebf5; --dim:#93a1b8; --accent:#60a5fa;
+          --pass:#16a34a; --partial:#d97706; --fail:#b91c1c; --unknown:#475569; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:14px/1.45 system-ui,Segoe UI,Arial,sans-serif; }
+  header { display:flex; justify-content:space-between; align-items:center; gap:16px; padding:12px 20px;
+           border-bottom:1px solid var(--line); flex-wrap:wrap; }
+  header h1 { font-size:17px; margin:0; } header p { margin:2px 0 0; color:var(--dim); font-size:12px; }
+  a { color:var(--accent); }
+  main { display:grid; grid-template-columns:270px minmax(0,1fr) 330px; gap:14px; padding:14px 20px; align-items:start; }
+  @media (max-width:1100px) { main { grid-template-columns:minmax(0,1fr); padding:12px; } }
+  section { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px; margin-bottom:14px; }
+  h2 { font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--dim); margin:0 0 10px; }
+  select { width:100%; padding:8px; background:#0f1729; color:var(--text); border:1px solid var(--line); border-radius:6px; }
+  label.test { display:flex; gap:8px; align-items:flex-start; padding:5px 0; cursor:pointer; }
+  .dim { color:var(--dim); font-size:12px; } .small { font-size:12px; }
+  .wrap { overflow-x:auto; }
+  table { border-collapse:collapse; width:100%; font-size:12px; }
+  th, td { border:1px solid var(--line); padding:6px 7px; text-align:center; }
+  th { background:#0f1729; color:var(--dim); font-weight:600; vertical-align:bottom; }
+  th.grp { color:var(--text); } td.site { text-align:left; white-space:nowrap; cursor:pointer; }
+  td.site:hover { color:var(--accent); } tr.sel td.site { color:var(--accent); font-weight:700; }
+  tr.inport td.site::after { content:" ★"; color:#facc15; }
+  .v { display:inline-block; min-width:62px; padding:2px 6px; border-radius:999px; color:#fff; font-size:11px; font-weight:600; }
+  .pass { background:var(--pass); } .partial { background:var(--partial); } .fail { background:var(--fail); } .unknown { background:var(--unknown); }
+  td.tv { background:#0f1729; }
+  ul { margin:6px 0 0; padding-left:18px; } li { margin-bottom:5px; }
+  .chip { display:inline-block; padding:3px 9px; margin:2px 4px 2px 0; border:1px solid var(--accent); border-radius:999px; font-size:12px; }
+  .kv { display:grid; grid-template-columns:1fr auto; gap:2px 10px; font-size:12px; }
+  .note { border-left:3px solid var(--partial); padding-left:8px; margin-top:8px; }
+  .legend span { margin-right:8px; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Analog Portfolio Planner</h1>
+    <p>Pick a lunar target and the tests in your campaign. Get a verdict per requirement, the smallest set of Earth sites, and what stays uncovered.</p>
+  </div>
+  <a href="index.html">Similarity overview →</a>
+</header>
+<main>
+  <div>
+    <section>
+      <h2>1. Lunar target</h2>
+      <select id="target"></select>
+      <p id="target-desc" class="dim"></p>
+      <div id="target-values" class="kv"></div>
+    </section>
+    <section>
+      <h2>2. Tests in the campaign</h2>
+      <div id="tests"></div>
+    </section>
+    <section>
+      <h2>Legend</h2>
+      <p class="legend small"><span class="v pass">pass</span><span class="v partial">partial</span><span class="v fail">fail</span><span class="v unknown">unknown</span></p>
+      <p class="dim">Unknown means no data or not comparable. It is never guessed. ★ marks sites in the portfolio. Hover a cell for values; click a site for its passport.</p>
+    </section>
+  </div>
+  <div>
+    <section>
+      <h2>Verdict matrix</h2>
+      <div class="wrap"><table id="matrix"></table></div>
+      <p id="disclaimer" class="dim"></p>
+    </section>
+    <section id="passport-box">
+      <h2>Analog passport</h2>
+      <div id="passport" class="dim">Click a site in the matrix.</div>
+    </section>
+  </div>
+  <div>
+    <section>
+      <h2>Recommended portfolio</h2>
+      <div id="portfolio"></div>
+    </section>
+    <section>
+      <h2>Uncovered ledger</h2>
+      <div id="ledger" class="small"></div>
+    </section>
+  </div>
+</main>
+
+<script src="qualification.js"></script>
+<script>
+const Q = window.QUALIFICATION;
+const RANK = { pass: 3, partial: 2, unknown: 1, fail: 0 };
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const pill = v => `<span class="v ${v}">${v}</span>`;
+const fmt = v => v === null || v === undefined ? '—' : (Math.abs(v) >= 100 ? v.toFixed(0) : v.toFixed(2));
+const VALUE_LABELS = { slope_p95_deg: '95th pct slope (°)', rough_rms_m: 'Roughness RMS (m)', illum_frac_mean: 'Sunlit share, mean',
+  illum_frac_max: 'Sunlit share, best spot', div_tavg_K: 'Mean temperature (K)', div_tmax_K: 'Max temperature (K)',
+  div_ice_frac: 'Area with stable ice', cpr_mean: 'Radar CPR', t_range_K: 'Temperature swing (K)' };
+let selectedSite = null;
+
+function chosenTests() { return [...document.querySelectorAll('#tests input:checked')].map(i => i.value); }
+
+// Smallest set of sites that gives every chosen test its best achievable verdict (exact search).
+function portfolio(target, tests) {
+  const best = {}, uncovered = [];
+  tests.forEach(t => {
+    const top = Q.sites.map(s => s.tests[target][t].verdict).sort((a, b) => RANK[b] - RANK[a])[0];
+    if (RANK[top] >= RANK.partial) best[t] = top; else uncovered.push(t);
+  });
+  const keys = Object.keys(best);
+  if (!keys.length) return { sites: [], covers: {}, best, uncovered };
+  const cand = Q.sites.filter(s => keys.some(t => s.tests[target][t].verdict === best[t]));
+  for (let size = 1; size <= cand.length; size++) {
+    let pick = null;
+    const walk = (start, combo) => {
+      if (combo.length === size) {
+        const covers = {};
+        keys.forEach(t => covers[t] = combo.filter(s => s.tests[target][t].verdict === best[t]).map(s => s.id));
+        if (keys.every(t => covers[t].length)) {
+          const unk = combo.reduce((n, s) => n + keys.reduce((m, t) => m + s.tests[target][t].unknowns, 0), 0);
+          const cov = -keys.reduce((n, t) => n + covers[t].length, 0);
+          const ids = combo.map(s => s.id);
+          const key = [unk, cov, ids.join()];
+          if (!pick || key[0] < pick.key[0] || (key[0] === pick.key[0] && (key[1] < pick.key[1] ||
+              (key[1] === pick.key[1] && key[2] < pick.key[2])))) pick = { key, ids, covers };
+        }
+        return;
+      }
+      for (let i = start; i < cand.length; i++) walk(i + 1, combo.concat(cand[i]));
+    };
+    walk(0, []);
+    if (pick) return { sites: pick.ids, covers: pick.covers, best, uncovered };
+  }
+  return { sites: [], covers: {}, best: {}, uncovered: tests };
+}
+
+function render() {
+  const target = document.getElementById('target').value, T = Q.targets[target], tests = chosenTests();
+  document.getElementById('target-desc').textContent = T.desc;
+  document.getElementById('target-values').innerHTML = Object.entries(T.values)
+    .map(([k, v]) => `<span class="dim">${esc(VALUE_LABELS[k] || k)}</span><span>${fmt(v)}</span>`).join('');
+  const p = portfolio(target, tests), name = id => Q.sites.find(s => s.id === id).name;
+
+  // matrix
+  const head1 = tests.map(t => `<th class="grp" colspan="${Q.tests[t].requirements.length + 1}">${esc(Q.tests[t].name)}</th>`).join('');
+  const head2 = tests.map(t => Q.tests[t].requirements.map(r =>
+    `<th title="${esc(Q.requirements[r].caveat)}">${esc(Q.requirements[r].label)}</th>`).join('') + '<th>Test</th>').join('');
+  const rows = Q.sites.map(s => {
+    const cells = tests.map(t => Q.tests[t].requirements.map(r => {
+      const d = s.verdicts[target][r], R = Q.requirements[r];
+      const tip = `${R.label}\nSite: ${fmt(d.site_value)} ${R.unit}\nTarget: ${d.target_value !== null ? fmt(d.target_value) + ' ' + (R.target_unit || R.unit) : (R.target_text || '—')}`
+        + (d.pass_threshold !== undefined ? `\nPass threshold: ${fmt(d.pass_threshold)}` : '') + (d.note ? `\n${d.note}` : '') + `\nCaveat: ${R.caveat}`;
+      return `<td title="${esc(tip)}">${pill(d.verdict)}</td>`;
+    }).join('') + `<td class="tv">${pill(s.tests[target][t].verdict)}</td>`).join('');
+    const cls = (p.sites.includes(s.id) ? 'inport ' : '') + (s.id === selectedSite ? 'sel' : '');
+    return `<tr class="${cls}"><td class="site" data-id="${esc(s.id)}">${esc(s.name)}<br><span class="dim">${esc(s.country)} · ${esc(s.role)}</span></td>${cells}</tr>`;
+  }).join('');
+  document.getElementById('matrix').innerHTML = tests.length
+    ? `<tr><th rowspan="2">Earth site</th>${head1}</tr><tr>${head2}</tr>${rows}`
+    : '<tr><td>Select at least one test.</td></tr>';
+  document.querySelectorAll('td.site').forEach(td => td.onclick = () => { selectedSite = td.dataset.id; render(); });
+  document.getElementById('disclaimer').textContent = Q.disclaimer;
+
+  // portfolio
+  document.getElementById('portfolio').innerHTML = !tests.length ? '<p class="dim">Select at least one test.</p>'
+    : !p.sites.length ? '<p>No site reaches even a partial verdict for the chosen tests.</p>'
+    : `<p>${p.sites.length} site${p.sites.length > 1 ? 's' : ''} cover the campaign at the best level any site reaches:</p>
+       <p>${p.sites.map(id => `<span class="chip">${esc(name(id))}</span>`).join('')}</p>
+       <ul class="small">${Object.keys(p.best).map(t =>
+         `<li>${esc(Q.tests[t].name)}: ${pill(p.best[t])} at ${p.covers[t].map(id => esc(name(id))).join(', ')}</li>`).join('')}</ul>`;
+
+  // ledger
+  const reqIds = [...new Set(tests.flatMap(t => Q.tests[t].requirements))];
+  const noPass = reqIds.filter(r => Q.requirements[r].rule !== 'unscored' && !Q.sites.some(s => s.verdicts[target][r].verdict === 'pass'));
+  const unscored = reqIds.filter(r => Q.requirements[r].rule === 'unscored');
+  const item = r => `<li><b>${esc(Q.requirements[r].label)}</b>: ${esc(Q.requirements[r].caveat)}</li>`;
+  document.getElementById('ledger').innerHTML =
+    (p.uncovered.length ? `<p><b>Tests no site can host:</b></p><ul>${p.uncovered.map(t => `<li>${esc(Q.tests[t].name)}</li>`).join('')}</ul>` : '')
+    + (Object.values(p.best).includes('partial') ? `<p><b>Only partly covered:</b></p><ul>${Object.keys(p.best).filter(t => p.best[t] === 'partial').map(t => `<li>${esc(Q.tests[t].name)}</li>`).join('')}</ul>` : '')
+    + (noPass.length ? `<p><b>Requirements no site passes:</b></p><ul>${noPass.map(item).join('')}</ul>` : '')
+    + (unscored.length ? `<p><b>Shown but not scored:</b></p><ul>${unscored.map(item).join('')}</ul>` : '')
+    + `<p><b>What Earth cannot reproduce at all:</b></p><ul>${Q.cannot_reproduce.map(c => `<li>${esc(c)}</li>`).join('')}</ul>`;
+
+  // passport
+  const s = Q.sites.find(x => x.id === selectedSite);
+  if (s) {
+    const all = Object.keys(Q.tests);
+    document.getElementById('passport').innerHTML = `
+      <p style="color:var(--text)"><b>${esc(s.full_name)}</b><br><span class="dim">${esc(s.role)} · ${s.lat.toFixed(3)}, ${s.lng.toFixed(3)} · against ${esc(T.name)}</span></p>
+      <p>${all.map(t => `${esc(Q.tests[t].name)} ${pill(s.tests[target][t].verdict)}`).join(' &nbsp; ')}</p>
+      <div class="wrap"><table><tr><th>Requirement</th><th>Verdict</th><th>Site value</th><th>Target</th><th>What this cannot tell you</th></tr>
+      ${Object.keys(Q.requirements).map(r => { const d = s.verdicts[target][r], R = Q.requirements[r];
+        return `<tr><td style="text-align:left">${esc(R.label)}</td><td>${pill(d.verdict)}</td><td>${fmt(d.site_value)} ${esc(R.unit)}</td>
+          <td>${d.target_value !== null ? fmt(d.target_value) + ' ' + esc(R.target_unit || R.unit) : esc(R.target_text || '—')}</td>
+          <td style="text-align:left">${esc(R.caveat)}${d.note ? '<br><i>' + esc(d.note) + '</i>' : ''}</td></tr>`; }).join('')}
+      </table></div>
+      <p class="note">Sources: Copernicus DEM GLO-30, Sentinel-1 RTC, MODIS LST and NDVI, EMIT minerals (Earth); LRO LOLA, Diviner and Mini-RF (Moon). Screening evidence only: field checks are needed before any site is called an analog.</p>`;
+  }
+}
+
+if (!Q) {
+  document.querySelector('main').innerHTML = '<section>qualification.js not found. Run <code>python data-tools/qualify.py</code> first.</section>';
+} else {
+  document.getElementById('target').innerHTML = Object.entries(Q.targets).map(([k, t]) => `<option value="${esc(k)}">${esc(t.name)}</option>`).join('');
+  document.getElementById('tests').innerHTML = Object.entries(Q.tests).map(([k, t]) =>
+    `<label class="test"><input type="checkbox" value="${esc(k)}" checked><span>${esc(t.name)}<br><span class="dim">${t.requirements.map(r => esc(Q.requirements[r].label)).join(' · ')}</span></span></label>`).join('');
+  document.getElementById('target').onchange = render;
+  document.querySelectorAll('#tests input').forEach(i => i.onchange = render);
+  render();
+}
+</script>
+</body>
+</html>
