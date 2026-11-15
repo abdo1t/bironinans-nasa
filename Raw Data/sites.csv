@@ -1,0 +1,13 @@
+site_id,name,lat,lon,role,note
+devon_haughton,"Haughton Crater, Devon Island, Canada",75.383,-89.667,known analog,polar; low sun
+atacama_yungay,"Atacama Desert (Yungay), Chile",-24.1,-70.02,known analog,hyperarid
+meteor_crater,"Meteor Crater, Arizona, USA",35.027,-111.022,known analog,impact crater
+mcmurdo_dry_valleys,"McMurdo Dry Valleys (Wright Valley), Antarctica",-77.53,161.7,known analog,polar; cold-dry
+death_valley_ubehebe,"Death Valley (Ubehebe Crater), USA",37.01,-117.45,known analog,prototype JSON lists Badwater/Ubehebe
+iceland_holuhraun,"Holuhraun lava field, Iceland",64.85,-16.833,known analog,basaltic terrain
+lanzarote_cueva_verdes,"Cueva de los Verdes lava tubes, Lanzarote, Spain",29.159,-13.438,candidate,lava tubes
+egypt_western_desert,"Kharga Depression yardangs (mud lions), Western Desert, Egypt",25.58,30.62,discovery case,depression-floor yardang field N of Kharga (Breed & McCauley); point picked on DEM floor - confirm on imagery
+dallol_ethiopia,"Dallol, Ethiopia",14.24,40.3,candidate,acid-saline hydrothermal
+mistastin_crater,"Mistastin Lake crater, Canada",55.88,-63.31,candidate,anorthositic impact melt
+pilbara_strelley_pool,"Strelley Pool, Pilbara, Australia",-21.11094,119.13709,candidate,locality coordinates from Retallack et al. 2023
+amazon_negative_control,"Amazon rainforest near Manaus, Brazil",-3.0,-60.0,negative control,should score near zero
