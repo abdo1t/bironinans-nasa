@@ -1,0 +1,30 @@
+# Node
+node_modules/
+web/dist/
+web/dist-mock/
+*.log
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+.pytest_cache/
+
+# Raw downloads (large rasters etc.) — sites_raw.csv IS committed
+pipeline/data/downloads/
+*.tif
+*.hgt
+*.zip
+
+# Secrets
+.env
+.netrc
+_netrc
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

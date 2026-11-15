@@ -1,0 +1,17 @@
+# Netlify build for Earth Analog Finder (static site; no server, no API keys).
+# The app lives in web/; the real data bundle is already in web/public/data.
+[build]
+  base = "web"
+  command = "npm ci && npm run build"
+  publish = "dist"
+
+[build.environment]
+  # Vite 8 needs Node ^20.19 or >= 22.12
+  NODE_VERSION = "22"
+
+# Client-side routes (/explore, /site/..., /compare, /mirror, /report, /about) all serve the app.
+# Same rule as web/public/_redirects, kept here so it applies even if that file is removed.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
