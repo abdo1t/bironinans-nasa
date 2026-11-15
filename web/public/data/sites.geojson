@@ -1,0 +1,1460 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -70.01828,
+          -24.10169
+        ]
+      },
+      "properties": {
+        "id": "atacama",
+        "name": "Atacama Desert (Yungay)",
+        "country": "Chile",
+        "knownAnalog": true,
+        "analogRef": "Navarro-González et al. 2003, Science, doi:10.1126/science.1089143 (Mars-like soils in the Atacama)",
+        "raw": {
+          "relief_m": 373.2,
+          "precip_mm_yr": 7.3,
+          "ts_mean_c": 18.95,
+          "ts_range_c": 28.59,
+          "ndvi": 0.0995
+        },
+        "norm": {
+          "terrain": 0.2488,
+          "aridity": 0.9964,
+          "temp": 0.8311,
+          "temp_range": 0.8169,
+          "veg": 0.8756,
+          "geology": "sulfate",
+          "ice": "no"
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "terrain": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+          "aridity": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp_range": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "veg": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+          "geology": "Literature: Voigt et al. 2017 (Goldschmidt abstract #4103): salt suite mainly gypsum, anhydrite, halite and nitr",
+          "ice": "Literature: Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation"
+        },
+        "provenance": {
+          "terrain": {
+            "dataset": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+            "status": "measurement",
+            "value": 373.2,
+            "units": "m",
+            "method": "P99 − P1 elevation in a 10 × 10 km window, box-mean aggregated to ~200 m (common scale with the planetary DEMs)",
+            "resolution": "native posting 1x1 arcsec (lon x lat) = 28 m E-W x 31 m N-S; scored at ~200 m",
+            "nativeValue": 377.0,
+            "crossCheck": "COP-DEM_GLO-30: 375 m",
+            "citation": "NASA JPL (2020). NASADEM Merged DEM Global 1 arc second V001. NASA EOSDIS Land Processes DAAC. doi:10.5067/MEaSUREs/NASADEM/NASADEM_HGT.001",
+            "attribution": "NASA JPL (NASADEM_HGT v001), via Microsoft Planetary Computer | cross-check: © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
+            "rangeAlignment": [
+              369.2,
+              378.5
+            ],
+            "note": null,
+            "quality": "primary",
+            "retrievedAt": "2026-11-14T05:11:15+00:00"
+          },
+          "aridity": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "PRECTOTCORR (x 365.25)",
+            "status": "reanalysis",
+            "value": 7.3,
+            "units": "mm/yr",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1261.0 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=-24.1017&longitude=-70.0183&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:05+00:00"
+          },
+          "temp": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS",
+            "status": "reanalysis",
+            "value": 18.95,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1261.0 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=-24.1017&longitude=-70.0183&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:05+00:00"
+          },
+          "temp_range": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS_RANGE",
+            "status": "reanalysis",
+            "value": 28.59,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1261.0 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=-24.1017&longitude=-70.0183&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:05+00:00"
+          },
+          "veg": {
+            "dataset": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+            "status": "measurement",
+            "value": 0.0995,
+            "units": "NDVI",
+            "method": "median over 16-day composites of the 10 × 10 km window median (good/marginal pixels)",
+            "period": "2022-01-01/2023-12-31",
+            "resolution": "250 m MODIS pixels",
+            "range": [
+              0.0951,
+              0.1033
+            ],
+            "nComposites": 45.0,
+            "citation": "Didan, K. (2021). MODIS/Terra Vegetation Indices 16-Day L3 Global 250m SIN Grid V061. NASA EOSDIS Land Processes DAAC. doi:10.5067/MODIS/MOD13Q1.061; read from the Microsoft Planetary Computer STAC collection 'modis-13Q1-061'",
+            "retrievedAt": "2026-11-14T05:13:15+00:00"
+          },
+          "geology": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "sulfate",
+            "citation": "Voigt et al. 2017 (Goldschmidt abstract #4103): salt suite mainly gypsum, anhydrite, halite and nitratite; Front. Microbiol. 2022, doi:10.3389/fmicb.2021.794743 (bassanite, anhydrite, gypsum)"
+          },
+          "ice": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "no",
+            "citation": "Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation; outside permafrost zones)"
+          }
+        },
+        "clipped": {},
+        "coord": {
+          "source": "Voigt, Herwartz & Staubwasser, Goldschmidt 2017 abstract #4103: Yungay 24°6′6.1″S 70°1′5.8″W",
+          "precision": "soil-pit location (conference abstract)",
+          "elevM": 1017.0,
+          "elevSource": "DEM lookup (ASTER GDEM 30 m via OpenTopoData), ±20 m"
+        },
+        "notes": "Soils mix silicate and salt suites; 'evaporite' is also defensible."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.7919,
+          38.40646
+        ]
+      },
+      "properties": {
+        "id": "mdrs-utah",
+        "name": "Mars Desert Research Station (Hanksville)",
+        "country": "USA",
+        "knownAnalog": true,
+        "analogRef": "Stoker et al. 2011, Int. J. Astrobiology, doi:10.1017/S1473550411000115",
+        "raw": {
+          "relief_m": 195.4,
+          "precip_mm_yr": 241.1,
+          "ts_mean_c": 12.19,
+          "ts_range_c": 21.85,
+          "ndvi": 0.0985
+        },
+        "norm": {
+          "terrain": 0.1303,
+          "aridity": 0.8795,
+          "temp": 0.7599,
+          "temp_range": 0.6243,
+          "veg": 0.8769,
+          "geology": "clay",
+          "ice": "no"
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "terrain": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+          "aridity": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp_range": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "veg": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+          "geology": "Literature: Stoker et al. 2011, Int. J. Astrobiology 10(3), doi:10.1017/S1473550411000115: Mancos and Morrison s",
+          "ice": "Literature: Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation"
+        },
+        "provenance": {
+          "terrain": {
+            "dataset": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+            "status": "measurement",
+            "value": 195.4,
+            "units": "m",
+            "method": "P99 − P1 elevation in a 10 × 10 km window, box-mean aggregated to ~200 m (common scale with the planetary DEMs)",
+            "resolution": "native posting 1x1 arcsec (lon x lat) = 24 m E-W x 31 m N-S; scored at ~200 m",
+            "nativeValue": 197.0,
+            "crossCheck": "COP-DEM_GLO-30: 196 m",
+            "citation": "NASA JPL (2020). NASADEM Merged DEM Global 1 arc second V001. NASA EOSDIS Land Processes DAAC. doi:10.5067/MEaSUREs/NASADEM/NASADEM_HGT.001",
+            "attribution": "NASA JPL (NASADEM_HGT v001), via Microsoft Planetary Computer | cross-check: © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
+            "rangeAlignment": [
+              194.4,
+              196.2
+            ],
+            "note": null,
+            "quality": "primary",
+            "retrievedAt": "2026-11-14T05:11:15+00:00"
+          },
+          "aridity": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "PRECTOTCORR (x 365.25)",
+            "status": "reanalysis",
+            "value": 241.1,
+            "units": "mm/yr",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1659.66 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=38.4065&longitude=-110.7919&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:08+00:00"
+          },
+          "temp": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS",
+            "status": "reanalysis",
+            "value": 12.19,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1659.66 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=38.4065&longitude=-110.7919&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:08+00:00"
+          },
+          "temp_range": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS_RANGE",
+            "status": "reanalysis",
+            "value": 21.85,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1659.66 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=38.4065&longitude=-110.7919&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:08+00:00"
+          },
+          "veg": {
+            "dataset": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+            "status": "measurement",
+            "value": 0.0985,
+            "units": "NDVI",
+            "method": "median over 16-day composites of the 10 × 10 km window median (good/marginal pixels)",
+            "period": "2022-01-01/2023-12-31",
+            "resolution": "250 m MODIS pixels",
+            "range": [
+              0.0931,
+              0.1049
+            ],
+            "nComposites": 45.0,
+            "citation": "Didan, K. (2021). MODIS/Terra Vegetation Indices 16-Day L3 Global 250m SIN Grid V061. NASA EOSDIS Land Processes DAAC. doi:10.5067/MODIS/MOD13Q1.061; read from the Microsoft Planetary Computer STAC collection 'modis-13Q1-061'",
+            "retrievedAt": "2026-11-14T05:13:15+00:00"
+          },
+          "geology": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "clay",
+            "citation": "Stoker et al. 2011, Int. J. Astrobiology 10(3), doi:10.1017/S1473550411000115: Mancos and Morrison soils rich in phyllosilicates (montmorillonite, nontronite, illite)"
+          },
+          "ice": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "no",
+            "citation": "Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation; outside permafrost zones)"
+          }
+        },
+        "clipped": {},
+        "coord": {
+          "source": "Wikipedia infobox, Mars Desert Research Station (38°24′23.25″N 110°47′30.85″W)",
+          "precision": "station coordinates",
+          "elevM": 1375.0,
+          "elevSource": "DEM lookup (ASTER GDEM 30 m via OpenTopoData), ±20 m"
+        },
+        "notes": "Same study: sulfate is the dominant anion in all soils."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -116.82583,
+          36.25028
+        ]
+      },
+      "properties": {
+        "id": "death-valley",
+        "name": "Death Valley (Badwater Basin)",
+        "country": "USA",
+        "knownAnalog": true,
+        "analogRef": "Baldridge et al. 2004, JGR Planets, doi:10.1029/2004JE002315 (Mars remote-sensing analog studies in Badwater Basin)",
+        "raw": {
+          "relief_m": 242.3,
+          "precip_mm_yr": 124.2,
+          "ts_mean_c": 19.59,
+          "ts_range_c": 25.67,
+          "ndvi": 0.0811
+        },
+        "norm": {
+          "terrain": 0.1615,
+          "aridity": null,
+          "temp": null,
+          "temp_range": null,
+          "veg": 0.8986,
+          "geology": "evaporite",
+          "ice": "no"
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "terrain": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+          "veg": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+          "geology": "Literature: Baldridge, Farmer & Moersch 2004, JGR Planets 109(E12), doi:10.1029/2004JE002315 (evaporite minerals",
+          "ice": "Literature: Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation"
+        },
+        "provenance": {
+          "terrain": {
+            "dataset": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+            "status": "measurement",
+            "value": 242.3,
+            "units": "m",
+            "method": "P99 − P1 elevation in a 10 × 10 km window, box-mean aggregated to ~200 m (common scale with the planetary DEMs)",
+            "resolution": "native posting 1x1 arcsec (lon x lat) = 25 m E-W x 31 m N-S; scored at ~200 m",
+            "nativeValue": 266.0,
+            "crossCheck": "COP-DEM_GLO-30: 242 m",
+            "citation": "NASA JPL (2020). NASADEM Merged DEM Global 1 arc second V001. NASA EOSDIS Land Processes DAAC. doi:10.5067/MEaSUREs/NASADEM/NASADEM_HGT.001",
+            "attribution": "NASA JPL (NASADEM_HGT v001), via Microsoft Planetary Computer | cross-check: © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
+            "rangeAlignment": [
+              220.6,
+              258.2
+            ],
+            "note": null,
+            "quality": "primary",
+            "retrievedAt": "2026-11-14T05:11:15+00:00"
+          },
+          "aridity": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "PRECTOTCORR (x 365.25)",
+            "status": "reanalysis",
+            "value": 124.2,
+            "units": "mm/yr",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 845.57 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=36.2503&longitude=-116.8258&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:11+00:00",
+            "excluded": "POWER grid cell (~50 km) mean elevation 846 m vs site -86 m (difference 932 m > 500 m): cell does not represent the site"
+          },
+          "temp": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS",
+            "status": "reanalysis",
+            "value": 19.59,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 845.57 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=36.2503&longitude=-116.8258&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:11+00:00",
+            "excluded": "POWER grid cell (~50 km) mean elevation 846 m vs site -86 m (difference 932 m > 500 m): cell does not represent the site"
+          },
+          "temp_range": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS_RANGE",
+            "status": "reanalysis",
+            "value": 25.67,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 845.57 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=36.2503&longitude=-116.8258&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:11+00:00",
+            "excluded": "POWER grid cell (~50 km) mean elevation 846 m vs site -86 m (difference 932 m > 500 m): cell does not represent the site"
+          },
+          "veg": {
+            "dataset": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+            "status": "measurement",
+            "value": 0.0811,
+            "units": "NDVI",
+            "method": "median over 16-day composites of the 10 × 10 km window median (good/marginal pixels)",
+            "period": "2022-01-01/2023-12-31",
+            "resolution": "250 m MODIS pixels",
+            "range": [
+              0.0776,
+              0.085
+            ],
+            "nComposites": 35.0,
+            "citation": "Didan, K. (2021). MODIS/Terra Vegetation Indices 16-Day L3 Global 250m SIN Grid V061. NASA EOSDIS Land Processes DAAC. doi:10.5067/MODIS/MOD13Q1.061; read from the Microsoft Planetary Computer STAC collection 'modis-13Q1-061'",
+            "retrievedAt": "2026-11-14T05:13:15+00:00"
+          },
+          "geology": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "evaporite",
+            "citation": "Baldridge, Farmer & Moersch 2004, JGR Planets 109(E12), doi:10.1029/2004JE002315 (evaporite minerals at Badwater); salt crust ~95% NaCl (Wikipedia)"
+          },
+          "ice": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "no",
+            "citation": "Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation; outside permafrost zones)"
+          }
+        },
+        "clipped": {},
+        "coord": {
+          "source": "Wikipedia infobox, Badwater Basin",
+          "precision": "basin reference point",
+          "elevM": -86.0,
+          "elevSource": "Wikipedia, Badwater Basin"
+        },
+        "notes": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -89.8667,
+          75.4333
+        ]
+      },
+      "properties": {
+        "id": "haughton",
+        "name": "Haughton impact structure (Devon Island)",
+        "country": "Canada",
+        "knownAnalog": true,
+        "analogRef": "Lee & Osinski 2005, Meteoritics & Planetary Science 40(12), doi:10.1111/j.1945-5100.2005.tb00144.x",
+        "raw": {
+          "relief_m": 159.0,
+          "precip_mm_yr": 321.4,
+          "ts_mean_c": -15.27,
+          "ts_range_c": 6.84,
+          "ndvi": 0.2038
+        },
+        "norm": {
+          "terrain": 0.106,
+          "aridity": 0.8393,
+          "temp": 0.4708,
+          "temp_range": 0.1954,
+          "veg": 0.7453,
+          "geology": "sedimentary",
+          "ice": "yes"
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "terrain": "Copernicus DEM GLO-30 Public (2021 release), 1 arc-second base posting",
+          "aridity": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp_range": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "veg": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+          "geology": "Literature: Lindgren et al. 2009, Astrobiology, doi:10.1089/ast.2008.0270: thick target succession of sedimentar",
+          "ice": "Literature: Osinski et al., LPSC 2020 abstract (NTRS 20200001979): GPR and shallow drilling confirm ice in polyg"
+        },
+        "provenance": {
+          "terrain": {
+            "dataset": "Copernicus DEM GLO-30 Public (2021 release), 1 arc-second base posting",
+            "status": "measurement",
+            "value": 159.0,
+            "units": "m",
+            "method": "P99 − P1 elevation in a 10 × 10 km window, box-mean aggregated to ~200 m (common scale with the planetary DEMs)",
+            "resolution": "native posting 3x1 arcsec (lon x lat) = 23 m E-W x 31 m N-S; scored at ~200 m",
+            "nativeValue": 162.7,
+            "crossCheck": "COP-DEM_GLO-90: 160 m",
+            "citation": "European Space Agency, Sinergise (2021). Copernicus Global Digital Elevation Model (COP-DEM), doi:10.5270/ESA-c5d3d65; AWS Open Data registry 'copernicus-dem', s3://copernicus-dem-30m",
+            "attribution": "© DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
+            "rangeAlignment": [
+              157.5,
+              161.0
+            ],
+            "note": null,
+            "quality": "partner-fill",
+            "retrievedAt": "2026-11-14T05:11:15+00:00"
+          },
+          "aridity": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "PRECTOTCORR (x 365.25)",
+            "status": "reanalysis",
+            "value": 321.4,
+            "units": "mm/yr",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 188.16 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=75.4333&longitude=-89.8667&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:14+00:00"
+          },
+          "temp": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS",
+            "status": "reanalysis",
+            "value": -15.27,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 188.16 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=75.4333&longitude=-89.8667&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:14+00:00"
+          },
+          "temp_range": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS_RANGE",
+            "status": "reanalysis",
+            "value": 6.84,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 188.16 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=75.4333&longitude=-89.8667&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:14+00:00"
+          },
+          "veg": {
+            "dataset": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+            "status": "measurement",
+            "value": 0.2038,
+            "units": "NDVI",
+            "method": "median over 16-day composites of the 10 × 10 km window median (good/marginal pixels)",
+            "period": "2022-01-01/2023-12-31",
+            "resolution": "250 m MODIS pixels",
+            "range": [
+              0.1881,
+              0.2073
+            ],
+            "nComposites": 10.0,
+            "citation": "Didan, K. (2021). MODIS/Terra Vegetation Indices 16-Day L3 Global 250m SIN Grid V061. NASA EOSDIS Land Processes DAAC. doi:10.5067/MODIS/MOD13Q1.061; read from the Microsoft Planetary Computer STAC collection 'modis-13Q1-061'",
+            "retrievedAt": "2026-11-14T05:13:15+00:00"
+          },
+          "geology": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "sedimentary",
+            "citation": "Lindgren et al. 2009, Astrobiology, doi:10.1089/ast.2008.0270: thick target succession of sedimentary rocks, mainly carbonates"
+          },
+          "ice": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "yes",
+            "citation": "Osinski et al., LPSC 2020 abstract (NTRS 20200001979): GPR and shallow drilling confirm ice in polygon troughs"
+          }
+        },
+        "clipped": {},
+        "coord": {
+          "source": "Mars Institute, HMP Research Station page: 75°26′ N, 89°52′ W",
+          "precision": "arc-minute (~1–2 km); research station on the NW rim",
+          "elevM": 215.0,
+          "elevSource": "DEM lookup (ASTER GDEM 30 m via OpenTopoData), ±20 m"
+        },
+        "notes": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          160.73238,
+          -77.86617
+        ]
+      },
+      "properties": {
+        "id": "mcmurdo",
+        "name": "McMurdo Dry Valleys (University Valley)",
+        "country": "Antarctica",
+        "knownAnalog": true,
+        "analogRef": "Heldmann et al. 2013, Planetary and Space Science, doi:10.1016/j.pss.2013.05.019 (high-elevation Dry Valleys as analogs for subsurface ice on Mars)",
+        "raw": {
+          "relief_m": 924.4,
+          "precip_mm_yr": 142.4,
+          "ts_mean_c": -35.25,
+          "ts_range_c": 6.46,
+          "ndvi": null
+        },
+        "norm": {
+          "terrain": 0.6163,
+          "aridity": 0.9288,
+          "temp": 0.2605,
+          "temp_range": 0.1846,
+          "veg": null,
+          "geology": null,
+          "ice": "yes"
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "terrain": "Copernicus DEM GLO-30 Public (2021 release), 1 arc-second base posting",
+          "aridity": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp_range": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "ice": "Literature: Goordial et al. 2016, ISME J, doi:10.1038/ismej.2015.239: ice-cemented permafrost widespread beneath"
+        },
+        "provenance": {
+          "terrain": {
+            "dataset": "Copernicus DEM GLO-30 Public (2021 release), 1 arc-second base posting",
+            "status": "measurement",
+            "value": 924.4,
+            "units": "m",
+            "method": "P99 − P1 elevation in a 10 × 10 km window, box-mean aggregated to ~200 m (common scale with the planetary DEMs)",
+            "resolution": "native posting 3x1 arcsec (lon x lat) = 19 m E-W x 31 m N-S; scored at ~200 m",
+            "nativeValue": 938.5,
+            "crossCheck": "COP-DEM_GLO-90: 927 m",
+            "citation": "European Space Agency, Sinergise (2021). Copernicus Global Digital Elevation Model (COP-DEM), doi:10.5270/ESA-c5d3d65; AWS Open Data registry 'copernicus-dem', s3://copernicus-dem-30m",
+            "attribution": "© DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
+            "rangeAlignment": [
+              916.3,
+              936.3
+            ],
+            "note": null,
+            "quality": "partner-fill",
+            "retrievedAt": "2026-11-14T05:11:15+00:00"
+          },
+          "aridity": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "PRECTOTCORR (x 365.25)",
+            "status": "reanalysis",
+            "value": 142.4,
+            "units": "mm/yr",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1710.18 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=-77.8662&longitude=160.7324&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:17+00:00"
+          },
+          "temp": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS",
+            "status": "reanalysis",
+            "value": -35.25,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1710.18 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=-77.8662&longitude=160.7324&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:17+00:00"
+          },
+          "temp_range": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS_RANGE",
+            "status": "reanalysis",
+            "value": 6.46,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1710.18 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=-77.8662&longitude=160.7324&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:17+00:00"
+          },
+          "veg": {
+            "status": "unavailable",
+            "note": "no MOD13Q1 composites found for the window"
+          },
+          "geology": {
+            "status": "unavailable",
+            "note": "Mixed: soils derived from Ferrar dolerite and Beacon Supergroup sandstone (Goordial et al. 2016) — no single class"
+          },
+          "ice": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "yes",
+            "citation": "Goordial et al. 2016, ISME J, doi:10.1038/ismej.2015.239: ice-cemented permafrost widespread beneath dry permafrost"
+          }
+        },
+        "clipped": {},
+        "coord": {
+          "source": "Goordial et al. 2016, ISME J, doi:10.1038/ismej.2015.239: 77°51.970′S 160°43.943′E (IT-5 cm permafrost core)",
+          "precision": "sampling-site coordinates",
+          "elevM": 1700.0,
+          "elevSource": "Goordial et al. 2016, ISME J (1700 m a.s.l.)"
+        },
+        "notes": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -6.55643,
+          37.72512
+        ]
+      },
+      "properties": {
+        "id": "rio-tinto",
+        "name": "Río Tinto (Peña de Hierro)",
+        "country": "Spain",
+        "knownAnalog": true,
+        "analogRef": "Fernández-Remolar et al. 2005, Earth and Planetary Science Letters, doi:10.1016/j.epsl.2005.09.043 (implications for Meridiani Planum, Mars)",
+        "raw": {
+          "relief_m": 339.6,
+          "precip_mm_yr": 467.5,
+          "ts_mean_c": 18.78,
+          "ts_range_c": 18.89,
+          "ndvi": 0.483
+        },
+        "norm": {
+          "terrain": 0.2264,
+          "aridity": 0.7663,
+          "temp": 0.8293,
+          "temp_range": 0.5397,
+          "veg": 0.3963,
+          "geology": "sulfate",
+          "ice": "no"
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "terrain": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+          "aridity": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp_range": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "veg": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+          "geology": "Literature: Amils & Fernández-Remolar 2014, Life 4:511, doi:10.3390/life4030511 (sulfate and iron-oxide deposits",
+          "ice": "Literature: Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation"
+        },
+        "provenance": {
+          "terrain": {
+            "dataset": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+            "status": "measurement",
+            "value": 339.6,
+            "units": "m",
+            "method": "P99 − P1 elevation in a 10 × 10 km window, box-mean aggregated to ~200 m (common scale with the planetary DEMs)",
+            "resolution": "native posting 1x1 arcsec (lon x lat) = 24 m E-W x 31 m N-S; scored at ~200 m",
+            "nativeValue": 347.0,
+            "crossCheck": "COP-DEM_GLO-30: 342 m",
+            "citation": "NASA JPL (2020). NASADEM Merged DEM Global 1 arc second V001. NASA EOSDIS Land Processes DAAC. doi:10.5067/MEaSUREs/NASADEM/NASADEM_HGT.001",
+            "attribution": "NASA JPL (NASADEM_HGT v001), via Microsoft Planetary Computer | cross-check: © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
+            "rangeAlignment": [
+              334.5,
+              344.6
+            ],
+            "note": null,
+            "quality": "primary",
+            "retrievedAt": "2026-11-14T05:11:15+00:00"
+          },
+          "aridity": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "PRECTOTCORR (x 365.25)",
+            "status": "reanalysis",
+            "value": 467.5,
+            "units": "mm/yr",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 187.78 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=37.7251&longitude=-6.5564&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:20+00:00"
+          },
+          "temp": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS",
+            "status": "reanalysis",
+            "value": 18.78,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 187.78 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=37.7251&longitude=-6.5564&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:20+00:00"
+          },
+          "temp_range": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS_RANGE",
+            "status": "reanalysis",
+            "value": 18.89,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 187.78 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=37.7251&longitude=-6.5564&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:20+00:00"
+          },
+          "veg": {
+            "dataset": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+            "status": "measurement",
+            "value": 0.483,
+            "units": "NDVI",
+            "method": "median over 16-day composites of the 10 × 10 km window median (good/marginal pixels)",
+            "period": "2022-01-01/2023-12-31",
+            "resolution": "250 m MODIS pixels",
+            "range": [
+              0.3651,
+              0.5899
+            ],
+            "nComposites": 44.0,
+            "citation": "Didan, K. (2021). MODIS/Terra Vegetation Indices 16-Day L3 Global 250m SIN Grid V061. NASA EOSDIS Land Processes DAAC. doi:10.5067/MODIS/MOD13Q1.061; read from the Microsoft Planetary Computer STAC collection 'modis-13Q1-061'",
+            "retrievedAt": "2026-11-14T05:13:15+00:00"
+          },
+          "geology": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "sulfate",
+            "citation": "Amils & Fernández-Remolar 2014, Life 4:511, doi:10.3390/life4030511 (sulfate and iron-oxide deposits from sulfide bioleaching)"
+          },
+          "ice": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "no",
+            "citation": "Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation; outside permafrost zones)"
+          }
+        },
+        "clipped": {},
+        "coord": {
+          "source": "Waymarking.com (user-contributed): N 37° 43.507, W 006° 33.386 — Río Tinto source at Peña de Hierro (Amils & Fernández-Remolar 2014)",
+          "precision": "LOW-AUTHORITY source — verify; Minas de Riotinto town is ~6 km away",
+          "elevM": 423.0,
+          "elevSource": "DEM lookup (ASTER GDEM 30 m via OpenTopoData), ±20 m"
+        },
+        "notes": "Bedrock is volcano-sedimentary massive sulfide; sulfates/Fe-oxides are precipitates."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -16.83,
+          64.85
+        ]
+      },
+      "properties": {
+        "id": "iceland-lava",
+        "name": "Holuhraun lava field",
+        "country": "Iceland",
+        "knownAnalog": true,
+        "analogRef": "Voigt et al. 2025, Planetary Science Journal, doi:10.3847/PSJ/adb5f1 (Holuhraun as analog for young volcanic terrains in Elysium Planitia)",
+        "raw": {
+          "relief_m": 164.3,
+          "precip_mm_yr": 862.0,
+          "ts_mean_c": -4.39,
+          "ts_range_c": 4.87,
+          "ndvi": 0.0161
+        },
+        "norm": {
+          "terrain": 0.1095,
+          "aridity": 0.569,
+          "temp": 0.5854,
+          "temp_range": 0.1391,
+          "veg": 0.9799,
+          "geology": "basalt",
+          "ice": null
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "terrain": "Copernicus DEM GLO-30 Public (2021 release), 1 arc-second base posting",
+          "aridity": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp_range": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "veg": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+          "geology": "Literature: Pedersen et al. 2017, J. Volcanol. Geotherm. Res., doi:10.1016/j.jvolgeores.2017.02.027 (2014–2015 b"
+        },
+        "provenance": {
+          "terrain": {
+            "dataset": "Copernicus DEM GLO-30 Public (2021 release), 1 arc-second base posting",
+            "status": "measurement",
+            "value": 164.3,
+            "units": "m",
+            "method": "P99 − P1 elevation in a 10 × 10 km window, box-mean aggregated to ~200 m (common scale with the planetary DEMs)",
+            "resolution": "native posting 2x1 arcsec (lon x lat) = 26 m E-W x 31 m N-S; scored at ~200 m",
+            "nativeValue": 170.9,
+            "crossCheck": "COP-DEM_GLO-90: 164 m",
+            "citation": "European Space Agency, Sinergise (2021). Copernicus Global Digital Elevation Model (COP-DEM), doi:10.5270/ESA-c5d3d65; AWS Open Data registry 'copernicus-dem', s3://copernicus-dem-30m",
+            "attribution": "© DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
+            "rangeAlignment": [
+              158.4,
+              169.6
+            ],
+            "note": null,
+            "quality": "partner-fill",
+            "retrievedAt": "2026-11-14T05:11:15+00:00"
+          },
+          "aridity": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "PRECTOTCORR (x 365.25)",
+            "status": "reanalysis",
+            "value": 862.0,
+            "units": "mm/yr",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 801.56 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=64.8500&longitude=-16.8300&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:24+00:00"
+          },
+          "temp": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS",
+            "status": "reanalysis",
+            "value": -4.39,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 801.56 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=64.8500&longitude=-16.8300&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:24+00:00"
+          },
+          "temp_range": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS_RANGE",
+            "status": "reanalysis",
+            "value": 4.87,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 801.56 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=64.8500&longitude=-16.8300&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:24+00:00"
+          },
+          "veg": {
+            "dataset": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+            "status": "measurement",
+            "value": 0.0161,
+            "units": "NDVI",
+            "method": "median over 16-day composites of the 10 × 10 km window median (good/marginal pixels)",
+            "period": "2022-01-01/2023-12-31",
+            "resolution": "250 m MODIS pixels",
+            "range": [
+              0.003,
+              0.028
+            ],
+            "nComposites": 17.0,
+            "citation": "Didan, K. (2021). MODIS/Terra Vegetation Indices 16-Day L3 Global 250m SIN Grid V061. NASA EOSDIS Land Processes DAAC. doi:10.5067/MODIS/MOD13Q1.061; read from the Microsoft Planetary Computer STAC collection 'modis-13Q1-061'",
+            "retrievedAt": "2026-11-14T05:13:15+00:00"
+          },
+          "geology": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "basalt",
+            "citation": "Pedersen et al. 2017, J. Volcanol. Geotherm. Res., doi:10.1016/j.jvolgeores.2017.02.027 (2014–2015 basaltic fissure eruption at Holuhraun)"
+          },
+          "ice": {
+            "status": "unavailable",
+            "note": "Uncertain: modelled lower permafrost limit ~600–900 m in N Iceland (Czekirda et al. 2019, Front. Earth Sci., doi:10.3389/feart.2019.00130); site ~750 m"
+          }
+        },
+        "clipped": {},
+        "coord": {
+          "source": "Wikipedia, Holuhraun (64°51′N 16°50′W)",
+          "precision": "arc-minute general location, not a point on the 2014–15 flow",
+          "elevM": 750.0,
+          "elevSource": "DEM lookup (ASTER GDEM 30 m via OpenTopoData), ±20 m"
+        },
+        "notes": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -13.79333,
+          28.99417
+        ]
+      },
+      "properties": {
+        "id": "lanzarote",
+        "name": "Lanzarote (Timanfaya)",
+        "country": "Spain",
+        "knownAnalog": true,
+        "analogRef": "Palma et al. 2024, Science of the Total Environment, doi:10.1016/j.scitotenv.2023.169583 (Lanzarote as a Mars volcanology analog; La Corona lava tubes)",
+        "raw": {
+          "relief_m": 370.2,
+          "precip_mm_yr": 109.6,
+          "ts_mean_c": 21.27,
+          "ts_range_c": 4.49,
+          "ndvi": 0.0578
+        },
+        "norm": {
+          "terrain": 0.2468,
+          "aridity": null,
+          "temp": null,
+          "temp_range": null,
+          "veg": 0.9278,
+          "geology": "basalt",
+          "ice": "no"
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "terrain": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+          "veg": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+          "geology": "Literature: Muller et al. 2024, Bull. Volcanol., doi:10.1007/s00445-024-01729-5 (large basaltic fissure eruption",
+          "ice": "Literature: Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation"
+        },
+        "provenance": {
+          "terrain": {
+            "dataset": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+            "status": "measurement",
+            "value": 370.2,
+            "units": "m",
+            "method": "P99 − P1 elevation in a 10 × 10 km window, box-mean aggregated to ~200 m (common scale with the planetary DEMs)",
+            "resolution": "native posting 1x1 arcsec (lon x lat) = 27 m E-W x 31 m N-S; scored at ~200 m",
+            "nativeValue": 373.0,
+            "crossCheck": "COP-DEM_GLO-30: 369 m",
+            "citation": "NASA JPL (2020). NASADEM Merged DEM Global 1 arc second V001. NASA EOSDIS Land Processes DAAC. doi:10.5067/MEaSUREs/NASADEM/NASADEM_HGT.001",
+            "attribution": "NASA JPL (NASADEM_HGT v001), via Microsoft Planetary Computer | cross-check: © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
+            "rangeAlignment": [
+              364.3,
+              376.1
+            ],
+            "note": "Coastal window: part of the 10 km window is sea at ~0 m, so P1 may be sea level and relief may be overstated.",
+            "quality": "primary",
+            "retrievedAt": "2026-11-14T05:11:15+00:00"
+          },
+          "aridity": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "PRECTOTCORR (x 365.25)",
+            "status": "reanalysis",
+            "value": 109.6,
+            "units": "mm/yr",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 26.63 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=28.9942&longitude=-13.7933&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:27+00:00",
+            "excluded": "Island (~60 x 20 km) smaller than the 0.5 x 0.625 deg POWER cell: the cell is mostly ocean (daily skin-temperature range 4.5 C reflects sea surface), so it does not represent the lava field"
+          },
+          "temp": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS",
+            "status": "reanalysis",
+            "value": 21.27,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 26.63 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=28.9942&longitude=-13.7933&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:27+00:00",
+            "excluded": "Island (~60 x 20 km) smaller than the 0.5 x 0.625 deg POWER cell: the cell is mostly ocean (daily skin-temperature range 4.5 C reflects sea surface), so it does not represent the lava field"
+          },
+          "temp_range": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS_RANGE",
+            "status": "reanalysis",
+            "value": 4.49,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 26.63 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=28.9942&longitude=-13.7933&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:27+00:00",
+            "excluded": "Island (~60 x 20 km) smaller than the 0.5 x 0.625 deg POWER cell: the cell is mostly ocean (daily skin-temperature range 4.5 C reflects sea surface), so it does not represent the lava field"
+          },
+          "veg": {
+            "dataset": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+            "status": "measurement",
+            "value": 0.0578,
+            "units": "NDVI",
+            "method": "median over 16-day composites of the 10 × 10 km window median (good/marginal pixels)",
+            "period": "2022-01-01/2023-12-31",
+            "resolution": "250 m MODIS pixels",
+            "range": [
+              0.0372,
+              0.0777
+            ],
+            "nComposites": 45.0,
+            "citation": "Didan, K. (2021). MODIS/Terra Vegetation Indices 16-Day L3 Global 250m SIN Grid V061. NASA EOSDIS Land Processes DAAC. doi:10.5067/MODIS/MOD13Q1.061; read from the Microsoft Planetary Computer STAC collection 'modis-13Q1-061'",
+            "retrievedAt": "2026-11-14T05:13:15+00:00"
+          },
+          "geology": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "basalt",
+            "citation": "Muller et al. 2024, Bull. Volcanol., doi:10.1007/s00445-024-01729-5 (large basaltic fissure eruption, Timanfaya 1730–1736)"
+          },
+          "ice": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "no",
+            "citation": "Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation; outside permafrost zones)"
+          }
+        },
+        "clipped": {},
+        "coord": {
+          "source": "Wikipedia infobox, Timanfaya National Park",
+          "precision": "park reference point",
+          "elevM": 137.0,
+          "elevSource": "DEM lookup (ASTER GDEM 30 m via OpenTopoData), ±20 m"
+        },
+        "notes": "Analog paper studies La Corona lava tubes, not Timanfaya itself."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          40.3,
+          14.24167
+        ]
+      },
+      "properties": {
+        "id": "danakil",
+        "name": "Dallol (Danakil Depression)",
+        "country": "Ethiopia",
+        "knownAnalog": true,
+        "analogRef": "Cavalazzi et al. 2019, Astrobiology, doi:10.1089/ast.2018.1926 (an exceptional planetary field analog)",
+        "raw": {
+          "relief_m": 36.8,
+          "precip_mm_yr": 449.3,
+          "ts_mean_c": 27.59,
+          "ts_range_c": 22.17,
+          "ndvi": 0.0777
+        },
+        "norm": {
+          "terrain": 0.0245,
+          "aridity": null,
+          "temp": null,
+          "temp_range": null,
+          "veg": 0.9029,
+          "geology": "evaporite",
+          "ice": "no"
+        },
+        "novelKm": 0,
+        "isNewCandidate": false,
+        "sources": {
+          "terrain": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+          "veg": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+          "geology": "Literature: Cavalazzi et al. 2019, Astrobiology, doi:10.1089/ast.2018.1926",
+          "ice": "Literature: Cavalazzi et al. 2019: average annual temperature 36–38 °C"
+        },
+        "provenance": {
+          "terrain": {
+            "dataset": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+            "status": "measurement",
+            "value": 36.8,
+            "units": "m",
+            "method": "P99 − P1 elevation in a 10 × 10 km window, box-mean aggregated to ~200 m (common scale with the planetary DEMs)",
+            "resolution": "native posting 1x1 arcsec (lon x lat) = 30 m E-W x 31 m N-S; scored at ~200 m",
+            "nativeValue": 40.0,
+            "crossCheck": "COP-DEM_GLO-30: 34 m",
+            "citation": "NASA JPL (2020). NASADEM Merged DEM Global 1 arc second V001. NASA EOSDIS Land Processes DAAC. doi:10.5067/MEaSUREs/NASADEM/NASADEM_HGT.001",
+            "attribution": "NASA JPL (NASADEM_HGT v001), via Microsoft Planetary Computer | cross-check: © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
+            "rangeAlignment": [
+              36.0,
+              37.6
+            ],
+            "note": null,
+            "quality": "primary",
+            "retrievedAt": "2026-11-14T05:11:15+00:00"
+          },
+          "aridity": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "PRECTOTCORR (x 365.25)",
+            "status": "reanalysis",
+            "value": 449.3,
+            "units": "mm/yr",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1063.31 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=14.2417&longitude=40.3000&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:29+00:00",
+            "excluded": "POWER grid cell (~50 km) mean elevation 1063 m vs site -99 m (difference 1162 m > 500 m): cell does not represent the site"
+          },
+          "temp": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS",
+            "status": "reanalysis",
+            "value": 27.59,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1063.31 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=14.2417&longitude=40.3000&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:29+00:00",
+            "excluded": "POWER grid cell (~50 km) mean elevation 1063 m vs site -99 m (difference 1162 m > 500 m): cell does not represent the site"
+          },
+          "temp_range": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS_RANGE",
+            "status": "reanalysis",
+            "value": 22.17,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1063.31 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=14.2417&longitude=40.3000&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:29+00:00",
+            "excluded": "POWER grid cell (~50 km) mean elevation 1063 m vs site -99 m (difference 1162 m > 500 m): cell does not represent the site"
+          },
+          "veg": {
+            "dataset": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+            "status": "measurement",
+            "value": 0.0777,
+            "units": "NDVI",
+            "method": "median over 16-day composites of the 10 × 10 km window median (good/marginal pixels)",
+            "period": "2022-01-01/2023-12-31",
+            "resolution": "250 m MODIS pixels",
+            "range": [
+              0.0555,
+              0.099
+            ],
+            "nComposites": 45.0,
+            "citation": "Didan, K. (2021). MODIS/Terra Vegetation Indices 16-Day L3 Global 250m SIN Grid V061. NASA EOSDIS Land Processes DAAC. doi:10.5067/MODIS/MOD13Q1.061; read from the Microsoft Planetary Computer STAC collection 'modis-13Q1-061'",
+            "retrievedAt": "2026-11-14T05:13:15+00:00"
+          },
+          "geology": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "evaporite",
+            "citation": "Cavalazzi et al. 2019, Astrobiology, doi:10.1089/ast.2018.1926; evaporitic plain of the Danakil Depression (halite, jarosite, hematite)"
+          },
+          "ice": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "no",
+            "citation": "Cavalazzi et al. 2019: average annual temperature 36–38 °C; Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation; outside permafrost zones)"
+          }
+        },
+        "clipped": {},
+        "coord": {
+          "source": "Wikipedia infobox, Dallol (hydrothermal system): 14°14′30″N 40°18′00″E",
+          "precision": "feature reference point",
+          "elevM": -99.0,
+          "elevSource": "DEM lookup (ASTER GDEM 30 m via OpenTopoData), ±20 m"
+        },
+        "notes": "Dome also hosts hydrothermal sulfates and Fe-oxides."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.20044,
+          27.27734
+        ]
+      },
+      "properties": {
+        "id": "white-desert",
+        "name": "White Desert (Sahara el Beyda, Farafra)",
+        "country": "Egypt",
+        "knownAnalog": false,
+        "analogRef": null,
+        "raw": {
+          "relief_m": 44.8,
+          "precip_mm_yr": 14.6,
+          "ts_mean_c": 22.8,
+          "ts_range_c": 21.91,
+          "ndvi": 0.0832
+        },
+        "norm": {
+          "terrain": 0.0299,
+          "aridity": 0.9927,
+          "temp": 0.8716,
+          "temp_range": 0.626,
+          "veg": 0.896,
+          "geology": "sedimentary",
+          "ice": "no"
+        },
+        "novelKm": 1917,
+        "isNewCandidate": true,
+        "sources": {
+          "terrain": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+          "aridity": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp_range": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "veg": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+          "geology": "Literature: Kamh 2020, doi:10.19080/etoaj.2020.03.555616 (chalky limestone of the White Desert, Farafra)",
+          "ice": "Literature: Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation"
+        },
+        "provenance": {
+          "terrain": {
+            "dataset": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+            "status": "measurement",
+            "value": 44.8,
+            "units": "m",
+            "method": "P99 − P1 elevation in a 10 × 10 km window, box-mean aggregated to ~200 m (common scale with the planetary DEMs)",
+            "resolution": "native posting 1x1 arcsec (lon x lat) = 27 m E-W x 31 m N-S; scored at ~200 m",
+            "nativeValue": 49.0,
+            "crossCheck": "COP-DEM_GLO-30: 44 m",
+            "citation": "NASA JPL (2020). NASADEM Merged DEM Global 1 arc second V001. NASA EOSDIS Land Processes DAAC. doi:10.5067/MEaSUREs/NASADEM/NASADEM_HGT.001",
+            "attribution": "NASA JPL (NASADEM_HGT v001), via Microsoft Planetary Computer | cross-check: © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
+            "rangeAlignment": [
+              44.0,
+              45.9
+            ],
+            "note": null,
+            "quality": "primary",
+            "retrievedAt": "2026-11-14T05:11:15+00:00"
+          },
+          "aridity": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "PRECTOTCORR (x 365.25)",
+            "status": "reanalysis",
+            "value": 14.6,
+            "units": "mm/yr",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 156.47 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=27.2773&longitude=28.2004&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:32+00:00"
+          },
+          "temp": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS",
+            "status": "reanalysis",
+            "value": 22.8,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 156.47 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=27.2773&longitude=28.2004&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:32+00:00"
+          },
+          "temp_range": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS_RANGE",
+            "status": "reanalysis",
+            "value": 21.91,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 156.47 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=27.2773&longitude=28.2004&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:32+00:00"
+          },
+          "veg": {
+            "dataset": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+            "status": "measurement",
+            "value": 0.0832,
+            "units": "NDVI",
+            "method": "median over 16-day composites of the 10 × 10 km window median (good/marginal pixels)",
+            "period": "2022-01-01/2023-12-31",
+            "resolution": "250 m MODIS pixels",
+            "range": [
+              0.0818,
+              0.0853
+            ],
+            "nComposites": 38.0,
+            "citation": "Didan, K. (2021). MODIS/Terra Vegetation Indices 16-Day L3 Global 250m SIN Grid V061. NASA EOSDIS Land Processes DAAC. doi:10.5067/MODIS/MOD13Q1.061; read from the Microsoft Planetary Computer STAC collection 'modis-13Q1-061'",
+            "retrievedAt": "2026-11-14T05:13:15+00:00"
+          },
+          "geology": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "sedimentary",
+            "citation": "Kamh 2020, doi:10.19080/etoaj.2020.03.555616 (chalky limestone of the White Desert, Farafra); Wikipedia: white chalk formations"
+          },
+          "ice": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "no",
+            "citation": "Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation; outside permafrost zones)"
+          }
+        },
+        "clipped": {},
+        "coord": {
+          "source": "Wikipedia infobox, White Desert National Park",
+          "precision": "park reference point",
+          "elevM": 27.0,
+          "elevSource": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second: median of the 10 × 10 km window"
+        },
+        "notes": "No peer-reviewed planetary-analog study found (not proof of absence)."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.42,
+          29.59306
+        ]
+      },
+      "properties": {
+        "id": "wadi-rum",
+        "name": "Wadi Rum",
+        "country": "Jordan",
+        "knownAnalog": false,
+        "analogRef": null,
+        "raw": {
+          "relief_m": 752.9,
+          "precip_mm_yr": 40.2,
+          "ts_mean_c": 19.72,
+          "ts_range_c": 26.94,
+          "ndvi": 0.1058
+        },
+        "norm": {
+          "terrain": 0.5019,
+          "aridity": 0.9799,
+          "temp": 0.8392,
+          "temp_range": 0.7697,
+          "veg": 0.8678,
+          "geology": "sedimentary",
+          "ice": "no"
+        },
+        "novelKm": 1779,
+        "isNewCandidate": true,
+        "sources": {
+          "terrain": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+          "aridity": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "temp_range": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+          "veg": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+          "geology": "Literature: Wikipedia, Wadi Rum: near-vertical mountains of iron-rich, erosion-resistant Umm Ishrin Sandstone",
+          "ice": "Literature: Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation"
+        },
+        "provenance": {
+          "terrain": {
+            "dataset": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+            "status": "measurement",
+            "value": 752.9,
+            "units": "m",
+            "method": "P99 − P1 elevation in a 10 × 10 km window, box-mean aggregated to ~200 m (common scale with the planetary DEMs)",
+            "resolution": "native posting 1x1 arcsec (lon x lat) = 27 m E-W x 31 m N-S; scored at ~200 m",
+            "nativeValue": 758.0,
+            "crossCheck": "COP-DEM_GLO-30: 749 m",
+            "citation": "NASA JPL (2020). NASADEM Merged DEM Global 1 arc second V001. NASA EOSDIS Land Processes DAAC. doi:10.5067/MEaSUREs/NASADEM/NASADEM_HGT.001",
+            "attribution": "NASA JPL (NASADEM_HGT v001), via Microsoft Planetary Computer | cross-check: © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
+            "rangeAlignment": [
+              748.4,
+              756.6
+            ],
+            "note": null,
+            "quality": "primary",
+            "retrievedAt": "2026-11-14T05:11:15+00:00"
+          },
+          "aridity": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "PRECTOTCORR (x 365.25)",
+            "status": "reanalysis",
+            "value": 40.2,
+            "units": "mm/yr",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1076.35 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=29.5931&longitude=35.4200&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:35+00:00"
+          },
+          "temp": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS",
+            "status": "reanalysis",
+            "value": 19.72,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1076.35 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=29.5931&longitude=35.4200&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:35+00:00"
+          },
+          "temp_range": {
+            "dataset": "NASA POWER climatology API v2.10.1 (MERRA2+POWER)",
+            "parameter": "TS_RANGE",
+            "status": "reanalysis",
+            "value": 26.94,
+            "units": "°C",
+            "period": "2001–2025",
+            "resolution": "0.5° × 0.625° grid cell (~50 km); cell elevation 1076.35 m",
+            "url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=PRECTOTCORR,TS,TS_RANGE,T2M,T2M_RANGE&community=AG&latitude=29.5931&longitude=35.4200&format=JSON",
+            "retrievedAt": "2026-11-13T18:39:35+00:00"
+          },
+          "veg": {
+            "dataset": "MODIS/Terra Vegetation Indices 16-Day L3 Global 250 m SIN Grid V061, 250m_16_days_NDVI with pixel reliability 0-1",
+            "status": "measurement",
+            "value": 0.1058,
+            "units": "NDVI",
+            "method": "median over 16-day composites of the 10 × 10 km window median (good/marginal pixels)",
+            "period": "2022-01-01/2023-12-31",
+            "resolution": "250 m MODIS pixels",
+            "range": [
+              0.1026,
+              0.1106
+            ],
+            "nComposites": 45.0,
+            "citation": "Didan, K. (2021). MODIS/Terra Vegetation Indices 16-Day L3 Global 250m SIN Grid V061. NASA EOSDIS Land Processes DAAC. doi:10.5067/MODIS/MOD13Q1.061; read from the Microsoft Planetary Computer STAC collection 'modis-13Q1-061'",
+            "retrievedAt": "2026-11-14T05:13:15+00:00"
+          },
+          "geology": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "sedimentary",
+            "citation": "Wikipedia, Wadi Rum: near-vertical mountains of iron-rich, erosion-resistant Umm Ishrin Sandstone"
+          },
+          "ice": {
+            "dataset": "Literature",
+            "status": "literature",
+            "value": "no",
+            "citation": "Gruber 2012, The Cryosphere 6:221, doi:10.5194/tc-6-221-2012 (global permafrost zonation; outside permafrost zones)"
+          }
+        },
+        "clipped": {},
+        "coord": {
+          "source": "Wikipedia infobox, Wadi Rum",
+          "precision": "protected-area reference point",
+          "elevM": 938.0,
+          "elevSource": "DEM lookup (ASTER GDEM 30 m via OpenTopoData), ±20 m"
+        },
+        "notes": "No peer-reviewed analog study found, but used for the PETRA-1 analog mission (2024, Jordan Times) and as a Mars film location; local granitoid basement."
+      }
+    }
+  ]
+}

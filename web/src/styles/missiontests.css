@@ -1,0 +1,597 @@
+/* Mission tests (method v1) and the Arabic method page. Uses the app's theme tokens. */
+
+.mt {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.mt-head h1 {
+  margin: 0.2rem 0 0.4rem;
+}
+
+.mt-lede {
+  max-width: 78ch;
+  color: var(--text-2, #b9c6d8);
+  margin: 0 0 0.9rem;
+}
+
+.mt-banner {
+  padding: 0.7rem 0.9rem;
+  border: 1px solid rgba(242, 166, 90, 0.55);
+  border-radius: var(--radius);
+  background: rgba(242, 166, 90, 0.08);
+  font-size: 0.86rem;
+}
+
+.mt-banner p {
+  margin: 0;
+}
+
+.mt-banner__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin-top: 0.5rem !important;
+}
+
+.mt-controls {
+  display: grid;
+  grid-template-columns: minmax(220px, 360px) minmax(0, 1fr);
+  gap: 0.8rem 1.2rem;
+  margin: 1rem 0 0.6rem;
+}
+
+.mt-field {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.mt-field select {
+  font: inherit;
+  font-size: 0.9rem;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  background: var(--panel-2);
+  color: var(--text, #e6edf6);
+}
+
+.mt-tests {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.mt-test {
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text, #e6edf6);
+  cursor: pointer;
+}
+
+.mt-test[aria-pressed='true'] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.mt-notes {
+  display: grid;
+  gap: 0.4rem;
+  margin-bottom: 0.9rem;
+}
+
+.mt-note-box {
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.mt-note-box--warn {
+  border-color: rgba(242, 166, 90, 0.6);
+  background: rgba(242, 166, 90, 0.08);
+}
+
+.mt-note-box--quiet {
+  color: var(--muted);
+}
+
+.mt-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.9fr) minmax(0, 1.4fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.mt-list,
+.mt-detail {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--panel);
+  padding: 0.85rem;
+}
+
+.mt-list__title {
+  margin: 0 0 0.6rem;
+  font-size: 0.95rem;
+  display: grid;
+  gap: 0.15rem;
+}
+
+.mt-list__sub {
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.mt-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.mt-row__btn {
+  width: 100%;
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.55rem 0.65rem;
+  font: inherit;
+  color: inherit;
+  text-align: start;
+  background: var(--panel-2);
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.mt-row__btn:hover {
+  border-color: var(--border-strong);
+}
+
+.mt-row.is-selected .mt-row__btn {
+  border-color: var(--accent-line);
+  background: var(--accent-soft);
+}
+
+.mt-row__name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.mt-neg {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.05rem 0.45rem;
+  border: 1px dashed #f2a65a;
+  border-radius: 999px;
+  color: #f2a65a;
+}
+
+.mt-row--neg .mt-row__btn {
+  background-image: repeating-linear-gradient(135deg, rgba(242, 166, 90, 0.05) 0 8px, transparent 8px 16px);
+}
+
+.mt-row__score {
+  display: grid;
+  grid-template-columns: auto minmax(80px, 1fr);
+  grid-template-areas: 'num bar' 'meta meta' 'conf conf';
+  align-items: center;
+  gap: 0.2rem 0.6rem;
+}
+
+.mt-row__num {
+  grid-area: num;
+  font-size: 1.15rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.mt-range {
+  grid-area: bar;
+  position: relative;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.mt-range__band {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 4px;
+  background: var(--accent-line);
+}
+
+.mt-range__dot {
+  position: absolute;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 2px var(--panel);
+}
+
+.mt-row__meta {
+  grid-area: meta;
+  font-size: 0.74rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.mt-row__score .mt-conf {
+  grid-area: conf;
+  justify-self: start;
+}
+
+.mt-row__reason {
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.mt-conf {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.05rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+}
+
+.mt-conf--medium {
+  color: #9ee0c4;
+  border-color: rgba(158, 224, 196, 0.5);
+}
+
+.mt-conf--low {
+  color: #f2a65a;
+  border-color: rgba(242, 166, 90, 0.5);
+}
+
+.mt-conf--insufficient {
+  color: var(--muted);
+  border-style: dashed;
+}
+
+.mt-warn {
+  color: #f2a65a;
+  font-weight: 700;
+}
+
+.mt-detail__head h2 {
+  margin: 0.15rem 0 0.4rem;
+}
+
+.mt-negnote {
+  margin: 0 0 0.6rem;
+  padding: 0.45rem 0.65rem;
+  border: 1px dashed #f2a65a;
+  border-radius: 8px;
+  font-size: 0.82rem;
+}
+
+.mt-detail__score {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1rem;
+  align-items: center;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  background: var(--panel-2);
+}
+
+.mt-detail__label {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.mt-detail__num {
+  font-size: 2.2rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.mt-detail__of {
+  color: var(--muted);
+}
+
+.mt-detail__facts {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  font-size: 0.82rem;
+}
+
+.mt-detail__facts dt {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.mt-detail__facts dd {
+  margin: 0.1rem 0 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.mt-detail__reason {
+  padding: 0.6rem 0.75rem;
+  border: 1px dashed var(--border-strong);
+  border-radius: 10px;
+}
+
+.mt-detail__summary {
+  margin: 0.7rem 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.mt-contrib {
+  margin: 0.4rem 0 0.8rem;
+}
+
+.mt-contrib__cap {
+  font-size: 0.74rem;
+  color: var(--muted);
+  margin-bottom: 0.3rem;
+}
+
+.mt-contrib__track {
+  display: flex;
+  height: 14px;
+  border-radius: 7px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.mt-contrib__seg {
+  height: 100%;
+  border-inline-end: 1px solid var(--panel);
+}
+
+.mt-contrib__legend {
+  list-style: none;
+  margin: 0.4rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  font-size: 0.78rem;
+}
+
+.mt-contrib__sw {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  margin-inline-end: 0.3rem;
+}
+
+.mt-table-wrap {
+  overflow-x: auto;
+}
+
+.mt-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.mt-table th,
+.mt-table td {
+  padding: 0.4rem 0.45rem;
+  border-bottom: 1px solid var(--border);
+  text-align: start;
+  vertical-align: top;
+  font-variant-numeric: tabular-nums;
+}
+
+.mt-table thead th {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.72rem;
+}
+
+.mt-table tbody th {
+  font-weight: 600;
+  min-width: 170px;
+}
+
+.mt-note {
+  display: block;
+  margin-top: 0.15rem;
+  font-weight: 400;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.mt-na {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.mt-comp {
+  font-size: 0.72rem;
+}
+
+.mt-comp--partial {
+  color: #f2a65a;
+}
+
+.mt-comp--unavailable {
+  color: var(--muted);
+}
+
+.mt-context,
+.mt-caveats {
+  margin-top: 0.8rem;
+  font-size: 0.82rem;
+}
+
+.mt-context h3,
+.mt-caveats h3 {
+  font-size: 0.85rem;
+  margin: 0 0 0.3rem;
+}
+
+.mt-context ul,
+.mt-caveats ul {
+  margin: 0;
+  padding-inline-start: 1.1rem;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.mt-detail__method {
+  margin: 0.9rem 0 0;
+  font-size: 0.85rem;
+}
+
+.mt-foot {
+  margin-top: 1rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.mt-foot p {
+  margin: 0.2rem 0;
+}
+
+@media (max-width: 900px) {
+  .mt-controls,
+  .mt-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .mt-detail__facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---------- Arabic method page ---------- */
+
+.md-page {
+  max-width: 900px;
+  margin: 0 auto;
+  line-height: 1.75;
+  font-family: 'Segoe UI', Tahoma, 'Noto Naskh Arabic', 'Noto Sans Arabic', Arial, sans-serif;
+}
+
+.md-back {
+  font-size: 0.85rem;
+  text-align: left;
+}
+
+.md-body h2 {
+  font-size: 1.6rem;
+  margin: 0.4rem 0 0.8rem;
+}
+
+.md-body h3 {
+  font-size: 1.15rem;
+  margin: 1.4rem 0 0.5rem;
+}
+
+.md-body h4 {
+  font-size: 1rem;
+  margin: 1rem 0 0.4rem;
+}
+
+.md-body p,
+.md-body li {
+  font-size: 0.98rem;
+}
+
+.md-body code {
+  padding: 0.05rem 0.3rem;
+  border-radius: 4px;
+  background: var(--panel-2);
+  font-size: 0.86em;
+  unicode-bidi: isolate;
+}
+
+.md-pre {
+  padding: 0.7rem 0.9rem;
+  border-radius: 8px;
+  background: var(--panel-2);
+  overflow-x: auto;
+  text-align: left;
+}
+
+.md-table-wrap {
+  overflow-x: auto;
+}
+
+.md-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  margin: 0.4rem 0 0.8rem;
+}
+
+.md-table th,
+.md-table td {
+  padding: 0.4rem 0.55rem;
+  border: 1px solid var(--border);
+  text-align: right;
+  vertical-align: top;
+}
+
+.md-table th {
+  background: var(--panel-2);
+}
+
+.md-body hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 1.2rem 0;
+}
+
+@media print {
+  .md-back {
+    display: none;
+  }
+}
+
+.mt-field {
+  min-width: 0;
+}
+
+.mt-field select {
+  width: 100%;
+  min-width: 0;
+  text-overflow: ellipsis;
+}
+
+/* long file names / identifiers in inline code must wrap on phones */
+.md-body code {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.md-body p,
+.md-body li,
+.md-table td {
+  overflow-wrap: anywhere;
+}

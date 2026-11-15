@@ -1,0 +1,431 @@
+{
+  "site:atacama": {
+    "file": "previews/site-atacama-dem.i16",
+    "rows": 150,
+    "cols": 150,
+    "cellM": [
+      180.0,
+      180.0
+    ],
+    "widthKm": 27.0,
+    "minM": 957.7,
+    "maxM": 2300.3,
+    "nodata": -32768,
+    "nodataCells": 0,
+    "scoringWindowCells": [
+      47.22,
+      47.22,
+      102.78,
+      102.78
+    ],
+    "markerCells": [
+      75.0,
+      75.0
+    ],
+    "bytes": 45000,
+    "sha256": "ea7358cb0469f3891c1aa10c1adc67ae4da5c85d6b4c0120e3111407f8a8e9a2",
+    "source": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+    "heightReference": "EGM96 geoid",
+    "orientation": "North is up and east is right.",
+    "method": "mean of 3 x 3 blocks of the 60 m preview grid (the same heights the preview image shades); heights rounded to whole metres",
+    "image": "previews/site-atacama-terrain.webp",
+    "generatedAt": "2026-11-15T09:44:27+00:00",
+    "script": "pipeline/make_terrain_mesh.py"
+  },
+  "site:danakil": {
+    "file": "previews/site-danakil-dem.i16",
+    "rows": 150,
+    "cols": 150,
+    "cellM": [
+      180.0,
+      180.0
+    ],
+    "widthKm": 27.0,
+    "minM": -141.4,
+    "maxM": 647.2,
+    "nodata": -32768,
+    "nodataCells": 0,
+    "scoringWindowCells": [
+      47.22,
+      47.22,
+      102.78,
+      102.78
+    ],
+    "markerCells": [
+      75.0,
+      75.0
+    ],
+    "bytes": 45000,
+    "sha256": "55897d9d376e75132a6ee05105462d8bdaded0b354ea926dc5290bbbe1ebe711",
+    "source": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+    "heightReference": "EGM96 geoid",
+    "orientation": "North is up and east is right.",
+    "method": "mean of 3 x 3 blocks of the 60 m preview grid (the same heights the preview image shades); heights rounded to whole metres",
+    "image": "previews/site-danakil-terrain.webp",
+    "generatedAt": "2026-11-15T09:44:27+00:00",
+    "script": "pipeline/make_terrain_mesh.py"
+  },
+  "site:death-valley": {
+    "file": "previews/site-death-valley-dem.i16",
+    "rows": 150,
+    "cols": 150,
+    "cellM": [
+      180.0,
+      180.0
+    ],
+    "widthKm": 27.0,
+    "minM": -94.1,
+    "maxM": 1711.3,
+    "nodata": -32768,
+    "nodataCells": 0,
+    "scoringWindowCells": [
+      47.22,
+      47.22,
+      102.78,
+      102.78
+    ],
+    "markerCells": [
+      75.0,
+      75.0
+    ],
+    "bytes": 45000,
+    "sha256": "aa2b8df61bd1654f1dd9079a4aef52154e57cbd8b57eac4c069f109ce2e89d70",
+    "source": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+    "heightReference": "EGM96 geoid",
+    "orientation": "North is up and east is right.",
+    "method": "mean of 3 x 3 blocks of the 60 m preview grid (the same heights the preview image shades); heights rounded to whole metres",
+    "image": "previews/site-death-valley-terrain.webp",
+    "generatedAt": "2026-11-15T09:44:27+00:00",
+    "script": "pipeline/make_terrain_mesh.py"
+  },
+  "site:haughton": {
+    "file": "previews/site-haughton-dem.i16",
+    "rows": 150,
+    "cols": 150,
+    "cellM": [
+      180.0,
+      180.0
+    ],
+    "widthKm": 27.0,
+    "minM": 0.0,
+    "maxM": 365.2,
+    "nodata": -32768,
+    "nodataCells": 0,
+    "scoringWindowCells": [
+      47.22,
+      47.22,
+      102.78,
+      102.78
+    ],
+    "markerCells": [
+      75.0,
+      75.0
+    ],
+    "bytes": 45000,
+    "sha256": "c759f906501ad74ea316a0944c5975e6eb1488473cbb5bc9f07186f8cb19adf3",
+    "source": "Copernicus DEM GLO-30 Public (2021 release), 1 arc-second base posting",
+    "heightReference": "EGM2008 geoid",
+    "orientation": "North is up and east is right.",
+    "method": "mean of 3 x 3 blocks of the 60 m preview grid (the same heights the preview image shades); heights rounded to whole metres",
+    "image": "previews/site-haughton-terrain.webp",
+    "generatedAt": "2026-11-15T09:44:27+00:00",
+    "script": "pipeline/make_terrain_mesh.py"
+  },
+  "site:iceland-lava": {
+    "file": "previews/site-iceland-lava-dem.i16",
+    "rows": 150,
+    "cols": 150,
+    "cellM": [
+      180.0,
+      180.0
+    ],
+    "widthKm": 27.0,
+    "minM": 651.0,
+    "maxM": 1257.5,
+    "nodata": -32768,
+    "nodataCells": 0,
+    "scoringWindowCells": [
+      47.22,
+      47.22,
+      102.78,
+      102.78
+    ],
+    "markerCells": [
+      75.0,
+      75.0
+    ],
+    "bytes": 45000,
+    "sha256": "5fd433baa763acda48141925e655bfaf57c503e9c654dd71f0fcfdd5e16638c3",
+    "source": "Copernicus DEM GLO-30 Public (2021 release), 1 arc-second base posting",
+    "heightReference": "EGM2008 geoid",
+    "orientation": "North is up and east is right.",
+    "method": "mean of 3 x 3 blocks of the 60 m preview grid (the same heights the preview image shades); heights rounded to whole metres",
+    "image": "previews/site-iceland-lava-terrain.webp",
+    "generatedAt": "2026-11-15T09:44:27+00:00",
+    "script": "pipeline/make_terrain_mesh.py"
+  },
+  "site:lanzarote": {
+    "file": "previews/site-lanzarote-dem.i16",
+    "rows": 150,
+    "cols": 150,
+    "cellM": [
+      180.0,
+      180.0
+    ],
+    "widthKm": 27.0,
+    "minM": -2.3,
+    "maxM": 582.7,
+    "nodata": -32768,
+    "nodataCells": 0,
+    "scoringWindowCells": [
+      47.22,
+      47.22,
+      102.78,
+      102.78
+    ],
+    "markerCells": [
+      75.0,
+      75.0
+    ],
+    "bytes": 45000,
+    "sha256": "794e763a02fc5617bfcb41ab31e02a5560615e18e775cafbbabeb12736787d53",
+    "source": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+    "heightReference": "EGM96 geoid",
+    "orientation": "North is up and east is right.",
+    "method": "mean of 3 x 3 blocks of the 60 m preview grid (the same heights the preview image shades); heights rounded to whole metres",
+    "image": "previews/site-lanzarote-terrain.webp",
+    "generatedAt": "2026-11-15T09:44:27+00:00",
+    "script": "pipeline/make_terrain_mesh.py"
+  },
+  "site:mcmurdo": {
+    "file": "previews/site-mcmurdo-dem.i16",
+    "rows": 150,
+    "cols": 150,
+    "cellM": [
+      180.0,
+      180.0
+    ],
+    "widthKm": 27.0,
+    "minM": 567.9,
+    "maxM": 3008.8,
+    "nodata": -32768,
+    "nodataCells": 0,
+    "scoringWindowCells": [
+      47.22,
+      47.22,
+      102.78,
+      102.78
+    ],
+    "markerCells": [
+      75.0,
+      75.0
+    ],
+    "bytes": 45000,
+    "sha256": "c0129e8a4b6618ee8a0f5ff2c68b1e4fd3cc5da9758be19d8f105f086c2ee3d1",
+    "source": "Copernicus DEM GLO-30 Public (2021 release), 1 arc-second base posting",
+    "heightReference": "EGM2008 geoid",
+    "orientation": "North is up and east is right.",
+    "method": "mean of 3 x 3 blocks of the 60 m preview grid (the same heights the preview image shades); heights rounded to whole metres",
+    "image": "previews/site-mcmurdo-terrain.webp",
+    "generatedAt": "2026-11-15T09:44:27+00:00",
+    "script": "pipeline/make_terrain_mesh.py"
+  },
+  "site:mdrs-utah": {
+    "file": "previews/site-mdrs-utah-dem.i16",
+    "rows": 150,
+    "cols": 150,
+    "cellM": [
+      180.0,
+      180.0
+    ],
+    "widthKm": 27.0,
+    "minM": 1283.9,
+    "maxM": 1850.9,
+    "nodata": -32768,
+    "nodataCells": 0,
+    "scoringWindowCells": [
+      47.22,
+      47.22,
+      102.78,
+      102.78
+    ],
+    "markerCells": [
+      75.0,
+      75.0
+    ],
+    "bytes": 45000,
+    "sha256": "9a0b7c620c1b0fe0c36b0ff0dbc1b4e47d2cc9009a2e7888f46890b234f8f0fe",
+    "source": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+    "heightReference": "EGM96 geoid",
+    "orientation": "North is up and east is right.",
+    "method": "mean of 3 x 3 blocks of the 60 m preview grid (the same heights the preview image shades); heights rounded to whole metres",
+    "image": "previews/site-mdrs-utah-terrain.webp",
+    "generatedAt": "2026-11-15T09:44:27+00:00",
+    "script": "pipeline/make_terrain_mesh.py"
+  },
+  "site:rio-tinto": {
+    "file": "previews/site-rio-tinto-dem.i16",
+    "rows": 150,
+    "cols": 150,
+    "cellM": [
+      180.0,
+      180.0
+    ],
+    "widthKm": 27.0,
+    "minM": 145.5,
+    "maxM": 823.8,
+    "nodata": -32768,
+    "nodataCells": 0,
+    "scoringWindowCells": [
+      47.22,
+      47.22,
+      102.78,
+      102.78
+    ],
+    "markerCells": [
+      75.0,
+      75.0
+    ],
+    "bytes": 45000,
+    "sha256": "bccae1a016590bee1378609a20d4779579050a301ef86597d2866dd6f99c06d5",
+    "source": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+    "heightReference": "EGM96 geoid",
+    "orientation": "North is up and east is right.",
+    "method": "mean of 3 x 3 blocks of the 60 m preview grid (the same heights the preview image shades); heights rounded to whole metres",
+    "image": "previews/site-rio-tinto-terrain.webp",
+    "generatedAt": "2026-11-15T09:44:27+00:00",
+    "script": "pipeline/make_terrain_mesh.py"
+  },
+  "site:wadi-rum": {
+    "file": "previews/site-wadi-rum-dem.i16",
+    "rows": 150,
+    "cols": 150,
+    "cellM": [
+      180.0,
+      180.0
+    ],
+    "widthKm": 27.0,
+    "minM": 741.2,
+    "maxM": 1705.3,
+    "nodata": -32768,
+    "nodataCells": 0,
+    "scoringWindowCells": [
+      47.22,
+      47.22,
+      102.78,
+      102.78
+    ],
+    "markerCells": [
+      75.0,
+      75.0
+    ],
+    "bytes": 45000,
+    "sha256": "5b332ea9b1351dcd6de77b3f70145ddb2a3d6c9722058cbb253cb605b4fb8f21",
+    "source": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+    "heightReference": "EGM96 geoid",
+    "orientation": "North is up and east is right.",
+    "method": "mean of 3 x 3 blocks of the 60 m preview grid (the same heights the preview image shades); heights rounded to whole metres",
+    "image": "previews/site-wadi-rum-terrain.webp",
+    "generatedAt": "2026-11-15T09:44:27+00:00",
+    "script": "pipeline/make_terrain_mesh.py"
+  },
+  "site:white-desert": {
+    "file": "previews/site-white-desert-dem.i16",
+    "rows": 150,
+    "cols": 150,
+    "cellM": [
+      180.0,
+      180.0
+    ],
+    "widthKm": 27.0,
+    "minM": 2.3,
+    "maxM": 149.9,
+    "nodata": -32768,
+    "nodataCells": 0,
+    "scoringWindowCells": [
+      47.22,
+      47.22,
+      102.78,
+      102.78
+    ],
+    "markerCells": [
+      75.0,
+      75.0
+    ],
+    "bytes": 45000,
+    "sha256": "ff01dbbdd93b9eb5abc9083350a8ba8d04193fc7a0a3ce52fa00fa0090dcbc1e",
+    "source": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+    "heightReference": "EGM96 geoid",
+    "orientation": "North is up and east is right.",
+    "method": "mean of 3 x 3 blocks of the 60 m preview grid (the same heights the preview image shades); heights rounded to whole metres",
+    "image": "previews/site-white-desert-terrain.webp",
+    "generatedAt": "2026-11-15T09:44:27+00:00",
+    "script": "pipeline/make_terrain_mesh.py"
+  },
+  "target:mars-jezero": {
+    "file": "previews/target-mars-jezero-dem.i16",
+    "rows": 150,
+    "cols": 150,
+    "cellM": [
+      180.0,
+      179.865
+    ],
+    "widthKm": 26.98,
+    "minM": -2709.7,
+    "maxM": -1522.7,
+    "nodata": -32768,
+    "nodataCells": 0,
+    "scoringWindowCells": [
+      47.21,
+      47.27,
+      102.81,
+      102.82
+    ],
+    "markerCells": [
+      75.01,
+      75.04
+    ],
+    "bytes": 45000,
+    "sha256": "8d2d6ecfc80e762df5dc6c52e069bcf8005a97b852f9bfb8601883500185aa7c",
+    "source": "the USGS Mars 2020 CTX stereo terrain model",
+    "heightReference": "height above the MOLA areoid, as supplied by the product",
+    "orientation": "North is up and east is right. The source grid is equirectangular with true scale at the equator, so its columns were resampled to make pixels square on the ground at the target latitude.",
+    "method": "mean of 3 x 3 blocks of the 59.955 m preview grid (the same heights the preview image shades); heights rounded to whole metres",
+    "image": "previews/mars-jezero-terrain.webp",
+    "generatedAt": "2026-11-15T09:44:27+00:00",
+    "script": "pipeline/make_terrain_mesh.py"
+  },
+  "target:moon-south-pole": {
+    "file": "previews/target-moon-south-pole-dem.i16",
+    "rows": 277,
+    "cols": 277,
+    "cellM": [
+      180.0,
+      180.0
+    ],
+    "widthKm": 49.86,
+    "minM": -2976.4,
+    "maxM": 1956.5,
+    "nodata": -32768,
+    "nodataCells": 0,
+    "scoringWindowCells": [
+      111.11,
+      111.11,
+      166.67,
+      166.67
+    ],
+    "markerCells": [
+      138.89,
+      138.86
+    ],
+    "bytes": 153458,
+    "sha256": "d311814e95542dea859098f8e9013246fc2f03e0fe89e0a3e5e476692d5e0e7a",
+    "source": "NASA LRO LOLA laser-altimeter elevations",
+    "heightReference": "height above the 1737.4 km reference sphere (DN x 0.5 m; the label OFFSET, the sphere radius, is not added)",
+    "orientation": "Up is toward 0° E (the Moon's near side, facing Earth) and right is toward 90° E. The south pole is inside the frame, so every direction away from it is north and there is no single north arrow.",
+    "method": "mean of 3 x 3 blocks of the 60 m preview grid (the same heights the preview image shades); heights rounded to whole metres",
+    "image": "previews/moon-south-pole-terrain.webp",
+    "generatedAt": "2026-11-15T09:44:27+00:00",
+    "script": "pipeline/make_terrain_mesh.py"
+  }
+}

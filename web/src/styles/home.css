@@ -1,0 +1,1653 @@
+/* Home: guided start (world -> target site -> mission objective -> one primary action).
+   Desktop: compact hero, then two columns (world + target | mission + action) so the whole
+   path and the button fit a 1280x720 screen. Small screens: one column, full-width button.
+   Loaded after index.css and system.css, so the old .world-card / .scenario-card base
+   rules there are reused and overridden here. */
+
+.app-main:has(.home) {
+  padding-top: 1rem;
+  padding-bottom: 0.75rem;
+}
+
+.home {
+  max-width: 1200px;
+}
+
+/* ---------------------------------------------------------------- hero */
+
+.home-hero {
+  margin-bottom: var(--space-4);
+}
+
+.home-hero .kicker {
+  margin-bottom: var(--space-1);
+}
+
+.home-hero h1 {
+  margin: 0 0 var(--space-2);
+  font-size: clamp(1.45rem, 1rem + 1.4vw, 2rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.home-hero__lede {
+  margin: 0 0 var(--space-2);
+  max-width: 64rem;
+  color: var(--text-2);
+}
+
+.home-hero__scope {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--muted);
+}
+
+.home-hero__scope strong {
+  color: var(--text-2);
+}
+
+/* ---------------------------------------------------------------- flow layout */
+
+.home-flow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+}
+
+.home-flow__col {
+  display: grid;
+  align-content: start;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.home-step {
+  min-width: 0;
+}
+
+/* position: relative keeps the visually hidden "Step n:" text inside the heading box */
+.home-step__title {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-2);
+  font-size: var(--fs-md);
+  color: var(--text);
+}
+
+.home-step__num {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-strong);
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* a finished step: filled badge AND a check mark (never the colour alone) */
+.home-step.is-done .home-step__num {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+.home-step__done {
+  color: var(--ok);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}
+
+/* ---------------------------------------------------------------- step 1: world cards */
+
+.home .world-cards {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  max-width: none;
+}
+
+.world-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'name orb'
+    'blurb orb'
+    'foot foot';
+  align-items: start;
+  gap: 0.15rem var(--space-3);
+  padding: 0.7rem 0.85rem;
+  border-radius: var(--radius-lg);
+  font: inherit;
+}
+
+/* each world gets its own tint as well as its own planet and name */
+.world-card--moon {
+  background: linear-gradient(140deg, var(--panel) 45%, #252932);
+}
+
+.world-card--mars {
+  background: linear-gradient(140deg, var(--panel) 45%, #2e1e18);
+}
+
+.world-card--moon.is-selected {
+  background: linear-gradient(140deg, var(--panel-2) 45%, #2e333f);
+}
+
+.world-card--mars.is-selected {
+  background: linear-gradient(140deg, var(--panel-2) 45%, #3a251c);
+}
+
+.world-card:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.world-card:disabled:hover {
+  border-color: var(--border);
+}
+
+.world-card__name {
+  grid-area: name;
+  font-size: var(--fs-lg);
+  line-height: 1.2;
+}
+
+.world-card__blurb {
+  grid-area: blurb;
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+}
+
+.world-card__foot {
+  grid-area: foot;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.2rem 0.6rem;
+  min-height: 1.5rem; /* no jump when the "Selected" label appears */
+  margin-top: 0.3rem;
+}
+
+.world-card__count {
+  font-size: var(--fs-xs);
+}
+
+.world-card__picked {
+  padding: 0.05rem 0.5rem;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--text);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* CSS-only planets: a shaded sphere plus a few surface marks (craters / dark plains and a polar cap) */
+.world-card__orb {
+  grid-area: orb;
+  width: 56px;
+  height: 56px;
+  margin: 0;
+  border-radius: 50%;
+  box-shadow:
+    inset -10px -8px 14px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.world-card__orb--moon {
+  background:
+    radial-gradient(circle at 30% 36%, rgba(70, 69, 66, 0.6) 0 9%, transparent 10%),
+    radial-gradient(circle at 63% 27%, rgba(70, 69, 66, 0.5) 0 6%, transparent 7%),
+    radial-gradient(circle at 56% 64%, rgba(70, 69, 66, 0.55) 0 12%, transparent 13%),
+    radial-gradient(circle at 25% 70%, rgba(70, 69, 66, 0.45) 0 5%, transparent 6%),
+    radial-gradient(circle at 35% 30%, #ecebe5, #a5a39c 60%, #6c6a64);
+}
+
+.world-card__orb--mars {
+  background:
+    radial-gradient(ellipse 38% 13% at 50% 3%, rgba(255, 245, 236, 0.9) 0 60%, transparent 100%),
+    radial-gradient(ellipse 34% 15% at 40% 52%, rgba(96, 38, 18, 0.6) 0 65%, transparent 100%),
+    radial-gradient(ellipse 22% 10% at 68% 72%, rgba(96, 38, 18, 0.5) 0 65%, transparent 100%),
+    radial-gradient(circle at 35% 30%, #f2aa7a, #c25c32 60%, #7c3219);
+}
+
+/* ---------------------------------------------------------------- step 2: target site */
+
+.home-target__empty {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+  color: var(--muted);
+  font-size: var(--fs-sm);
+}
+
+.home-target {
+  margin-top: var(--space-3);
+}
+
+/* "Compared with Jezero Crater — ...": the reference site, named but not a separate step */
+.home-target__line {
+  margin: 0;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--panel);
+  font-size: var(--fs-sm);
+  line-height: 1.45;
+}
+
+.home-target__label {
+  color: var(--muted);
+}
+
+.home-target__name {
+  color: var(--text);
+}
+
+.home-target__summary {
+  margin: 0;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  line-height: 1.45;
+}
+
+.home-target__note {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-size: var(--fs-xs);
+}
+
+.home-target__note strong {
+  color: var(--ok);
+}
+
+.home-target .field {
+  margin-bottom: var(--space-2);
+}
+
+.home-target select {
+  width: 100%;
+}
+
+/* ---------------------------------------------------------------- step 3: mission objective */
+
+.home .missions {
+  position: relative;
+}
+
+/* the step heading already says "Mission objective"; keep the legend for assistive tech only */
+.home .missions__legend {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.home .missions__grid {
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2);
+}
+
+.home .mission {
+  padding: 0.55rem 0.8rem 0.55rem 2.3rem;
+}
+
+.home .mission__input {
+  left: 0.8rem;
+  top: 0.75rem;
+}
+
+.home .mission__q {
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+}
+
+.home-notes:empty {
+  display: none;
+}
+
+.home-note {
+  margin: var(--space-2) 0 0;
+  padding: 0.4rem 0.65rem;
+  border: 1px solid var(--border-strong);
+  border-left: 3px solid var(--info);
+  border-radius: var(--radius);
+  background: var(--panel-2);
+  font-size: var(--fs-sm);
+}
+
+.home-note--custom {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.home-caveat {
+  margin: var(--space-2) 0 0;
+  font-size: var(--fs-xs);
+}
+
+/* ---------------------------------------------------------------- primary action */
+
+.home-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border);
+}
+
+.home .btn--large {
+  margin-top: 0;
+}
+
+.home-cta__hint {
+  flex: 1 1 14rem;
+  min-width: 0;
+  margin: 0;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+/* nothing chosen yet: the button stays focusable and explains what is missing when pressed */
+.home-cta .btn[aria-disabled='true'] {
+  opacity: 0.7;
+}
+
+.home-cta__hint.is-nudge {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.home-cta__hint.is-nudge::before {
+  content: '→ ';
+  color: var(--accent);
+}
+
+/* ---------------------------------------------------------------- examples (secondary) */
+
+.home-examples {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2) var(--space-4);
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border);
+}
+
+.home-examples__title {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+}
+
+.home-examples__hint {
+  margin: 0.1rem 0 0;
+  font-size: var(--fs-xs);
+}
+
+.home-examples__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: var(--space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.home-examples__list li {
+  display: flex; /* equal-height cards */
+  min-width: 0;
+}
+
+/* quieter than the primary button: outline only, small type */
+.home .scenario-card {
+  flex: 1;
+  min-width: 0;
+  gap: 0.05rem;
+  padding: 0.45rem 0.75rem;
+  background: transparent;
+  text-decoration: none;
+}
+
+.home .scenario-card__title {
+  font-size: var(--fs-sm);
+}
+
+.home .scenario-card__meta {
+  font-size: var(--fs-xs);
+}
+
+/* ---------------------------------------------------------------- responsive */
+
+@media (min-width: 600px) {
+  .home .missions__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1000px) {
+  .home-flow,
+  .home-examples {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--space-5);
+  }
+
+  .home-flow {
+    align-items: start;
+  }
+
+  .home-examples {
+    align-items: center;
+  }
+}
+
+/* demo laptop (1280x720): tighten the vertical rhythm so the button stays above the fold */
+@media (min-width: 1000px) and (max-height: 780px) {
+  .app-main:has(.home) {
+    padding-top: 0.75rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .home-hero {
+    margin-bottom: var(--space-3);
+  }
+
+  .home-hero h1 {
+    font-size: 1.75rem;
+  }
+
+  .home-flow__col {
+    gap: var(--space-3);
+  }
+
+  .home-examples {
+    margin-top: var(--space-3);
+    padding-top: var(--space-2);
+  }
+}
+
+@media (max-width: 640px) {
+  .home-cta .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 520px) {
+  .home .world-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---------------------------------------------------------------- Mission Control v2: hero */
+
+.home-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-5);
+  align-items: center;
+  padding: var(--space-5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(600px 220px at 85% 50%, rgba(47, 214, 240, 0.08), transparent 70%),
+    linear-gradient(180deg, rgba(16, 32, 58, 0.6), rgba(11, 23, 41, 0.6));
+  box-shadow: var(--panel-glow);
+}
+
+.home-emblem {
+  width: 300px;
+  height: auto;
+}
+
+.home-questions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home-questions li {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: rgba(6, 13, 26, 0.55);
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+}
+
+.home-questions__q {
+  margin-right: 0.35rem;
+  font-family: var(--font-tech);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+@media (max-width: 1100px) {
+  .home-hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .home-emblem {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .home-hero {
+    padding: var(--space-4);
+  }
+}
+
+.home-cta .btn--primary[aria-disabled='true'] {
+  opacity: 1;
+  background: var(--panel-2);
+  border: 1px dashed var(--border-strong);
+  color: var(--text-2);
+}
+
+/* Release candidate: one plain-English sentence leads the hero */
+.home-hero__plain {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* The primary action stays reachable: pinned to the bottom of the viewport while its column is on screen */
+.home-cta {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  padding-bottom: var(--space-3);
+  background: linear-gradient(180deg, rgba(6, 13, 26, 0.75), var(--bg) 35%);
+}
+
+/* demo laptop (1280x720): drop the decorative parts of the hero so step 1, step 2 and the button fit */
+@media (min-width: 1000px) and (max-height: 780px) {
+  .home-hero {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .home-emblem,
+  .home-questions {
+    display: none;
+  }
+}
+
+/* phones: a fixed action bar, so the result is one tap away from anywhere on the page */
+@media (max-width: 640px) {
+  .home {
+    padding-bottom: 7.5rem;
+  }
+
+  .home-cta {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: var(--space-2) var(--space-3) calc(var(--space-2) + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--border-strong);
+    background: rgba(6, 13, 26, 0.96);
+  }
+
+  .home-cta__hint {
+    flex-basis: 100%;
+    font-size: var(--fs-xs);
+  }
+}
+
+/* ---------------------------------------------------------------- First visit: lead (2026-11-15)
+   What can I find here + how do I start, in the first viewport: heading, one-line promise,
+   the current selection with one way to change it, one primary action and a credited terrain
+   image. The world/objective chooser sits below and opens on "Change". */
+
+.home-lead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 400px);
+  gap: var(--space-5);
+  align-items: center;
+  margin-bottom: var(--space-4);
+  padding: var(--space-5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(640px 260px at 85% 50%, rgba(47, 214, 240, 0.07), transparent 70%),
+    linear-gradient(180deg, rgba(16, 32, 58, 0.6), rgba(11, 23, 41, 0.6));
+  box-shadow: var(--panel-glow);
+}
+
+.home-lead__text {
+  min-width: 0;
+}
+
+.home-lead .kicker {
+  margin-bottom: var(--space-1);
+}
+
+.home-lead h1 {
+  margin: 0 0 var(--space-2);
+  font-size: clamp(1.6rem, 1.05rem + 1.8vw, 2.4rem);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+.home-lead__lede {
+  margin: 0 0 var(--space-4);
+  max-width: 38rem;
+  color: var(--text-2);
+  font-size: 1.05rem;
+}
+
+.home-lead__scope {
+  margin: var(--space-3) 0 0;
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+/* current selection: one readable line + one action to change it */
+.home-pick {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  max-width: 38rem;
+  margin-bottom: var(--space-3);
+  padding: 0.6rem 0.75rem 0.6rem 0.9rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: rgba(6, 13, 26, 0.6);
+}
+
+.home-pick__now {
+  display: grid;
+  gap: 0.1rem;
+  flex: 1 1 9rem;
+  min-width: 0;
+}
+
+.home-pick__label {
+  font-family: var(--font-tech);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.home-pick__value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.home-pick__value--empty {
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+.home-pick__part {
+  white-space: nowrap;
+}
+
+.home-pick__part .world-dot {
+  margin-right: 0.4rem;
+  vertical-align: 0.1em;
+}
+
+.home-pick__sep {
+  color: var(--accent);
+}
+
+.home-pick__change {
+  flex: none;
+  min-height: 40px;
+}
+
+.home-go {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+}
+
+.home-go__btn {
+  min-height: 52px;
+  padding-inline: 1.6rem;
+  font-size: 1.1rem;
+}
+
+.home-go__btn[aria-disabled='true'] {
+  background: var(--panel-2);
+  border: 1px dashed var(--border-strong);
+  color: var(--text-2);
+}
+
+.home-go__hint {
+  flex: 1 1 14rem;
+  min-width: 0;
+  margin: 0;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+.home-go__hint.is-nudge {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.home-go__hint.is-nudge::before {
+  content: '→ ';
+  color: var(--accent);
+}
+
+/* terrain image with its credit; text never sits on top of it */
+.home-terrain {
+  margin: 0;
+  min-width: 0;
+}
+
+.home-terrain__frame {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: #0a1a33;
+}
+
+.home-terrain__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.home-terrain__credit {
+  margin-top: 0.4rem;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.home-terrain__credit a {
+  color: var(--text-2);
+}
+
+/* chooser (opens on "Change") */
+.home-chooser {
+  margin-bottom: var(--space-4);
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: rgba(11, 23, 41, 0.55);
+  scroll-margin-top: calc(var(--topbar-h, 64px) + 0.75rem);
+}
+
+.home-chooser__done {
+  margin: 0;
+}
+
+/* motion: world selection — new terrain fades in, selected card eases into its state (~200 ms).
+   The global prefers-reduced-motion rule in system.css turns all of this off. */
+.world-card {
+  transition:
+    border-color 200ms ease-out,
+    background-color 200ms ease-out,
+    box-shadow 200ms ease-out,
+    transform 200ms ease-out;
+}
+
+.world-card.is-selected {
+  transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .home-terrain__img {
+    animation: home-terrain-in 200ms ease-out both;
+  }
+
+  .world-card__picked {
+    animation: home-fade-up 180ms ease-out both;
+  }
+
+  .home-chooser:not([hidden]) {
+    animation: home-fade-up 200ms ease-out both;
+  }
+}
+
+@keyframes home-terrain-in {
+  from {
+    opacity: 0;
+    transform: scale(1.03);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes home-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* demo laptop (1280x720): keep heading, selection and the button above the fold */
+@media (min-width: 1000px) and (max-height: 780px) {
+  .home-lead {
+    padding: var(--space-4);
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 330px);
+  }
+
+  .home-lead__lede {
+    margin-bottom: var(--space-3);
+  }
+}
+
+@media (max-width: 900px) {
+  .home-lead {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-3);
+  }
+
+  /* the terrain becomes a short banner above the heading */
+  .home-terrain {
+    order: -1;
+  }
+
+  .home-terrain__frame {
+    aspect-ratio: auto;
+    height: 150px;
+  }
+
+  .home-terrain__img {
+    object-position: 60% 40%;
+  }
+}
+
+@media (max-width: 640px) {
+  .home {
+    padding-bottom: 1rem;
+  }
+
+  .home-lead {
+    padding: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+
+  .home-lead__lede {
+    font-size: var(--fs-sm);
+    margin-bottom: var(--space-3);
+  }
+
+  .home-terrain__frame {
+    height: 112px;
+  }
+
+  .home-pick__value {
+    font-size: 1rem;
+  }
+
+  .home-go__btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .home-go__hint {
+    font-size: var(--fs-xs);
+  }
+
+  .home-chooser {
+    padding: var(--space-3);
+  }
+}
+
+/* ---------------------------------------------------------------- Step 2: criteria and importance */
+.home-crit {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  max-width: 38rem;
+  margin: calc(-1 * var(--space-2)) 0 var(--space-3);
+  padding: 0.6rem 0.75rem 0.6rem 0.9rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: rgba(6, 13, 26, 0.6);
+}
+
+.home-crit__now {
+  display: grid;
+  gap: 0.35rem;
+  flex: 1 1 9rem;
+  min-width: 0;
+}
+
+.home-crit__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home-crit__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: var(--fs-xs);
+  color: var(--text);
+}
+
+.home-crit__chip.is-nodata {
+  border-style: dashed;
+  color: var(--text-2);
+}
+
+.home-crit__dots {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.home-crit__dots span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--border-strong);
+}
+
+.home-crit__dots span.is-on {
+  background: var(--accent);
+}
+
+.home-crit__nodata {
+  color: #f2c29a;
+}
+
+.home-crit__off {
+  flex-basis: 100%;
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+.home-chooser .sliders {
+  margin-top: var(--space-2);
+}
+
+@media (max-width: 640px) {
+  .home-crit {
+    margin-top: calc(-1 * var(--space-1));
+  }
+}
+
+.home-crit__more {
+  display: none;
+}
+
+/* phones: keep heading, selection, criteria and the button on the first screen */
+@media (max-width: 640px) {
+  .home-lead .kicker {
+    display: none;
+  }
+
+  .home-terrain__frame {
+    height: 88px;
+  }
+
+  .home-crit__chip.is-extra,
+  .home-crit__off {
+    display: none;
+  }
+
+  .home-crit__more {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.15rem 0.5rem;
+    font-size: var(--fs-xs);
+    color: var(--text-2);
+  }
+
+  .home-pick,
+  .home-crit {
+    padding: 0.5rem 0.6rem 0.5rem 0.75rem;
+  }
+}
+
+.home-pick__value {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.1rem;
+}
+
+/* ================================================================ Home redesign (2026-11-15)
+   Cinematic hero: strong headline + compact selector on the left, the world as a large glowing
+   planet on the right (decorative), the framed scientific terrain inset overlapping its edge. */
+
+.page.home2 {
+  max-width: 1320px;
+}
+
+.home2__hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  min-height: calc(100dvh - var(--topbar-h) - 140px);
+  padding: clamp(0.5rem, 2vw, 1.5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+  isolation: isolate;
+}
+
+/* faint static starfield (no motion) */
+.home2__hero::before {
+  content: '';
+  position: absolute;
+  inset: -2rem -3rem;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, rgba(255, 255, 255, 0.55), transparent 60%),
+    radial-gradient(1px 1px at 28% 72%, rgba(255, 255, 255, 0.35), transparent 60%),
+    radial-gradient(1.5px 1.5px at 46% 12%, rgba(255, 255, 255, 0.5), transparent 60%),
+    radial-gradient(1px 1px at 62% 88%, rgba(255, 255, 255, 0.4), transparent 60%),
+    radial-gradient(1px 1px at 74% 8%, rgba(255, 255, 255, 0.45), transparent 60%),
+    radial-gradient(1.5px 1.5px at 88% 42%, rgba(255, 255, 255, 0.4), transparent 60%),
+    radial-gradient(1px 1px at 94% 76%, rgba(255, 255, 255, 0.35), transparent 60%),
+    radial-gradient(1px 1px at 6% 56%, rgba(255, 255, 255, 0.3), transparent 60%),
+    radial-gradient(1px 1px at 38% 40%, rgba(255, 255, 255, 0.25), transparent 60%),
+    radial-gradient(1px 1px at 55% 60%, rgba(255, 255, 255, 0.25), transparent 60%);
+}
+
+.home2__copy {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+.home2__title {
+  margin: 0 0 1rem;
+  font-size: clamp(2.3rem, 1.2rem + 3.6vw, 4.4rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.home2__accent {
+  color: #dfe7f0;
+  text-shadow: 0 0 28px rgba(95, 224, 242, 0.35);
+}
+
+.home2__accent--mars {
+  color: #f2a06a;
+  text-shadow: 0 0 28px rgba(232, 120, 60, 0.4);
+}
+
+.home2__lede {
+  max-width: 34rem;
+  margin: 0 0 1.75rem;
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.15rem);
+  line-height: 1.55;
+  color: var(--text-2);
+}
+
+.home2__console {
+  max-width: 40rem;
+  padding: 1.1rem 1.15rem 1rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, rgba(15, 28, 51, 0.82), rgba(8, 16, 31, 0.88));
+  box-shadow:
+    0 30px 70px -30px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(10px);
+}
+
+.home2__mission-q {
+  margin: 0.75rem 0 0;
+  font-size: 0.88rem;
+  color: var(--text-2);
+}
+
+.home2__go {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 0.75rem;
+  margin-top: 1rem;
+}
+
+.home2__cta {
+  min-height: 52px;
+  padding: 0.7rem 1.4rem;
+  font-size: 1.08rem;
+  border-radius: 12px;
+}
+
+.home2__cta-arrow {
+  display: inline-block;
+  margin-left: 0.15rem;
+}
+
+.home2__cta[aria-disabled='true'] {
+  background: var(--panel-2);
+  border: 1px dashed var(--border-strong);
+  color: var(--text-2);
+  box-shadow: none;
+}
+
+.home2__adjust {
+  min-height: 44px;
+}
+
+.home2__adjust[aria-expanded='true'] {
+  border-color: var(--accent-line);
+  color: var(--text);
+  background: var(--accent-soft);
+}
+
+.home2__custom {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.home2__hint {
+  margin: 0.6rem 0 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.home2__hint.is-nudge {
+  color: var(--warn-text);
+  font-weight: 600;
+}
+
+.home2__criteria {
+  max-width: 40rem;
+  margin-top: 0.75rem;
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: rgba(11, 21, 39, 0.92);
+}
+
+.home2__criteria[hidden] {
+  display: none;
+}
+
+.home2__notes:empty {
+  display: none;
+}
+
+.home2__caveat {
+  margin: 0.75rem 0 0;
+}
+
+.home2__scope {
+  max-width: 40rem;
+  margin: 1rem 0 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* ---------------------------------------------------------------- the visual column */
+
+.home2__visual {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  min-width: 0;
+}
+
+.home2__planet {
+  width: min(100%, 540px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* a very slow drift so the planet feels alive; off under reduced motion */
+  .home2__planet .planet-art__layer.is-on .planet-art__svg {
+    animation: home2-drift 24s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes home2-drift {
+  from {
+    transform: translateY(-4px) rotate(-1deg);
+  }
+  to {
+    transform: translateY(6px) rotate(1.5deg);
+  }
+}
+
+.home2__art-note {
+  margin: -0.25rem 0 0;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* scientific inset: hard frame, data tag, caption — deliberately unlike the soft planet */
+.home2__terrain {
+  position: absolute;
+  left: -1rem;
+  bottom: 1.75rem;
+  z-index: 2;
+  width: min(250px, 46%);
+  margin: 0;
+  padding: 0.45rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: rgba(5, 10, 20, 0.92);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+}
+
+.home2__terrain-frame {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--panel-2);
+}
+
+.home2__terrain-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.home2__terrain-tag {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+}
+
+.home2__terrain-cap {
+  margin-top: 0.4rem;
+  font-size: 0.7rem;
+  line-height: 1.4;
+  color: var(--text-2);
+}
+
+/* ---------------------------------------------------------------- examples */
+
+.home2__examples {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  align-items: center;
+  gap: 1rem 2rem;
+  padding: 1.5rem 0 0.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.home2__examples-head h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.05rem;
+}
+
+.home2__examples-head .hint {
+  margin: 0;
+}
+
+.home2__examples-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.scenario2 {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 64px;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(11, 21, 39, 0.7);
+  color: var(--text);
+  text-decoration: none;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.scenario2:hover {
+  border-color: var(--accent-line);
+  background: var(--accent-soft);
+}
+
+.scenario2 .world-dot {
+  width: 0.8rem;
+  height: 0.8rem;
+  margin: 0;
+  flex: none;
+}
+
+.scenario2__text {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+}
+
+.scenario2__title {
+  font-weight: 650;
+}
+
+.scenario2__meta {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.scenario2__go {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .scenario2__go,
+  .home2__cta-arrow {
+    transition: transform 150ms ease;
+  }
+
+  .scenario2:hover .scenario2__go,
+  .home2__cta:hover .home2__cta-arrow {
+    transform: translateX(3px);
+  }
+}
+
+/* ---------------------------------------------------------------- narrower screens */
+
+@media (max-width: 1000px) {
+  .home2__hero {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+
+  .home2__visual {
+    order: -1;
+    width: min(100%, 440px);
+    justify-self: center;
+  }
+
+  .home2__examples {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* phones: the planet rises behind the headline so the selector and the primary action stay
+   above the fold; the scientific inset moves into the flow below the search */
+@media (max-width: 760px) {
+  .home2__hero {
+    gap: 1rem;
+    padding-top: 0.25rem;
+  }
+
+  .home2__visual {
+    display: contents;
+  }
+
+  .home2 .home2__planet {
+    position: absolute;
+    top: -2.25rem;
+    right: -4.5rem;
+    z-index: 0;
+    width: 230px;
+    opacity: 0.9;
+  }
+
+  .home2__art-note,
+  .home2__copy > .kicker,
+  .home2__mission-q {
+    display: none;
+  }
+
+  .home2__title {
+    max-width: 11ch;
+    margin-bottom: 0.6rem;
+    font-size: 2.2rem;
+    text-shadow: 0 2px 18px rgba(5, 10, 20, 0.85);
+  }
+
+  .home2__lede {
+    margin-bottom: 0.9rem;
+    font-size: 0.92rem;
+    line-height: 1.45;
+    text-shadow: 0 1px 10px rgba(5, 10, 20, 0.9);
+  }
+
+  .home2__console {
+    padding: 0.8rem 0.85rem;
+  }
+
+  .home2__go {
+    margin-top: 0.75rem;
+  }
+
+  .home2__cta {
+    min-height: 50px;
+  }
+
+  .home2__cta,
+  .home2__adjust {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+
+  .home2__terrain {
+    position: static;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .home2__terrain-cap {
+    margin: 0;
+  }
+
+  .home2__terrain-tag {
+    top: 4px;
+    left: 4px;
+    padding: 0 0.3rem;
+    font-size: 0.56rem;
+  }
+}
+
+/* ---------------------------------------------------------------- Prototype brief (2026-11-15)
+   "Start a new mission" step title, priorities beside a live ranking, and the
+   "what makes an analog useful / how discovery works" strip under the hero. */
+.home2__console-title {
+  margin: 0 0 0.6rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.home2__prio {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-3, 12px);
+}
+
+/* the live ranking stays in view while the sliders below it scroll */
+.home2__prio .rank-preview {
+  position: sticky;
+  top: calc(var(--topbar-h, 60px) + 8px);
+  z-index: 2;
+}
+
+.rank-preview {
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--panel-2);
+}
+
+.rank-preview__title {
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+}
+
+.rank-preview__sub {
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.rank-preview__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.rank-preview__item {
+  display: grid;
+  grid-template-columns: 1.4rem minmax(0, 1fr) auto 2.4rem;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: var(--fs-sm);
+}
+
+.rank-preview__rank {
+  color: var(--accent);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.rank-preview__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rank-preview__score {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.rank-preview__move {
+  text-align: right;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.rank-preview__move.is-up {
+  color: #9ee0c4;
+}
+
+.rank-preview__move.is-down {
+  color: #f2a65a;
+}
+
+.home2__how {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  gap: var(--space-5, 24px);
+  margin: var(--space-5, 24px) 0;
+  padding: var(--space-5, 24px) 0;
+  border-top: 1px solid var(--border);
+}
+
+.home2__why h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+}
+
+.home2__why p {
+  margin: 0;
+  color: var(--text-2);
+  line-height: 1.6;
+  max-width: 62ch;
+}
+
+.home2__steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3, 12px);
+}
+
+.home2__steps li {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: 0.6rem;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+
+.home2__step-n {
+  grid-row: span 2;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--accent-line);
+  border-radius: 50%;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.home2__steps strong {
+  font-size: 0.95rem;
+}
+
+.home2__steps span:last-child {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+@media (max-width: 900px) {
+  .home2__how {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .home2__steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

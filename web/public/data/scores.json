@@ -1,0 +1,591 @@
+{
+  "generatedAt": "2026-11-14T06:11:36+00:00",
+  "defaultPreset": "balanced",
+  "minCriteria": 3,
+  "byTarget": {
+    "mars-jezero": [
+      {
+        "site": "lanzarote",
+        "score": 95,
+        "scoreRange": [
+          56,
+          97
+        ],
+        "contrib": {
+          "terrain": 0.2722,
+          "aridity": null,
+          "temp": null,
+          "temp_range": null,
+          "veg": 0.2783,
+          "geology": 0.3,
+          "ice": 0.1
+        },
+        "coverage": {
+          "used": 4,
+          "selected": 7
+        },
+        "why": [
+          "Strongest match: geology match (basalt)",
+          "Bare ground close to target",
+          "Terrain relief close to target"
+        ],
+        "gap": "No gaps on the selected criteria"
+      },
+      {
+        "site": "iceland-lava",
+        "score": 76,
+        "scoreRange": [
+          71,
+          77
+        ],
+        "contrib": {
+          "terrain": 0.1791,
+          "aridity": 0.1067,
+          "temp": 0.0932,
+          "temp_range": 0.0087,
+          "veg": 0.1837,
+          "geology": 0.1875,
+          "ice": null
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
+        },
+        "why": [
+          "Strongest match: geology match (basalt)",
+          "Bare ground close to target",
+          "Terrain relief close to target"
+        ],
+        "gap": "Much warmer than the target"
+      },
+      {
+        "site": "death-valley",
+        "score": 67,
+        "scoreRange": [
+          39,
+          80
+        ],
+        "contrib": {
+          "terrain": 0.2978,
+          "aridity": null,
+          "temp": null,
+          "temp_range": null,
+          "veg": 0.2696,
+          "geology": 0.0,
+          "ice": 0.1
+        },
+        "coverage": {
+          "used": 4,
+          "selected": 7
+        },
+        "why": [
+          "Strongest match: terrain relief",
+          "Bare ground close to target",
+          "Ground ice / permafrost: no"
+        ],
+        "gap": "Geology match: evaporite vs the target's basalt"
+      },
+      {
+        "site": "atacama",
+        "score": 64,
+        "scoreRange": [
+          64,
+          64
+        ],
+        "contrib": {
+          "terrain": 0.1598,
+          "aridity": 0.1758,
+          "temp": 0.0444,
+          "temp_range": 0.0481,
+          "veg": 0.1545,
+          "geology": 0.0,
+          "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
+        "why": [
+          "Strongest match: aridity",
+          "Terrain relief close to target",
+          "Bare ground close to target"
+        ],
+        "gap": "Geology match: sulfate vs the target's basalt"
+      },
+      {
+        "site": "mcmurdo",
+        "score": 64,
+        "scoreRange": [
+          41,
+          77
+        ],
+        "contrib": {
+          "terrain": 0.1467,
+          "aridity": 0.2533,
+          "temp": 0.2242,
+          "temp_range": 0.0168,
+          "veg": null,
+          "geology": null,
+          "ice": 0.0
+        },
+        "coverage": {
+          "used": 5,
+          "selected": 7
+        },
+        "why": [
+          "Strongest match: aridity",
+          "Surface temperature close to target"
+        ],
+        "gap": "Rougher than the target"
+      },
+      {
+        "site": "danakil",
+        "score": 63,
+        "scoreRange": [
+          37,
+          78
+        ],
+        "contrib": {
+          "terrain": 0.2611,
+          "aridity": null,
+          "temp": null,
+          "temp_range": null,
+          "veg": 0.2709,
+          "geology": 0.0,
+          "ice": 0.1
+        },
+        "coverage": {
+          "used": 4,
+          "selected": 7
+        },
+        "why": [
+          "Strongest match: bare ground",
+          "Terrain relief close to target",
+          "Ground ice / permafrost: no"
+        ],
+        "gap": "Geology match: evaporite vs the target's basalt"
+      },
+      {
+        "site": "mdrs-utah",
+        "score": 63,
+        "scoreRange": [
+          63,
+          63
+        ],
+        "contrib": {
+          "terrain": 0.1723,
+          "aridity": 0.1552,
+          "temp": 0.0569,
+          "temp_range": 0.0367,
+          "veg": 0.1547,
+          "geology": 0.0,
+          "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
+        "why": [
+          "Strongest match: terrain relief",
+          "Aridity close to target",
+          "Bare ground close to target"
+        ],
+        "gap": "Geology match: clay vs the target's basalt"
+      },
+      {
+        "site": "white-desert",
+        "score": 62,
+        "scoreRange": [
+          62,
+          62
+        ],
+        "contrib": {
+          "terrain": 0.1546,
+          "aridity": 0.1752,
+          "temp": 0.0372,
+          "temp_range": 0.0368,
+          "veg": 0.1581,
+          "geology": 0.0,
+          "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
+        "why": [
+          "Strongest match: aridity",
+          "Bare ground close to target",
+          "Terrain relief close to target"
+        ],
+        "gap": "Geology match: sedimentary vs the target's basalt"
+      },
+      {
+        "site": "wadi-rum",
+        "score": 59,
+        "scoreRange": [
+          59,
+          59
+        ],
+        "contrib": {
+          "terrain": 0.1151,
+          "aridity": 0.1729,
+          "temp": 0.043,
+          "temp_range": 0.0453,
+          "veg": 0.1531,
+          "geology": 0.0,
+          "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
+        "why": [
+          "Strongest match: aridity",
+          "Bare ground close to target",
+          "Ground ice / permafrost: no"
+        ],
+        "gap": "Geology match: sedimentary vs the target's basalt"
+      },
+      {
+        "site": "haughton",
+        "score": 57,
+        "scoreRange": [
+          57,
+          57
+        ],
+        "contrib": {
+          "terrain": 0.168,
+          "aridity": 0.1481,
+          "temp": 0.108,
+          "temp_range": 0.0115,
+          "veg": 0.1315,
+          "geology": 0.0,
+          "ice": 0.0
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
+        "why": [
+          "Strongest match: terrain relief",
+          "Aridity close to target",
+          "Bare ground close to target"
+        ],
+        "gap": "Geology match: sedimentary vs the target's basalt"
+      },
+      {
+        "site": "rio-tinto",
+        "score": 50,
+        "scoreRange": [
+          50,
+          50
+        ],
+        "contrib": {
+          "terrain": 0.1637,
+          "aridity": 0.1352,
+          "temp": 0.0447,
+          "temp_range": 0.0317,
+          "veg": 0.0699,
+          "geology": 0.0,
+          "ice": 0.0588
+        },
+        "coverage": {
+          "used": 7,
+          "selected": 7
+        },
+        "why": [
+          "Strongest match: terrain relief",
+          "Aridity close to target",
+          "Ground ice / permafrost: no"
+        ],
+        "gap": "Geology match: sulfate vs the target's basalt"
+      }
+    ],
+    "moon-south-pole": [
+      {
+        "site": "mcmurdo",
+        "score": 86,
+        "scoreRange": [
+          54,
+          92
+        ],
+        "contrib": {
+          "terrain": 0.2635,
+          "aridity": 0.2786,
+          "temp": 0.2219,
+          "temp_range": null,
+          "veg": null,
+          "geology": null,
+          "ice": 0.1
+        },
+        "coverage": {
+          "used": 4,
+          "selected": 7
+        },
+        "why": [
+          "Strongest match: aridity",
+          "Terrain relief close to target",
+          "Surface temperature near Earth's extreme (target is beyond Earth's range)"
+        ],
+        "gap": "No gaps on the selected criteria"
+      },
+      {
+        "site": "lanzarote",
+        "score": 58,
+        "scoreRange": [
+          36,
+          74
+        ],
+        "contrib": {
+          "terrain": 0.1527,
+          "aridity": null,
+          "temp": null,
+          "temp_range": null,
+          "veg": 0.2783,
+          "geology": 0.15,
+          "ice": 0.0
+        },
+        "coverage": {
+          "used": 4,
+          "selected": 7
+        },
+        "why": [
+          "Strongest match: bare ground"
+        ],
+        "gap": "Geology match: basalt is only related to the target's anorthosite"
+      },
+      {
+        "site": "iceland-lava",
+        "score": 57,
+        "scoreRange": [
+          53,
+          59
+        ],
+        "contrib": {
+          "terrain": 0.0743,
+          "aridity": 0.1138,
+          "temp": 0.0829,
+          "temp_range": null,
+          "veg": 0.196,
+          "geology": 0.1,
+          "ice": null
+        },
+        "coverage": {
+          "used": 5,
+          "selected": 7
+        },
+        "why": [
+          "Strongest match: bare ground"
+        ],
+        "gap": "Much smoother than the target"
+      },
+      {
+        "site": "haughton",
+        "score": 53,
+        "scoreRange": [
+          53,
+          53
+        ],
+        "contrib": {
+          "terrain": 0.069,
+          "aridity": 0.1574,
+          "temp": 0.0992,
+          "temp_range": null,
+          "veg": 0.1397,
+          "geology": 0.0,
+          "ice": 0.0625
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
+        },
+        "why": [
+          "Strongest match: aridity",
+          "Bare ground close to target",
+          "Ground ice / permafrost: yes"
+        ],
+        "gap": "Geology match: sedimentary vs the target's anorthosite"
+      },
+      {
+        "site": "wadi-rum",
+        "score": 52,
+        "scoreRange": [
+          52,
+          52
+        ],
+        "contrib": {
+          "terrain": 0.1432,
+          "aridity": 0.1837,
+          "temp": 0.0302,
+          "temp_range": null,
+          "veg": 0.1627,
+          "geology": 0.0,
+          "ice": 0.0
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
+        },
+        "why": [
+          "Strongest match: aridity",
+          "Bare ground close to target",
+          "Terrain relief close to target"
+        ],
+        "gap": "Geology match: sedimentary vs the target's anorthosite"
+      },
+      {
+        "site": "atacama",
+        "score": 48,
+        "scoreRange": [
+          48,
+          48
+        ],
+        "contrib": {
+          "terrain": 0.0958,
+          "aridity": 0.1868,
+          "temp": 0.0317,
+          "temp_range": null,
+          "veg": 0.1642,
+          "geology": 0.0,
+          "ice": 0.0
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
+        },
+        "why": [
+          "Strongest match: aridity",
+          "Bare ground close to target"
+        ],
+        "gap": "Geology match: sulfate vs the target's anorthosite"
+      },
+      {
+        "site": "mdrs-utah",
+        "score": 45,
+        "scoreRange": [
+          45,
+          45
+        ],
+        "contrib": {
+          "terrain": 0.0736,
+          "aridity": 0.1649,
+          "temp": 0.045,
+          "temp_range": null,
+          "veg": 0.1644,
+          "geology": 0.0,
+          "ice": 0.0
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
+        },
+        "why": [
+          "Strongest match: aridity",
+          "Bare ground close to target"
+        ],
+        "gap": "Geology match: clay vs the target's anorthosite"
+      },
+      {
+        "site": "white-desert",
+        "score": 43,
+        "scoreRange": [
+          43,
+          43
+        ],
+        "contrib": {
+          "terrain": 0.0548,
+          "aridity": 0.1861,
+          "temp": 0.0241,
+          "temp_range": null,
+          "veg": 0.168,
+          "geology": 0.0,
+          "ice": 0.0
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
+        },
+        "why": [
+          "Strongest match: aridity",
+          "Bare ground close to target"
+        ],
+        "gap": "Geology match: sedimentary vs the target's anorthosite"
+      },
+      {
+        "site": "death-valley",
+        "score": 40,
+        "scoreRange": [
+          25,
+          62
+        ],
+        "contrib": {
+          "terrain": 0.1271,
+          "aridity": null,
+          "temp": null,
+          "temp_range": null,
+          "veg": 0.2696,
+          "geology": 0.0,
+          "ice": 0.0
+        },
+        "coverage": {
+          "used": 4,
+          "selected": 7
+        },
+        "why": [
+          "Strongest match: bare ground"
+        ],
+        "gap": "Geology match: evaporite vs the target's anorthosite"
+      },
+      {
+        "site": "danakil",
+        "score": 36,
+        "scoreRange": [
+          22,
+          60
+        ],
+        "contrib": {
+          "terrain": 0.086,
+          "aridity": null,
+          "temp": null,
+          "temp_range": null,
+          "veg": 0.2709,
+          "geology": 0.0,
+          "ice": 0.0
+        },
+        "coverage": {
+          "used": 4,
+          "selected": 7
+        },
+        "why": [
+          "Strongest match: bare ground"
+        ],
+        "gap": "Geology match: evaporite vs the target's anorthosite"
+      },
+      {
+        "site": "rio-tinto",
+        "score": 34,
+        "scoreRange": [
+          34,
+          34
+        ],
+        "contrib": {
+          "terrain": 0.0916,
+          "aridity": 0.1437,
+          "temp": 0.032,
+          "temp_range": null,
+          "veg": 0.0743,
+          "geology": 0.0,
+          "ice": 0.0
+        },
+        "coverage": {
+          "used": 6,
+          "selected": 7
+        },
+        "why": [
+          "Strongest match: aridity"
+        ],
+        "gap": "Geology match: sulfate vs the target's anorthosite"
+      }
+    ]
+  }
+}

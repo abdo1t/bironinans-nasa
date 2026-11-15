@@ -1,0 +1,3911 @@
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/App.jsx src/App.jsx
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/App.jsx	2026-11-15 14:10:18.239364900 +0200
++++ src/App.jsx	2026-11-15 14:46:44.510022500 +0200
+@@ -1,7 +1,8 @@
+ import { Suspense, lazy, useEffect, useRef, useState } from 'react'
+ import { Link, NavLink, Route, Routes, useLocation } from 'react-router-dom'
++import DemoGuide from './components/DemoGuide.jsx'
+ import ErrorBoundary from './components/ErrorBoundary.jsx'
+-import { IconCompare, IconDataset, IconDiscover, IconMap, IconMethod, IconMirror } from './components/Icons.jsx'
++import { IconAnalysis, IconCompare, IconDataset, IconDiscover, IconMap, IconMethod, IconMirror } from './components/Icons.jsx'
+ import MissionSelector from './components/MissionSelector.jsx'
+ import RouteEffects from './components/RouteEffects.jsx'
+ import { MockTag } from './components/Tags.jsx'
+@@ -24,6 +25,9 @@
+ const Mirror = lazy(() => import('./pages/Mirror.jsx'))
+ // Scientific report (print / CSV / JSON): on demand.
+ const Report = lazy(() => import('./pages/Report.jsx'))
++// Analog method v1 mission tests (public/method-v1/analog_results.json) and its Arabic method page: on demand.
++const MissionTests = lazy(() => import('./pages/MissionTests.jsx'))
++const MethodAr = lazy(() => import('./pages/MethodAr.jsx'))
+ 
+ /** Original mark: a target point on an orbit ring (no agency insignia). */
+ function BrandMark({ size = 30 }) {
+@@ -41,6 +45,7 @@
+   { to: '/explore', label: 'Explore', Icon: IconMap },
+   { to: '/mirror', label: 'Mirror', Icon: IconMirror },
+   { to: '/compare', label: 'Compare', Icon: IconCompare, count: true },
++  { to: '/tests', label: 'Tests', Icon: IconAnalysis },
+   { to: '/about', label: 'Method', Icon: IconMethod },
+ ]
+ 
+@@ -226,7 +231,10 @@
+           Data bundle: {manifest.kind || 'unknown'}, generated {shortDate(manifest.generatedAt)}.{' '}
+         </span>
+       )}
+-      <span>Independent NASA Space Apps Challenge 2026 project — not affiliated with or endorsed by NASA.</span>
++      <span>Independent NASA Space Apps Challenge 2026 project — not affiliated with or endorsed by NASA.</span>{' '}
++      <Link to="/method/ar" lang="ar" dir="rtl">
++        شرح المنهجية
++      </Link>
+     </footer>
+   )
+ }
+@@ -268,6 +276,7 @@
+     <>
+       <TopBar manifest={data.manifest} isMock={data.isMock} />
+       {children}
++      <DemoGuide />
+       <nav className="tabbar" aria-label="Main (bottom)">
+         <NavLinks variant="tabs" />
+       </nav>
+@@ -330,6 +339,8 @@
+                   <Route path="/mirror" element={<Mirror />} />
+                   <Route path="/report" element={<Report />} />
+                   <Route path="/about" element={<About />} />
++                  <Route path="/tests" element={<MissionTests />} />
++                  <Route path="/method/ar" element={<MethodAr />} />
+                   <Route path="*" element={<NotFound />} />
+                 </Routes>
+               </Suspense>
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/components/CriteriaPanel.jsx src/components/CriteriaPanel.jsx
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/components/CriteriaPanel.jsx	2026-11-15 14:10:18.239364900 +0200
++++ src/components/CriteriaPanel.jsx	2026-11-15 14:16:53.764943000 +0200
+@@ -2,6 +2,7 @@
+ import { PRESETS } from '../lib/presets.js'
+ import { RANK_METHODS, RANK_ORDER } from '../lib/rankMethods.js'
+ import { useAppState } from '../state/AppState.jsx'
++import LiveRanking from './LiveRanking.jsx'
+ import Term from './Term.jsx'
+ import WeightSliders from './WeightSliders.jsx'
+ 
+@@ -56,6 +57,7 @@
+           </span>
+           Criteria weights and reset
+         </h3>
++        <LiveRanking className="criteria__live" />
+         <WeightSliders idPrefix="w" legend="Importance of each criterion" />
+       </div>
+ 
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/components/DemoGuide.jsx src/components/DemoGuide.jsx
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/components/DemoGuide.jsx	1970-01-01 02:00:00.000000000 +0200
++++ src/components/DemoGuide.jsx	2026-11-15 14:33:37.636590000 +0200
+@@ -0,0 +1,153 @@
++import { useCallback, useEffect, useState } from 'react'
++import { useLocation, useNavigate } from 'react-router-dom'
++import { useBundle } from '../data/useBundle.js'
++import { DEMO_STEPS, DEMO_TOTAL_SECS, demoTarget, readStep, writeStep } from '../lib/demoSteps.js'
++import { useAppState } from '../state/AppState.jsx'
++import '../styles/demo.css'
++
++/** Bring an element into view and outline it briefly; waits up to ~2 s for it to render. */
++function spotlight(selector) {
++  if (!selector) return
++  let tries = 0
++  const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
++  const tick = () => {
++    const el = document.querySelector(selector)
++    if (!el) {
++      if (++tries < 40) setTimeout(tick, 50)
++      return
++    }
++    el.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' })
++    el.classList.remove('demo-spot')
++    void el.offsetWidth // restart the outline animation
++    el.classList.add('demo-spot')
++    setTimeout(() => el.classList.remove('demo-spot'), 2600)
++  }
++  setTimeout(tick, 80)
++}
++
++/**
++ * Presenter's guide for the 2–3 minute live demo: a small docked card with the current step,
++ * a line to say, and Back / Next. Next performs the step with ordinary app actions (choose the
++ * target, the objective, a weight, the shortlist; open a screen) — nothing is simulated, every
++ * number on screen is the real ranking. Off unless started (Home "Demo mode" or ?demo=1);
++ * the step survives a reload (sessionStorage). Collapses to a pill.
++ */
++export default function DemoGuide() {
++  const { data } = useBundle()
++  const app = useAppState()
++  const navigate = useNavigate()
++  const location = useLocation()
++  const [step, setStep] = useState(readStep)
++  const [min, setMin] = useState(false)
++
++  // Listen for starts first, then handle ?demo=1 (which dispatches a start).
++  useEffect(() => {
++    const on = () => {
++      setStep(readStep())
++      setMin(false)
++    }
++    window.addEventListener('eaf-demo', on)
++    return () => window.removeEventListener('eaf-demo', on)
++  }, [])
++
++  useEffect(() => {
++    const params = new URLSearchParams(location.search)
++    if (params.get('demo') === '1') {
++      params.delete('demo')
++      writeStep(0)
++      window.dispatchEvent(new Event('eaf-demo'))
++      const s = params.toString()
++      navigate({ pathname: location.pathname, search: s ? `?${s}` : '' }, { replace: true })
++    }
++  }, [location.search, location.pathname, navigate])
++  const go = useCallback(
++    (i) => {
++      const s = DEMO_STEPS[i]
++      if (!s) return
++      writeStep(i)
++      setStep(i)
++      const to = s.go({ app, data, target: demoTarget(data.targets) })
++      // Navigate after AppState's debounced URL write (150 ms) for any state this step set:
++      // that write would otherwise replace a navigation still waiting on a lazy page (Compare).
++      setTimeout(() => {
++        if (to) navigate({ pathname: to.pathname, search: to.search || '' })
++        spotlight(s.spot)
++      }, 220)
++    },
++    [app, data, navigate],
++  )
++
++  if (step === null) return null
++  const s = DEMO_STEPS[step]
++  const elapsed = DEMO_STEPS.slice(0, step).reduce((n, x) => n + x.secs, 0)
++  const end = () => {
++    writeStep(null)
++    setStep(null)
++  }
++
++  if (min) {
++    return (
++      <button type="button" className="demo-pill" onClick={() => setMin(false)}>
++        Demo · step {step + 1}/{DEMO_STEPS.length}
++        <span className="sr-only"> — show the demo guide</span>
++      </button>
++    )
++  }
++
++  return (
++    <aside className="demo-guide" aria-label="Live demo guide">
++      <div className="demo-guide__top">
++        <span className="demo-guide__kicker">
++          Live demo · {step + 1}/{DEMO_STEPS.length}
++        </span>
++        <span className="demo-guide__time" title="Suggested pacing">
++          ~{Math.round(elapsed / 6) / 10}–{Math.round((elapsed + s.secs) / 6) / 10} of {Math.round(DEMO_TOTAL_SECS / 6) / 10} min
++        </span>
++        <button type="button" className="demo-guide__icon" onClick={() => setMin(true)} title="Minimise">
++          <span aria-hidden="true">–</span>
++          <span className="sr-only">Minimise demo guide</span>
++        </button>
++        <button type="button" className="demo-guide__icon" onClick={end} title="End demo">
++          <span aria-hidden="true">×</span>
++          <span className="sr-only">End demo</span>
++        </button>
++      </div>
++      <ol className="demo-guide__dots" aria-hidden="true">
++        {DEMO_STEPS.map((x, i) => (
++          <li key={x.id} className={i < step ? 'is-done' : i === step ? 'is-now' : ''} />
++        ))}
++      </ol>
++      <h2 className="demo-guide__title">{s.title}</h2>
++      <p className="demo-guide__say">“{s.say}”</p>
++      <div className="demo-guide__actions">
++        <button type="button" className="btn btn--small btn--ghost" disabled={step === 0} onClick={() => go(step - 1)}>
++          ← Back
++        </button>
++        <button type="button" className="btn btn--small" onClick={() => go(step)} title="Open this step’s screen again">
++          Show
++        </button>
++        {s.action && (
++          <button
++            type="button"
++            className="btn btn--small"
++            onClick={() => {
++              s.action.run({ app, data })
++              spotlight(s.spot)
++            }}
++          >
++            {s.action.label}
++          </button>
++        )}
++        {step < DEMO_STEPS.length - 1 ? (
++          <button type="button" className="btn btn--small btn--primary" onClick={() => go(step + 1)}>
++            Next: {DEMO_STEPS[step + 1].title.split(' — ')[0]} →
++          </button>
++        ) : (
++          <button type="button" className="btn btn--small btn--primary" onClick={end}>
++            Finish
++          </button>
++        )}
++      </div>
++    </aside>
++  )
++}
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/components/LiveRanking.jsx src/components/LiveRanking.jsx
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/components/LiveRanking.jsx	1970-01-01 02:00:00.000000000 +0200
++++ src/components/LiveRanking.jsx	2026-11-15 14:33:37.636590000 +0200
+@@ -0,0 +1,259 @@
++import '../styles/ranking.css'
++import { useMemo, useRef, useState } from 'react'
++import { useFlip } from '../lib/useFlip.js'
++import { useBundle } from '../data/useBundle.js'
++import { pct } from '../lib/format.js'
++import { missionTitle } from '../lib/missions.js'
++import { PRESETS } from '../lib/presets.js'
++import { biggestMovers, explainScoreChange, rankShift, rankWith, signed, weightChanges } from '../lib/rankShift.js'
++import { useAppState } from '../state/AppState.jsx'
++
++function Move({ s }) {
++  if (!s || s.status === 'none' || s.status === 'same') {
++    return (
++      <span className="lrank__move">
++        <span aria-hidden="true">–</span>
++        <span className="sr-only">unchanged</span>
++      </span>
++    )
++  }
++  if (s.status === 'entered') return <span className="lrank__move is-up">new</span>
++  const up = s.delta > 0
++  return (
++    <span className={`lrank__move ${up ? 'is-up' : 'is-down'}`}>
++      <span aria-hidden="true">{up ? '▲' : '▼'}</span>
++      {Math.abs(s.delta)}
++      <span className="sr-only">
++        {' '}
++        {up ? 'up' : 'down'} from rank {s.prevRank}
++      </span>
++    </span>
++  )
++}
++
++/** Plain-language reason a place moved: each changed weight, re-scored alone with the real engine. */
++function MoveReason({ site, shift, explain, baseLabel }) {
++  if (!site || !explain) return null
++  const items = explain.items.filter((i) => i.effect !== 0 || !i.siteHasData)
++  return (
++    <div className="lrank__why">
++      <p className="lrank__why-head">
++        <strong>{site.name}</strong>{' '}
++        {shift?.prevRank && shift?.rank ? (
++          <>
++            #{shift.prevRank} → #{shift.rank}
++          </>
++        ) : shift?.rank ? (
++          <>now #{shift.rank}</>
++        ) : (
++          <>not scored</>
++        )}
++        {explain.total !== null && (
++          <span className="muted">
++            {' '}
++            · score {explain.baseScore} → {explain.score} ({signed(explain.total)})
++          </span>
++        )}
++      </p>
++      {items.length ? (
++        <ul className="lrank__why-list">
++          {items.slice(0, 4).map((i) => (
++            <li key={i.id}>
++              <span className="lrank__why-crit">
++                {i.label} {i.from}→{i.to}
++              </span>
++              {i.siteHasData ? (
++                <>
++                  <span className={`lrank__why-eff${i.effect > 0 ? ' is-up' : i.effect < 0 ? ' is-down' : ''}`}>
++                    {i.effect === null ? 'no score' : `${signed(i.effect)} pts`}
++                  </span>
++                  <span className="lrank__why-sim">match here {pct(i.sim)}</span>
++                </>
++              ) : (
++                <span className="lrank__why-sim lrank__why-sim--na">no data here — this weight cannot affect it</span>
++              )}
++            </li>
++          ))}
++        </ul>
++      ) : (
++        <p className="lrank__why-none">Its own score did not change; it moved because other places’ scores did.</p>
++      )}
++      {shift?.delta > 0 && explain.total !== null && explain.total <= 0 && (
++        <p className="lrank__why-none">
++          It moved up although its own score did not rise: places above it lost more points or are no longer scored.
++        </p>
++      )}
++      {shift?.delta < 0 && explain.total !== null && explain.total >= 0 && (
++        <p className="lrank__why-none">
++          It moved down although its own score did not fall: other places gained more points.
++        </p>
++      )}
++      <p className="lrank__why-note">
++        Compared with {baseLabel}. Each weight change is re-scored on its own with the same scoring engine; changes
++        interact, so the parts need not add up exactly. Rank also depends on how the other places moved.
++      </p>
++    </div>
++  )
++}
++
++/**
++ * Live ranking beside the research-priority sliders. Every number comes from the app's single
++ * scoring engine (AppState ranking = scoring.js rankSites + orderRanking); the comparison
++ * ranking is the same function with other weights. Shows previous → current rank, the score
++ * change, which weight changes moved a place, and animates the reorder.
++ *
++ * Baseline: "objective" = the mission's default weights; "last" = the weights before the most
++ * recent change.
++ */
++export default function LiveRanking({ limit = 5, className = '' }) {
++  const { data } = useBundle()
++  const app = useAppState()
++  const [baseline, setBaseline] = useState('objective')
++  const [showAll, setShowAll] = useState(false)
++  const [picked, setPicked] = useState(null)
++  const listRef = useRef(null)
++
++  // Weights before the most recent change (React's "state from the previous render" pattern).
++  const wKey = `${data.features.map((f) => app.weights[f.id] || 0).join('-')}|${app.targetId}|${app.rankBy}`
++  const [hist, setHist] = useState({ key: wKey, prev: null, cur: app.weights })
++  if (hist.key !== wKey) setHist({ key: wKey, prev: hist.cur, cur: app.weights })
++
++  const baseId = app.isCustom ? app.basePresetId : app.presetId
++  const baseWeights = baseline === 'last' && hist.prev ? hist.prev : PRESETS[baseId]?.weights || app.weights
++  const baseLabel = baseline === 'last' && hist.prev ? 'your previous setting' : `the ${missionTitle(baseId)} defaults`
++
++  const baseRanking = useMemo(
++    () => rankWith(app.target, data.sites, baseWeights, data.features, data.minCriteria, app.rankBy, data.siteById),
++    [app.target, baseWeights, app.rankBy, data],
++  )
++  const shift = useMemo(() => rankShift(baseRanking, app.ranking), [baseRanking, app.ranking])
++  const changes = weightChanges(baseWeights, app.weights, data.features)
++  const movers = biggestMovers(shift, 1)
++
++  const scored = app.ranking.filter((r) => r.score !== null)
++  const shown = showAll ? scored : scored.slice(0, limit)
++  useFlip(listRef, shown.map((r) => r.site).join(','))
++
++  const focusId = (picked && shift[picked]?.rank ? picked : null) || movers[0]?.site || null
++  const focusSite = focusId ? data.siteById[focusId] : null
++  const explain = useMemo(
++    () =>
++      focusSite && app.target && changes.length
++        ? explainScoreChange(app.target, focusSite, baseWeights, app.weights, data.features, data.minCriteria)
++        : null,
++    // changes is derived from baseWeights + app.weights
++    // eslint-disable-next-line react-hooks/exhaustive-deps
++    [focusSite, baseWeights, app.weights, app.target, data],
++  )
++
++  if (!app.target) return null
++  const baseLeader = baseRanking.find((r) => r.rank === 1)?.site
++  const dropped = Object.keys(shift).filter((id) => shift[id].status === 'dropped')
++  const leaderChanged =changes.length > 0 && scored[0] && baseLeader && baseLeader !== scored[0].site
++
++  return (
++    <section className={`lrank ${className}`} aria-labelledby="lrank-title">
++      <header className="lrank__head">
++        <h3 id="lrank-title" className="lrank__title">
++          Live ranking
++          <span className="lrank__engine">same scoring engine as the results</span>
++        </h3>
++        <div className="seg seg--tiny" role="group" aria-label="Compare the ranking with">
++          <button type="button" aria-pressed={baseline === 'objective'} onClick={() => setBaseline('objective')}>
++            vs objective
++          </button>
++          <button
++            type="button"
++            aria-pressed={baseline === 'last'}
++            disabled={!hist.prev}
++            title={hist.prev ? undefined : 'Change a weight first'}
++            onClick={() => setBaseline('last')}
++          >
++            vs last change
++          </button>
++        </div>
++      </header>
++
++      {changes.length ? (
++        <p className="lrank__changes">
++          <span className="muted">Changed vs {baseLabel}:</span>{' '}
++          {changes.map((c) => (
++            <span key={c.id} className="lrank__chip">
++              {c.label} {c.from}→{c.to}
++            </span>
++          ))}
++        </p>
++      ) : (
++        <p className="lrank__changes muted">Showing {baseLabel}. Move a slider and watch places move.</p>
++      )}
++
++      {leaderChanged && (
++        <p className="lrank__leader" role="status">
++          New best match: <strong>{data.siteById[scored[0].site].name}</strong> (was #
++          {shift[scored[0].site]?.prevRank ?? '–'}) — the recommendation depends on the research priorities.
++        </p>
++      )}
++
++      {scored.length ? (
++        <ol className="lrank__list" ref={listRef}>
++          {shown.map((r) => {
++            const s = shift[r.site]
++            const site = data.siteById[r.site]
++            const isFocus = focusId === r.site && changes.length > 0
++            return (
++              <li key={r.site} data-flip-id={r.site} data-rank={r.rank} className={`lrank__row${isFocus ? ' is-focus' : ''}`}>
++                <button
++                  type="button"
++                  className="lrank__btn"
++                  aria-pressed={isFocus}
++                  onClick={() => setPicked(r.site)}
++                  title="Explain this place’s movement"
++                >
++                  <span className="lrank__rank">{r.rank}</span>
++                  <span className="lrank__name">
++                    <span className="lrank__name-text">{site.name}</span>
++                    {s?.prevRank && s.prevRank !== r.rank && <span className="lrank__was">was #{s.prevRank}</span>}
++                  </span>
++                  <span className="lrank__bar" aria-hidden="true">
++                    <span style={{ width: `${app.rankBy === 'min' ? (r.scoreRange?.[0] ?? r.score) : r.score}%` }} />
++                  </span>
++                  <span
++                    className="lrank__score"
++                    title={app.rankBy === 'min' ? `Conservative lower bound; similarity ${r.score}` : 'Similarity score'}
++                  >
++                    {app.rankBy === 'min' ? `≥${r.scoreRange?.[0] ?? r.score}` : r.score}
++                    {(() => {
++                      // the change of the number actually shown (score, or lower bound when ordered by it)
++                      const d = app.rankBy === 'min' ? s?.minDelta : s?.scoreDelta
++                      return d ? <span className={`lrank__sd${d > 0 ? ' is-up' : ' is-down'}`}>{signed(d)}</span> : null
++                    })()}
++                  </span>
++                  <Move s={s} />
++                </button>
++              </li>
++            )
++          })}
++        </ol>
++      ) : (
++        <p className="hint">No place can be scored with these priorities — give weight to criteria that have data.</p>
++      )}
++
++      {dropped.length > 0 && (
++        <p className="lrank__dropped" role="note">
++          <span aria-hidden="true">◐ </span>
++          <strong>No longer scored:</strong> {dropped.map((id) => `${data.siteById[id].name} (was #${shift[id].prevRank})`).join(', ')}.
++          Fewer than {data.minCriteria} of the weighted criteria have data there — missing data is left out, not counted as a
++          poor match.
++        </p>
++      )}
++
++      {scored.length > limit && (
++        <button type="button" className="link-btn lrank__more" onClick={() => setShowAll((v) => !v)}>
++          {showAll ? `Show top ${limit}` : `Show all ${scored.length} scored places`}
++        </button>
++      )}
++
++      {changes.length > 0 && <MoveReason site={focusSite} shift={shift[focusId]} explain={explain} baseLabel={baseLabel} />}
++    </section>
++  )
++}
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/components/MatchAnalysis.jsx src/components/MatchAnalysis.jsx
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/components/MatchAnalysis.jsx	2026-11-15 14:10:18.239364900 +0200
++++ src/components/MatchAnalysis.jsx	2026-11-15 14:33:37.636590000 +0200
+@@ -63,7 +63,7 @@
+             </>
+           ) : (
+             <span className="mrows__missing">
+-              no {r.missingSide === 'target' ? 'target' : r.missingSide === 'both' ? '' : 'Earth'} value
++              {r.missingSide === 'target' ? 'no target value' : r.missingSide === 'both' ? 'no value on either side' : 'no Earth value'}
+             </span>
+           )}
+         </li>
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/components/ObjectiveLeaders.jsx src/components/ObjectiveLeaders.jsx
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/components/ObjectiveLeaders.jsx	1970-01-01 02:00:00.000000000 +0200
++++ src/components/ObjectiveLeaders.jsx	2026-11-15 14:18:11.922484900 +0200
+@@ -0,0 +1,104 @@
++import { useMemo } from 'react'
++import { useBundle } from '../data/useBundle.js'
++import { MISSION_ORDER, missionTitle } from '../lib/missions.js'
++import { PRESETS } from '../lib/presets.js'
++import { leadersByObjective } from '../lib/rankShift.js'
++import { useAppState } from '../state/AppState.jsx'
++import '../styles/ranking.css'
++
++/**
++ * Same target, every research objective: the top places for each preset, side by side. Each
++ * column is the app's normal ranking (scoring.js) run with that objective's weights — nothing
++ * else changes. Makes the core point visible at a glance: the best analog depends on the
++ * research objective. "Use" switches the mission to that objective.
++ */
++export default function ObjectiveLeaders({ limit = 3 }) {
++  const { data } = useBundle()
++  const app = useAppState()
++  const cols = useMemo(
++    () =>
++      app.target
++        ? leadersByObjective(app.target, data.sites, data.features, data.minCriteria, app.rankBy, data.siteById, PRESETS, MISSION_ORDER, limit)
++        : [],
++    [app.target, app.rankBy, data, limit],
++  )
++  if (!app.target || !cols.length) return null
++  const currentId = app.isCustom ? null : app.presetId
++  const leaders = new Set(cols.map((c) => c.top[0]?.site).filter(Boolean))
++  const inTop = new Set(cols.flatMap((c) => c.top.map((r) => r.site)))
++  const name = (id) => data.siteById[id]?.name ?? id
++  const isMin = app.rankBy === 'min'
++  const open = (r) => Array.isArray(r.scoreRange) && r.scoreRange[0] !== r.scoreRange[1]
++  const partialLeader = cols.some((c) => c.top[0] && open(c.top[0]))
++  const summary =
++    leaders.size > 1
++      ? `${leaders.size} different places come out on top, and ${inTop.size} different places appear in the top ${limit}s.`
++      : `The same place leads every objective, but the places behind it change: ${inTop.size} different places appear in the top ${limit}s.`
++
++  return (
++    <section className="objlead" aria-labelledby="objlead-title">
++      <header className="objlead__head">
++        <h2 id="objlead-title">Same target, different research objectives</h2>
++        <p>
++          Each column ranks the same {data.sites.length} places for {app.target.name.split(' — ')[0]} with one objective’s
++          weights. {summary}
++          {isMin
++            ? ' Ordered by the conservative lower bound (the score if every missing measurement were a total mismatch).'
++            : partialLeader &&
++              ' ◐ marks a score that rests on incomplete data; switch to “Most complete evidence first” to see evidence-backed leaders.'}
++        </p>
++      </header>
++      <ol className="objlead__grid">
++        {cols.map((c) => {
++          const isCur = c.presetId === currentId
++          return (
++            <li key={c.presetId} className={`objlead__col${isCur ? ' is-current' : ''}`}>
++              <div className="objlead__col-head">
++                <h3 className="objlead__col-title">{missionTitle(c.presetId)}</h3>
++                {isCur && <span className="objlead__cur">current</span>}
++              </div>
++              {c.top.length ? (
++                <ol className="objlead__list">
++                  {c.top.map((r) => (
++                    <li key={r.site} className="objlead__item">
++                      <span className="objlead__n">{r.rank}</span>
++                      <span className="objlead__site" title={name(r.site)}>
++                        {name(r.site)}
++                      </span>
++                      <span
++                        className="objlead__score"
++                        title={
++                          open(r)
++                            ? `Similarity ${r.score}; could be ${r.scoreRange[0]}–${r.scoreRange[1]} once missing data is measured`
++                            : `Similarity ${r.score}; no missing site data`
++                        }
++                      >
++                        {open(r) && <span aria-hidden="true">◐ </span>}
++                        {isMin ? `≥${r.scoreRange?.[0] ?? r.score}` : r.score}
++                        <span className="sr-only">
++                          {isMin ? ` conservative lower bound, similarity ${r.score}` : ' of 100'}
++                          {open(r) ? `, incomplete data, range ${r.scoreRange[0]} to ${r.scoreRange[1]}` : ''}
++                        </span>
++                      </span>
++                    </li>
++                  ))}
++                </ol>
++              ) : (
++                <p className="hint objlead__list">No place can be scored with these weights.</p>
++              )}
++              {!isCur && (
++                <button type="button" className="btn btn--small btn--ghost objlead__use" onClick={() => app.setPreset(c.presetId)}>
++                  Use this objective
++                </button>
++              )}
++            </li>
++          )
++        })}
++      </ol>
++      <p className="objlead__foot">
++        Scores are similarity on the weighted criteria, not mission suitability. Weights are the team’s screening
++        priorities, not validated requirements.
++      </p>
++    </section>
++  )
++}
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/components/RouteEffects.jsx src/components/RouteEffects.jsx
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/components/RouteEffects.jsx	2026-11-15 14:10:18.259628300 +0200
++++ src/components/RouteEffects.jsx	2026-11-15 14:46:44.510022500 +0200
+@@ -3,7 +3,7 @@
+ import { useBundle } from '../data/useBundle.js'
+ 
+ const APP = 'Earth Analog Finder'
+-const TITLES = { '/': 'Home', '/explore': 'Explore', '/compare': 'Compare', '/mirror': 'Planetary Mirror', '/about': 'About', '/report': 'Research report' }
++const TITLES = { '/': 'Home', '/explore': 'Explore', '/compare': 'Compare', '/mirror': 'Planetary Mirror', '/about': 'About', '/report': 'Research report', '/tests': 'Mission tests', '/method/ar': 'Method (Arabic)' }
+ 
+ /**
+  * On a PATHNAME change (not on query-only changes, so slider drags and URL sync are
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/components/SiteCards.jsx src/components/SiteCards.jsx
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/components/SiteCards.jsx	2026-11-15 14:10:18.261637800 +0200
++++ src/components/SiteCards.jsx	2026-11-15 14:33:37.645582300 +0200
+@@ -2,6 +2,7 @@
+ import { Link } from 'react-router-dom'
+ import { formatCoord, pct, scoreColor } from '../lib/format.js'
+ import { siteMissing, topReason } from '../lib/selection.js'
++import { useFlip } from '../lib/useFlip.js'
+ import { entrySummary } from '../lib/summary.js'
+ import { CoverageBadge, EvidenceCoverageTag, NoveltyTag } from './Tags.jsx'
+ import WhyGap from './WhyGap.jsx'
+@@ -129,6 +130,9 @@
+ 
+   const allScored = ranking.filter((r) => r.score !== null)
+   const scored = limit ? allScored.slice(0, limit) : allScored
++  // Cards slide to their new position when the ranking changes (reduced motion: no animation).
++  const flipRef = useRef(null)
++  useFlip(flipRef, scored.map((r) => r.site).join(','))
+   const unscored = limit ? [] : ranking.filter((r) => r.score === null)
+ 
+   const card = (r) => {
+@@ -140,6 +144,8 @@
+     return (
+       <li
+         key={site.id}
++        data-flip-id={r.rank ? site.id : undefined}
++        data-rank={r.rank ?? undefined}
+         ref={(el) => {
+           refs.current[site.id] = el
+         }}
+@@ -281,7 +287,7 @@
+ 
+   return (
+     <div className="site-cards" ref={boxRef}>
+-      <ol className="site-cards__list" aria-label={`Earth sites ranked for ${target.name}`}>
++      <ol ref={flipRef} className="site-cards__list" aria-label={`Earth sites ranked for ${target.name}`}>
+         {scored.map(card)}
+       </ol>
+       {unscored.length > 0 && (
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/components/Tags.jsx src/components/Tags.jsx
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/components/Tags.jsx	2026-11-15 14:10:18.261637800 +0200
++++ src/components/Tags.jsx	2026-11-15 14:33:37.645582300 +0200
+@@ -1,12 +1,13 @@
+ import { SCORE_RANGE_HELP, evidenceCoverage, linkifyCitation, scoreRangeText } from '../lib/explain.js'
+-import { EVIDENCE, NO_SCORE_COLOR, scoreColor, sourceKind } from '../lib/format.js'
++import { NO_SCORE_COLOR, evidenceInfo, scoreColor, sourceKind } from '../lib/format.js'
+ 
+ /** Evidence type of a real value (Reanalysis, In-situ, Literature, ...). */
+ export function EvidenceTag({ status }) {
+-  const e = EVIDENCE[status]
++  const e = evidenceInfo(status)
+   if (!e) return null
++  const cls = e.unknown ? 'other' : String(status).replace(/[^a-z-]/gi, '')
+   return (
+-    <span className={`tag tag--evidence tag--ev-${status}`} title={e.title}>
++    <span className={`tag tag--evidence tag--ev-${cls}`} title={e.title}>
+       {e.label}
+     </span>
+   )
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/components/TerrainPair.jsx src/components/TerrainPair.jsx
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/components/TerrainPair.jsx	2026-11-15 14:10:18.265656000 +0200
++++ src/components/TerrainPair.jsx	2026-11-15 14:33:37.647641100 +0200
+@@ -78,7 +78,9 @@
+       </header>
+       <div className="mc-panel__body">
+         {isMock || !tEntry ? (
+-          <p className="manalysis__empty">Terrain images are shown only with the real data bundle.</p>
++          <p className="manalysis__empty">
++            {isMock ? 'Terrain images are shown only with the real data bundle.' : 'No terrain image for this target yet.'}
++          </p>
+         ) : (
+           <>
+             <div className="tpair__grid">
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/data/useMethodV1.js src/data/useMethodV1.js
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/data/useMethodV1.js	1970-01-01 02:00:00.000000000 +0200
++++ src/data/useMethodV1.js	2026-11-15 14:43:15.917636000 +0200
+@@ -0,0 +1,44 @@
++import { useEffect, useState } from 'react'
++import { METHOD_V1_URL, validateMethodV1 } from '../lib/methodV1.js'
++
++// Loads the method v1 results once per page session (static file, no API call) and validates
++// its structure. Kept separate from the main bundle (useBundle.js): the two methods have
++// different data contracts and must never be mixed.
++let cache = null
++
++function load() {
++  if (!cache) {
++    cache = fetch(`${import.meta.env.BASE_URL}${METHOD_V1_URL}`)
++      .then((res) => {
++        if (!res.ok) throw new Error(`${METHOD_V1_URL}: HTTP ${res.status}`)
++        return res.json()
++      })
++      .then((d) => {
++        const problems = validateMethodV1(d)
++        if (problems.length) throw new Error(`analog_results.json failed its structure check: ${problems.join('; ')}`)
++        return d
++      })
++      .catch((err) => {
++        cache = null // allow a retry
++        throw err
++      })
++  }
++  return cache
++}
++
++/** { status: 'loading' | 'ready' | 'error', data, error, retry } */
++export function useMethodV1() {
++  const [state, setState] = useState({ status: 'loading', data: null, error: null })
++  const [attempt, setAttempt] = useState(0)
++  useEffect(() => {
++    let alive = true
++    load().then(
++      (data) => alive && setState({ status: 'ready', data, error: null }),
++      (error) => alive && setState({ status: 'error', data: null, error }),
++    )
++    return () => {
++      alive = false
++    }
++  }, [attempt])
++  return { ...state, retry: () => setAttempt((n) => n + 1) }
++}
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/index.css src/index.css
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/index.css	2026-11-15 14:10:18.276418100 +0200
++++ src/index.css	2026-11-15 14:33:37.636590000 +0200
+@@ -916,7 +916,8 @@
+ }
+ 
+ .tag--ev-reanalysis,
+-.tag--ev-measurement {
++.tag--ev-measurement,
++.tag--ev-measured {
+   color: #86b6ef;
+ }
+ 
+@@ -929,6 +930,17 @@
+   color: #e6b98a;
+ }
+ 
++.tag--ev-model,
++.tag--ev-estimated {
++  color: #d8c27a;
++  border-style: dashed;
++}
++
++.tag--ev-other {
++  color: var(--muted);
++  border-style: dotted;
++}
++
+ .tag--ev-definitional {
+   color: var(--muted);
+   border-style: dotted;
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/lib/demoSteps.js src/lib/demoSteps.js
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/lib/demoSteps.js	1970-01-01 02:00:00.000000000 +0200
++++ src/lib/demoSteps.js	2026-11-15 14:33:37.647641100 +0200
+@@ -0,0 +1,179 @@
++// Guided live-demo script (DemoGuide.jsx). Each step only navigates to a real screen and/or
++// sets real app state (target, objective, weights, shortlist) through AppState — the same
++// actions a user's clicks perform. Nothing here simulates processing or produces numbers;
++// every score on screen comes from scoring.js. Narration text is for the presenter.
++import { PRESETS } from './presets.js'
++import { rankWith } from './rankShift.js'
++
++/** First Mars target in the bundle, preferring Jezero (the documented scenario). */
++export function demoTarget(targets) {
++  return targets.find((t) => t.id === 'mars-jezero') || targets.find((t) => t.body === 'mars') || targets[0] || null
++}
++
++/** Top `n` scored places in the current ranking. */
++export const topSites = (ranking, n) => ranking.filter((r) => r.score !== null).slice(0, n).map((r) => r.site)
++
++/** Top `n` places for the current target under the objective's own weights (same engine as the results). */
++function objectiveTop({ app, data, target }, n) {
++  const weights = PRESETS[app.basePresetId]?.weights
++  if (!target || !weights) return []
++  return topSites(rankWith(target, data.sites, weights, data.features, data.minCriteria, app.rankBy, data.siteById), n)
++}
++
++// go(ctx) performs the step: ctx = { app, data, target } → returns the location to open
++// ({ pathname, search? }) or null to stay. `spot` = CSS selector to bring into view.
++export const DEMO_STEPS = [
++  {
++    id: 'overview',
++    title: 'Mission overview',
++    secs: 15,
++    say: 'Mission teams rehearse on Earth before they fly. No place on Earth is a copy of Mars — the right analog depends on what you want to test.',
++    go: () => ({ pathname: '/' }),
++    spot: '.home2__console',
++  },
++  {
++    id: 'target',
++    title: 'Select Mars as the target',
++    secs: 10,
++    say: 'Choose Mars, then Jezero Crater. The globe turns to the cited landing-site coordinates.',
++    go: ({ app, target }) => {
++      if (target) app.setTarget(target.id)
++      return { pathname: '/' }
++    },
++    spot: '.home2__visual',
++  },
++  {
++    id: 'objective',
++    title: 'Select a research objective',
++    secs: 10,
++    say: 'Objective: Rover testing. An objective is only a set of criterion weights — it weighs terrain relief and bare ground most.',
++    go: ({ app }) => {
++      app.setPreset('rover')
++      // the app's documented Jezero + Rover scenario ranks by the conservative lower bound
++      app.setRankBy('min')
++      return { pathname: '/' }
++    },
++    spot: '.home2__console',
++  },
++  {
++    id: 'priorities',
++    title: 'Configure research priorities',
++    secs: 15,
++    say: 'Every criterion is weighted 0–5 (0 = ignored). These are our screening priorities, not validated mission requirements.',
++    go: () => ({ pathname: '/', search: '?crit=1' }),
++    spot: '#home-criteria',
++  },
++  {
++    id: 'run',
++    title: 'Run the discovery',
++    secs: 10,
++    say: 'Find places on Earth. Scoring runs in the browser on a static bundle of NASA-derived data prepared offline — so the ranking is instant; there is no server call.',
++    go: ({ app }) => {
++      app.setRankBy('min')
++      return { pathname: '/explore' }
++    },
++    spot: '.explore__head',
++  },
++  {
++    id: 'results',
++    title: 'Ranked Earth analog candidates',
++    secs: 15,
++    say: 'Ordered by the conservative lower bound: the score a place keeps even if every missing measurement were a total mismatch, so evidence-backed places come first. Each card shows one evidence-backed reason and a missing-data chip — missing data is never counted as zero.',
++    go: () => ({ pathname: '/explore' }),
++    spot: '.explore__results',
++  },
++  {
++    id: 'map',
++    title: 'Explore the candidates on the map',
++    secs: 15,
++    say: 'Click a card: its marker highlights and the map flies to it. Ring colour is the score; a ring marker is an uncatalogued candidate — a lead, not a confirmed analog.',
++    go: () => ({ pathname: '/explore' }),
++    spot: '.leaflet-container',
++  },
++  {
++    id: 'reweight',
++    title: 'Change priorities — watch the ranking move',
++    secs: 25,
++    say: 'Turn terrain relief off: places move, the live ranking shows previous → current rank and which weight change caused each move — and places without enough data drop out instead of scoring zero. Below the map, the same target under four objectives: Rover testing puts Holuhraun first, Ice exploration puts Atacama first.',
++    action: {
++      label: 'Set terrain relief to 0',
++      run: ({ app, data }) => {
++        if (data.features.some((f) => f.id === 'terrain')) app.setWeight('terrain', 0)
++      },
++    },
++    go: () => ({ pathname: '/explore', search: '?adv=1' }),
++    spot: '.lrank',
++  },
++  {
++    id: 'candidate',
++    title: 'Inspect a candidate',
++    secs: 20,
++    say: 'Why this match: the strongest match with both values and their sources, the most important difference, and what still needs measuring.',
++    go: (ctx) => {
++      ctx.app.resetWeights()
++      const top = objectiveTop(ctx, 1)[0]
++      return top ? { pathname: `/site/${encodeURIComponent(top)}` } : { pathname: '/explore' }
++    },
++    spot: '.page',
++  },
++  {
++    id: 'compare',
++    title: 'Compare the best candidates',
++    secs: 20,
++    say: 'Shortlist the top three and compare: one-sentence verdict, aligned metrics, radar and a criterion table. A high score on partial data is called out.',
++    go: (ctx) => {
++      ctx.app.resetWeights()
++      ctx.app.setShortlist(objectiveTop(ctx, 3))
++      return { pathname: '/compare' }
++    },
++    spot: '#cmp-plain-title',
++  },
++  {
++    id: 'evidence',
++    title: 'Matches, mismatches and evidence',
++    secs: 20,
++    say: 'Planetary Mirror: the Mars site and the Earth place side by side at one ground scale. Choose a criterion to see both real values and their sources; the 3D view is built from the actual elevation grids, exaggeration stated.',
++    go: (ctx) => {
++      const top = objectiveTop(ctx, 1)[0]
++      return { pathname: '/mirror', search: top ? `?site=${encodeURIComponent(top)}` : '' }
++    },
++    spot: '.page',
++  },
++  {
++    id: 'report',
++    title: 'Generate the scientific report',
++    secs: 15,
++    say: 'One click: mission configuration, priorities, ranking, parameter comparison, method, sources and limitations — print to PDF, or export CSV and JSON.',
++    go: () => ({ pathname: '/report' }),
++    spot: '.page',
++  },
++]
++
++export const DEMO_TOTAL_SECS = DEMO_STEPS.reduce((n, s) => n + s.secs, 0)
++
++// ---- guide state (sessionStorage; survives a reload during the demo) ----
++const KEY = 'eaf-demo-step'
++
++export function readStep() {
++  try {
++    const v = sessionStorage.getItem(KEY)
++    return v === null ? null : Math.min(Math.max(Number(v) || 0, 0), DEMO_STEPS.length - 1)
++  } catch {
++    return null
++  }
++}
++
++export function writeStep(v) {
++  try {
++    if (v === null) sessionStorage.removeItem(KEY)
++    else sessionStorage.setItem(KEY, String(v))
++  } catch {
++    /* storage unavailable: the guide still works for this page view */
++  }
++}
++
++/** Start the guided demo from anywhere (Home button, ?demo=1). */
++export function startDemo() {
++  writeStep(0)
++  window.dispatchEvent(new Event('eaf-demo'))
++}
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/lib/format.js src/lib/format.js
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/lib/format.js	2026-11-15 14:10:18.276418100 +0200
++++ src/lib/format.js	2026-11-15 14:33:37.647641100 +0200
+@@ -41,7 +41,9 @@
+ }
+ 
+ // Categorical slots 1–3 (dark mode) — validated all-pairs for up to 3 series.
+-export const SERIES_COLORS = ['#3987e5', '#d95926', '#199e70']
++// One colour per compared place; the first three are the original palette. Extra entries keep
++// the charts working if SHORTLIST_MAX is ever raised (cycle beyond the list rather than undefined).
++export const SERIES_COLORS = ['#3987e5', '#d95926', '#199e70', '#b45fd0', '#c9a227', '#3fb5b5']
+ 
+ function fmtNumber(v) {
+   const a = Math.abs(v)
+@@ -84,6 +86,18 @@
+   literature: { label: 'Literature', title: 'Published interpretation (see citation)' },
+   definitional: { label: 'Definitional', title: 'Follows from basic physical facts (e.g. no liquid water), not a measurement' },
+   unavailable: { label: 'Unavailable', title: 'No verified value — excluded from scores' },
++  // Ready for the final methodology (not used by the current bundle):
++  measured: { label: 'Measured', title: 'Derived from a measured dataset' },
++  estimated: { label: 'Estimated', title: 'Estimated value (e.g. interpolated or proxy-derived) — see its note and citation' },
++}
++
++/**
++ * Evidence label for any provenance status. Unknown statuses are shown as-is (never hidden),
++ * so a new pipeline status cannot silently remove a value's evidence label.
++ */
++export function evidenceInfo(status) {
++  if (!status) return null
++  return EVIDENCE[status] || { label: String(status), title: `Evidence type “${status}” (not yet described in the app)`, unknown: true }
+ }
+ 
+ // Evidence coverage (High / Medium / Low by weight share) lives in explain.js.
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/lib/methodV1.js src/lib/methodV1.js
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/lib/methodV1.js	1970-01-01 02:00:00.000000000 +0200
++++ src/lib/methodV1.js	2026-11-15 14:42:20.563287400 +0200
+@@ -0,0 +1,143 @@
++// Display helpers for the analog method v1 results (public/method-v1/analog_results.json,
++// produced by analysis/analog_method/score.py — see docs/method_v1_INTEGRATION.md).
++// Scores are PRECOMPUTED by that method; nothing here computes or changes a score.
++// The display rules in INTEGRATION.md are encoded here so every view applies them the same way:
++//   * order only within one target + mission test, labelled "provisional similarity", never "ranking"/"best";
++//   * score always with score_range and confidence (+ warning when sensitive_to_assumptions);
++//   * status != scored -> the reason, never 0;
++//   * negative controls visibly marked; lighting = geometry only; Moon target is regional;
++//   * no averaging across tests or targets (no helper for that exists on purpose).
++
++export const METHOD_V1_URL = 'method-v1/analog_results.json'
++export const METHOD_V1_DOC_URL = 'method-v1/METHOD_ar.md'
++
++export const PROVISIONAL_LABEL = { en: 'Provisional similarity for this test', ar: 'تشابه مبدئي لهذا الاختبار' }
++
++/** Structural check of the file; returns a list of problems (empty = usable). */
++export function validateMethodV1(d) {
++  const problems = []
++  if (!d || typeof d !== 'object') return ['not a JSON object']
++  if (!d.meta?.method_version) problems.push('meta.method_version missing')
++  for (const k of ['targets', 'mission_tests', 'results']) if (!Array.isArray(d[k])) problems.push(`${k} is not an array`)
++  if (!d.parameters || typeof d.parameters !== 'object') problems.push('parameters missing')
++  if (!d.earth_sites || typeof d.earth_sites !== 'object') problems.push('earth_sites missing')
++  if (Array.isArray(d.results)) {
++    const bad = d.results.filter((r) => r.status === 'scored' && !(typeof r.score === 'number' && Number.isFinite(r.score)))
++    if (bad.length) problems.push(`${bad.length} scored results without a finite score`)
++  }
++  return problems
++}
++
++/** Mission tests offered for a target: only those whose `bodies` include the target's body. */
++export function testsForTarget(d, targetId) {
++  const t = d.targets.find((x) => x.id === targetId)
++  if (!t) return []
++  return d.mission_tests.filter((m) => (m.bodies || []).includes(t.body))
++}
++
++const nameOf = (r) => r.site_name_en || r.site_id
++
++/**
++ * Results of ONE target + mission test. Scored results first by score (desc; ties by name,
++ * then id), then the others (insufficient data, target data unavailable) by name. This is a
++ * display order inside one test only (meta.ranking_allowed is false).
++ */
++export function resultsFor(d, targetId, testId) {
++  const rows = d.results.filter((r) => r.target_id === targetId && r.mission_test === testId)
++  const cmp = (a, b) => (a < b ? -1 : a > b ? 1 : 0)
++  return rows.sort((a, b) => {
++    const sa = a.status === 'scored' && typeof a.score === 'number'
++    const sb = b.status === 'scored' && typeof b.score === 'number'
++    if (sa !== sb) return sa ? -1 : 1
++    if (sa && b.score !== a.score) return b.score - a.score
++    return cmp(nameOf(a), nameOf(b)) || cmp(a.site_id, b.site_id)
++  })
++}
++
++/** Plain-language reason for a result without a score (never 0). null when scored. */
++export function statusReason(r, meta, lang = 'en') {
++  if (r.status === 'scored') return null
++  if (r.status === 'target_data_unavailable') {
++    const damaged = (r.contributions || []).some((c) => /DTM file damaged/i.test(c.note || ''))
++    if (damaged) {
++      return lang === 'ar'
++        ? 'بيانات التضاريس غير متاحة — ملف DTM تالف، ويلزم تنزيله مرة أخرى'
++        : 'Terrain data unavailable — DTM file damaged, re-download required'
++    }
++  }
++  const summary = lang === 'ar' ? r.summary_ar : r.summary_en
++  return summary || meta?.statuses?.[r.status] || r.status
++}
++
++export const CONFIDENCE = {
++  medium: { en: 'Medium confidence', ar: 'ثقة متوسطة' },
++  low: { en: 'Low confidence', ar: 'ثقة منخفضة' },
++  insufficient: { en: 'Insufficient data', ar: 'بيانات غير كافية' },
++}
++
++export function confidenceLabel(c, lang = 'en') {
++  return CONFIDENCE[c]?.[lang] || String(c ?? '—')
++}
++
++/** 0.8751 -> "0.88"; null -> null (callers show the status reason instead). */
++export function fmtScore(x) {
++  return typeof x === 'number' && Number.isFinite(x) ? x.toFixed(2) : null
++}
++
++/** "0.29–0.94" or null. */
++export function fmtRange(range) {
++  if (!Array.isArray(range) || range.length !== 2 || range.some((v) => typeof v !== 'number')) return null
++  return `${range[0].toFixed(2)}–${range[1].toFixed(2)}`
++}
++
++export function fmtPct(x, digits = 0) {
++  return typeof x === 'number' && Number.isFinite(x) ? `${(x * 100).toFixed(digits)}%` : '—'
++}
++
++function sig(v) {
++  const a = Math.abs(v)
++  if (a === 0) return '0'
++  if (a >= 100) return v.toFixed(0)
++  if (a >= 10) return v.toFixed(1)
++  if (a >= 0.1) return v.toFixed(2)
++  return v.toPrecision(2)
++}
++
++/**
++ * Value with its unit, or null when missing (callers write "not available" — never 0).
++ * fraction -> percent; deg -> °; K, m kept; dimensionless "1" -> bare number.
++ */
++export function fmtValue(v, unit) {
++  if (v === null || v === undefined || typeof v !== 'number' || !Number.isFinite(v)) return null
++  switch (unit) {
++    case 'fraction':
++      return `${sig(v * 100)}%`
++    case 'deg':
++      return `${sig(v)}°`
++    case 'K':
++      return `${sig(v)} K`
++    case 'm':
++      return `${sig(v)} m`
++    case 'kWh/m2/day':
++      return `${sig(v)} kWh/m²/day`
++    case '1':
++    case '':
++    case undefined:
++      return sig(v)
++    default:
++      return `${sig(v)} ${unit}`
++  }
++}
++
++/** Default v1 target for the app's current target (ids differ between the two data sets). */
++const LEGACY_TARGET = { 'mars-jezero': 'mars_jezero', 'moon-south-pole': 'moon_south_polar_region' }
++export function defaultTargetId(d, legacyId) {
++  const mapped = LEGACY_TARGET[legacyId]
++  if (mapped && d.targets.some((t) => t.id === mapped)) return mapped
++  return d.targets[0]?.id ?? null
++}
++
++/** Pick the localized field: `${base}_${lang}` with English fallback. */
++export function loc(obj, base, lang) {
++  return obj?.[`${base}_${lang}`] || obj?.[`${base}_en`] || ''
++}
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/lib/methodV1.test.js src/lib/methodV1.test.js
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/lib/methodV1.test.js	1970-01-01 02:00:00.000000000 +0200
++++ src/lib/methodV1.test.js	2026-11-15 14:42:52.824912700 +0200
+@@ -0,0 +1,81 @@
++import { readFileSync } from 'node:fs'
++import { fileURLToPath } from 'node:url'
++import { describe, expect, it } from 'vitest'
++import {
++  defaultTargetId,
++  fmtRange,
++  fmtScore,
++  fmtValue,
++  resultsFor,
++  statusReason,
++  testsForTarget,
++  validateMethodV1,
++} from './methodV1.js'
++
++const d = JSON.parse(readFileSync(fileURLToPath(new URL('../../public/method-v1/analog_results.json', import.meta.url)), 'utf8'))
++
++describe('analog_results.json (method v1)', () => {
++  it('passes the structural check', () => {
++    expect(validateMethodV1(d)).toEqual([])
++    expect(d.meta.ranking_allowed).toBe(false)
++  })
++
++  it('offers only mission tests for the target body (thermal is Moon-only)', () => {
++    expect(testsForTarget(d, 'mars_jezero').map((m) => m.id)).not.toContain('thermal_environment')
++    expect(testsForTarget(d, 'moon_south_polar_region').map((m) => m.id)).toContain('thermal_environment')
++  })
++
++  it('orders scored results by score inside one test, unscored after, without inventing scores', () => {
++    for (const t of d.targets) {
++      for (const m of testsForTarget(d, t.id)) {
++        const rows = resultsFor(d, t.id, m.id)
++        expect(rows.length).toBe(Object.keys(d.earth_sites).length)
++        const scores = rows.filter((r) => r.status === 'scored').map((r) => r.score)
++        expect(scores).toEqual([...scores].sort((a, b) => b - a))
++        const firstUnscored = rows.findIndex((r) => r.status !== 'scored')
++        if (firstUnscored >= 0) expect(rows.slice(firstUnscored).every((r) => r.status !== 'scored' && r.score === null)).toBe(true)
++      }
++    }
++  })
++
++  it('explains the damaged Arcadia DTM instead of a score', () => {
++    const r = resultsFor(d, 'mars_arcadia', 'rover_mobility')[0]
++    expect(r.status).toBe('target_data_unavailable')
++    expect(statusReason(r, d.meta)).toBe('Terrain data unavailable — DTM file damaged, re-download required')
++    expect(statusReason(r, d.meta, 'ar')).toMatch(/DTM/)
++  })
++
++  it('keeps the negative control in every test and marks it', () => {
++    const neg = d.results.filter((r) => r.negative_control)
++    expect(neg.length).toBeGreaterThan(0)
++    expect(neg.every((r) => r.site_id === 'amazon_negative_control')).toBe(true)
++  })
++
++  it('every scored result carries a range and a confidence', () => {
++    for (const r of d.results.filter((x) => x.status === 'scored')) {
++      expect(fmtRange(r.score_range)).not.toBeNull()
++      expect(['medium', 'low']).toContain(r.confidence)
++    }
++  })
++})
++
++describe('formatting never turns missing into zero', () => {
++  it('returns null for missing values', () => {
++    expect(fmtValue(null, 'deg')).toBeNull()
++    expect(fmtValue(undefined, 'm')).toBeNull()
++    expect(fmtScore(null)).toBeNull()
++    expect(fmtRange(null)).toBeNull()
++  })
++  it('formats units', () => {
++    expect(fmtValue(4.0328, 'deg')).toBe('4.03°')
++    expect(fmtValue(0.114688, 'fraction')).toBe('11.5%')
++    expect(fmtValue(124.2, 'K')).toBe('124 K')
++    expect(fmtValue(0, 'm')).toBe('0 m')
++    expect(fmtScore(0.8751)).toBe('0.88')
++  })
++  it('maps the app target to a v1 target', () => {
++    expect(defaultTargetId(d, 'mars-jezero')).toBe('mars_jezero')
++    expect(defaultTargetId(d, 'moon-south-pole')).toBe('moon_south_polar_region')
++    expect(defaultTargetId(d, 'unknown')).toBe(d.targets[0].id)
++  })
++})
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/lib/presets.test.js src/lib/presets.test.js
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/lib/presets.test.js	1970-01-01 02:00:00.000000000 +0200
++++ src/lib/presets.test.js	2026-11-15 14:27:06.587821300 +0200
+@@ -0,0 +1,21 @@
++// Guards the data-expansion path: when a criterion is added to features.json, every research
++// objective must state its weight explicitly (a missing key silently means weight 0).
++import { readFileSync } from 'node:fs'
++import { fileURLToPath } from 'node:url'
++import { describe, expect, it } from 'vitest'
++import { PRESETS, WEIGHT_MAX, WEIGHT_MIN } from './presets.js'
++
++const features = JSON.parse(readFileSync(fileURLToPath(new URL('../../public/data/features.json', import.meta.url)), 'utf8'))
++
++describe('presets cover the bundle criteria', () => {
++  for (const [id, preset] of Object.entries(PRESETS)) {
++    it(`${id} gives every criterion in features.json an explicit weight in range`, () => {
++      for (const f of features) {
++        expect(preset.weights, `${id} is missing a weight for "${f.id}"`).toHaveProperty(f.id)
++        expect(Number.isInteger(preset.weights[f.id])).toBe(true)
++        expect(preset.weights[f.id]).toBeGreaterThanOrEqual(WEIGHT_MIN)
++        expect(preset.weights[f.id]).toBeLessThanOrEqual(WEIGHT_MAX)
++      }
++    })
++  }
++})
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/lib/rankShift.js src/lib/rankShift.js
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/lib/rankShift.js	1970-01-01 02:00:00.000000000 +0200
++++ src/lib/rankShift.js	2026-11-15 14:33:37.647641100 +0200
+@@ -0,0 +1,120 @@
++// Display helpers that EXPLAIN how a ranking changed when research priorities change.
++// Nothing here computes a new kind of score: every number comes from scoring.js
++// (rankSites / scoreSite, the same engine that ranks everywhere else). These helpers
++// only compare two rankings and re-run that engine with one weight changed at a time.
++import { orderRanking } from './explain.js'
++import { rankSites, scoreSite } from './scoring.js'
++
++/**
++ * Rank a target's sites with a given weight set, exactly as AppState does (scoring.js +
++ * orderRanking), and number the scored places 1..n. Unscored places get rank null.
++ */
++export function rankWith(target, sites, weights, features, minCriteria, rankBy, siteById) {
++  if (!target) return []
++  const ranked = orderRanking(rankSites(target, sites, weights, features, minCriteria), rankBy, siteById)
++  let n = 0
++  return ranked.map((r) => ({ ...r, rank: r.score === null ? null : ++n }))
++}
++
++/**
++ * Per-site movement between a baseline ranking and the current one.
++ * Returns { [siteId]: { prevRank, rank, delta, prevScore, score, scoreDelta, status } }
++ *   delta      = prevRank - rank (positive = moved up), null if either rank is missing
++ *   scoreDelta = score - prevScore, null if either score is missing
++ *   minDelta   = change of the conservative lower bound (scoreRange[0]), null if either is missing
++ *   status     = 'up' | 'down' | 'same' | 'entered' (now scored, was not) | 'dropped' (was scored, now not) | 'none'
++ */
++export function rankShift(baseline, current) {
++  const before = Object.fromEntries((baseline || []).map((r) => [r.site, r]))
++  const out = {}
++  for (const r of current || []) {
++    const b = before[r.site]
++    const prevRank = b?.rank ?? null
++    const prevScore = b?.score ?? null
++    const rank = r.rank ?? null
++    const delta = prevRank !== null && rank !== null ? prevRank - rank : null
++    const scoreDelta = prevScore !== null && r.score !== null ? r.score - prevScore : null
++    // lower end of the score range (conservative lower bound), for rank=min displays
++    const lo = (e) => (e && e.score !== null && e.score !== undefined ? (e.scoreRange?.[0] ?? e.score) : null)
++    const minDelta = lo(b) !== null && lo(r) !== null ? lo(r) - lo(b) : null
++    let status = 'none'
++    if (rank !== null && prevRank === null) status = 'entered'
++    else if (rank === null && prevRank !== null) status = 'dropped'
++    else if (delta !== null) status = delta > 0 ? 'up' : delta < 0 ? 'down' : 'same'
++    out[r.site] = { prevRank, rank, delta, prevScore, score: r.score, scoreDelta, minDelta, status }
++  }
++  return out
++}
++
++/** Criteria whose weight differs between two weight sets, in feature order. */
++export function weightChanges(fromWeights, toWeights, features) {
++  return features
++    .map((f) => ({ id: f.id, label: f.label, from: fromWeights?.[f.id] || 0, to: toWeights?.[f.id] || 0 }))
++    .filter((c) => c.from !== c.to)
++}
++
++/**
++ * Why did ONE site's score change between two weight sets? For each changed criterion,
++ * re-run scoreSite (the real engine) with only that weight changed from the baseline and
++ * report the difference. Effects are measured one at a time, so they need not add up exactly
++ * to the total change (a score is a weighted mean, so changes interact) — the UI says so.
++ *
++ * Returns { total, baseScore, score, items: [{ id, label, from, to, effect, sim, siteHasData }] }
++ * sorted by |effect| desc; `effect` is null when the site has no score in either variant.
++ * `sim` is the site's similarity on that criterion (null = data missing on either side).
++ */
++export function explainScoreChange(target, site, fromWeights, toWeights, features, minCriteria) {
++  const base = scoreSite(target, site, fromWeights, features, minCriteria)
++  const now = scoreSite(target, site, toWeights, features, minCriteria)
++  const total = base.score !== null && now.score !== null ? now.score - base.score : null
++  // similarity per criterion regardless of weight (weight 1 everywhere just to read sims)
++  const allOn = Object.fromEntries(features.map((f) => [f.id, 1]))
++  const sims = scoreSite(target, site, allOn, features, 1).sims
++  const items = weightChanges(fromWeights, toWeights, features).map((c) => {
++    const one = scoreSite(target, site, { ...fromWeights, [c.id]: c.to }, features, minCriteria)
++    const effect = base.score !== null && one.score !== null ? one.score - base.score : null
++    const sim = sims[c.id] ?? null
++    return { ...c, effect, sim, siteHasData: sim !== null }
++  })
++  items.sort((a, b) => Math.abs(b.effect ?? 0) - Math.abs(a.effect ?? 0))
++  return { total, baseScore: base.score, score: now.score, items }
++}
++
++/** "+4", "−3", "±0" with a real minus sign; '' for null. */
++export function signed(n) {
++  if (n === null || n === undefined) return ''
++  if (n > 0) return `+${n}`
++  if (n < 0) return `−${Math.abs(n)}`
++  return '±0'
++}
++
++/**
++ * The places that moved most (by rank), largest first. Ties: larger |scoreDelta|, then
++ * current rank. Only places ranked in both rankings.
++ */
++export function biggestMovers(shift, limit = 3) {
++  return Object.entries(shift)
++    .filter(([, s]) => s.delta)
++    .sort(
++      ([, a], [, b]) =>
++        Math.abs(b.delta) - Math.abs(a.delta) ||
++        Math.abs(b.scoreDelta ?? 0) - Math.abs(a.scoreDelta ?? 0) ||
++        a.rank - b.rank,
++    )
++    .slice(0, limit)
++    .map(([site, s]) => ({ site, ...s }))
++}
++
++/**
++ * Leaders per research objective for one target: the same ranking run with each preset's
++ * weights. Returns [{ presetId, top: [{site, score, rank, scoreRange, ...}], scored }].
++ */
++export function leadersByObjective(target, sites, features, minCriteria, rankBy, siteById, presets, order, limit = 3) {
++  return order
++    .filter((id) => presets[id])
++    .map((presetId) => {
++      const ranked = rankWith(target, sites, presets[presetId].weights, features, minCriteria, rankBy, siteById)
++      const scored = ranked.filter((r) => r.score !== null)
++      return { presetId, top: scored.slice(0, limit), scored: scored.length }
++    })
++}
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/lib/rankShift.test.js src/lib/rankShift.test.js
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/lib/rankShift.test.js	1970-01-01 02:00:00.000000000 +0200
++++ src/lib/rankShift.test.js	2026-11-15 14:28:59.782438300 +0200
+@@ -0,0 +1,109 @@
++import { describe, expect, it } from 'vitest'
++import { PRESETS } from './presets.js'
++import { biggestMovers, explainScoreChange, leadersByObjective, rankShift, rankWith, signed, weightChanges } from './rankShift.js'
++import { scoreSite } from './scoring.js'
++
++const features = [
++  { id: 'a', label: 'A', kind: 'numeric' },
++  { id: 'b', label: 'B', kind: 'numeric' },
++  { id: 'c', label: 'C', kind: 'numeric' },
++]
++const target = { id: 't', norm: { a: 1, b: 0, c: 0.5 } }
++const sites = [
++  { id: 'x', name: 'X', norm: { a: 1, b: 1, c: 0.5 } }, // great on a, bad on b
++  { id: 'y', name: 'Y', norm: { a: 0, b: 0, c: 0.5 } }, // bad on a, great on b
++  { id: 'z', name: 'Z', norm: { a: 0.5, b: null, c: null } }, // too little data with minCriteria 3
++]
++const siteById = Object.fromEntries(sites.map((s) => [s.id, s]))
++
++describe('rankWith', () => {
++  it('numbers scored places and leaves unscored ones null', () => {
++    const r = rankWith(target, sites, { a: 1, b: 1, c: 1 }, features, 3, 'score', siteById)
++    expect(r.map((e) => [e.site, e.rank])).toEqual([
++      ['x', 1],
++      ['y', 2],
++      ['z', null],
++    ])
++  })
++})
++
++describe('rankShift', () => {
++  it('reports previous and current rank, rank delta and score delta from the same engine', () => {
++    const before = rankWith(target, sites, { a: 5, b: 1, c: 1 }, features, 3, 'score', siteById)
++    const after = rankWith(target, sites, { a: 1, b: 5, c: 1 }, features, 3, 'score', siteById)
++    const s = rankShift(before, after)
++    expect(s.y).toMatchObject({ prevRank: 2, rank: 1, delta: 1, status: 'up' })
++    expect(s.x).toMatchObject({ prevRank: 1, rank: 2, delta: -1, status: 'down' })
++    expect(s.y.scoreDelta).toBe(s.y.score - s.y.prevScore)
++    expect(s.z.status).toBe('none')
++  })
++
++  it('reports the change of the conservative lower bound separately from the score change', () => {
++    const s = rankShift([{ site: 'a', rank: 1, score: 80, scoreRange: [60, 90] }], [{ site: 'a', rank: 1, score: 78, scoreRange: [70, 85] }])
++    expect(s.a).toMatchObject({ scoreDelta: -2, minDelta: 10 })
++  })
++
++  it('marks places that enter or drop out of the scored set', () => {
++    const s = rankShift([{ site: 'q', rank: null, score: null }, { site: 'p', rank: 1, score: 50 }], [
++      { site: 'q', rank: 1, score: 40 },
++      { site: 'p', rank: null, score: null },
++    ])
++    expect(s.q.status).toBe('entered')
++    expect(s.p.status).toBe('dropped')
++    expect(s.q.scoreDelta).toBeNull()
++  })
++})
++
++describe('weightChanges / signed', () => {
++  it('lists only changed criteria in feature order', () => {
++    expect(weightChanges({ a: 1, b: 2, c: 3 }, { a: 1, b: 0, c: 5 }, features)).toEqual([
++      { id: 'b', label: 'B', from: 2, to: 0 },
++      { id: 'c', label: 'C', from: 3, to: 5 },
++    ])
++  })
++  it('formats signs with a real minus', () => {
++    expect([signed(3), signed(-2), signed(0), signed(null)]).toEqual(['+3', '−2', '±0', ''])
++  })
++})
++
++describe('explainScoreChange', () => {
++  it('measures each weight change alone with scoreSite and totals the real change', () => {
++    const from = { a: 5, b: 1, c: 1 }
++    const to = { a: 1, b: 5, c: 1 }
++    const e = explainScoreChange(target, sites[0], from, to, features, 3)
++    const base = scoreSite(target, sites[0], from, features, 3).score
++    expect(e.total).toBe(scoreSite(target, sites[0], to, features, 3).score - base)
++    expect(e.items.find((i) => i.id === 'a').effect).toBe(scoreSite(target, sites[0], { ...from, a: 1 }, features, 3).score - base)
++    expect(e.items.find((i) => i.id === 'a').sim).toBe(1)
++    expect(e.items.find((i) => i.id === 'b').sim).toBe(0)
++  })
++
++  it('never invents an effect for a site without a score, and flags missing data', () => {
++    const e = explainScoreChange(target, sites[2], { a: 1, b: 1, c: 1 }, { a: 1, b: 3, c: 1 }, features, 3)
++    expect(e.total).toBeNull()
++    expect(e.items[0]).toMatchObject({ id: 'b', effect: null, sim: null, siteHasData: false })
++  })
++})
++
++describe('biggestMovers', () => {
++  it('orders by |rank delta| and ignores unmoved places', () => {
++    const m = biggestMovers({
++      a: { delta: 1, scoreDelta: 2, rank: 1 },
++      b: { delta: -3, scoreDelta: -5, rank: 4 },
++      c: { delta: 0, scoreDelta: 0, rank: 2 },
++      d: { delta: null, rank: null },
++    })
++    expect(m.map((x) => x.site)).toEqual(['b', 'a'])
++  })
++})
++
++describe('leadersByObjective', () => {
++  it('ranks once per preset in the requested order', () => {
++    const feats = ['terrain', 'aridity', 'temp', 'temp_range', 'veg', 'geology', 'ice'].map((id) => ({ id, label: id, kind: 'numeric' }))
++    const t = { id: 't', norm: Object.fromEntries(feats.map((f) => [f.id, 0.5])) }
++    const s = [{ id: 's1', name: 'S1', norm: Object.fromEntries(feats.map((f) => [f.id, 0.4])) }]
++    const out = leadersByObjective(t, s, feats, 3, 'score', { s1: s[0] }, PRESETS, ['rover', 'ice'])
++    expect(out.map((o) => o.presetId)).toEqual(['rover', 'ice'])
++    expect(out[0].top[0]).toMatchObject({ site: 's1', rank: 1, score: 90 })
++  })
++})
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/lib/useFlip.js src/lib/useFlip.js
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/lib/useFlip.js	1970-01-01 02:00:00.000000000 +0200
++++ src/lib/useFlip.js	2026-11-15 14:33:37.652299000 +0200
+@@ -0,0 +1,43 @@
++// Shared FLIP reorder animation for ranked lists (LiveRanking, SiteCards).
++import { useLayoutEffect, useRef } from 'react'
++
++const reduceMotion = () =>
++  typeof window !== 'undefined' && Boolean(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)
++
++/**
++ * FLIP reorder animation: rows keep their DOM node (keyed by site id); after each reorder the
++ * row slides from its old position to the new one. A row that changed rank also gets a short
++ * tinted flash (up / down). ~380 ms, transform + background only; skipped with reduced motion.
++ */
++export function useFlip(listRef, orderKey) {
++  const last = useRef({ tops: new Map(), ranks: new Map() })
++  useLayoutEffect(() => {
++    const list = listRef.current
++    if (!list) return
++    const tops = new Map()
++    const ranks = new Map()
++    const animate = !reduceMotion() && typeof Element !== 'undefined' && 'animate' in Element.prototype
++    for (const el of list.querySelectorAll('[data-flip-id]')) {
++      const id = el.dataset.flipId
++      const top = el.offsetTop
++      const rank = Number(el.dataset.rank)
++      tops.set(id, top)
++      ranks.set(id, rank)
++      const prevTop = last.current.tops.get(id)
++      const prevRank = last.current.ranks.get(id)
++      if (!animate || prevTop === undefined) continue
++      const dy = prevTop - top
++      if (dy) {
++        el.animate([{ transform: `translateY(${dy}px)` }, { transform: 'translateY(0)' }], {
++          duration: 380,
++          easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
++        })
++      }
++      if (prevRank && rank && prevRank !== rank) {
++        const tint = rank < prevRank ? 'rgba(110, 214, 168, 0.22)' : 'rgba(242, 166, 90, 0.2)'
++        el.animate([{ backgroundColor: tint }, { backgroundColor: 'rgba(0,0,0,0)' }], { duration: 1100, easing: 'ease-out' })
++      }
++    }
++    last.current = { tops, ranks }
++  }, [listRef, orderKey])
++}
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/pages/About.jsx src/pages/About.jsx
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/pages/About.jsx	2026-11-15 14:10:18.302006200 +0200
++++ src/pages/About.jsx	2026-11-15 14:47:10.271787500 +0200
+@@ -184,6 +184,19 @@
+         </p>
+       </section>
+ 
++      <section className="panel" id="method-v1">
++        <h2>Mission-test method (v1.0, provisional)</h2>
++        <p>
++          A second, terrain-focused method compares 12 Earth sites with Jezero, Gale, Arcadia and the lunar south polar
++          region for one mission test at a time (rover mobility, landing hazards, lighting geometry, thermal), computing
++          slope and roughness with the same algorithm at the same grid spacing on both worlds. Its results are
++          provisional and are not a ranking. <Link to="/tests">Mission tests</Link> ·{' '}
++          <Link to="/method/ar" lang="ar">
++            شرح المنهجية بالعربي
++          </Link>
++        </p>
++      </section>
++
+       <section className="panel" id="method">
+         <h2>How the score works</h2>
+         <ul>
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/pages/Explore.jsx src/pages/Explore.jsx
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/pages/Explore.jsx	2026-11-15 14:10:18.304012800 +0200
++++ src/pages/Explore.jsx	2026-11-15 14:17:09.246001000 +0200
+@@ -5,6 +5,7 @@
+ import MatchAnalysis from '../components/MatchAnalysis.jsx'
+ import MissionEvidence from '../components/MissionEvidence.jsx'
+ import MapView from '../components/MapView.jsx'
++import ObjectiveLeaders from '../components/ObjectiveLeaders.jsx'
+ import ResultsList from '../components/ResultsList.jsx'
+ import ShortlistBar from '../components/ShortlistBar.jsx'
+ import SiteCards from '../components/SiteCards.jsx'
+@@ -324,6 +325,7 @@
+           <div className="explore__phone-notes">
+             {rankingHelp}
+             {notice && availNote}
++            <ObjectiveLeaders />
+           </div>
+         )}
+         {isPhone ? null : view === 'map' ? (
+@@ -345,6 +347,7 @@
+                 {tray}
+               </section>
+             </div>
++            <ObjectiveLeaders />
+             <div className="mc-deck">
+               <MatchAnalysis
+                 entry={selectedEntry}
+@@ -378,6 +381,7 @@
+             <div className="explore__table-help">{rankingHelp}</div>
+             <ResultsList {...shared} />
+             {tray}
++            <ObjectiveLeaders />
+           </>
+         )}
+ 
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/pages/Home.jsx src/pages/Home.jsx
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/pages/Home.jsx	2026-11-15 14:10:18.304012800 +0200
++++ src/pages/Home.jsx	2026-11-15 14:33:37.654311300 +0200
+@@ -1,8 +1,8 @@
+ import { useState } from 'react'
+-import { Link, useNavigate } from 'react-router-dom'
++import { Link, useLocation, useNavigate } from 'react-router-dom'
+ import MissionSelector from '../components/MissionSelector.jsx'
+ import HeroPlanet from '../components/HeroPlanet.jsx'
+-import RankPreview from '../components/RankPreview.jsx'
++import LiveRanking from '../components/LiveRanking.jsx'
+ import Term from '../components/Term.jsx'
+ import WeightSliders from '../components/WeightSliders.jsx'
+ import TARGET_PREVIEWS from '../data/terrainPreviews.json'
+@@ -12,6 +12,7 @@
+ import { PRESETS } from '../lib/presets.js'
+ import { RANK_METHODS } from '../lib/rankMethods.js'
+ import { SCENARIOS, matchScenario, scenarioQuery } from '../lib/scenarios.js'
++import { startDemo } from '../lib/demoSteps.js'
+ import { LIMITATIONS_NOTE } from '../lib/scoring.js'
+ import { criteriaSummary } from '../lib/selection.js'
+ import { useAppState } from '../state/AppState.jsx'
+@@ -69,8 +70,17 @@
+   const { data } = useBundle()
+   const app = useAppState()
+   const navigate = useNavigate()
+-  const [critOpen, setCritOpen] = useState(false)
++  const location = useLocation()
++  // ?crit=1 (guided demo) opens the research priorities.
++  const [critOpen, setCritOpen] = useState(() => new URLSearchParams(location.search).get('crit') === '1')
+   const [nudge, setNudge] = useState(false)
++  // A later ?crit=1 (guided demo, Home already mounted) opens the priorities too.
++  const critParam = new URLSearchParams(location.search).get('crit') === '1'
++  const [lastCrit, setLastCrit] = useState(critParam)
++  if (critParam !== lastCrit) {
++    setLastCrit(critParam)
++    if (critParam) setCritOpen(true)
++  }
+   const world = app.target?.body || 'moon'
+ 
+   // The documented Jezero + Rover testing scenario opens in the conservative order; everything
+@@ -190,7 +200,7 @@
+                   )}
+                 </div>
+                 <div className="home2__prio">
+-                  <RankPreview />
++                  <LiveRanking />
+                   <WeightSliders idPrefix="home-w" legend="Research priorities (0 = ignore, 5 = most important)" />
+                 </div>
+                 <p className="hint home2__caveat">
+@@ -206,6 +216,10 @@
+           <p className="home2__scope">
+             Shows resemblance, not mission readiness. {LIMITATIONS_NOTE}{' '}
+             <Link to={app.linkTo('/about')}>How it works</Link>
++            {' · '}
++            <button type="button" className="link-btn" onClick={startDemo}>
++              Guided demo (2–3 min)
++            </button>
+           </p>
+         </div>
+ 
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/pages/MethodAr.jsx src/pages/MethodAr.jsx
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/pages/MethodAr.jsx	1970-01-01 02:00:00.000000000 +0200
++++ src/pages/MethodAr.jsx	2026-11-15 14:47:11.464464300 +0200
+@@ -0,0 +1,166 @@
++import { useEffect, useState } from 'react'
++import { Link } from 'react-router-dom'
++import { METHOD_V1_DOC_URL } from '../lib/methodV1.js'
++import '../styles/missiontests.css'
++
++// Renders public/method-v1/METHOD_ar.md (method v1 explanation, Arabic) inside the app, right to
++// left. A deliberately small Markdown subset — headings, paragraphs, lists, tables, code blocks,
++// rules, **bold** and `code` — built as React elements (no HTML injection, no new dependency).
++
++function inline(text, keyBase) {
++  const out = []
++  const re = /(\*\*[^*]+\*\*|`[^`]+`)/g
++  let last = 0
++  let m
++  let i = 0
++  while ((m = re.exec(text))) {
++    if (m.index > last) out.push(text.slice(last, m.index))
++    const tok = m[0]
++    if (tok.startsWith('**')) out.push(<strong key={`${keyBase}-${i++}`}>{tok.slice(2, -2)}</strong>)
++    else
++      out.push(
++        <code key={`${keyBase}-${i++}`} dir="ltr">
++          {tok.slice(1, -1)}
++        </code>,
++      )
++    last = m.index + tok.length
++  }
++  if (last < text.length) out.push(text.slice(last))
++  return out
++}
++
++// Pipes that belong to the text, e.g. "arctan(|∇z|)" or an escaped "\|", are protected
++// before the row is split into cells.
++const PIPE = '\u0000'
++const cells = (line) =>
++  line
++    .trim()
++    .replace(/^\||\|$/g, '')
++    .replace(/\\\||\(\||\|\)/g, (m) => m.replace('|', PIPE).replace('\\', ''))
++    .split('|')
++    .map((c) => c.trim().split(PIPE).join('|'))
++
++/** Parse the Markdown subset into React blocks. */
++function renderMarkdown(md) {
++  const lines = String(md).replace(/\r\n/g, '\n').split('\n')
++  const blocks = []
++  let i = 0
++  let k = 0
++  while (i < lines.length) {
++    const line = lines[i]
++    if (!line.trim()) {
++      i += 1
++      continue
++    }
++    if (line.startsWith('```')) {
++      const body = []
++      i += 1
++      while (i < lines.length && !lines[i].startsWith('```')) body.push(lines[i++])
++      i += 1
++      blocks.push(
++        <pre key={k++} dir="ltr" className="md-pre">
++          <code>{body.join('\n')}</code>
++        </pre>,
++      )
++      continue
++    }
++    const h = line.match(/^(#{1,4})\s+(.*)$/)
++    if (h) {
++      const Tag = `h${Math.min(h[1].length + 1, 5)}`
++      blocks.push(<Tag key={k++}>{inline(h[2], `h${k}`)}</Tag>)
++      i += 1
++      continue
++    }
++    if (/^---+\s*$/.test(line)) {
++      blocks.push(<hr key={k++} />)
++      i += 1
++      continue
++    }
++    if (line.trim().startsWith('|')) {
++      const rows = []
++      while (i < lines.length && lines[i].trim().startsWith('|')) rows.push(lines[i++])
++      const [head, , ...body] = rows
++      blocks.push(
++        <div key={k++} className="md-table-wrap">
++          <table className="md-table">
++            <thead>
++              <tr>
++                {cells(head).map((c, j) => (
++                  <th key={j}>{inline(c, `th${k}-${j}`)}</th>
++                ))}
++              </tr>
++            </thead>
++            <tbody>
++              {body.map((r, ri) => (
++                <tr key={ri}>
++                  {cells(r).map((c, j) => (
++                    <td key={j}>{inline(c, `td${k}-${ri}-${j}`)}</td>
++                  ))}
++                </tr>
++              ))}
++            </tbody>
++          </table>
++        </div>,
++      )
++      continue
++    }
++    if (/^\s*(-|\d+\.)\s+/.test(line)) {
++      const ordered = /^\s*\d+\./.test(line)
++      const items = []
++      while (i < lines.length && /^\s*(-|\d+\.)\s+/.test(lines[i])) {
++        items.push(lines[i].replace(/^\s*(-|\d+\.)\s+/, ''))
++        i += 1
++      }
++      const List = ordered ? 'ol' : 'ul'
++      blocks.push(
++        <List key={k++}>
++          {items.map((it, j) => (
++            <li key={j}>{inline(it, `li${k}-${j}`)}</li>
++          ))}
++        </List>,
++      )
++      continue
++    }
++    const para = []
++    while (i < lines.length && lines[i].trim() && !/^(#{1,4}\s|```|\||\s*(-|\d+\.)\s+|---+\s*$)/.test(lines[i])) para.push(lines[i++])
++    blocks.push(<p key={k++}>{inline(para.join(' '), `p${k}`)}</p>)
++  }
++  return blocks
++}
++
++export default function MethodAr() {
++  const [state, setState] = useState({ status: 'loading', text: '' })
++  useEffect(() => {
++    let alive = true
++    fetch(`${import.meta.env.BASE_URL}${METHOD_V1_DOC_URL}`)
++      .then((r) => {
++        if (!r.ok) throw new Error(`HTTP ${r.status}`)
++        return r.text()
++      })
++      .then((text) => alive && setState({ status: 'ready', text }))
++      .catch((e) => alive && setState({ status: 'error', text: e.message }))
++    return () => {
++      alive = false
++    }
++  }, [])
++
++  return (
++    <article className="page md-page" dir="rtl" lang="ar" aria-label="شرح المنهجية">
++      <p className="md-back" dir="ltr">
++        <Link to="/tests">← Mission tests</Link> ·{' '}
++        <a href={`${import.meta.env.BASE_URL}${METHOD_V1_DOC_URL}`} download>
++          Download METHOD_ar.md
++        </a>
++      </p>
++      {state.status === 'loading' && (
++        <p className="status" role="status">
++          جارٍ التحميل…
++        </p>
++      )}
++      {state.status === 'error' && (
++        <p role="alert">تعذّر تحميل ملف المنهجية ({state.text}).</p>
++      )}
++      {state.status === 'ready' && <div className="md-body">{renderMarkdown(state.text)}</div>}
++    </article>
++  )
++}
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/pages/MissionTests.jsx src/pages/MissionTests.jsx
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/pages/MissionTests.jsx	1970-01-01 02:00:00.000000000 +0200
++++ src/pages/MissionTests.jsx	2026-11-15 14:44:49.258468900 +0200
+@@ -0,0 +1,416 @@
++import { Link, useSearchParams } from 'react-router-dom'
++import { useMethodV1 } from '../data/useMethodV1.js'
++import {
++  PROVISIONAL_LABEL,
++  confidenceLabel,
++  defaultTargetId,
++  fmtPct,
++  fmtRange,
++  fmtScore,
++  fmtValue,
++  loc,
++  resultsFor,
++  statusReason,
++  testsForTarget,
++} from '../lib/methodV1.js'
++import { useAppState } from '../state/AppState.jsx'
++import '../styles/missiontests.css'
++
++// Mission tests (analog method v1.0.0): precomputed, explainable, PROVISIONAL similarity of
++// 12 Earth sites to a Mars/Moon target for one mission test at a time. Display rules from
++// docs/method_v1_INTEGRATION.md are applied here and in lib/methodV1.js:
++//   order inside one test only, labelled provisional (never "ranking"/"best"); score always with
++//   range + confidence (+ warning if sensitive); unscored -> reason, never 0; negative control
++//   marked; lighting = geometry only; Moon target is regional; no averages across tests/targets.
++
++const PARAM_COLORS = ['#5fe0f2', '#f4ab5e', '#9ee0c4', '#b9a2f2', '#e6b98a', '#86b6ef']
++
++function T({ en, ar, lang }) {
++  return lang === 'ar' ? (
++    <span dir="rtl" lang="ar">
++      {ar}
++    </span>
++  ) : (
++    <>{en}</>
++  )
++}
++
++/** Score range on a 0–1 track: the band is score_range, the dot the score. */
++function RangeBar({ score, range }) {
++  if (!Array.isArray(range)) return null
++  const [lo, hi] = range
++  return (
++    <span className="mt-range" aria-hidden="true">
++      <span className="mt-range__band" style={{ left: `${lo * 100}%`, width: `${Math.max(0.5, (hi - lo) * 100)}%` }} />
++      {typeof score === 'number' && <span className="mt-range__dot" style={{ left: `${score * 100}%` }} />}
++    </span>
++  )
++}
++
++function ConfidenceChip({ r, lang }) {
++  return (
++    <span className={`mt-conf mt-conf--${r.confidence}`}>
++      {r.sensitive_to_assumptions && (
++        <span className="mt-warn" title="Sensitive to assumptions: the score range is wider than 0.4 (window size / tolerance)">
++          ⚠<span className="sr-only"> sensitive to assumptions;</span>{' '}
++        </span>
++      )}
++      {confidenceLabel(r.confidence, lang)}
++    </span>
++  )
++}
++
++function ResultRow({ r, d, lang, selected, onSelect }) {
++  const scored = r.status === 'scored'
++  return (
++    <li className={`mt-row${selected ? ' is-selected' : ''}${scored ? '' : ' mt-row--none'}${r.negative_control ? ' mt-row--neg' : ''}`}>
++      <button type="button" className="mt-row__btn" aria-pressed={selected} onClick={() => onSelect(r.site_id)}>
++        <span className="mt-row__name">
++          <span dir="auto">{loc(r, 'site_name', lang)}</span>
++          {r.negative_control && <span className="mt-neg">Negative control · عينة ضابطة</span>}
++        </span>
++        {scored ? (
++          <span className="mt-row__score">
++            <span className="mt-row__num">{fmtScore(r.score)}</span>
++            <RangeBar score={r.score} range={r.score_range} />
++            <span className="mt-row__meta">
++              range {fmtRange(r.score_range) ?? '—'} · coverage {fmtPct(r.coverage)}
++            </span>
++            <ConfidenceChip r={r} lang={lang} />
++          </span>
++        ) : (
++          <span className="mt-row__reason" dir="auto">
++            {statusReason(r, d.meta, lang)}
++          </span>
++        )}
++      </button>
++    </li>
++  )
++}
++
++function ContributionBar({ r, lang }) {
++  const items = (r.contributions || []).filter((c) => typeof c.contribution === 'number')
++  if (!items.length) return null
++  return (
++    <figure className="mt-contrib">
++      <figcaption className="mt-contrib__cap">
++        How the score {fmtScore(r.score)} is made up: each part = weight × comparability × similarity, normalised; the
++        parts sum to the score.
++      </figcaption>
++      <div className="mt-contrib__track" role="img" aria-label={items.map((c) => `${c.label_en} ${c.contribution.toFixed(2)}`).join(', ')}>
++        {items.map((c, i) => (
++          <span
++            key={c.parameter}
++            className="mt-contrib__seg"
++            style={{ width: `${c.contribution * 100}%`, background: PARAM_COLORS[i % PARAM_COLORS.length] }}
++            title={`${c.label_en}: ${c.contribution.toFixed(3)}`}
++          />
++        ))}
++      </div>
++      <ul className="mt-contrib__legend">
++        {items.map((c, i) => (
++          <li key={c.parameter}>
++            <span className="mt-contrib__sw" style={{ background: PARAM_COLORS[i % PARAM_COLORS.length] }} aria-hidden="true" />
++            <span dir="auto">{loc(c, 'label', lang)}</span> <strong>{c.contribution.toFixed(2)}</strong>
++          </li>
++        ))}
++      </ul>
++    </figure>
++  )
++}
++
++const NA = <span className="mt-na">not available</span>
++
++function Detail({ r, d, lang, target }) {
++  if (!r) return null
++  const scored = r.status === 'scored'
++  return (
++    <section className="mt-detail" aria-labelledby="mt-detail-title">
++      <header className="mt-detail__head">
++        <p className="kicker">
++          <span dir="auto">{loc(r, 'mission_test', lang)}</span> · {target.name}
++        </p>
++        <h2 id="mt-detail-title" dir="auto">
++          {loc(r, 'site_name', lang)}
++        </h2>
++        {r.negative_control && (
++          <p className="mt-negnote">
++            <strong>Negative control.</strong> Included on purpose and expected to be a poor analog. A mid-pack terrain
++            score here is the main evidence that terrain-only scores are not a full analog assessment.
++          </p>
++        )}
++      </header>
++
++      {scored ? (
++        <div className="mt-detail__score">
++          <div>
++            <span className="mt-detail__label">
++              <T lang={lang} en={PROVISIONAL_LABEL.en} ar={PROVISIONAL_LABEL.ar} />
++            </span>
++            <span className="mt-detail__num">{fmtScore(r.score)}</span>
++            <span className="mt-detail__of"> / 1</span>
++          </div>
++          <dl className="mt-detail__facts">
++            <div>
++              <dt>Sensitivity range</dt>
++              <dd>
++                {fmtRange(r.score_range)} {r.sensitive_to_assumptions && <span className="mt-warn">⚠ wide (&gt; 0.4)</span>}
++              </dd>
++            </div>
++            <div>
++              <dt>Data coverage</dt>
++              <dd>{fmtPct(r.coverage)} of the test’s weight</dd>
++            </div>
++            <div>
++              <dt>Confidence</dt>
++              <dd>
++                <ConfidenceChip r={r} lang={lang} />
++              </dd>
++            </div>
++          </dl>
++        </div>
++      ) : (
++        <p className="mt-detail__reason" dir="auto">
++          <strong>No score.</strong> {statusReason(r, d.meta, lang)}
++        </p>
++      )}
++
++      <p className="mt-detail__summary" dir="auto">
++        {loc(r, 'summary', lang)}
++      </p>
++
++      {scored && <ContributionBar r={r} lang={lang} />}
++
++      <div className="mt-table-wrap">
++        <table className="mt-table">
++          <caption className="sr-only">Parameters for this test: Earth and target values, similarity and contribution</caption>
++          <thead>
++            <tr>
++              <th scope="col">Parameter</th>
++              <th scope="col">Earth</th>
++              <th scope="col">Target</th>
++              <th scope="col">Similarity</th>
++              <th scope="col">Weight</th>
++              <th scope="col">Comparability</th>
++              <th scope="col">Contribution</th>
++            </tr>
++          </thead>
++          <tbody>
++            {(r.contributions || []).map((c) => (
++              <tr key={c.parameter}>
++                <th scope="row">
++                  <span dir="auto">{loc(c, 'label', lang)}</span>
++                  {c.note && (
++                    <span className="mt-note" dir="auto">
++                      {c.note}
++                    </span>
++                  )}
++                  {typeof c.earth_percentile_in_target_region === 'number' && (
++                    <span className="mt-note">
++                      Earth value sits at the {c.earth_percentile_in_target_region.toFixed(0)}th percentile of the lunar
++                      region’s 10 km windows.
++                    </span>
++                  )}
++                </th>
++                <td>{fmtValue(c.earth_value, c.unit) ?? NA}</td>
++                <td>{fmtValue(c.target_value, c.unit) ?? NA}</td>
++                <td>{typeof c.similarity === 'number' ? c.similarity.toFixed(2) : <span className="mt-na">not compared</span>}</td>
++                <td>{typeof c.weight === 'number' ? c.weight.toFixed(2) : '—'}</td>
++                <td>
++                  <span className={`mt-comp mt-comp--${c.comparability}`}>
++                    {c.comparability}
++                    {typeof c.comparability_factor === 'number' && c.comparability_factor !== 1 ? ` ×${c.comparability_factor}` : ''}
++                  </span>
++                </td>
++                <td>{typeof c.contribution === 'number' ? c.contribution.toFixed(2) : <span className="mt-na">excluded</span>}</td>
++              </tr>
++            ))}
++          </tbody>
++        </table>
++      </div>
++
++      {(r.context || []).length > 0 && (
++        <div className="mt-context">
++          <h3>Context only — shown, never scored</h3>
++          <ul>
++            {r.context.map((c) => (
++              <li key={c.parameter}>
++                <strong dir="auto">{loc(c, 'label', lang)}:</strong> Earth {fmtValue(c.earth_value, c.unit) ?? 'not available'}{' '}
++                · target {fmtValue(c.target_value, c.unit) ?? 'not available'}
++                {c.note && (
++                  <span className="mt-note" dir="auto">
++                    {c.note}
++                  </span>
++                )}
++              </li>
++            ))}
++          </ul>
++        </div>
++      )}
++
++      {(r.site_caveats || []).length > 0 && (
++        <div className="mt-caveats">
++          <h3>Site caveats</h3>
++          <ul>
++            {r.site_caveats.map((c) => (
++              <li key={c} dir="auto">
++                {c}
++              </li>
++            ))}
++          </ul>
++        </div>
++      )}
++
++      <p className="mt-detail__method">
++        <Link to="/method/ar">شرح المنهجية بالعربي — Method explanation (Arabic)</Link>
++      </p>
++    </section>
++  )
++}
++
++export default function MissionTests() {
++  const { status, data: d, error, retry } = useMethodV1()
++  const app = useAppState()
++  const [params, setParams] = useSearchParams()
++  const set = (patch) =>
++    setParams(
++      (prev) => {
++        const next = new URLSearchParams(prev)
++        for (const [k, v] of Object.entries(patch)) {
++          if (v === null || v === undefined) next.delete(k)
++          else next.set(k, v)
++        }
++        return next
++      },
++      { replace: true },
++    )
++
++  if (status === 'loading')
++    return (
++      <p className="status" role="status">
++        Loading mission-test results…
++      </p>
++    )
++  if (status === 'error')
++    return (
++      <section className="page empty-state" role="alert">
++        <h1>Mission-test results could not be loaded</h1>
++        <p className="muted">{error?.message}</p>
++        <button type="button" className="btn btn--primary" onClick={retry}>
++          Retry
++        </button>
++      </section>
++    )
++
++  const lang = params.get('lang') === 'ar' ? 'ar' : 'en'
++  const targetId = d.targets.some((t) => t.id === params.get('tgt')) ? params.get('tgt') : defaultTargetId(d, app.targetId)
++  const target = d.targets.find((t) => t.id === targetId)
++  const tests = testsForTarget(d, targetId)
++  const testId = tests.some((m) => m.id === params.get('test')) ? params.get('test') : tests[0]?.id
++  const test = tests.find((m) => m.id === testId)
++  const rows = test ? resultsFor(d, targetId, testId) : []
++  const selected = rows.find((r) => r.site_id === params.get('site')) || rows[0] || null
++  const scoredCount = rows.filter((r) => r.status === 'scored').length
++  const meta = d.meta
++
++  return (
++    <section className="page mt" aria-labelledby="mt-title">
++      <header className="mt-head">
++        <p className="kicker">
++          Analog method v{meta.method_version} · {meta.provisional ? 'provisional results' : 'results'} · generated{' '}
++          {String(meta.generated_utc || '').slice(0, 10)}
++        </p>
++        <h1 id="mt-title">Mission tests</h1>
++        <p className="mt-lede">
++          How closely each of {Object.keys(d.earth_sites).length} Earth sites resembles a Mars or Moon target{' '}
++          <strong>for one mission test at a time</strong> — terrain computed with the same algorithm at the same grid
++          spacing on both worlds, with every parameter’s share visible.
++        </p>
++        <div className="mt-banner" role="note">
++          <p>
++            <strong>Provisional — not a final ranking.</strong> {meta.display_guidance}
++          </p>
++          <p className="mt-banner__links">
++            <Link to="/method/ar">شرح المنهجية (عربي) — Method explanation</Link>
++            <span className="seg seg--tiny" role="group" aria-label="Data labels language">
++              <button type="button" aria-pressed={lang === 'en'} onClick={() => set({ lang: null })}>
++                English
++              </button>
++              <button type="button" aria-pressed={lang === 'ar'} onClick={() => set({ lang: 'ar' })}>
++                العربية
++              </button>
++            </span>
++          </p>
++        </div>
++      </header>
++
++      <div className="mt-controls">
++        <label className="mt-field">
++          <span>Target</span>
++          <select value={targetId} onChange={(e) => set({ tgt: e.target.value, site: null })}>
++            {d.targets.map((t) => (
++              <option key={t.id} value={t.id}>
++                {t.body === 'moon' ? 'Moon' : 'Mars'} · {t.name}
++              </option>
++            ))}
++          </select>
++        </label>
++        <div className="mt-field">
++          <span id="mt-test-label">Mission test</span>
++          <div className="mt-tests" role="group" aria-labelledby="mt-test-label">
++            {tests.map((m) => (
++              <button key={m.id} type="button" className="mt-test" aria-pressed={m.id === testId} onClick={() => set({ test: m.id, site: null })}>
++                <span dir="auto">{loc(m, 'label', lang)}</span>
++              </button>
++            ))}
++          </div>
++        </div>
++      </div>
++
++      <div className="mt-notes">
++        {test && (
++          <p className={`mt-note-box${test.id === 'lighting_geometry' ? ' mt-note-box--warn' : ''}`}>
++            {test.id === 'lighting_geometry' && <strong>Sun geometry only — this is not an environmental or terrain analog. </strong>}
++            {test.rationale}
++          </p>
++        )}
++        {target?.type === 'region' && (
++          <p className="mt-note-box">
++            <strong>
++              Regional target
++              {Array.isArray(target.lat_range) ? ` (${Math.abs(target.lat_range[1])}–${Math.abs(target.lat_range[0])}° S)` : ''}, not
++              a landing site.
++            </strong>{' '}
++            Target values are medians over the region’s 10 km windows.
++          </p>
++        )}
++        <p className="mt-note-box mt-note-box--quiet">
++          Scores compare sites within this one test only. They are not comparable across tests or targets and are never
++          averaged. {scoredCount} of {rows.length} sites scored for this test.
++        </p>
++      </div>
++
++      <div className="mt-layout">
++        <section className="mt-list" aria-labelledby="mt-list-title">
++          <h2 id="mt-list-title" className="mt-list__title">
++            <T lang={lang} en={PROVISIONAL_LABEL.en} ar={PROVISIONAL_LABEL.ar} />
++            <span className="mt-list__sub">ordered by score inside this test · bar = sensitivity range, dot = score</span>
++          </h2>
++          <ol className="mt-rows">
++            {rows.map((r) => (
++              <ResultRow key={r.site_id} r={r} d={d} lang={lang} selected={selected?.site_id === r.site_id} onSelect={(id) => set({ site: id })} />
++            ))}
++          </ol>
++        </section>
++        <Detail r={selected} d={d} lang={lang} target={target} />
++      </div>
++
++      <footer className="mt-foot">
++        <p>{meta.score_definition}</p>
++        <p>
++          Coverage: {meta.coverage_definition} Range: {meta.score_range_definition}
++        </p>
++      </footer>
++    </section>
++  )
++}
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/state/AppState.jsx src/state/AppState.jsx
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/state/AppState.jsx	2026-11-15 14:10:18.311388100 +0200
++++ src/state/AppState.jsx	2026-11-15 14:33:37.656319600 +0200
+@@ -102,6 +102,12 @@
+     [],
+   )
+ 
++  /** Replace the shortlist (guided demo); unknown ids dropped, capped at SHORTLIST_MAX. */
++  const setShortlist = useCallback(
++    (ids) => setState((s) => ({ ...s, shortlist: [...new Set(ids.filter((id) => data.siteById[id]))].slice(0, SHORTLIST_MAX) })),
++    [data.siteById],
++  )
++
+   const clearShortlist = useCallback(() => setState((s) => ({ ...s, shortlist: [] })), [])
+ 
+   const setRankBy = useCallback((rankBy) => setState((s) => ({ ...s, rankBy })), [])
+@@ -130,6 +136,7 @@
+     resetWeights,
+     toggleShortlist,
+     clearShortlist,
++    setShortlist,
+     setRankBy,
+     linkTo,
+   }
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/styles/demo.css src/styles/demo.css
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/styles/demo.css	1970-01-01 02:00:00.000000000 +0200
++++ src/styles/demo.css	2026-11-15 14:20:28.313662400 +0200
+@@ -0,0 +1,170 @@
++/* Live demo guide (DemoGuide.jsx): docked bottom-right, small enough to keep the screen
++   readable for an audience; above the phone tab bar. */
++
++.demo-guide {
++  position: fixed;
++  right: 16px;
++  bottom: 16px;
++  z-index: 1200;
++  width: min(380px, calc(100vw - 32px));
++  padding: 0.75rem 0.9rem 0.8rem;
++  border: 1px solid var(--accent-line);
++  border-radius: var(--radius-lg);
++  background: color-mix(in srgb, var(--panel) 94%, transparent);
++  backdrop-filter: blur(8px);
++  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
++}
++
++@media (prefers-reduced-motion: no-preference) {
++  .demo-guide {
++    animation: demo-in 0.28s var(--ease-out, ease-out);
++  }
++}
++
++@keyframes demo-in {
++  from {
++    opacity: 0;
++    transform: translateY(10px);
++  }
++}
++
++.demo-guide__top {
++  display: flex;
++  align-items: center;
++  gap: 0.5rem;
++}
++
++.demo-guide__kicker {
++  font-size: 0.7rem;
++  font-weight: 700;
++  letter-spacing: 0.06em;
++  text-transform: uppercase;
++  color: var(--accent);
++}
++
++.demo-guide__time {
++  margin-left: auto;
++  font-size: 0.7rem;
++  color: var(--muted);
++  font-variant-numeric: tabular-nums;
++}
++
++.demo-guide__icon {
++  width: 1.6rem;
++  height: 1.6rem;
++  display: grid;
++  place-items: center;
++  border: 1px solid var(--border);
++  border-radius: 6px;
++  background: transparent;
++  color: var(--muted);
++  font: inherit;
++  cursor: pointer;
++}
++
++.demo-guide__icon:hover {
++  color: var(--accent);
++  border-color: var(--accent-line);
++}
++
++.demo-guide__dots {
++  display: flex;
++  gap: 3px;
++  list-style: none;
++  margin: 0.5rem 0 0.4rem;
++  padding: 0;
++}
++
++.demo-guide__dots li {
++  flex: 1;
++  height: 3px;
++  border-radius: 2px;
++  background: var(--border-strong);
++}
++
++.demo-guide__dots li.is-done {
++  background: var(--accent-line);
++}
++
++.demo-guide__dots li.is-now {
++  background: var(--accent);
++}
++
++.demo-guide__title {
++  margin: 0;
++  font-size: 0.98rem;
++}
++
++.demo-guide__say {
++  margin: 0.3rem 0 0.6rem;
++  font-size: 0.8rem;
++  line-height: 1.5;
++  color: var(--text-2, #b9c6d8);
++}
++
++.demo-guide__actions {
++  display: flex;
++  flex-wrap: wrap;
++  gap: 0.4rem;
++}
++
++.demo-guide__actions .btn--primary {
++  margin-left: auto;
++}
++
++.demo-pill {
++  position: fixed;
++  right: 16px;
++  bottom: 16px;
++  z-index: 1200;
++  padding: 0.4rem 0.8rem;
++  border: 1px solid var(--accent-line);
++  border-radius: 999px;
++  background: var(--panel);
++  color: var(--accent);
++  font: inherit;
++  font-size: 0.78rem;
++  font-weight: 600;
++  cursor: pointer;
++}
++
++/* Brief outline on the element the current step talks about. */
++.demo-spot {
++  outline: 2px solid var(--accent);
++  outline-offset: 4px;
++  border-radius: var(--radius);
++}
++
++@media (prefers-reduced-motion: no-preference) {
++  .demo-spot {
++    animation: demo-spot 2.6s ease-out forwards;
++  }
++}
++
++@keyframes demo-spot {
++  0%,
++  70% {
++    outline-color: var(--accent);
++  }
++  100% {
++    outline-color: transparent;
++  }
++}
++
++@media (max-width: 760px) {
++  .demo-guide,
++  .demo-pill {
++    bottom: calc(var(--tabbar-h, 64px) + 10px);
++    right: 10px;
++  }
++  .demo-guide {
++    width: calc(100vw - 20px);
++  }
++}
++
++@media print {
++  .demo-guide,
++  .demo-pill {
++    display: none !important;
++  }
++}
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/styles/missiontests.css src/styles/missiontests.css
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/styles/missiontests.css	1970-01-01 02:00:00.000000000 +0200
++++ src/styles/missiontests.css	2026-11-15 14:48:47.733117700 +0200
+@@ -0,0 +1,597 @@
++/* Mission tests (method v1) and the Arabic method page. Uses the app's theme tokens. */
++
++.mt {
++  max-width: 1280px;
++  margin: 0 auto;
++}
++
++.mt-head h1 {
++  margin: 0.2rem 0 0.4rem;
++}
++
++.mt-lede {
++  max-width: 78ch;
++  color: var(--text-2, #b9c6d8);
++  margin: 0 0 0.9rem;
++}
++
++.mt-banner {
++  padding: 0.7rem 0.9rem;
++  border: 1px solid rgba(242, 166, 90, 0.55);
++  border-radius: var(--radius);
++  background: rgba(242, 166, 90, 0.08);
++  font-size: 0.86rem;
++}
++
++.mt-banner p {
++  margin: 0;
++}
++
++.mt-banner__links {
++  display: flex;
++  flex-wrap: wrap;
++  align-items: center;
++  justify-content: space-between;
++  gap: 0.5rem 1rem;
++  margin-top: 0.5rem !important;
++}
++
++.mt-controls {
++  display: grid;
++  grid-template-columns: minmax(220px, 360px) minmax(0, 1fr);
++  gap: 0.8rem 1.2rem;
++  margin: 1rem 0 0.6rem;
++}
++
++.mt-field {
++  display: grid;
++  gap: 0.3rem;
++  font-size: 0.8rem;
++  color: var(--muted);
++}
++
++.mt-field select {
++  font: inherit;
++  font-size: 0.9rem;
++  padding: 0.45rem 0.55rem;
++  border: 1px solid var(--border-strong);
++  border-radius: 8px;
++  background: var(--panel-2);
++  color: var(--text, #e6edf6);
++}
++
++.mt-tests {
++  display: flex;
++  flex-wrap: wrap;
++  gap: 0.4rem;
++}
++
++.mt-test {
++  font: inherit;
++  font-size: 0.85rem;
++  padding: 0.4rem 0.75rem;
++  border: 1px solid var(--border-strong);
++  border-radius: 999px;
++  background: transparent;
++  color: var(--text, #e6edf6);
++  cursor: pointer;
++}
++
++.mt-test[aria-pressed='true'] {
++  border-color: var(--accent);
++  background: var(--accent-soft);
++  color: var(--accent);
++  font-weight: 600;
++}
++
++.mt-notes {
++  display: grid;
++  gap: 0.4rem;
++  margin-bottom: 0.9rem;
++}
++
++.mt-note-box {
++  margin: 0;
++  padding: 0.5rem 0.75rem;
++  border: 1px solid var(--border);
++  border-radius: 8px;
++  background: var(--panel);
++  font-size: 0.84rem;
++  line-height: 1.5;
++}
++
++.mt-note-box--warn {
++  border-color: rgba(242, 166, 90, 0.6);
++  background: rgba(242, 166, 90, 0.08);
++}
++
++.mt-note-box--quiet {
++  color: var(--muted);
++}
++
++.mt-layout {
++  display: grid;
++  grid-template-columns: minmax(300px, 0.9fr) minmax(0, 1.4fr);
++  gap: 1rem;
++  align-items: start;
++}
++
++.mt-list,
++.mt-detail {
++  border: 1px solid var(--border);
++  border-radius: var(--radius-lg);
++  background: var(--panel);
++  padding: 0.85rem;
++}
++
++.mt-list__title {
++  margin: 0 0 0.6rem;
++  font-size: 0.95rem;
++  display: grid;
++  gap: 0.15rem;
++}
++
++.mt-list__sub {
++  font-size: 0.72rem;
++  font-weight: 400;
++  color: var(--muted);
++}
++
++.mt-rows {
++  list-style: none;
++  margin: 0;
++  padding: 0;
++  display: grid;
++  gap: 0.35rem;
++}
++
++.mt-row__btn {
++  width: 100%;
++  display: grid;
++  gap: 0.3rem;
++  padding: 0.55rem 0.65rem;
++  font: inherit;
++  color: inherit;
++  text-align: start;
++  background: var(--panel-2);
++  border: 1px solid transparent;
++  border-radius: 10px;
++  cursor: pointer;
++  transition: border-color 0.15s ease, background-color 0.15s ease;
++}
++
++.mt-row__btn:hover {
++  border-color: var(--border-strong);
++}
++
++.mt-row.is-selected .mt-row__btn {
++  border-color: var(--accent-line);
++  background: var(--accent-soft);
++}
++
++.mt-row__name {
++  display: flex;
++  flex-wrap: wrap;
++  align-items: baseline;
++  gap: 0.25rem 0.5rem;
++  font-weight: 600;
++  font-size: 0.9rem;
++}
++
++.mt-neg {
++  font-size: 0.68rem;
++  font-weight: 600;
++  padding: 0.05rem 0.45rem;
++  border: 1px dashed #f2a65a;
++  border-radius: 999px;
++  color: #f2a65a;
++}
++
++.mt-row--neg .mt-row__btn {
++  background-image: repeating-linear-gradient(135deg, rgba(242, 166, 90, 0.05) 0 8px, transparent 8px 16px);
++}
++
++.mt-row__score {
++  display: grid;
++  grid-template-columns: auto minmax(80px, 1fr);
++  grid-template-areas: 'num bar' 'meta meta' 'conf conf';
++  align-items: center;
++  gap: 0.2rem 0.6rem;
++}
++
++.mt-row__num {
++  grid-area: num;
++  font-size: 1.15rem;
++  font-weight: 700;
++  font-variant-numeric: tabular-nums;
++}
++
++.mt-range {
++  grid-area: bar;
++  position: relative;
++  height: 8px;
++  border-radius: 4px;
++  background: rgba(255, 255, 255, 0.07);
++}
++
++.mt-range__band {
++  position: absolute;
++  top: 0;
++  bottom: 0;
++  border-radius: 4px;
++  background: var(--accent-line);
++}
++
++.mt-range__dot {
++  position: absolute;
++  top: 50%;
++  width: 10px;
++  height: 10px;
++  margin: -5px 0 0 -5px;
++  border-radius: 50%;
++  background: var(--accent);
++  box-shadow: 0 0 0 2px var(--panel);
++}
++
++.mt-row__meta {
++  grid-area: meta;
++  font-size: 0.74rem;
++  color: var(--muted);
++  font-variant-numeric: tabular-nums;
++}
++
++.mt-row__score .mt-conf {
++  grid-area: conf;
++  justify-self: start;
++}
++
++.mt-row__reason {
++  font-size: 0.8rem;
++  color: var(--muted);
++  font-style: italic;
++}
++
++.mt-conf {
++  display: inline-block;
++  font-size: 0.7rem;
++  font-weight: 600;
++  padding: 0.05rem 0.45rem;
++  border-radius: 999px;
++  border: 1px solid var(--border-strong);
++}
++
++.mt-conf--medium {
++  color: #9ee0c4;
++  border-color: rgba(158, 224, 196, 0.5);
++}
++
++.mt-conf--low {
++  color: #f2a65a;
++  border-color: rgba(242, 166, 90, 0.5);
++}
++
++.mt-conf--insufficient {
++  color: var(--muted);
++  border-style: dashed;
++}
++
++.mt-warn {
++  color: #f2a65a;
++  font-weight: 700;
++}
++
++.mt-detail__head h2 {
++  margin: 0.15rem 0 0.4rem;
++}
++
++.mt-negnote {
++  margin: 0 0 0.6rem;
++  padding: 0.45rem 0.65rem;
++  border: 1px dashed #f2a65a;
++  border-radius: 8px;
++  font-size: 0.82rem;
++}
++
++.mt-detail__score {
++  display: grid;
++  grid-template-columns: auto minmax(0, 1fr);
++  gap: 1rem;
++  align-items: center;
++  padding: 0.6rem 0.75rem;
++  border-radius: 10px;
++  background: var(--panel-2);
++}
++
++.mt-detail__label {
++  display: block;
++  font-size: 0.72rem;
++  color: var(--muted);
++}
++
++.mt-detail__num {
++  font-size: 2.2rem;
++  font-weight: 700;
++  font-variant-numeric: tabular-nums;
++}
++
++.mt-detail__of {
++  color: var(--muted);
++}
++
++.mt-detail__facts {
++  margin: 0;
++  display: grid;
++  grid-template-columns: repeat(3, minmax(0, 1fr));
++  gap: 0.5rem;
++  font-size: 0.82rem;
++}
++
++.mt-detail__facts dt {
++  color: var(--muted);
++  font-size: 0.72rem;
++}
++
++.mt-detail__facts dd {
++  margin: 0.1rem 0 0;
++  font-variant-numeric: tabular-nums;
++}
++
++.mt-detail__reason {
++  padding: 0.6rem 0.75rem;
++  border: 1px dashed var(--border-strong);
++  border-radius: 10px;
++}
++
++.mt-detail__summary {
++  margin: 0.7rem 0;
++  font-size: 0.88rem;
++  line-height: 1.55;
++}
++
++.mt-contrib {
++  margin: 0.4rem 0 0.8rem;
++}
++
++.mt-contrib__cap {
++  font-size: 0.74rem;
++  color: var(--muted);
++  margin-bottom: 0.3rem;
++}
++
++.mt-contrib__track {
++  display: flex;
++  height: 14px;
++  border-radius: 7px;
++  overflow: hidden;
++  background: rgba(255, 255, 255, 0.06);
++}
++
++.mt-contrib__seg {
++  height: 100%;
++  border-inline-end: 1px solid var(--panel);
++}
++
++.mt-contrib__legend {
++  list-style: none;
++  margin: 0.4rem 0 0;
++  padding: 0;
++  display: flex;
++  flex-wrap: wrap;
++  gap: 0.25rem 1rem;
++  font-size: 0.78rem;
++}
++
++.mt-contrib__sw {
++  display: inline-block;
++  width: 10px;
++  height: 10px;
++  border-radius: 2px;
++  margin-inline-end: 0.3rem;
++}
++
++.mt-table-wrap {
++  overflow-x: auto;
++}
++
++.mt-table {
++  width: 100%;
++  border-collapse: collapse;
++  font-size: 0.8rem;
++}
++
++.mt-table th,
++.mt-table td {
++  padding: 0.4rem 0.45rem;
++  border-bottom: 1px solid var(--border);
++  text-align: start;
++  vertical-align: top;
++  font-variant-numeric: tabular-nums;
++}
++
++.mt-table thead th {
++  color: var(--muted);
++  font-weight: 600;
++  font-size: 0.72rem;
++}
++
++.mt-table tbody th {
++  font-weight: 600;
++  min-width: 170px;
++}
++
++.mt-note {
++  display: block;
++  margin-top: 0.15rem;
++  font-weight: 400;
++  font-size: 0.72rem;
++  color: var(--muted);
++}
++
++.mt-na {
++  color: var(--muted);
++  font-style: italic;
++}
++
++.mt-comp {
++  font-size: 0.72rem;
++}
++
++.mt-comp--partial {
++  color: #f2a65a;
++}
++
++.mt-comp--unavailable {
++  color: var(--muted);
++}
++
++.mt-context,
++.mt-caveats {
++  margin-top: 0.8rem;
++  font-size: 0.82rem;
++}
++
++.mt-context h3,
++.mt-caveats h3 {
++  font-size: 0.85rem;
++  margin: 0 0 0.3rem;
++}
++
++.mt-context ul,
++.mt-caveats ul {
++  margin: 0;
++  padding-inline-start: 1.1rem;
++  display: grid;
++  gap: 0.25rem;
++}
++
++.mt-detail__method {
++  margin: 0.9rem 0 0;
++  font-size: 0.85rem;
++}
++
++.mt-foot {
++  margin-top: 1rem;
++  font-size: 0.75rem;
++  color: var(--muted);
++}
++
++.mt-foot p {
++  margin: 0.2rem 0;
++}
++
++@media (max-width: 900px) {
++  .mt-controls,
++  .mt-layout {
++    grid-template-columns: minmax(0, 1fr);
++  }
++  .mt-detail__facts {
++    grid-template-columns: minmax(0, 1fr);
++  }
++}
++
++/* ---------- Arabic method page ---------- */
++
++.md-page {
++  max-width: 900px;
++  margin: 0 auto;
++  line-height: 1.75;
++  font-family: 'Segoe UI', Tahoma, 'Noto Naskh Arabic', 'Noto Sans Arabic', Arial, sans-serif;
++}
++
++.md-back {
++  font-size: 0.85rem;
++  text-align: left;
++}
++
++.md-body h2 {
++  font-size: 1.6rem;
++  margin: 0.4rem 0 0.8rem;
++}
++
++.md-body h3 {
++  font-size: 1.15rem;
++  margin: 1.4rem 0 0.5rem;
++}
++
++.md-body h4 {
++  font-size: 1rem;
++  margin: 1rem 0 0.4rem;
++}
++
++.md-body p,
++.md-body li {
++  font-size: 0.98rem;
++}
++
++.md-body code {
++  padding: 0.05rem 0.3rem;
++  border-radius: 4px;
++  background: var(--panel-2);
++  font-size: 0.86em;
++  unicode-bidi: isolate;
++}
++
++.md-pre {
++  padding: 0.7rem 0.9rem;
++  border-radius: 8px;
++  background: var(--panel-2);
++  overflow-x: auto;
++  text-align: left;
++}
++
++.md-table-wrap {
++  overflow-x: auto;
++}
++
++.md-table {
++  width: 100%;
++  border-collapse: collapse;
++  font-size: 0.9rem;
++  margin: 0.4rem 0 0.8rem;
++}
++
++.md-table th,
++.md-table td {
++  padding: 0.4rem 0.55rem;
++  border: 1px solid var(--border);
++  text-align: right;
++  vertical-align: top;
++}
++
++.md-table th {
++  background: var(--panel-2);
++}
++
++.md-body hr {
++  border: 0;
++  border-top: 1px solid var(--border);
++  margin: 1.2rem 0;
++}
++
++@media print {
++  .md-back {
++    display: none;
++  }
++}
++
++.mt-field {
++  min-width: 0;
++}
++
++.mt-field select {
++  width: 100%;
++  min-width: 0;
++  text-overflow: ellipsis;
++}
++
++/* long file names / identifiers in inline code must wrap on phones */
++.md-body code {
++  overflow-wrap: anywhere;
++  word-break: break-word;
++}
++
++.md-body p,
++.md-body li,
++.md-table td {
++  overflow-wrap: anywhere;
++}
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/styles/ranking.css src/styles/ranking.css
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/styles/ranking.css	1970-01-01 02:00:00.000000000 +0200
++++ src/styles/ranking.css	2026-11-15 14:18:21.909667700 +0200
+@@ -0,0 +1,439 @@
++/* Live ranking (LiveRanking.jsx) and objective comparison (ObjectiveLeaders.jsx).
++   Movement is shown by symbol + word + position, never colour alone. Motion is a short
++   FLIP slide and a tint flash (JS, skipped under prefers-reduced-motion). */
++
++.lrank {
++  padding: 0.8rem 0.9rem 0.85rem;
++  border: 1px solid var(--border);
++  border-radius: var(--radius);
++  background: var(--panel-2);
++}
++
++.lrank__head {
++  display: flex;
++  flex-wrap: wrap;
++  align-items: center;
++  justify-content: space-between;
++  gap: 0.4rem 0.75rem;
++  margin-bottom: 0.45rem;
++}
++
++.lrank__title {
++  margin: 0;
++  font-size: 0.9rem;
++  display: flex;
++  align-items: baseline;
++  gap: 0.5rem;
++  flex-wrap: wrap;
++}
++
++.lrank__engine {
++  font-weight: 400;
++  font-size: 0.72rem;
++  color: var(--muted);
++}
++
++.seg--tiny {
++  display: inline-flex;
++  border: 1px solid var(--border-strong);
++  border-radius: 999px;
++  overflow: hidden;
++}
++
++.seg--tiny button {
++  font: inherit;
++  font-size: 0.72rem;
++  padding: 0.2rem 0.6rem;
++  background: transparent;
++  color: var(--muted);
++  border: 0;
++  cursor: pointer;
++}
++
++.seg--tiny button[aria-pressed='true'] {
++  background: var(--accent-soft);
++  color: var(--accent);
++  font-weight: 600;
++}
++
++.seg--tiny button:disabled {
++  opacity: 0.45;
++  cursor: not-allowed;
++}
++
++.lrank__changes {
++  margin: 0 0 0.5rem;
++  font-size: 0.78rem;
++  line-height: 1.7;
++}
++
++.lrank__chip {
++  display: inline-block;
++  margin: 0 0.25rem 0.1rem 0;
++  padding: 0 0.45rem;
++  border-radius: 999px;
++  border: 1px solid var(--accent-line);
++  background: var(--accent-soft);
++  font-variant-numeric: tabular-nums;
++  white-space: nowrap;
++}
++
++.lrank__leader {
++  margin: 0 0 0.5rem;
++  padding: 0.4rem 0.6rem;
++  border-left: 3px solid var(--accent);
++  background: var(--accent-soft);
++  border-radius: 0 6px 6px 0;
++  font-size: 0.8rem;
++}
++
++.lrank__list {
++  list-style: none;
++  margin: 0;
++  padding: 0;
++  display: grid;
++  gap: 2px;
++  position: relative;
++}
++
++.lrank__row {
++  border-radius: 6px;
++}
++
++.lrank__btn {
++  width: 100%;
++  display: grid;
++  grid-template-columns: 1.5rem minmax(0, 1fr) 3.2rem 3.4rem 2.2rem;
++  align-items: center;
++  gap: 0.5rem;
++  padding: 0.3rem 0.4rem;
++  font: inherit;
++  font-size: var(--fs-sm, 0.85rem);
++  color: inherit;
++  text-align: left;
++  background: transparent;
++  border: 1px solid transparent;
++  border-radius: 6px;
++  cursor: pointer;
++  transition: background-color 0.15s ease, border-color 0.15s ease;
++}
++
++.lrank__btn:hover {
++  background: rgba(255, 255, 255, 0.035);
++}
++
++.lrank__row.is-focus .lrank__btn {
++  border-color: var(--accent-line);
++  background: var(--accent-soft);
++}
++
++.lrank__rank {
++  color: var(--accent);
++  font-weight: 700;
++  font-variant-numeric: tabular-nums;
++  text-align: center;
++}
++
++.lrank__name {
++  display: flex;
++  align-items: baseline;
++  gap: 0.4rem;
++  min-width: 0;
++}
++
++.lrank__name-text {
++  overflow: hidden;
++  text-overflow: ellipsis;
++  white-space: nowrap;
++}
++
++.lrank__was {
++  flex: none;
++  font-size: 0.7rem;
++  color: var(--muted);
++  font-variant-numeric: tabular-nums;
++}
++
++.lrank__bar {
++  height: 5px;
++  border-radius: 3px;
++  background: rgba(255, 255, 255, 0.07);
++  overflow: hidden;
++}
++
++.lrank__bar > span {
++  display: block;
++  height: 100%;
++  background: var(--accent);
++  opacity: 0.75;
++}
++
++@media (prefers-reduced-motion: no-preference) {
++  .lrank__bar > span {
++    transition: width 0.38s var(--ease-out, ease-out);
++  }
++}
++
++.lrank__score {
++  font-weight: 700;
++  font-variant-numeric: tabular-nums;
++  text-align: right;
++  white-space: nowrap;
++}
++
++.lrank__sd {
++  margin-left: 0.25rem;
++  font-size: 0.68rem;
++  font-weight: 600;
++}
++
++.lrank__move {
++  text-align: right;
++  font-size: 0.78rem;
++  font-weight: 600;
++  font-variant-numeric: tabular-nums;
++  color: var(--muted);
++}
++
++.lrank .is-up {
++  --move: #9ee0c4;
++}
++
++.lrank .is-down {
++  --move: #f2a65a;
++}
++
++.lrank__move.is-up,
++.lrank__move.is-down,
++.lrank__sd.is-up,
++.lrank__sd.is-down,
++.lrank__why-eff.is-up,
++.lrank__why-eff.is-down {
++  color: var(--move);
++}
++
++.lrank__more {
++  margin-top: 0.35rem;
++  font-size: 0.78rem;
++}
++
++.lrank__why {
++  margin-top: 0.6rem;
++  padding-top: 0.55rem;
++  border-top: 1px dashed var(--border-strong);
++  font-size: 0.8rem;
++}
++
++.lrank__why-head {
++  margin: 0 0 0.3rem;
++}
++
++.lrank__why-list {
++  list-style: none;
++  margin: 0;
++  padding: 0;
++  display: grid;
++  gap: 0.2rem;
++}
++
++.lrank__why-list li {
++  display: grid;
++  grid-template-columns: minmax(0, 1fr) auto auto;
++  gap: 0.6rem;
++  align-items: baseline;
++}
++
++.lrank__why-crit {
++  font-variant-numeric: tabular-nums;
++}
++
++.lrank__why-eff {
++  font-weight: 700;
++  font-variant-numeric: tabular-nums;
++}
++
++.lrank__why-sim {
++  color: var(--muted);
++  font-size: 0.74rem;
++}
++
++.lrank__why-sim--na {
++  grid-column: 2 / -1;
++  font-style: italic;
++}
++
++.lrank__why-none,
++.lrank__why-note {
++  margin: 0.35rem 0 0;
++  color: var(--muted);
++  font-size: 0.72rem;
++  line-height: 1.45;
++}
++
++/* ---------- Objective comparison ---------- */
++
++.objlead {
++  margin: var(--space-4, 16px) 0;
++  padding: 0.9rem 1rem 1rem;
++  border: 1px solid var(--border);
++  border-radius: var(--radius-lg);
++  background: var(--panel);
++}
++
++.objlead__head h2 {
++  margin: 0;
++  font-size: 1.05rem;
++}
++
++.objlead__head p {
++  margin: 0.25rem 0 0.75rem;
++  color: var(--muted);
++  font-size: 0.82rem;
++  max-width: 80ch;
++}
++
++.objlead__grid {
++  display: grid;
++  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
++  gap: 0.6rem;
++  list-style: none;
++  margin: 0;
++  padding: 0;
++}
++
++.objlead__col {
++  display: flex;
++  flex-direction: column;
++  border: 1px solid var(--border);
++  border-radius: var(--radius);
++  background: var(--panel-2);
++  transition: border-color 0.2s ease;
++}
++
++.objlead__col.is-current {
++  border-color: var(--accent-line);
++  box-shadow: inset 0 0 0 1px var(--accent-line);
++}
++
++.objlead__col-head {
++  display: flex;
++  align-items: baseline;
++  justify-content: space-between;
++  gap: 0.5rem;
++  padding: 0.55rem 0.7rem 0.35rem;
++}
++
++.objlead__col-title {
++  margin: 0;
++  font-size: 0.85rem;
++}
++
++.objlead__cur {
++  font-size: 0.68rem;
++  color: var(--accent);
++  font-weight: 600;
++  white-space: nowrap;
++}
++
++.objlead__list {
++  list-style: none;
++  margin: 0;
++  padding: 0 0.7rem;
++  display: grid;
++  gap: 0.2rem;
++  flex: 1;
++}
++
++.objlead__item {
++  display: grid;
++  grid-template-columns: 1.1rem minmax(0, 1fr) auto;
++  gap: 0.4rem;
++  align-items: baseline;
++  font-size: 0.8rem;
++}
++
++.objlead__item:first-child {
++  font-weight: 700;
++}
++
++.objlead__item:first-child .objlead__site {
++  color: var(--accent);
++}
++
++.objlead__n {
++  color: var(--muted);
++  font-variant-numeric: tabular-nums;
++}
++
++.objlead__site {
++  overflow: hidden;
++  text-overflow: ellipsis;
++  white-space: nowrap;
++}
++
++.objlead__score {
++  font-variant-numeric: tabular-nums;
++}
++
++.objlead__use {
++  margin: 0.5rem 0.7rem 0.6rem;
++  align-self: flex-start;
++}
++
++.objlead__foot {
++  margin: 0.7rem 0 0;
++  font-size: 0.78rem;
++  color: var(--muted);
++}
++
++@media (max-width: 560px) {
++  .lrank__btn {
++    grid-template-columns: 1.3rem minmax(0, 1fr) 3.3rem 2rem;
++  }
++  .lrank__bar {
++    display: none;
++  }
++}
++
++.lrank__dropped {
++  margin: 0.45rem 0 0;
++  padding: 0.35rem 0.55rem;
++  border: 1px dashed var(--border-strong);
++  border-radius: 6px;
++  font-size: 0.74rem;
++  line-height: 1.45;
++  color: var(--muted);
++}
++
++.lrank__dropped strong {
++  color: inherit;
++  font-weight: 700;
++}
++
++/* Narrow hosts (Explore's advanced panel): drop the bar, let names breathe. */
++.lrank {
++  container-type: inline-size;
++}
++
++@container (max-width: 360px) {
++  .lrank__btn {
++    grid-template-columns: 1.3rem minmax(0, 1fr) auto 1.9rem;
++    gap: 0.4rem;
++  }
++  .lrank__bar {
++    display: none;
++  }
++  .lrank__name {
++    flex-wrap: wrap;
++    gap: 0 0.4rem;
++  }
++  .lrank__name-text {
++    white-space: normal;
++  }
++  .lrank__why-list li {
++    grid-template-columns: minmax(0, 1fr) auto;
++  }
++  .lrank__why-list .lrank__why-sim {
++    grid-column: 1 / -1;
++  }
++}
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/styles/three.css src/styles/three.css
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/styles/three.css	2026-11-15 14:10:18.326341900 +0200
++++ src/styles/three.css	2026-11-15 14:29:34.070651100 +0200
+@@ -339,3 +339,132 @@
+     display: none;
+   }
+ }
++
++/* Hover elevation probe: the stored value of the grid cell under the pointer (real DEM data). */
++.t3d__view {
++  position: relative;
++}
++
++.t3d__probe {
++  position: absolute;
++  z-index: 3;
++  display: grid;
++  gap: 1px;
++  max-width: 220px;
++  padding: 0.35rem 0.55rem;
++  border: 1px solid var(--accent-line, rgba(158, 224, 196, 0.5));
++  border-radius: 8px;
++  background: rgba(5, 10, 20, 0.88);
++  pointer-events: none;
++  font-size: 0.72rem;
++  line-height: 1.35;
++}
++
++.t3d__probe[hidden] {
++  display: none;
++}
++
++.t3d__probe-name {
++  color: var(--muted, #9aa8bb);
++}
++
++.t3d__probe-elev {
++  font-size: 0.95rem;
++  font-variant-numeric: tabular-nums;
++}
++
++.t3d__probe-meta {
++  color: var(--muted, #9aa8bb);
++}
++
++/* Elevation profile under the 3D pair (TerrainPair3D ProfileChart) */
++.t3d-prof {
++  margin: 0.75rem 0 0;
++  padding: 0.7rem 0.8rem 0.6rem;
++  border: 1px solid var(--border);
++  border-radius: var(--radius);
++  background: var(--panel-2);
++}
++
++.t3d-prof__cap {
++  font-size: 0.78rem;
++  color: var(--muted);
++  margin-bottom: 0.4rem;
++}
++
++.t3d-prof svg {
++  display: block;
++  width: 100%;
++  height: auto;
++}
++
++.t3d-prof__grid {
++  stroke: var(--border);
++  stroke-width: 1;
++}
++
++.t3d-prof__mid {
++  stroke: rgba(255, 255, 255, 0.35);
++  stroke-dasharray: 3 4;
++}
++
++.t3d-prof__tick {
++  fill: var(--muted);
++  font-size: 10px;
++}
++
++.t3d-prof__line {
++  fill: none;
++  stroke-width: 2;
++  stroke-linejoin: round;
++}
++
++.t3d-prof__a {
++  --c: #f4ab5e;
++}
++
++.t3d-prof__b {
++  --c: #5fe0f2;
++}
++
++.t3d-prof__line.t3d-prof__a,
++.t3d-prof__line.t3d-prof__b {
++  stroke: var(--c);
++}
++
++.t3d-prof__b.t3d-prof__line {
++  stroke-dasharray: 6 3; /* second line also differs by pattern, not colour alone */
++}
++
++.t3d-prof__legend {
++  list-style: none;
++  margin: 0.35rem 0 0;
++  padding: 0;
++  display: flex;
++  flex-wrap: wrap;
++  gap: 0.3rem 1.2rem;
++  font-size: 0.76rem;
++}
++
++.t3d-prof__sw {
++  display: inline-block;
++  width: 18px;
++  height: 0;
++  margin-right: 0.4rem;
++  vertical-align: middle;
++  border-top: 2px solid var(--c);
++}
++
++.t3d-prof__b .t3d-prof__sw {
++  border-top-style: dashed;
++}
++
++.t3d-prof__win {
++  fill: rgba(158, 224, 196, 0.07);
++  stroke: rgba(158, 224, 196, 0.35);
++  stroke-dasharray: 2 3;
++}
++
++.t3d-prof svg {
++  max-height: 210px;
++}
+diff -ruN C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/three/TerrainPair3D.jsx src/three/TerrainPair3D.jsx
+--- C:/Users/abdo/AppData/Local/Temp/claude/c1e676c953597864/7c8c0ff9-c3f9-4d9c-8c3f-dbbc5e2be598/scratchpad/baseline/src/three/TerrainPair3D.jsx	2026-11-15 14:10:18.328988100 +0200
++++ src/three/TerrainPair3D.jsx	2026-11-15 14:33:37.660334700 +0200
+@@ -99,7 +99,10 @@
+   const pin = new Line2(new LineGeometry(), lineMat(0xffffff, 2))
+   const bar = new Line2(new LineGeometry(), lineMat(0xffffff, 3))
+   const pinHead = new THREE.Mesh(new THREE.SphereGeometry(0.22, 16, 12), new THREE.MeshBasicMaterial({ color: 0xffffff }))
+-  group.add(outline, pin, bar, pinHead)
++  // hover probe: a small ring-less dot at the probed cell (hidden until the pointer is over this side)
++  const probe = new THREE.Mesh(new THREE.SphereGeometry(0.18, 12, 10), new THREE.MeshBasicMaterial({ color: 0x9ee0c4 }))
++  probe.visible = false
++  group.add(outline, pin, bar, pinHead, probe)
+ 
+   const toX = (col) => -w / 2 + col * cellKm // col in cell-centre units
+   const toZ = (row) => -w / 2 + row * cellKm
+@@ -163,10 +166,37 @@
+     bar.geometry = new LineGeometry().setPositions([x0, 0.6, zf, x0, 0, zf, x1, 0, zf, x1, 0.6, zf])
+   }
+ 
++  let curExag = 1
+   return {
+     group,
+     width: w,
+-    setExag,
++    mesh,
++    /**
++     * Elevation probe at a world-space hit point: the nearest grid cell's stored value (no
++     * interpolation), its distance from the reference pin, or nodata. Moves the probe dot.
++     */
++    probeAt(point) {
++      if (!point) {
++        probe.visible = false
++        return null
++      }
++      const col = Math.round((point.x + w / 2) / cellKm)
++      const row = Math.round((point.z + w / 2) / cellKm)
++      if (col < 0 || row < 0 || col >= n || row >= n) {
++        probe.visible = false
++        return null
++      }
++      const v = z[row * n + col]
++      const [mc, mr] = data.marker.map((q) => q - 0.5)
++      const distKm = Math.hypot(col - mc, row - mr) * cellKm
++      probe.position.set(toX(col), ((Number.isNaN(v) ? min : v) - min) / 1000 * curExag + 0.15, toZ(row))
++      probe.visible = true
++      return { elevM: Number.isNaN(v) ? null : v, distKm, nodata: Number.isNaN(v) }
++    },
++    setExag(x) {
++      curExag = x
++      setExag(x)
++    },
+     setWindowOn(on) {
+       outline.material.color.setHex(on ? WINDOW_COLOR.on : WINDOW_COLOR.off)
+       outline.material.linewidth = on ? 4 : 2
+@@ -176,6 +206,101 @@
+   }
+ }
+ 
++/** West–east line through the reference pin (stored cell values; NaN = nodata). */
++function profileOf(data) {
++  const row = Math.max(0, Math.min(data.n - 1, Math.round(data.marker[1] - 0.5)))
++  const vals = Array.from(data.z.subarray(row * data.n, (row + 1) * data.n))
++  const ok = vals.filter((v) => !Number.isNaN(v))
++  // scoring window (edge-based cells → centre-based) for the shaded band
++  const win = [data.window[0] - 0.5, data.window[2] - 0.5]
++  return { vals, min: ok.length ? Math.min(...ok) : null, max: ok.length ? Math.max(...ok) : null, cellKm: data.cellKm, win }
++}
++
++/**
++ * Elevation profiles of both places on ONE chart: same km on x, same metres on y (each line
++ * starts at its own lowest point, as the 3D view does), so relief can be compared directly.
++ * Values are the grid's stored cells; gaps are drawn as gaps, never as zero.
++ */
++function ProfileChart({ profiles, names }) {
++  const W = 640
++  const H = 150
++  const pad = { l: 44, r: 10, t: 10, b: 24 }
++  const ranges = profiles.map((p) => (p.min === null ? 0 : p.max - p.min))
++  const yMax = Math.max(1, ...ranges)
++  const n = Math.max(...profiles.map((p) => p.vals.length))
++  const km = (n - 1) * profiles[0].cellKm
++  const x = (i) => pad.l + (i / (n - 1)) * (W - pad.l - pad.r)
++  const y = (h) => pad.t + (1 - h / yMax) * (H - pad.t - pad.b)
++  const path = (p) => {
++    let d = ''
++    let pen = false
++    p.vals.forEach((v, i) => {
++      if (Number.isNaN(v) || p.min === null) {
++        pen = false
++        return
++      }
++      d += `${pen ? 'L' : 'M'}${x(i).toFixed(1)},${y(v - p.min).toFixed(1)}`
++      pen = true
++    })
++    return d
++  }
++  const yTicks = [0, yMax / 2, yMax]
++  const xTicks = [0, km / 2, km]
++  const cls = ['t3d-prof__a', 't3d-prof__b']
++  const win = Array.isArray(profiles[0].win) && profiles[0].win.every(Number.isFinite) ? profiles[0].win : null
++  return (
++    <figure className="t3d-prof">
++      <figcaption className="t3d-prof__cap">
++        <strong>West–east elevation profile through each reference point</strong> — same horizontal (km) and vertical (m)
++        scale; each line starts at its own lowest point on the line. The terrain-relief score uses only the shaded central
++        10 km window (P99 − P1 of the whole window), so this line can span more relief than the scored value.
++      </figcaption>
++      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Elevation profiles: ${names.map((nm, i) => `${nm}, ${Math.round(ranges[i])} m from lowest to highest point`).join('; ')}, across ${km.toFixed(0)} km.`}>
++        {yTicks.map((t) => (
++          <g key={`y${t}`}>
++            <line x1={pad.l} x2={W - pad.r} y1={y(t)} y2={y(t)} className="t3d-prof__grid" />
++            <text x={pad.l - 6} y={y(t) + 3} textAnchor="end" className="t3d-prof__tick">
++              {Math.round(t)} m
++            </text>
++          </g>
++        ))}
++        {xTicks.map((t) => (
++          <text key={`x${t}`} x={pad.l + (t / km) * (W - pad.l - pad.r)} y={H - 6} textAnchor="middle" className="t3d-prof__tick">
++            {t.toFixed(0)} km
++          </text>
++        ))}
++        {win && (
++        <rect
++          x={x(win[0])}
++          width={Math.max(0, x(win[1]) - x(win[0]))}
++          y={pad.t}
++          height={H - pad.t - pad.b}
++          className="t3d-prof__win"
++        />
++        )}
++        {win && (
++          <text x={x((win[0] + win[1]) / 2)} y={pad.t + 10} textAnchor="middle" className="t3d-prof__tick">
++            10 km scoring window
++          </text>
++        )}
++        <line x1={x((n - 1) / 2)} x2={x((n - 1) / 2)} y1={pad.t} y2={H - pad.b} className="t3d-prof__mid" />
++        {profiles.map((p, i) => (
++          <path key={i} d={path(p)} className={`t3d-prof__line ${cls[i]}`} />
++        ))}
++      </svg>
++      <ul className="t3d-prof__legend">
++        {names.map((nm, i) => (
++          <li key={nm} className={cls[i]}>
++            <span className="t3d-prof__sw" aria-hidden="true" />
++            {nm}: {profiles[i].min === null ? 'no elevation data on this line' : `${Math.round(ranges[i]).toLocaleString('en-US')} m from lowest to highest point`}
++            {profiles[i].vals.some((v) => Number.isNaN(v)) && ' (gaps = no data)'}
++          </li>
++        ))}
++      </ul>
++    </figure>
++  )
++}
++
+ function makeScene() {
+   const scene = new THREE.Scene()
+   scene.background = new THREE.Color('#05080f')
+@@ -190,6 +315,8 @@
+   const viewRef = useRef(null)
+   const canvasRef = useRef(null)
+   const api = useRef(null)
++  const probeRef = useRef(null)
++  const [profiles, setProfiles] = useState(null)
+   const [status, setStatus] = useState('loading') // loading | ready | error
+   const [error, setError] = useState(null)
+   const [split, setSplit] = useState(true)
+@@ -314,6 +441,63 @@
+       }
+       view.classList.add('is-dragging')
+     }
++    // ---- hover elevation probe (mouse / pen only; no React render per move) ----
++    const ray = new THREE.Raycaster()
++    const ndc = new THREE.Vector2()
++    let probeRaf = 0
++    let lastEvt = null
++    const hideProbe = () => {
++      sides.forEach((s) => s?.probeAt(null))
++      if (probeRef.current) probeRef.current.hidden = true
++      kick()
++    }
++    const runProbe = () => {
++      probeRaf = 0
++      const e = lastEvt
++      if (!e || !st.alive || !sides[0] || !sides[1]) return
++      const rect = canvas.getBoundingClientRect()
++      const px = e.clientX - rect.left
++      const py = e.clientY - rect.top
++      const [W, H] = [rect.width, rect.height]
++      // which half (split = left/right; stacked = top/bottom) and NDC inside it
++      const i = st.split ? (px < W / 2 ? 0 : 1) : py < H / 2 ? 0 : 1
++      const hw = st.split ? W / 2 : W
++      const hh = st.split ? H : H / 2
++      const lx = st.split ? px - i * hw : px
++      const ly = st.split ? py : py - i * hh
++      ndc.set((lx / hw) * 2 - 1, -(ly / hh) * 2 + 1)
++      camera.aspect = hw / hh
++      camera.updateProjectionMatrix()
++      placeCamera()
++      ray.setFromCamera(ndc, camera)
++      const hit = ray.intersectObject(sides[i].mesh, false)[0]
++      sides[1 - i].probeAt(null)
++      const r = sides[i].probeAt(hit ? hit.point : null)
++      const el = probeRef.current
++      if (el) {
++        if (!r) el.hidden = true
++        else {
++          const side = i === 0 ? left : right
++          el.hidden = false
++          el.style.left = `${Math.min(px + 14, W - 230)}px`
++          el.style.top = `${Math.max(py - 54, 6)}px`
++          el.querySelector('[data-k="name"]').textContent = side.name
++          el.querySelector('[data-k="elev"]').textContent = r.nodata
++            ? 'no elevation data in this cell'
++            : `${Math.round(r.elevM).toLocaleString('en-US')} m`
++          el.querySelector('[data-k="meta"]').textContent = `${r.distKm.toFixed(1)} km from the reference point · ${side.heightRef || 'height reference not stated'}`
++        }
++      }
++      kick()
++    }
++    const onHover = (e) => {
++      if (e.pointerType === 'touch' || st.pointers.size) return
++      lastEvt = e
++      if (!probeRaf) probeRaf = requestAnimationFrame(runProbe)
++    }
++    view.addEventListener('pointermove', onHover)
++    view.addEventListener('pointerleave', hideProbe)
++
+     const onMove = (e) => {
+       const p = st.pointers.get(e.pointerId)
+       if (!p) return
+@@ -396,16 +580,19 @@
+     Promise.all([loadGrid(left.meta), loadGrid(right.meta)])
+       .then(([gl, gr]) => {
+         if (!st.alive) return
++        const profs = [null, null]
+         ;[
+           [left, gl],
+           [right, gr],
+         ].forEach(([side, grid], i) => {
+           const data = crop(side.meta, grid, sharedKm)
++          profs[i] = profileOf(data)
+           const s = buildSide(data, side.ramp, side.rampRange, resolution)
+           s.setExag(st.exag)
+           sides[i] = s
+           scenes[i].add(s.group)
+         })
++        setProfiles(profs)
+         resize()
+         st.radius = st.baseRadius
+         api.current.setWindowOn(terrainSelected)
+@@ -425,6 +612,9 @@
+       ro.disconnect()
+       view.removeEventListener('pointerdown', onDown)
+       view.removeEventListener('pointermove', onMove)
++      view.removeEventListener('pointermove', onHover)
++      view.removeEventListener('pointerleave', hideProbe)
++      cancelAnimationFrame(probeRaf)
+       view.removeEventListener('pointerup', onUp)
+       view.removeEventListener('pointercancel', onUp)
+       view.removeEventListener('wheel', onWheel)
+@@ -477,6 +667,11 @@
+         style={{ height }}
+       >
+         <canvas ref={canvasRef} className="t3d__canvas" />
++        <div ref={probeRef} className="t3d__probe" hidden aria-hidden="true">
++          <span className="t3d__probe-name" data-k="name" />
++          <strong className="t3d__probe-elev" data-k="elev" />
++          <span className="t3d__probe-meta" data-k="meta" />
++        </div>
+         <div className={`t3d__halves t3d__halves--${split ? 'row' : 'col'}`} aria-hidden="true">
+           {half(left, 'planet')}
+           {half(right, 'earth')}
+@@ -518,10 +713,11 @@
+           {exag === 1 ? ' (true proportions)' : ''}
+         </strong>
+         . Drag (or swipe) rotates both views together; pinch, Ctrl + scroll or +/− zooms. The white bar along the front
+-        edge is 10 km; the pin marks the reference point. Heights start at each area’s own lowest point — {left.name}:{' '}
++        edge is 10 km; the pin marks the reference point. Point at the surface to read the stored elevation of that 180 m cell. Heights start at each area’s own lowest point — {left.name}:{' '}
+         {left.heightRef}; {right.name}: {right.heightRef} — and colours stretch to each area’s own range, as in the
+         images. Sources: {left.source}; {right.source}.
+       </p>
++      {profiles && <ProfileChart profiles={profiles} names={[left.name, right.name]} />}
+     </div>
+   )
+ }

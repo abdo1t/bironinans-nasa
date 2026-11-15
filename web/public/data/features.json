@@ -1,0 +1,83 @@
+[
+  {
+    "id": "terrain",
+    "label": "Terrain relief",
+    "kind": "numeric",
+    "unit": "m (P99 − P1 elevation in a 10 × 10 km window)",
+    "earthMin": 0,
+    "earthMax": 1500,
+    "invert": false,
+    "description": "Higher = more relief. Same 10 km window and ~200 m common scale for Earth, Mars and Moon.",
+    "source": "Earth: NASADEM v001 (NASA JPL), Copernicus GLO-30 where NASADEM has no coverage; Mars: USGS Mars 2020 CTX DTM; Moon: LRO LOLA LDEM"
+  },
+  {
+    "id": "aridity",
+    "label": "Aridity",
+    "kind": "numeric",
+    "unit": "mm/yr precipitation (inverted)",
+    "earthMin": 0,
+    "earthMax": 2000,
+    "invert": true,
+    "description": "Drier is more Moon/Mars-like. Wetter than 2000 mm/yr counts as 0.",
+    "source": "NASA POWER PRECTOTCORR (MERRA-2 climatology)"
+  },
+  {
+    "id": "temp",
+    "label": "Surface temperature",
+    "kind": "numeric",
+    "unit": "°C annual-mean surface (skin) temperature",
+    "earthMin": -60,
+    "earthMax": 35,
+    "invert": false,
+    "description": "0 = Earth's coldest annual mean (~−59 °C, Antarctic plateau). Colder targets are clipped.",
+    "source": "NASA POWER TS (MERRA-2 climatology)"
+  },
+  {
+    "id": "temp_range",
+    "label": "Daily temperature swing",
+    "kind": "numeric",
+    "unit": "°C mean daily surface-temperature range",
+    "earthMin": 0,
+    "earthMax": 35,
+    "invert": false,
+    "description": "Larger day–night swing is more Moon/Mars-like. Larger target swings are clipped.",
+    "source": "NASA POWER TS_RANGE (MERRA-2 climatology)"
+  },
+  {
+    "id": "veg",
+    "label": "Bare ground",
+    "kind": "numeric",
+    "unit": "NDVI (inverted)",
+    "earthMin": 0,
+    "earthMax": 0.8,
+    "invert": true,
+    "description": "1 = no vegetation.",
+    "source": "MODIS MOD13Q1 v061 NDVI (NASA LP DAAC), 2022–2023"
+  },
+  {
+    "id": "geology",
+    "label": "Geology match",
+    "kind": "categorical",
+    "related": {
+      "basalt": [
+        "anorthosite"
+      ],
+      "clay": [
+        "sedimentary"
+      ],
+      "sulfate": [
+        "evaporite"
+      ]
+    },
+    "description": "Dominant surface rock / mineral class.",
+    "source": "Peer-reviewed literature, cited per site (EMIT mineral maps not used yet)"
+  },
+  {
+    "id": "ice",
+    "label": "Ground ice / permafrost",
+    "kind": "categorical",
+    "related": {},
+    "description": "Whether ground ice or permafrost is present; scores a match to the TARGET's state (an ice-free target rewards ice-free sites).",
+    "source": "Literature"
+  }
+]

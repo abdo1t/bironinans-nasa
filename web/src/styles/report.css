@@ -1,0 +1,280 @@
+/* Scientific report (2026-11-15): a readable document on screen and on paper.
+   Screen: the app's dark theme, wide tables scroll inside their section.
+   Print: app chrome hidden, dark text on white, tables unclipped, sections kept together. */
+
+.report {
+  max-width: 1080px;
+}
+
+.report__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  margin-bottom: var(--space-4, 16px);
+  font-size: var(--fs-sm);
+}
+
+.report__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.report__head {
+  padding-bottom: var(--space-4, 16px);
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.report__head h1 {
+  margin: 0.2rem 0 0.4rem;
+  font-size: clamp(1.7rem, 1.1rem + 1.8vw, 2.6rem);
+  line-height: 1.1;
+}
+
+.report__sub {
+  margin: 0;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+.report__claim {
+  margin: 0.75rem 0 0;
+  padding: 0.6rem 0.9rem;
+  border-left: 3px solid var(--accent);
+  background: var(--accent-soft);
+  border-radius: 0 8px 8px 0;
+  max-width: 75ch;
+}
+
+.report__sec {
+  padding: var(--space-4, 16px) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.report__sec h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+}
+
+.report__note {
+  margin: 0 0 0.75rem;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  max-width: 85ch;
+}
+
+.report__lede {
+  margin: 0 0 0.75rem;
+  font-weight: 600;
+}
+
+.report__fine {
+  color: var(--muted);
+  font-size: 0.85em;
+  font-weight: 400;
+}
+
+.report__dl {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+}
+
+.report__dl > div {
+  display: grid;
+  grid-template-columns: minmax(130px, 180px) minmax(0, 1fr);
+  gap: 0.75rem;
+}
+
+.report__dl dt {
+  color: var(--muted);
+  font-size: var(--fs-sm);
+}
+
+.report__dl dd {
+  margin: 0;
+}
+
+.report__scroll {
+  overflow-x: auto;
+}
+
+.report__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-sm);
+}
+
+.report__table th,
+.report__table td {
+  padding: 0.45rem 0.6rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.report__table thead th {
+  color: var(--muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.report__table tbody th {
+  font-weight: 600;
+}
+
+.report__table tr.is-off {
+  color: var(--muted);
+}
+
+.report__table tr.is-focus {
+  background: var(--accent-soft);
+}
+
+.report__num {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.report__nowrap {
+  white-space: nowrap;
+}
+
+.report__wbar {
+  display: inline-block;
+  width: 64px;
+  height: 6px;
+  vertical-align: middle;
+  border-radius: 3px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.report__wbar span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+
+.report__sim {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.report__sim.is-match {
+  color: #9ee0c4;
+}
+
+.report__sim.is-differ {
+  color: #f2a65a;
+}
+
+.report__total th,
+.report__total td {
+  font-weight: 700;
+  border-top: 2px solid var(--border-strong);
+}
+
+.report__cite {
+  overflow-wrap: anywhere;
+}
+
+.report__list {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 0.35rem;
+  max-width: 90ch;
+}
+
+.report__foot {
+  padding-top: var(--space-4, 16px);
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+}
+
+.report__url {
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+  .report__dl > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.1rem;
+  }
+
+  .report__actions {
+    width: 100%;
+  }
+
+  .report__actions .btn {
+    flex: 1 1 100%;
+    justify-content: center;
+    min-height: 44px;
+  }
+}
+
+/* ---------------------------------------------------------------- print */
+@media print {
+  :root {
+    --text: #111;
+    --text-2: #333;
+    --muted: #555;
+    --border: #ccc;
+    --border-strong: #888;
+    --accent: #0a5c7a;
+    --accent-soft: #eef5f8;
+  }
+
+  body {
+    background: #fff !important;
+    color: #111;
+  }
+
+  .topbar,
+  .tabbar,
+  .data-banner,
+  .mock-banner,
+  .app-footer,
+  .skip-link,
+  .no-print {
+    display: none !important;
+  }
+
+  .app-main,
+  .page.report {
+    margin: 0;
+    padding: 0;
+    max-width: none;
+  }
+
+  .report__scroll {
+    overflow: visible;
+  }
+
+  .report__sec {
+    break-inside: avoid-page;
+  }
+
+  .report__table tr {
+    break-inside: avoid;
+  }
+
+  .report__sim.is-match {
+    color: #11643f;
+  }
+
+  .report__sim.is-differ {
+    color: #8a4b00;
+  }
+
+  a {
+    color: #111;
+  }
+}

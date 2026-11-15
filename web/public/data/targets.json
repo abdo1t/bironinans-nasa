@@ -1,0 +1,197 @@
+[
+  {
+    "id": "mars-jezero",
+    "body": "mars",
+    "name": "Jezero Crater — Perseverance landing site",
+    "lat": 18.44,
+    "lon": 77.45,
+    "summary": "Crater-floor lava flows (Máaz/Séítah) beside an ancient lake delta with clays and carbonates; Perseverance landing site.",
+    "trekUrl": "https://trek.nasa.gov/mars/",
+    "coord": {
+      "source": "Zafrir et al. 2026, Icarus 460, 117296 (doi:10.1016/j.icarus.2026.117296): Perseverance landed at 18.44 N, 77.45 E",
+      "note": "Secondary citation; Octavia E. Butler Landing. Values below are from MEDA along the early rover traverse, not one fixed point."
+    },
+    "norm": {
+      "terrain": 0.1541,
+      "aridity": 1.0,
+      "temp": 0.0826,
+      "temp_range": 1.0,
+      "veg": 1.0,
+      "geology": "basalt",
+      "ice": "no"
+    },
+    "refs": {
+      "terrain": "Fergason, R.L., Hare, T.M., Mayer, D.P., et al. 2020, Mars 2020 Terrain Relative Navigation Flight Product Generation: D",
+      "aridity": "NASA Science, Mars Facts: \"the Martian atmosphere is too thin for liquid water to exist for long on the surface\"",
+      "temp": "Munguira et al. 2024, JGR Planets 129, e2024JE008385",
+      "temp_range": "Munguira et al. 2023, JGR Planets 128, e2022JE007559",
+      "veg": "NASA Science, Mars Facts: \"Scientists don't expect to find living things currently thriving on Mars.\"",
+      "geology": "Sun et al. 2023, JGR Planets 128, e2022JE007613 (§1, §2.2.2); Farley et al. 2022, Science 377, eabo2196",
+      "ice": "Piqueux et al. 2019, GRL 46, 14290"
+    },
+    "provenance": {
+      "terrain": {
+        "status": "orbital",
+        "display": "231 m (P99 − P1, 10 × 10 km window at ~200 m)",
+        "range": [
+          229.1,
+          252.0
+        ],
+        "citation": "Fergason, R.L., Hare, T.M., Mayer, D.P., et al. 2020, Mars 2020 Terrain Relative Navigation Flight Product Generation: Digital Terrain Model and Orthorectified Image Mosaics, 51st LPSC, abstract #2020 (ADS 2020LPI....51.2020F)",
+        "url": "https://planetarymaps.usgs.gov/mosaic/mars2020_trn/CTX/JEZ_ctx_B_soc_008_DTM_MOLAtopography_DeltaGeoid_20m_Eqc_latTs0_lon0.tif",
+        "note": "USGS Mars 2020 TRN CTX DTM mosaic (JEZ_ctx_B_soc_008, 20 m, MOLA-areoid heights); native 20.0 m posting, native-resolution relief 233.3 m; products span 229–252 m. Cross-checks: HRSC-MOLA Blended DEM Global 200 m v2 [Fergason, R.L., Hare, T.M., & Laura, J. 2018, HRSC and MOLA Blended Digital Elevation Model at 200m v2, Astrogeology PDS Annex, USGS; https://planetarymaps.usgs.gov/mosaic/Mars/HRSC_MOLA_Blend/Mars_HRSC_MOLA_BlendDEM_Global_200mp_v2.tif] at 200.0x189.7 m: relief 252.0 m, median -2562.0 m, 50x53 px | MOLA MEGDR 128 pix/deg (~463 m), megt44n000hb [Smith, D.E., et al. 2001, JGR 106(E10), 23689, doi:10.1029/2000JE001364 (MOLA); PDS MGS-M-MOLA-5-MEGDR-L3-V1.0; https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg128/megt44n000hb.img] at native 463x439 m (cannot be refined to 200 m; excluded from min/max): relief 255.9 m, median -2560.0 m, 22x23 px, 46% of pixels contain >=1 MOLA shot (rest interpolated, per megc44n000hb). relief_m = mean over all ~200 m block offsets (offset range 229.1–232.8 m); relief_min_m/relief_max_m span offsets and products; CTX cached; window 500x527 px, ground pixel 20.00 m N-S x 18.97 m E-W (eqc lat_ts=0, R=3396190 m); ~200 m posting = block-mean to 200.0 x 208.7 m; valid 100.0%; heights relative to the MOLA areoid in all products; relief comes mostly from km-scale slopes (crater floor / delta front), so 20 m vs 200 m posting differs little; product-to-product differences (source data, interpolation) dominate",
+        "basisValue": 231.1
+      },
+      "aridity": {
+        "status": "definitional",
+        "display": "0 mm/yr (no liquid precipitation)",
+        "citation": "NASA Science, Mars Facts: \"the Martian atmosphere is too thin for liquid water to exist for long on the surface\"",
+        "url": "https://science.nasa.gov/mars/facts/",
+        "note": "Physical constraint, not a measurement; the page does not discuss precipitation explicitly.",
+        "basisValue": 0
+      },
+      "temp": {
+        "status": "in-situ",
+        "display": "≈ −52 °C (midpoint of daily-mean surface temperature 210–232 K over one Mars year)",
+        "range": [
+          -63.15,
+          -41.15
+        ],
+        "citation": "Munguira et al. 2024, JGR Planets 129, e2024JE008385 — One Martian Year of Near-Surface Temperatures at Jezero From MEDA (results, Fig. 4a)",
+        "url": "https://doi.org/10.1029/2024JE008385",
+        "note": "No annual mean is published; we use the midpoint of the published range (derived). Normalized value could lie anywhere from 0 to 0.20 across that range.",
+        "basisValue": -52.15
+      },
+      "temp_range": {
+        "status": "in-situ",
+        "display": "55–105 K daily surface-temperature range (first 400 sols)",
+        "range": [
+          55,
+          105
+        ],
+        "citation": "Munguira et al. 2023, JGR Planets 128, e2022JE007559 — Near Surface Atmospheric Temperatures at Jezero From MEDA (conclusions; table: 81 K at Ls 25°, 104 K at Ls 180°)",
+        "url": "https://doi.org/10.1029/2022JE007559",
+        "note": "Uses the lower end of the published range; every value in the range exceeds Earth's bound (35 °C) and clips to 1. Coverage Ls 13–203° only.",
+        "basisValue": 55
+      },
+      "veg": {
+        "status": "definitional",
+        "display": "No vegetation",
+        "citation": "NASA Science, Mars Facts: \"Scientists don't expect to find living things currently thriving on Mars.\"",
+        "url": "https://science.nasa.gov/mars/facts/",
+        "note": "NDVI is not defined for Mars; treated as NDVI 0 (bare).",
+        "basisValue": 0
+      },
+      "geology": {
+        "status": "literature",
+        "category": "basalt",
+        "display": "Basaltic lava flows (Máaz formation) on the crater floor",
+        "citation": "Sun et al. 2023, JGR Planets 128, e2022JE007613 (§1, §2.2.2); Farley et al. 2022, Science 377, eabo2196",
+        "url": "https://doi.org/10.1029/2022JE007613",
+        "note": "Applies to the landing site. The delta (not the landing site) hosts Fe/Mg clays and carbonates; it would map to 'clay'."
+      },
+      "ice": {
+        "status": "literature",
+        "category": "no",
+        "display": "No near-surface ice expected at 18° N",
+        "citation": "Piqueux et al. 2019, GRL 46, 14290 — shallow ice consistent with latitudes as low as 35° N / 45° S",
+        "url": "https://doi.org/10.1029/2019GL083947",
+        "note": "Inference from the latitude limit; no Jezero-specific statement found."
+      }
+    },
+    "clipped": {
+      "temp_range": "above"
+    }
+  },
+  {
+    "id": "moon-south-pole",
+    "body": "moon",
+    "name": "Lunar South Pole — Shackleton–de Gerlache connecting ridge (Artemis)",
+    "lat": -89.468,
+    "lon": -137.4,
+    "summary": "Sunlit ridge near Shackleton crater in the Artemis exploration zone; anorthositic highlands next to permanently shadowed cold traps that hold water ice.",
+    "trekUrl": "https://trek.nasa.gov/moon/",
+    "coord": {
+      "source": "NASA ACD-50044 Rev A, Lunar Surface Data Book (2023), Fig. 7.3.1: point C1 (89.468° S, 222.6° E) on the Shackleton–de Gerlache connecting ridge",
+      "note": "222.6° E converted to −137.4°. Point definitions (C1/C2) differ between papers."
+    },
+    "norm": {
+      "terrain": 0.7379,
+      "aridity": 1.0,
+      "temp": 0.0,
+      "temp_range": null,
+      "veg": 1.0,
+      "geology": "anorthosite",
+      "ice": "yes"
+    },
+    "refs": {
+      "terrain": "Smith, D.E., et al. 2010, Initial observations from the Lunar Orbiter Laser Altimeter (LOLA), GRL 37, L18204, doi:10.102",
+      "aridity": "NASA Science, Moon Facts: \"The Moon's weak atmosphere and its lack of liquid water cannot support life as we know it.\"",
+      "temp": "Williams et al. 2019, JGR Planets 124, 2505",
+      "veg": "NASA Science, Moon Facts (no liquid water, cannot support life as we know it)",
+      "geology": "Patterson et al. 2024, JGR Planets 129, e2023JE008275",
+      "ice": "Colaprete et al. 2010, Science 330, 463 (LCROSS: 5.6 ± 2.9 wt% water ice in Cabeus); Li et al. 2018, PNAS 115, 8907 (M3:"
+    },
+    "provenance": {
+      "terrain": {
+        "status": "orbital",
+        "display": "1107 m (P99 − P1, 10 × 10 km window at ~200 m)",
+        "range": [
+          1093.4,
+          1125.0
+        ],
+        "citation": "Smith, D.E., et al. 2010, Initial observations from the Lunar Orbiter Laser Altimeter (LOLA), GRL 37, L18204, doi:10.1029/2010GL043751; PDS LRO-L-LOLA-4-GDR-V1.0",
+        "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/img/ldem_875s_20m.img",
+        "note": "LRO LOLA LDEM_875S_20M (20 m, south polar stereographic, product V2.0 2017-06-15); native 20.0 m posting, native-resolution relief 1130.0 m; products span 1093–1125 m. Cross-checks: LRO LOLA LDEM_875S_5M (5 m, same release) [Smith, D.E., et al. 2010, Initial observations from the Lunar Orbiter Laser Altimeter (LOLA), GRL 37, L18204, doi:10.1029/2010GL043751; PDS LRO-L-LOLA-4-GDR-V1.0; https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/img/ldem_875s_5m.img, byte-range rows 16544-18543, cached] at 200.0x200.0 m: relief 1105.3 m (native 5 m: 1129.5 m), median 1441.0 m; 5 m block-mean to 20 m minus 20 m product: mean 0.0 m, RMS 0.7 m. relief_m = mean over all ~200 m block offsets (offset range 1093.4–1125.0 m); relief_min_m/relief_max_m span offsets and products; LOLA 20 m cached/cached; target map x=-10919.5 m, y=-11874.8 m (checked against PROJ); scale factor k=1.000022, window +/-5000.1 m = rows 4136-4636, cols 2996-3496 (500x500 px), valid 100.0%; heights = DN x 0.5 m relative to the 1737.4 km sphere; window min/max 531/1959 m; orientation check PASSED: 4 km window at Shackleton centre (USGS Gazetteer 89.67 S 129.78 E) median -2755 m vs lon-mirrored point 814 m; LOLA grids are interpolated between laser tracks (GMT blockmedian/surface), so true resolution is coarser than the pixel size; the window spans ridge crest and the steep Shackleton / de Gerlache flank slopes (which side the low end is was not checked), so relief is not ridge-top roughness",
+        "basisValue": 1106.9
+      },
+      "aridity": {
+        "status": "definitional",
+        "display": "0 mm/yr (no atmosphere, no liquid water)",
+        "citation": "NASA Science, Moon Facts: \"The Moon's weak atmosphere and its lack of liquid water cannot support life as we know it.\"",
+        "url": "https://science.nasa.gov/moon/facts/",
+        "note": "Physical constraint, not a measurement.",
+        "basisValue": 0
+      },
+      "temp": {
+        "status": "orbital",
+        "display": "≈ 200 K (−73 °C) in summer, colder in winter",
+        "citation": "Williams et al. 2019, JGR Planets 124, 2505 — Seasonal Polar Temperatures on the Moon (Diviner; text on Fig. 10d, Connecting Ridge)",
+        "url": "https://doi.org/10.1029/2019JE006028",
+        "note": "No annual mean is published. Summer ≈200 K is an upper bound, so the annual mean is below Earth's coldest bound (−60 °C) and clips to 0 whatever its exact value.",
+        "basisValue": -73.15
+      },
+      "temp_range": {
+        "status": "unavailable",
+        "note": "No published day–night range for the ridge; at the pole, season and shadowing dominate over a simple diurnal cycle."
+      },
+      "veg": {
+        "status": "definitional",
+        "display": "No vegetation",
+        "citation": "NASA Science, Moon Facts (no liquid water, cannot support life as we know it)",
+        "url": "https://science.nasa.gov/moon/facts/",
+        "note": "NDVI is not defined for the Moon; treated as NDVI 0 (bare).",
+        "basisValue": 0
+      },
+      "geology": {
+        "status": "literature",
+        "category": "anorthosite",
+        "display": "Anorthosite (feldspathic highlands; regolith and breccia at the surface)",
+        "citation": "Patterson et al. 2024, JGR Planets 129, e2023JE008275 — Lithologies and Chronologic Opportunities of Materials to Be Returned From the Artemis Exploration Zone",
+        "url": "https://doi.org/10.1029/2023JE008275",
+        "note": "Interpretation from orbital data; surface is impact-processed regolith, possibly with South Pole–Aitken ejecta."
+      },
+      "ice": {
+        "status": "in-situ",
+        "category": "yes",
+        "display": "Water ice in nearby permanently shadowed regions",
+        "citation": "Colaprete et al. 2010, Science 330, 463 (LCROSS: 5.6 ± 2.9 wt% water ice in Cabeus); Li et al. 2018, PNAS 115, 8907 (M3: surface-exposed ice in polar cold traps)",
+        "url": "https://doi.org/10.1126/science.1186986",
+        "note": "Region-level: ice is in cold traps (Cabeus is ~100 km away), not on the sunlit ridge surface itself."
+      }
+    },
+    "clipped": {
+      "temp": "below"
+    }
+  }
+]

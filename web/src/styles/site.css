@@ -1,0 +1,863 @@
+/* Site details: plain-English summary first (who, how similar, what matches, what
+   differs, why it matters), technical detail one click away in three disclosures
+   (#evidence, #similarity, #limitations). Also styles TargetReference, which
+   Explore renders as a collapsed block under its results. */
+
+/* ---------------------------------------------------------------- header */
+
+.site .crumbs {
+  margin: 0 0 var(--space-2);
+  font-size: var(--fs-sm);
+}
+
+.site__head {
+  margin-bottom: var(--space-3);
+}
+
+.site__id {
+  min-width: 0;
+}
+
+.site__head h1 {
+  margin-bottom: 0.15rem;
+}
+
+.site__where {
+  color: var(--text-2);
+}
+
+.site__status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2rem 0.6rem;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+}
+
+.site__ref {
+  max-width: 72ch;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+  overflow-wrap: anywhere;
+}
+
+.site__actions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.site__prompt {
+  max-width: 560px;
+}
+
+/* ---------------------------------------------------------------- summary card */
+
+.site-summary {
+  margin-bottom: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+}
+
+.site-summary__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.2rem 1rem;
+  margin-bottom: var(--space-3);
+}
+
+.site-summary__head h2 {
+  margin: 0;
+  font-size: var(--fs-md);
+}
+
+.site-summary__mission {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+}
+
+.site-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-3) var(--space-4);
+  margin: 0;
+}
+
+.site-stats .stat {
+  padding-left: var(--space-3);
+  border-left: 2px solid var(--border-strong);
+}
+
+/* the figure the active ranking method orders by (also said in words in its note) */
+.site-stats .stat.is-key {
+  border-left-color: var(--accent);
+}
+
+.site-stats dd {
+  margin: 0;
+}
+
+.site-stats .stat__value {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  align-content: flex-end;
+  gap: 0 0.3rem;
+  min-height: 2.4rem; /* sits the smaller figures on the same line as the large score */
+}
+
+.site-stats .stat__value .score-badge--large {
+  line-height: 1.2;
+}
+
+.site-stats__of {
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.site-stats .stat__note {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 0.25rem;
+}
+
+.site-summary__none {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2rem 0.5rem;
+  margin: 0 0 var(--space-2);
+}
+
+.site-summary__reason {
+  margin: 0 0 var(--space-1);
+  color: var(--warn-text);
+}
+
+.site-summary__more {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 1.2rem;
+  margin: var(--space-3) 0 0;
+  font-size: var(--fs-sm);
+}
+
+/* ---------------------------------------------------------------- matches / differences */
+
+.site-two {
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.site .card {
+  padding: var(--space-3) var(--space-4);
+  min-width: 0;
+}
+
+.site .card > h2 {
+  margin: 0 0 var(--space-2);
+  font-size: var(--fs-md);
+}
+
+.site .card h3 {
+  margin: var(--space-3) 0 var(--space-1);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* :where keeps this default below the more specific paragraph rules in this file */
+:where(.site .card) p {
+  margin: 0 0 var(--space-2);
+}
+
+.site .card > :last-child {
+  margin-bottom: 0;
+}
+
+.site-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.92rem;
+}
+
+.site-list li {
+  position: relative;
+  padding-left: 1.4rem;
+  overflow-wrap: anywhere;
+}
+
+/* decorative markers: the heading above each list carries the meaning */
+.site-list li::before {
+  position: absolute;
+  left: 0.1rem;
+  font-weight: 700;
+}
+
+.site-list--match li::before {
+  content: '✓';
+  content: '✓' / '';
+  color: var(--ok);
+}
+
+.site-list--differ li::before {
+  content: '✗';
+  content: '✗' / '';
+  color: var(--warn-text);
+}
+
+.site-list--pending li::before {
+  content: '–';
+  content: '–' / '';
+  color: var(--muted);
+}
+
+.site-gap {
+  font-weight: 600;
+}
+
+.site-gap__detail {
+  display: block;
+  font-weight: 400;
+  font-size: 0.92rem;
+  color: var(--text-2);
+  overflow-wrap: anywhere;
+}
+
+.site-list .tag {
+  margin-right: 0.25rem;
+}
+
+.site-list__why {
+  display: block;
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+/* ---------------------------------------------------------------- relevance + limitation strip */
+
+.site-relevance {
+  margin-bottom: var(--space-3);
+  font-size: 0.92rem;
+}
+
+.site-relevance p {
+  max-width: 90ch;
+  overflow-wrap: anywhere;
+}
+
+.site-relevance__caveat {
+  color: var(--text-2);
+}
+
+.site .site-limit {
+  margin: 0 0 var(--space-5);
+  padding: 0.6rem var(--space-4);
+  font-size: var(--fs-sm);
+}
+
+/* ---------------------------------------------------------------- technical detail */
+
+.site__more-title {
+  margin: 0 0 var(--space-2);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.site-detail {
+  scroll-margin-top: var(--space-3);
+}
+
+.site-detail > .disclosure__body > :first-child {
+  margin-top: 0;
+}
+
+.site-detail h3 {
+  margin: var(--space-5) 0 var(--space-2);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.site-detail p {
+  max-width: 90ch;
+}
+
+.site-detail__lead {
+  margin: 0 0 var(--space-3);
+  font-size: 0.92rem;
+}
+
+.site-detail__lead .term {
+  display: inline; /* keeps the "?" on the text line inside running prose */
+}
+
+.site-detail__list {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 0.4rem;
+  max-width: 90ch;
+  font-size: 0.92rem;
+}
+
+/* one block per criterion: value and source type up front, provenance as label/value rows */
+.ev-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.ev {
+  min-width: 0;
+  padding: 0.6rem 0.8rem;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.ev__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2rem 0.6rem;
+  margin: 0 0 0.4rem;
+}
+
+.ev__name {
+  font-weight: 600;
+}
+
+.ev__value {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.ev__facts {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  gap: 0.2rem 0.6rem;
+  margin: 0;
+  font-size: var(--fs-sm);
+}
+
+.ev__facts > div {
+  display: contents;
+}
+
+.ev__facts dt {
+  color: var(--muted);
+}
+
+.ev__facts dd {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.ev__facts--wide {
+  max-width: 90ch;
+}
+
+.site-detail__links {
+  margin: var(--space-4) 0 0;
+  font-size: 0.92rem;
+}
+
+/* ---------------------------------------------------------------- score breakdown table */
+
+.bars-wrap {
+  margin-top: var(--space-3);
+}
+
+.bars {
+  min-width: 860px; /* keeps seven columns readable; the wrapper scrolls on narrow screens */
+}
+
+.bars thead .term {
+  white-space: nowrap;
+}
+
+.bars__notes {
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.25rem;
+  max-width: 90ch;
+  font-size: var(--fs-xs);
+  color: var(--text-2);
+}
+
+.bars__notes strong {
+  color: var(--text);
+}
+
+/* ---------------------------------------------------------------- target reference (also on Explore) */
+
+/* Disclosure supplies the spacing; cancel the older .target-ref box padding */
+.disclosure.target-ref {
+  padding: 0;
+}
+
+.target-ref .disclosure__summary {
+  font-size: 0.9rem;
+}
+
+.target-ref .disclosure__hint {
+  font-weight: 400;
+}
+
+.target-ref__table {
+  min-width: 640px;
+  margin-top: 0;
+}
+
+.target-ref__src {
+  overflow-wrap: anywhere;
+}
+
+.target-ref__point {
+  margin: var(--space-3) 0 0;
+  overflow-wrap: anywhere;
+}
+
+/* ---------------------------------------------------------------- responsive */
+
+@media (max-width: 900px) {
+  .ev-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .site__actions {
+    justify-content: flex-start;
+  }
+
+  .site-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+
+  .site-stats .stat__value {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .ev__facts {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .ev__facts dt {
+    margin-top: 0.35rem;
+    font-size: var(--fs-xs);
+  }
+}
+
+/* ---------------------------------------------------------------- plain answers (summary first) */
+
+.site-answers {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-3);
+  margin: var(--space-2) 0 var(--space-3);
+}
+
+@media (min-width: 800px) {
+  .site-answers {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.site-answer h3 {
+  margin: 0 0 0.2rem;
+  font-size: var(--fs-md);
+  color: var(--text);
+}
+
+.site-answer p {
+  margin: 0;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+
+.site-answer--reliability {
+  padding-left: var(--space-3);
+  border-left: 3px solid var(--border-strong);
+}
+
+.site-summary .site-answer h3 {
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: var(--fs-md);
+  color: var(--text);
+}
+
+/* Mission Control v2: dossier */
+.site__kicker {
+  margin: 0.25rem 0 0.15rem;
+}
+
+.site__terrain {
+  margin: var(--space-4) 0;
+}
+
+.site__terrain .tpair__grid {
+  max-width: 640px;
+}
+
+/* Release candidate: matches / differences / still unknown, side by side on desktop */
+.site-three {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+@media (max-width: 1100px) {
+  .site-three {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Planetary Mirror takeaway under the terrain pair */
+.mtake {
+  margin-top: var(--space-3);
+}
+
+.mtake__pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.mtake__row {
+  border: 1px solid var(--border);
+  border-left-width: 3px;
+  border-radius: 8px;
+  padding: var(--space-2) var(--space-3);
+  min-width: 0;
+}
+
+.mtake__row--match {
+  border-left-color: var(--ok, #9ee0c4);
+}
+
+.mtake__row--differ {
+  border-left-color: var(--differ, #f2a65a);
+}
+
+.mtake__label {
+  margin: 0 0 var(--space-2);
+}
+
+.mtake__sim {
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.mtake__vals {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.mtake__vals dt {
+  font-size: var(--fs-xs);
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.mtake__vals dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.mtake__src {
+  display: block;
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+.mtake__next {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border);
+}
+
+.mtake__next h3 {
+  margin: 0 0 var(--space-1);
+  font-size: var(--fs-sm);
+  color: var(--accent);
+}
+
+.mtake__next p,
+.mtake__none {
+  margin: 0;
+}
+
+.mtake__obj {
+  font-weight: 600;
+}
+
+@media (max-width: 760px) {
+  .mtake__pair,
+  .mtake__next {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------------------------------------------------------------- First visit (2026-11-15)
+   The three questions lead; a one-line result strip sits above them; "View evidence" stays in
+   the header actions; terrain imagery where a sourced asset exists, otherwise a value table. */
+
+.site-result {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 1rem;
+  margin: 0 0 0.75rem;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--panel-2, rgba(16, 32, 58, 0.6));
+  font-size: var(--fs-sm);
+}
+
+.site-result strong {
+  font-size: 1.15rem;
+}
+
+.site-result__rank {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--accent);
+}
+
+.site__evidence-btn {
+  white-space: nowrap;
+}
+
+.match-line__sim {
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.site-evtable {
+  margin-bottom: var(--space-4, 1rem);
+}
+
+.site-evtable__scroll {
+  overflow-x: auto;
+}
+
+.site-evtable table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-sm);
+}
+
+.site-evtable th,
+.site-evtable td {
+  padding: 0.45rem 0.6rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.site-evtable thead th {
+  color: var(--muted);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.site-evtable tr.is-match td:nth-child(4) {
+  color: var(--ok);
+}
+
+.site-evtable tr.is-differ td:nth-child(4) {
+  color: #f2c29a;
+}
+
+/* motion: the explanation reveals with a short fade and a small rise (instant under reduced motion) */
+@media (prefers-reduced-motion: no-preference) {
+  .site-result,
+  .site-three > .card {
+    animation: site-reveal 220ms ease-out both;
+  }
+
+  .site-three > .card:nth-child(2) {
+    animation-delay: 40ms;
+  }
+
+  .site-three > .card:nth-child(3) {
+    animation-delay: 80ms;
+  }
+}
+
+@keyframes site-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .site__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .site__actions .btn {
+    flex: 1 1 auto;
+    justify-content: center;
+    min-height: 44px;
+  }
+}
+
+/* ---------------------------------------------------------------- Redesign (2026-11-15)
+   The place and its score lead: name/status on the left, a large score card on the right,
+   actions underneath; then the three answers; the published reference after them. */
+
+.site .site__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'id score'
+    'actions score';
+  align-items: start;
+  gap: var(--space-3, 12px) var(--space-5, 24px);
+  margin-bottom: var(--space-4, 16px);
+}
+
+.site .site__id {
+  grid-area: id;
+}
+
+.site .site__head h1 {
+  font-size: clamp(2rem, 1.2rem + 2.4vw, 3.1rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.site .site__actions {
+  grid-area: actions;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-start;
+}
+
+.site-score {
+  grid-area: score;
+  min-width: 230px;
+  padding: var(--space-3, 12px) var(--space-4, 16px);
+  border: 1px solid var(--accent-line);
+  border-radius: var(--radius-lg, 16px);
+  background:
+    radial-gradient(120% 90% at 100% 0%, var(--accent-soft), transparent 70%),
+    var(--panel);
+  box-shadow: 0 18px 40px -24px var(--world-glow);
+}
+
+.site-score p {
+  margin: 0;
+}
+
+.site-score__num {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.site-score__num strong {
+  font-family: var(--font-display);
+  font-size: 3.4rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.site-score__num--none strong {
+  font-size: 1.4rem;
+}
+
+.site-score__of {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+.site-score__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.75rem;
+  margin-top: 0.35rem !important;
+  font-size: var(--fs-sm);
+}
+
+.site-score__vs {
+  margin-top: 0.5rem !important;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+.site__refs {
+  margin: var(--space-3, 12px) 0 var(--space-4, 16px);
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--border-strong);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .site-score {
+    animation: site-reveal 260ms ease-out both;
+  }
+}
+
+@media (max-width: 760px) {
+  .site .site__head {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'id'
+      'score'
+      'actions';
+  }
+
+  .site-score {
+    min-width: 0;
+  }
+}

@@ -1,0 +1,1219 @@
+{
+  "atacama": {
+    "siteId": "atacama",
+    "image": "previews/site-atacama-terrain.webp",
+    "widthPx": 450,
+    "heightPx": 450,
+    "bytes": 14454,
+    "sha256": "93f102bf9e2677a69bdbd224553a6ced6d3748df9621c01b346bcbdd3c00635b",
+    "windowKm": 26.98,
+    "metresPerPixel": 60.0,
+    "markerPx": [
+      225.0,
+      225.0
+    ],
+    "scoringWindowKm": 10.0,
+    "scoringWindowPx": [
+      141.67,
+      141.67,
+      308.33,
+      308.33
+    ],
+    "scaleBarKm": 10.0,
+    "scaleBarPx": 166.67,
+    "site": {
+      "lat": -24.10169,
+      "lon": -70.01828
+    },
+    "projection": {
+      "frame": "WGS84 geographic latitude/longitude (EPSG:4326)",
+      "heightReference": "EGM96 geoid",
+      "note": "Native grid 1\" x 1\" (lon x lat) = 28 m E-W x 31 m N-S here; box mean 2 x 2 (rows x cols), then linear resampling to square 60 m ground pixels. North is up, east is right."
+    },
+    "source": {
+      "dataset": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+      "citation": "NASA JPL (2020). NASADEM Merged DEM Global 1 arc second V001. NASA EOSDIS Land Processes DAAC. doi:10.5067/MEaSUREs/NASADEM/NASADEM_HGT.001",
+      "attribution": "NASA JPL (NASADEM_HGT v001), via Microsoft Planetary Computer",
+      "quality": "primary",
+      "tiles": [
+        "NASADEM_HGT_s25w071",
+        "NASADEM_HGT_s25w070",
+        "NASADEM_HGT_s24w071",
+        "NASADEM_HGT_s24w070"
+      ],
+      "missingTiles": [],
+      "sameAsScored": true
+    },
+    "elevation": {
+      "minM": 954.5,
+      "maxM": 2319.1,
+      "ramp": [
+        [
+          954.5,
+          "#00204d"
+        ],
+        [
+          1106.2,
+          "#00336f"
+        ],
+        [
+          1257.8,
+          "#39486b"
+        ],
+        [
+          1409.4,
+          "#575c6d"
+        ],
+        [
+          1561.0,
+          "#707173"
+        ],
+        [
+          1712.7,
+          "#8a8779"
+        ],
+        [
+          1864.3,
+          "#a69d75"
+        ],
+        [
+          2015.9,
+          "#c4b56c"
+        ],
+        [
+          2167.5,
+          "#e4cf5b"
+        ],
+        [
+          2319.1,
+          "#ffea46"
+        ]
+      ],
+      "rampName": "cividis (colour-blind-safe, lightness increases with elevation)",
+      "note": "colours stretch to this image's own elevation range",
+      "nodataPixels": 0,
+      "nearSeaLevelFrac": 0.0
+    },
+    "hillshade": {
+      "azimuthDeg": 315.0,
+      "altitudeDeg": 45.0,
+      "vertExag": 1.0
+    },
+    "relief": {
+      "scoredReliefM": 373.2,
+      "reliefRangeM": [
+        369.2,
+        378.5
+      ],
+      "windowKm": 10.0,
+      "postingM": 200.0,
+      "dem": "NASADEM_HGT.001"
+    },
+    "script": "pipeline/make_site_preview.py",
+    "generatedAt": "2026-11-14T18:15:29+00:00"
+  },
+  "danakil": {
+    "siteId": "danakil",
+    "image": "previews/site-danakil-terrain.webp",
+    "widthPx": 450,
+    "heightPx": 450,
+    "bytes": 6716,
+    "sha256": "4702ed97704dbd921e130be042819588ba1a9290a3d6bf16feb517e28c8d3023",
+    "windowKm": 26.98,
+    "metresPerPixel": 60.0,
+    "markerPx": [
+      225.0,
+      225.0
+    ],
+    "scoringWindowKm": 10.0,
+    "scoringWindowPx": [
+      141.67,
+      141.67,
+      308.33,
+      308.33
+    ],
+    "scaleBarKm": 10.0,
+    "scaleBarPx": 166.67,
+    "site": {
+      "lat": 14.24167,
+      "lon": 40.3
+    },
+    "projection": {
+      "frame": "WGS84 geographic latitude/longitude (EPSG:4326)",
+      "heightReference": "EGM96 geoid",
+      "note": "Native grid 1\" x 1\" (lon x lat) = 30 m E-W x 31 m N-S here; box mean 2 x 2 (rows x cols), then linear resampling to square 60 m ground pixels. North is up, east is right."
+    },
+    "source": {
+      "dataset": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+      "citation": "NASA JPL (2020). NASADEM Merged DEM Global 1 arc second V001. NASA EOSDIS Land Processes DAAC. doi:10.5067/MEaSUREs/NASADEM/NASADEM_HGT.001",
+      "attribution": "NASA JPL (NASADEM_HGT v001), via Microsoft Planetary Computer",
+      "quality": "primary",
+      "tiles": [
+        "NASADEM_HGT_n14e040"
+      ],
+      "missingTiles": [],
+      "sameAsScored": true
+    },
+    "elevation": {
+      "minM": -178.0,
+      "maxM": 689.2,
+      "ramp": [
+        [
+          -178.0,
+          "#00204d"
+        ],
+        [
+          -81.7,
+          "#00336f"
+        ],
+        [
+          14.7,
+          "#39486b"
+        ],
+        [
+          111.0,
+          "#575c6d"
+        ],
+        [
+          207.4,
+          "#707173"
+        ],
+        [
+          303.8,
+          "#8a8779"
+        ],
+        [
+          400.1,
+          "#a69d75"
+        ],
+        [
+          496.5,
+          "#c4b56c"
+        ],
+        [
+          592.9,
+          "#e4cf5b"
+        ],
+        [
+          689.2,
+          "#ffea46"
+        ]
+      ],
+      "rampName": "cividis (colour-blind-safe, lightness increases with elevation)",
+      "note": "colours stretch to this image's own elevation range",
+      "nodataPixels": 0,
+      "nearSeaLevelFrac": 0.0007
+    },
+    "hillshade": {
+      "azimuthDeg": 315.0,
+      "altitudeDeg": 45.0,
+      "vertExag": 1.0
+    },
+    "relief": {
+      "scoredReliefM": 36.8,
+      "reliefRangeM": [
+        36.0,
+        37.6
+      ],
+      "windowKm": 10.0,
+      "postingM": 200.0,
+      "dem": "NASADEM_HGT.001"
+    },
+    "script": "pipeline/make_site_preview.py",
+    "generatedAt": "2026-11-14T18:15:29+00:00"
+  },
+  "death-valley": {
+    "siteId": "death-valley",
+    "image": "previews/site-death-valley-terrain.webp",
+    "widthPx": 450,
+    "heightPx": 450,
+    "bytes": 14870,
+    "sha256": "8d1ab5e5e9a85efd5025f34b6aef9a9a29c8ce0792d7fc32e7c2dd4075c9a3b0",
+    "windowKm": 26.98,
+    "metresPerPixel": 60.0,
+    "markerPx": [
+      225.0,
+      225.0
+    ],
+    "scoringWindowKm": 10.0,
+    "scoringWindowPx": [
+      141.67,
+      141.67,
+      308.33,
+      308.33
+    ],
+    "scaleBarKm": 10.0,
+    "scaleBarPx": 166.67,
+    "site": {
+      "lat": 36.25028,
+      "lon": -116.82583
+    },
+    "projection": {
+      "frame": "WGS84 geographic latitude/longitude (EPSG:4326)",
+      "heightReference": "EGM96 geoid",
+      "note": "Native grid 1\" x 1\" (lon x lat) = 25 m E-W x 31 m N-S here; box mean 2 x 2 (rows x cols), then linear resampling to square 60 m ground pixels. North is up, east is right."
+    },
+    "source": {
+      "dataset": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+      "citation": "NASA JPL (2020). NASADEM Merged DEM Global 1 arc second V001. NASA EOSDIS Land Processes DAAC. doi:10.5067/MEaSUREs/NASADEM/NASADEM_HGT.001",
+      "attribution": "NASA JPL (NASADEM_HGT v001), via Microsoft Planetary Computer",
+      "quality": "primary",
+      "tiles": [
+        "NASADEM_HGT_n36w117"
+      ],
+      "missingTiles": [],
+      "sameAsScored": true
+    },
+    "elevation": {
+      "minM": -112.8,
+      "maxM": 1725.8,
+      "ramp": [
+        [
+          -112.8,
+          "#00204d"
+        ],
+        [
+          91.5,
+          "#00336f"
+        ],
+        [
+          295.8,
+          "#39486b"
+        ],
+        [
+          500.1,
+          "#575c6d"
+        ],
+        [
+          704.4,
+          "#707173"
+        ],
+        [
+          908.6,
+          "#8a8779"
+        ],
+        [
+          1112.9,
+          "#a69d75"
+        ],
+        [
+          1317.2,
+          "#c4b56c"
+        ],
+        [
+          1521.5,
+          "#e4cf5b"
+        ],
+        [
+          1725.8,
+          "#ffea46"
+        ]
+      ],
+      "rampName": "cividis (colour-blind-safe, lightness increases with elevation)",
+      "note": "colours stretch to this image's own elevation range",
+      "nodataPixels": 0,
+      "nearSeaLevelFrac": 0.0017
+    },
+    "hillshade": {
+      "azimuthDeg": 315.0,
+      "altitudeDeg": 45.0,
+      "vertExag": 1.0
+    },
+    "relief": {
+      "scoredReliefM": 242.3,
+      "reliefRangeM": [
+        220.6,
+        258.2
+      ],
+      "windowKm": 10.0,
+      "postingM": 200.0,
+      "dem": "NASADEM_HGT.001"
+    },
+    "script": "pipeline/make_site_preview.py",
+    "generatedAt": "2026-11-14T18:15:29+00:00"
+  },
+  "haughton": {
+    "siteId": "haughton",
+    "image": "previews/site-haughton-terrain.webp",
+    "widthPx": 450,
+    "heightPx": 450,
+    "bytes": 18498,
+    "sha256": "ee40b05d376b1215b24b18642b85ac8b278a7eda4b63d3635eac07af1b08bcbc",
+    "windowKm": 26.98,
+    "metresPerPixel": 60.0,
+    "markerPx": [
+      225.0,
+      225.0
+    ],
+    "scoringWindowKm": 10.0,
+    "scoringWindowPx": [
+      141.67,
+      141.67,
+      308.33,
+      308.33
+    ],
+    "scaleBarKm": 10.0,
+    "scaleBarPx": 166.67,
+    "site": {
+      "lat": 75.4333,
+      "lon": -89.8667
+    },
+    "projection": {
+      "frame": "WGS84 geographic latitude/longitude (EPSG:4326)",
+      "heightReference": "EGM2008 geoid",
+      "note": "Native grid 3\" x 1\" (lon x lat) = 23 m E-W x 31 m N-S here; box mean 2 x 3 (rows x cols), then linear resampling to square 60 m ground pixels. North is up, east is right."
+    },
+    "source": {
+      "dataset": "Copernicus DEM GLO-30 Public (2021 release), 1 arc-second base posting",
+      "citation": "European Space Agency, Sinergise (2021). Copernicus Global Digital Elevation Model (COP-DEM), doi:10.5270/ESA-c5d3d65; AWS Open Data registry 'copernicus-dem', s3://copernicus-dem-30m",
+      "attribution": "© DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
+      "quality": "partner-fill",
+      "tiles": [
+        "Copernicus_DSM_COG_10_N75_00_W091_00_DEM",
+        "Copernicus_DSM_COG_10_N75_00_W090_00_DEM"
+      ],
+      "missingTiles": [],
+      "sameAsScored": true
+    },
+    "elevation": {
+      "minM": 0.0,
+      "maxM": 365.8,
+      "ramp": [
+        [
+          0.0,
+          "#00204d"
+        ],
+        [
+          40.6,
+          "#00336f"
+        ],
+        [
+          81.3,
+          "#39486b"
+        ],
+        [
+          121.9,
+          "#575c6d"
+        ],
+        [
+          162.6,
+          "#707173"
+        ],
+        [
+          203.2,
+          "#8a8779"
+        ],
+        [
+          243.9,
+          "#a69d75"
+        ],
+        [
+          284.5,
+          "#c4b56c"
+        ],
+        [
+          325.2,
+          "#e4cf5b"
+        ],
+        [
+          365.8,
+          "#ffea46"
+        ]
+      ],
+      "rampName": "cividis (colour-blind-safe, lightness increases with elevation)",
+      "note": "colours stretch to this image's own elevation range",
+      "nodataPixels": 0,
+      "nearSeaLevelFrac": 0.0037
+    },
+    "hillshade": {
+      "azimuthDeg": 315.0,
+      "altitudeDeg": 45.0,
+      "vertExag": 1.0
+    },
+    "relief": {
+      "scoredReliefM": 159.0,
+      "reliefRangeM": [
+        157.5,
+        161.0
+      ],
+      "windowKm": 10.0,
+      "postingM": 200.0,
+      "dem": "COP-DEM_GLO-30"
+    },
+    "script": "pipeline/make_site_preview.py",
+    "generatedAt": "2026-11-14T18:15:29+00:00"
+  },
+  "iceland-lava": {
+    "siteId": "iceland-lava",
+    "image": "previews/site-iceland-lava-terrain.webp",
+    "widthPx": 450,
+    "heightPx": 450,
+    "bytes": 7870,
+    "sha256": "b210bad45ec70cb73c0cd33cdd6b5795d3a87adec503647485c2d0d3cda2ab24",
+    "windowKm": 26.98,
+    "metresPerPixel": 60.0,
+    "markerPx": [
+      225.0,
+      225.0
+    ],
+    "scoringWindowKm": 10.0,
+    "scoringWindowPx": [
+      141.67,
+      141.67,
+      308.33,
+      308.33
+    ],
+    "scaleBarKm": 10.0,
+    "scaleBarPx": 166.67,
+    "site": {
+      "lat": 64.85,
+      "lon": -16.83
+    },
+    "projection": {
+      "frame": "WGS84 geographic latitude/longitude (EPSG:4326)",
+      "heightReference": "EGM2008 geoid",
+      "note": "Native grid 2\" x 1\" (lon x lat) = 26 m E-W x 31 m N-S here; box mean 2 x 2 (rows x cols), then linear resampling to square 60 m ground pixels. North is up, east is right."
+    },
+    "source": {
+      "dataset": "Copernicus DEM GLO-30 Public (2021 release), 1 arc-second base posting",
+      "citation": "European Space Agency, Sinergise (2021). Copernicus Global Digital Elevation Model (COP-DEM), doi:10.5270/ESA-c5d3d65; AWS Open Data registry 'copernicus-dem', s3://copernicus-dem-30m",
+      "attribution": "© DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
+      "quality": "partner-fill",
+      "tiles": [
+        "Copernicus_DSM_COG_10_N64_00_W018_00_DEM",
+        "Copernicus_DSM_COG_10_N64_00_W017_00_DEM"
+      ],
+      "missingTiles": [],
+      "sameAsScored": true
+    },
+    "elevation": {
+      "minM": 650.5,
+      "maxM": 1260.1,
+      "ramp": [
+        [
+          650.5,
+          "#00204d"
+        ],
+        [
+          718.2,
+          "#00336f"
+        ],
+        [
+          786.0,
+          "#39486b"
+        ],
+        [
+          853.7,
+          "#575c6d"
+        ],
+        [
+          921.4,
+          "#707173"
+        ],
+        [
+          989.2,
+          "#8a8779"
+        ],
+        [
+          1056.9,
+          "#a69d75"
+        ],
+        [
+          1124.6,
+          "#c4b56c"
+        ],
+        [
+          1192.4,
+          "#e4cf5b"
+        ],
+        [
+          1260.1,
+          "#ffea46"
+        ]
+      ],
+      "rampName": "cividis (colour-blind-safe, lightness increases with elevation)",
+      "note": "colours stretch to this image's own elevation range",
+      "nodataPixels": 0,
+      "nearSeaLevelFrac": 0.0
+    },
+    "hillshade": {
+      "azimuthDeg": 315.0,
+      "altitudeDeg": 45.0,
+      "vertExag": 1.0
+    },
+    "relief": {
+      "scoredReliefM": 164.3,
+      "reliefRangeM": [
+        158.4,
+        169.6
+      ],
+      "windowKm": 10.0,
+      "postingM": 200.0,
+      "dem": "COP-DEM_GLO-30"
+    },
+    "script": "pipeline/make_site_preview.py",
+    "generatedAt": "2026-11-14T18:15:29+00:00"
+  },
+  "lanzarote": {
+    "siteId": "lanzarote",
+    "image": "previews/site-lanzarote-terrain.webp",
+    "widthPx": 450,
+    "heightPx": 450,
+    "bytes": 9066,
+    "sha256": "d6365a7e791e0d78da6b85fe1b2afdc5fbba6c28d2589833168703ea1c81166d",
+    "windowKm": 26.98,
+    "metresPerPixel": 60.0,
+    "markerPx": [
+      225.0,
+      225.0
+    ],
+    "scoringWindowKm": 10.0,
+    "scoringWindowPx": [
+      141.67,
+      141.67,
+      308.33,
+      308.33
+    ],
+    "scaleBarKm": 10.0,
+    "scaleBarPx": 166.67,
+    "site": {
+      "lat": 28.99417,
+      "lon": -13.79333
+    },
+    "projection": {
+      "frame": "WGS84 geographic latitude/longitude (EPSG:4326)",
+      "heightReference": "EGM96 geoid",
+      "note": "Native grid 1\" x 1\" (lon x lat) = 27 m E-W x 31 m N-S here; box mean 2 x 2 (rows x cols), then linear resampling to square 60 m ground pixels. North is up, east is right."
+    },
+    "source": {
+      "dataset": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+      "citation": "NASA JPL (2020). NASADEM Merged DEM Global 1 arc second V001. NASA EOSDIS Land Processes DAAC. doi:10.5067/MEaSUREs/NASADEM/NASADEM_HGT.001",
+      "attribution": "NASA JPL (NASADEM_HGT v001), via Microsoft Planetary Computer",
+      "quality": "primary",
+      "tiles": [
+        "NASADEM_HGT_n28w014",
+        "NASADEM_HGT_n29w014"
+      ],
+      "missingTiles": [],
+      "sameAsScored": true
+    },
+    "elevation": {
+      "minM": -6.8,
+      "maxM": 592.8,
+      "ramp": [
+        [
+          -6.8,
+          "#00204d"
+        ],
+        [
+          59.8,
+          "#00336f"
+        ],
+        [
+          126.4,
+          "#39486b"
+        ],
+        [
+          193.1,
+          "#575c6d"
+        ],
+        [
+          259.7,
+          "#707173"
+        ],
+        [
+          326.3,
+          "#8a8779"
+        ],
+        [
+          392.9,
+          "#a69d75"
+        ],
+        [
+          459.5,
+          "#c4b56c"
+        ],
+        [
+          526.2,
+          "#e4cf5b"
+        ],
+        [
+          592.8,
+          "#ffea46"
+        ]
+      ],
+      "rampName": "cividis (colour-blind-safe, lightness increases with elevation)",
+      "note": "colours stretch to this image's own elevation range",
+      "nodataPixels": 0,
+      "nearSeaLevelFrac": 0.5084
+    },
+    "hillshade": {
+      "azimuthDeg": 315.0,
+      "altitudeDeg": 45.0,
+      "vertExag": 1.0
+    },
+    "relief": {
+      "scoredReliefM": 370.2,
+      "reliefRangeM": [
+        364.3,
+        376.1
+      ],
+      "windowKm": 10.0,
+      "postingM": 200.0,
+      "dem": "NASADEM_HGT.001"
+    },
+    "script": "pipeline/make_site_preview.py",
+    "generatedAt": "2026-11-14T18:15:29+00:00"
+  },
+  "mcmurdo": {
+    "siteId": "mcmurdo",
+    "image": "previews/site-mcmurdo-terrain.webp",
+    "widthPx": 450,
+    "heightPx": 450,
+    "bytes": 14512,
+    "sha256": "62ae761d377fc2a4a38fd72286372a4810ae6b2b2528a06b438556bcdfdd2c2d",
+    "windowKm": 26.98,
+    "metresPerPixel": 60.0,
+    "markerPx": [
+      225.0,
+      225.0
+    ],
+    "scoringWindowKm": 10.0,
+    "scoringWindowPx": [
+      141.67,
+      141.67,
+      308.33,
+      308.33
+    ],
+    "scaleBarKm": 10.0,
+    "scaleBarPx": 166.67,
+    "site": {
+      "lat": -77.86617,
+      "lon": 160.73238
+    },
+    "projection": {
+      "frame": "WGS84 geographic latitude/longitude (EPSG:4326)",
+      "heightReference": "EGM2008 geoid",
+      "note": "Native grid 3\" x 1\" (lon x lat) = 19 m E-W x 31 m N-S here; box mean 2 x 3 (rows x cols), then linear resampling to square 60 m ground pixels. North is up, east is right."
+    },
+    "source": {
+      "dataset": "Copernicus DEM GLO-30 Public (2021 release), 1 arc-second base posting",
+      "citation": "European Space Agency, Sinergise (2021). Copernicus Global Digital Elevation Model (COP-DEM), doi:10.5270/ESA-c5d3d65; AWS Open Data registry 'copernicus-dem', s3://copernicus-dem-30m",
+      "attribution": "© DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
+      "quality": "partner-fill",
+      "tiles": [
+        "Copernicus_DSM_COG_10_S78_00_E160_00_DEM",
+        "Copernicus_DSM_COG_10_S78_00_E161_00_DEM"
+      ],
+      "missingTiles": [],
+      "sameAsScored": true
+    },
+    "elevation": {
+      "minM": 561.1,
+      "maxM": 3012.5,
+      "ramp": [
+        [
+          561.1,
+          "#00204d"
+        ],
+        [
+          833.5,
+          "#00336f"
+        ],
+        [
+          1105.8,
+          "#39486b"
+        ],
+        [
+          1378.2,
+          "#575c6d"
+        ],
+        [
+          1650.6,
+          "#707173"
+        ],
+        [
+          1923.0,
+          "#8a8779"
+        ],
+        [
+          2195.3,
+          "#a69d75"
+        ],
+        [
+          2467.7,
+          "#c4b56c"
+        ],
+        [
+          2740.1,
+          "#e4cf5b"
+        ],
+        [
+          3012.5,
+          "#ffea46"
+        ]
+      ],
+      "rampName": "cividis (colour-blind-safe, lightness increases with elevation)",
+      "note": "colours stretch to this image's own elevation range",
+      "nodataPixels": 0,
+      "nearSeaLevelFrac": 0.0
+    },
+    "hillshade": {
+      "azimuthDeg": 315.0,
+      "altitudeDeg": 45.0,
+      "vertExag": 1.0
+    },
+    "relief": {
+      "scoredReliefM": 924.4,
+      "reliefRangeM": [
+        916.3,
+        936.3
+      ],
+      "windowKm": 10.0,
+      "postingM": 200.0,
+      "dem": "COP-DEM_GLO-30"
+    },
+    "script": "pipeline/make_site_preview.py",
+    "generatedAt": "2026-11-14T18:15:29+00:00"
+  },
+  "mdrs-utah": {
+    "siteId": "mdrs-utah",
+    "image": "previews/site-mdrs-utah-terrain.webp",
+    "widthPx": 450,
+    "heightPx": 450,
+    "bytes": 15108,
+    "sha256": "a9156d646ca464059bc87a5105edda2563a0e10fad1b015b601b463d1c4220ae",
+    "windowKm": 26.98,
+    "metresPerPixel": 60.0,
+    "markerPx": [
+      225.0,
+      225.0
+    ],
+    "scoringWindowKm": 10.0,
+    "scoringWindowPx": [
+      141.67,
+      141.67,
+      308.33,
+      308.33
+    ],
+    "scaleBarKm": 10.0,
+    "scaleBarPx": 166.67,
+    "site": {
+      "lat": 38.40646,
+      "lon": -110.7919
+    },
+    "projection": {
+      "frame": "WGS84 geographic latitude/longitude (EPSG:4326)",
+      "heightReference": "EGM96 geoid",
+      "note": "Native grid 1\" x 1\" (lon x lat) = 24 m E-W x 31 m N-S here; box mean 2 x 2 (rows x cols), then linear resampling to square 60 m ground pixels. North is up, east is right."
+    },
+    "source": {
+      "dataset": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+      "citation": "NASA JPL (2020). NASADEM Merged DEM Global 1 arc second V001. NASA EOSDIS Land Processes DAAC. doi:10.5067/MEaSUREs/NASADEM/NASADEM_HGT.001",
+      "attribution": "NASA JPL (NASADEM_HGT v001), via Microsoft Planetary Computer",
+      "quality": "primary",
+      "tiles": [
+        "NASADEM_HGT_n38w111"
+      ],
+      "missingTiles": [],
+      "sameAsScored": true
+    },
+    "elevation": {
+      "minM": 1281.7,
+      "maxM": 1882.4,
+      "ramp": [
+        [
+          1281.7,
+          "#00204d"
+        ],
+        [
+          1348.5,
+          "#00336f"
+        ],
+        [
+          1415.2,
+          "#39486b"
+        ],
+        [
+          1481.9,
+          "#575c6d"
+        ],
+        [
+          1548.7,
+          "#707173"
+        ],
+        [
+          1615.4,
+          "#8a8779"
+        ],
+        [
+          1682.2,
+          "#a69d75"
+        ],
+        [
+          1748.9,
+          "#c4b56c"
+        ],
+        [
+          1815.6,
+          "#e4cf5b"
+        ],
+        [
+          1882.4,
+          "#ffea46"
+        ]
+      ],
+      "rampName": "cividis (colour-blind-safe, lightness increases with elevation)",
+      "note": "colours stretch to this image's own elevation range",
+      "nodataPixels": 0,
+      "nearSeaLevelFrac": 0.0
+    },
+    "hillshade": {
+      "azimuthDeg": 315.0,
+      "altitudeDeg": 45.0,
+      "vertExag": 1.0
+    },
+    "relief": {
+      "scoredReliefM": 195.4,
+      "reliefRangeM": [
+        194.4,
+        196.2
+      ],
+      "windowKm": 10.0,
+      "postingM": 200.0,
+      "dem": "NASADEM_HGT.001"
+    },
+    "script": "pipeline/make_site_preview.py",
+    "generatedAt": "2026-11-14T18:15:29+00:00"
+  },
+  "rio-tinto": {
+    "siteId": "rio-tinto",
+    "image": "previews/site-rio-tinto-terrain.webp",
+    "widthPx": 450,
+    "heightPx": 450,
+    "bytes": 21900,
+    "sha256": "acb237a06c4acf9ab5dfdf24afa7496a07e079452a24ddc39278285b2f66f5ae",
+    "windowKm": 26.98,
+    "metresPerPixel": 60.0,
+    "markerPx": [
+      225.0,
+      225.0
+    ],
+    "scoringWindowKm": 10.0,
+    "scoringWindowPx": [
+      141.67,
+      141.67,
+      308.33,
+      308.33
+    ],
+    "scaleBarKm": 10.0,
+    "scaleBarPx": 166.67,
+    "site": {
+      "lat": 37.72512,
+      "lon": -6.55643
+    },
+    "projection": {
+      "frame": "WGS84 geographic latitude/longitude (EPSG:4326)",
+      "heightReference": "EGM96 geoid",
+      "note": "Native grid 1\" x 1\" (lon x lat) = 24 m E-W x 31 m N-S here; box mean 2 x 2 (rows x cols), then linear resampling to square 60 m ground pixels. North is up, east is right."
+    },
+    "source": {
+      "dataset": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+      "citation": "NASA JPL (2020). NASADEM Merged DEM Global 1 arc second V001. NASA EOSDIS Land Processes DAAC. doi:10.5067/MEaSUREs/NASADEM/NASADEM_HGT.001",
+      "attribution": "NASA JPL (NASADEM_HGT v001), via Microsoft Planetary Computer",
+      "quality": "primary",
+      "tiles": [
+        "NASADEM_HGT_n37w007"
+      ],
+      "missingTiles": [],
+      "sameAsScored": true
+    },
+    "elevation": {
+      "minM": 134.1,
+      "maxM": 834.2,
+      "ramp": [
+        [
+          134.1,
+          "#00204d"
+        ],
+        [
+          211.9,
+          "#00336f"
+        ],
+        [
+          289.7,
+          "#39486b"
+        ],
+        [
+          367.5,
+          "#575c6d"
+        ],
+        [
+          445.3,
+          "#707173"
+        ],
+        [
+          523.1,
+          "#8a8779"
+        ],
+        [
+          600.9,
+          "#a69d75"
+        ],
+        [
+          678.6,
+          "#c4b56c"
+        ],
+        [
+          756.4,
+          "#e4cf5b"
+        ],
+        [
+          834.2,
+          "#ffea46"
+        ]
+      ],
+      "rampName": "cividis (colour-blind-safe, lightness increases with elevation)",
+      "note": "colours stretch to this image's own elevation range",
+      "nodataPixels": 0,
+      "nearSeaLevelFrac": 0.0
+    },
+    "hillshade": {
+      "azimuthDeg": 315.0,
+      "altitudeDeg": 45.0,
+      "vertExag": 1.0
+    },
+    "relief": {
+      "scoredReliefM": 339.6,
+      "reliefRangeM": [
+        334.5,
+        344.6
+      ],
+      "windowKm": 10.0,
+      "postingM": 200.0,
+      "dem": "NASADEM_HGT.001"
+    },
+    "script": "pipeline/make_site_preview.py",
+    "generatedAt": "2026-11-14T18:15:29+00:00"
+  },
+  "wadi-rum": {
+    "siteId": "wadi-rum",
+    "image": "previews/site-wadi-rum-terrain.webp",
+    "widthPx": 450,
+    "heightPx": 450,
+    "bytes": 25686,
+    "sha256": "dc78fc767a829af2e9bf3db61a136dd3f3335a9afc0bc0e101dfde2e7a798cda",
+    "windowKm": 26.98,
+    "metresPerPixel": 60.0,
+    "markerPx": [
+      225.0,
+      225.0
+    ],
+    "scoringWindowKm": 10.0,
+    "scoringWindowPx": [
+      141.67,
+      141.67,
+      308.33,
+      308.33
+    ],
+    "scaleBarKm": 10.0,
+    "scaleBarPx": 166.67,
+    "site": {
+      "lat": 29.59306,
+      "lon": 35.42
+    },
+    "projection": {
+      "frame": "WGS84 geographic latitude/longitude (EPSG:4326)",
+      "heightReference": "EGM96 geoid",
+      "note": "Native grid 1\" x 1\" (lon x lat) = 27 m E-W x 31 m N-S here; box mean 2 x 2 (rows x cols), then linear resampling to square 60 m ground pixels. North is up, east is right."
+    },
+    "source": {
+      "dataset": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+      "citation": "NASA JPL (2020). NASADEM Merged DEM Global 1 arc second V001. NASA EOSDIS Land Processes DAAC. doi:10.5067/MEaSUREs/NASADEM/NASADEM_HGT.001",
+      "attribution": "NASA JPL (NASADEM_HGT v001), via Microsoft Planetary Computer",
+      "quality": "primary",
+      "tiles": [
+        "NASADEM_HGT_n29e035"
+      ],
+      "missingTiles": [],
+      "sameAsScored": true
+    },
+    "elevation": {
+      "minM": 733.2,
+      "maxM": 1724.5,
+      "ramp": [
+        [
+          733.2,
+          "#00204d"
+        ],
+        [
+          843.4,
+          "#00336f"
+        ],
+        [
+          953.5,
+          "#39486b"
+        ],
+        [
+          1063.7,
+          "#575c6d"
+        ],
+        [
+          1173.8,
+          "#707173"
+        ],
+        [
+          1284.0,
+          "#8a8779"
+        ],
+        [
+          1394.1,
+          "#a69d75"
+        ],
+        [
+          1504.3,
+          "#c4b56c"
+        ],
+        [
+          1614.4,
+          "#e4cf5b"
+        ],
+        [
+          1724.5,
+          "#ffea46"
+        ]
+      ],
+      "rampName": "cividis (colour-blind-safe, lightness increases with elevation)",
+      "note": "colours stretch to this image's own elevation range",
+      "nodataPixels": 0,
+      "nearSeaLevelFrac": 0.0
+    },
+    "hillshade": {
+      "azimuthDeg": 315.0,
+      "altitudeDeg": 45.0,
+      "vertExag": 1.0
+    },
+    "relief": {
+      "scoredReliefM": 752.9,
+      "reliefRangeM": [
+        748.4,
+        756.6
+      ],
+      "windowKm": 10.0,
+      "postingM": 200.0,
+      "dem": "NASADEM_HGT.001"
+    },
+    "script": "pipeline/make_site_preview.py",
+    "generatedAt": "2026-11-14T18:15:29+00:00"
+  },
+  "white-desert": {
+    "siteId": "white-desert",
+    "image": "previews/site-white-desert-terrain.webp",
+    "widthPx": 450,
+    "heightPx": 450,
+    "bytes": 15558,
+    "sha256": "fb71f90e5bb13d333216a6963b3a371537ba78a6e435fee41932b1b1862b96e1",
+    "windowKm": 26.98,
+    "metresPerPixel": 60.0,
+    "markerPx": [
+      225.0,
+      225.0
+    ],
+    "scoringWindowKm": 10.0,
+    "scoringWindowPx": [
+      141.67,
+      141.67,
+      308.33,
+      308.33
+    ],
+    "scaleBarKm": 10.0,
+    "scaleBarPx": 166.67,
+    "site": {
+      "lat": 27.27734,
+      "lon": 28.20044
+    },
+    "projection": {
+      "frame": "WGS84 geographic latitude/longitude (EPSG:4326)",
+      "heightReference": "EGM96 geoid",
+      "note": "Native grid 1\" x 1\" (lon x lat) = 27 m E-W x 31 m N-S here; box mean 2 x 2 (rows x cols), then linear resampling to square 60 m ground pixels. North is up, east is right."
+    },
+    "source": {
+      "dataset": "NASADEM_HGT v001 (NASA JPL, SRTM reprocessing), 1 arc-second",
+      "citation": "NASA JPL (2020). NASADEM Merged DEM Global 1 arc second V001. NASA EOSDIS Land Processes DAAC. doi:10.5067/MEaSUREs/NASADEM/NASADEM_HGT.001",
+      "attribution": "NASA JPL (NASADEM_HGT v001), via Microsoft Planetary Computer",
+      "quality": "primary",
+      "tiles": [
+        "NASADEM_HGT_n27e028"
+      ],
+      "missingTiles": [],
+      "sameAsScored": true
+    },
+    "elevation": {
+      "minM": -17.2,
+      "maxM": 150.4,
+      "ramp": [
+        [
+          -17.2,
+          "#00204d"
+        ],
+        [
+          1.4,
+          "#00336f"
+        ],
+        [
+          20.0,
+          "#39486b"
+        ],
+        [
+          38.7,
+          "#575c6d"
+        ],
+        [
+          57.3,
+          "#707173"
+        ],
+        [
+          75.9,
+          "#8a8779"
+        ],
+        [
+          94.6,
+          "#a69d75"
+        ],
+        [
+          113.2,
+          "#c4b56c"
+        ],
+        [
+          131.8,
+          "#e4cf5b"
+        ],
+        [
+          150.4,
+          "#ffea46"
+        ]
+      ],
+      "rampName": "cividis (colour-blind-safe, lightness increases with elevation)",
+      "note": "colours stretch to this image's own elevation range",
+      "nodataPixels": 0,
+      "nearSeaLevelFrac": 0.0001
+    },
+    "hillshade": {
+      "azimuthDeg": 315.0,
+      "altitudeDeg": 45.0,
+      "vertExag": 1.0
+    },
+    "relief": {
+      "scoredReliefM": 44.8,
+      "reliefRangeM": [
+        44.0,
+        45.9
+      ],
+      "windowKm": 10.0,
+      "postingM": 200.0,
+      "dem": "NASADEM_HGT.001"
+    },
+    "script": "pipeline/make_site_preview.py",
+    "generatedAt": "2026-11-14T18:15:29+00:00"
+  }
+}
