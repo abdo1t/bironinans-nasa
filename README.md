@@ -13,10 +13,15 @@ operations, thermal cycling, ice-rich ground sampling, mineral sampling). The pl
 - an **uncovered ledger**: what no site covers, and what Earth cannot reproduce at all;
 - an **Analog Passport** per site.
 
+![Planner: verdict matrix, portfolio and uncovered ledger for the Shackleton ridge](docs/screenshots/1-planner-shackleton-ridge.png)
+
 ## Try it
 
 Open `prototype/web/planner.html` in a browser (no server or install needed).
+Deep links open a specific view, e.g. `planner.html?target=shackleton_floor&site=egypt_western_desert`.
 `prototype/web/index.html` is an older single-score similarity overview.
+
+A 3-minute demo script with talking points is in [docs/DEMO.md](docs/DEMO.md); screenshots are in `docs/screenshots/`.
 
 ## Rebuild from the raw data
 
@@ -40,12 +45,13 @@ Tests and thresholds are plain data in `data-tools/tests.json`.
 | `data-tools/` | Download, feature extraction, scoring and qualification scripts |
 | `Processed/` | Extracted features and the validation report |
 | `prototype/` | The planner and the similarity overview |
+| `docs/` | Demo script and screenshots |
 
 ## Data
 
 Earth: Copernicus DEM GLO-30, Sentinel-1 RTC, MODIS land surface temperature and NDVI, EMIT surface minerals.
 Moon: LRO LOLA elevation and illumination, Diviner polar temperatures and ice stability, Mini-RF radar.
-12 Earth sites: 6 known analogs, 5 candidates (including Egypt's Western Desert as the discovery case) and a rainforest negative control.
+12 Earth sites: 6 known analogs, 5 candidates (including Egypt's Kharga Depression yardangs as the discovery case) and a rainforest negative control.
 
 ## Limits
 

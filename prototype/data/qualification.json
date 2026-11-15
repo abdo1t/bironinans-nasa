@@ -99,7 +99,9 @@
    "requirements": [
     "frozen_ground",
     "radar_ice"
-   ]
+   ],
+   "max_verdict": "partial",
+   "max_reason": "The radar evidence for ice cannot be compared between Earth and Moon, so this test rests on temperature alone and is capped at partial."
   },
   "mineral_sampling": {
    "name": "Mineral / regolith sampling",
@@ -116,8 +118,9 @@
   "slope": {
    "label": "Slope distribution (95th percentile)",
    "unit": "deg",
-   "caveat": "Earth DEM is 30 m resampled to ~90 m, LOLA is 80 m; rover-scale rocks and small craters are not resolved.",
+   "caveat": "Earth DEM is 30 m resampled to ~90 m, LOLA is 80 m; rover-scale rocks, small craters and metre-scale landforms such as yardangs are not resolved.",
    "rule": "match",
+   "basis": "Pass within 5 deg of the lunar zone, partial within 10 deg: half and all of the 10 deg slope used as the example rover requirement in the brief.",
    "target_text": "",
    "target_unit": ""
   },
@@ -126,6 +129,7 @@
    "unit": "m",
    "caveat": "Roughness is measured at ~90 m spacing; it says nothing about rover-wheel scale roughness.",
    "rule": "match_rel",
+   "basis": "Pass within 35% of the lunar value, partial within 70%. Chosen so the spread between lunar zones (8 to 29 m) maps to distinct Earth sites.",
    "target_text": "",
    "target_unit": ""
   },
@@ -134,6 +138,7 @@
    "unit": "NDVI",
    "caveat": "MODIS NDVI is not produced for Devon Island and McMurdo, so they show unknown here although both are polar deserts.",
    "rule": "at_most",
+   "basis": "Bare soil and rock read about 0.05-0.15 NDVI; above ~0.2 there is sparse vegetation that hides the surface.",
    "target_text": "no vegetation",
    "target_unit": ""
   },
@@ -142,6 +147,7 @@
    "unit": "days/yr",
    "caveat": "Earth day length and atmosphere differ; the lighting match is approximate (computed from latitude only).",
    "rule": "at_least",
+   "basis": "Pass: at least 6 weeks a year of grazing sun, enough to schedule a field season. Partial: at least 2 weeks.",
    "target_text": "sun stays within ~2 deg of the horizon",
    "target_unit": ""
   },
@@ -150,6 +156,7 @@
    "unit": "K",
    "caveat": "No Earth site reaches lunar polar temperatures; a partial means deep-cold testing is possible, not that lunar cold is reproduced.",
    "rule": "at_most",
+   "basis": "Pass only within 20 K of the lunar mean, which no Earth site reaches by design. Partial at 240 K (-33 C), close to the -40 C rating of standard industrial electronics, so cold-soak testing is meaningful.",
    "target_text": "",
    "target_unit": ""
   },
@@ -158,6 +165,7 @@
    "unit": "K",
    "caveat": "Earth swings are seasonal and buffered by air; lunar swings are driven by direct sunlight in vacuum.",
    "rule": "at_least",
+   "basis": "Pass at half the lunar swing or more. Partial at 40 K, roughly the swing standard thermal-cycling qualification profiles start from.",
    "target_text": "",
    "target_unit": ""
   },
@@ -166,6 +174,7 @@
    "unit": "K",
    "caveat": "A cold mean only makes frozen ground plausible; Earth permafrost ice is not lunar cold-trap ice.",
    "rule": "at_most",
+   "basis": "Pass if the yearly mean surface temperature is below 0 C (permafrost is likely); partial within 5 K of it (seasonal frost).",
    "target_text": "",
    "target_unit": "share of area with stable ice"
   },
@@ -174,6 +183,7 @@
    "unit": "",
    "caveat": "Mini-RF is S-band polarization ratio, Sentinel-1 is C-band backscatter: the two are not comparable, so this is shown but not scored.",
    "rule": "unscored",
+   "basis": "Not scored.",
    "target_text": "",
    "target_unit": ""
   },
@@ -182,6 +192,7 @@
    "unit": "share of pixels mapped",
    "caveat": "EMIT covers arid low and mid latitudes only, and the lunar pole has no reliable mineral layer: this is Earth-side evidence, never a match.",
    "rule": "evidence",
+   "basis": "Partial if at least 30% of the site has an identified mineral group, so a sampling team knows what is there. Never a pass: there is nothing on the Moon side to match.",
    "target_text": "no reliable polar mineral layer",
    "target_unit": ""
   }
@@ -195,6 +206,8 @@
    "lat": 75.383,
    "lng": -89.667,
    "role": "known analog",
+   "note": "polar; low sun",
+   "context": "",
    "verdicts": {
     "shackleton_ridge": {
      "slope": {
@@ -452,7 +465,7 @@
       "unknowns": 0
      },
      "ice_sampling": {
-      "verdict": "pass",
+      "verdict": "partial",
       "unknowns": 1
      },
      "mineral_sampling": {
@@ -474,7 +487,7 @@
       "unknowns": 0
      },
      "ice_sampling": {
-      "verdict": "pass",
+      "verdict": "partial",
       "unknowns": 1
      },
      "mineral_sampling": {
@@ -496,7 +509,7 @@
       "unknowns": 0
      },
      "ice_sampling": {
-      "verdict": "pass",
+      "verdict": "partial",
       "unknowns": 1
      },
      "mineral_sampling": {
@@ -518,7 +531,7 @@
       "unknowns": 0
      },
      "ice_sampling": {
-      "verdict": "pass",
+      "verdict": "partial",
       "unknowns": 1
      },
      "mineral_sampling": {
@@ -526,6 +539,18 @@
       "unknowns": 2
      }
     }
+   },
+   "evidence": {
+    "grade": "B",
+    "data_share": 0.75,
+    "layers_with_data": 6,
+    "layers_scored": 8,
+    "field_checks": [
+     "Measure 'Bare ground (yearly max NDVI)' on site: no open data for it here.",
+     "Measure 'Surface mineral map available (EMIT)' on site: no open data for it here.",
+     "Ground-truth slope, rock abundance and soil strength at rover scale (finer than the ~90 m elevation data).",
+     "Confirm access, permits and season with the site authority."
+    ]
    }
   },
   {
@@ -536,6 +561,8 @@
    "lat": -24.1,
    "lng": -70.02,
    "role": "known analog",
+   "note": "hyperarid",
+   "context": "",
    "verdicts": {
     "shackleton_ridge": {
      "slope": {
@@ -871,6 +898,16 @@
       "unknowns": 0
      }
     }
+   },
+   "evidence": {
+    "grade": "A",
+    "data_share": 1.0,
+    "layers_with_data": 8,
+    "layers_scored": 8,
+    "field_checks": [
+     "Ground-truth slope, rock abundance and soil strength at rover scale (finer than the ~90 m elevation data).",
+     "Confirm access, permits and season with the site authority."
+    ]
    }
   },
   {
@@ -881,6 +918,8 @@
    "lat": 35.027,
    "lng": -111.022,
    "role": "known analog",
+   "note": "impact crater",
+   "context": "",
    "verdicts": {
     "shackleton_ridge": {
      "slope": {
@@ -1216,6 +1255,16 @@
       "unknowns": 0
      }
     }
+   },
+   "evidence": {
+    "grade": "A",
+    "data_share": 1.0,
+    "layers_with_data": 8,
+    "layers_scored": 8,
+    "field_checks": [
+     "Ground-truth slope, rock abundance and soil strength at rover scale (finer than the ~90 m elevation data).",
+     "Confirm access, permits and season with the site authority."
+    ]
    }
   },
   {
@@ -1226,6 +1275,8 @@
    "lat": -77.53,
    "lng": 161.7,
    "role": "known analog",
+   "note": "polar; cold-dry",
+   "context": "",
    "verdicts": {
     "shackleton_ridge": {
      "slope": {
@@ -1483,7 +1534,7 @@
       "unknowns": 0
      },
      "ice_sampling": {
-      "verdict": "pass",
+      "verdict": "partial",
       "unknowns": 1
      },
      "mineral_sampling": {
@@ -1505,7 +1556,7 @@
       "unknowns": 0
      },
      "ice_sampling": {
-      "verdict": "pass",
+      "verdict": "partial",
       "unknowns": 1
      },
      "mineral_sampling": {
@@ -1527,7 +1578,7 @@
       "unknowns": 0
      },
      "ice_sampling": {
-      "verdict": "pass",
+      "verdict": "partial",
       "unknowns": 1
      },
      "mineral_sampling": {
@@ -1549,7 +1600,7 @@
       "unknowns": 0
      },
      "ice_sampling": {
-      "verdict": "pass",
+      "verdict": "partial",
       "unknowns": 1
      },
      "mineral_sampling": {
@@ -1557,6 +1608,18 @@
       "unknowns": 2
      }
     }
+   },
+   "evidence": {
+    "grade": "B",
+    "data_share": 0.75,
+    "layers_with_data": 6,
+    "layers_scored": 8,
+    "field_checks": [
+     "Measure 'Bare ground (yearly max NDVI)' on site: no open data for it here.",
+     "Measure 'Surface mineral map available (EMIT)' on site: no open data for it here.",
+     "Ground-truth slope, rock abundance and soil strength at rover scale (finer than the ~90 m elevation data).",
+     "Confirm access, permits and season with the site authority."
+    ]
    }
   },
   {
@@ -1567,6 +1630,8 @@
    "lat": 37.01,
    "lng": -117.45,
    "role": "known analog",
+   "note": "prototype JSON lists Badwater/Ubehebe",
+   "context": "",
    "verdicts": {
     "shackleton_ridge": {
      "slope": {
@@ -1902,6 +1967,16 @@
       "unknowns": 0
      }
     }
+   },
+   "evidence": {
+    "grade": "A",
+    "data_share": 1.0,
+    "layers_with_data": 8,
+    "layers_scored": 8,
+    "field_checks": [
+     "Ground-truth slope, rock abundance and soil strength at rover scale (finer than the ~90 m elevation data).",
+     "Confirm access, permits and season with the site authority."
+    ]
    }
   },
   {
@@ -1912,6 +1987,8 @@
    "lat": 64.85,
    "lng": -16.833,
    "role": "known analog",
+   "note": "basaltic terrain",
+   "context": "",
    "verdicts": {
     "shackleton_ridge": {
      "slope": {
@@ -2173,7 +2250,7 @@
       "unknowns": 0
      },
      "ice_sampling": {
-      "verdict": "pass",
+      "verdict": "partial",
       "unknowns": 1
      },
      "mineral_sampling": {
@@ -2195,7 +2272,7 @@
       "unknowns": 0
      },
      "ice_sampling": {
-      "verdict": "pass",
+      "verdict": "partial",
       "unknowns": 1
      },
      "mineral_sampling": {
@@ -2217,7 +2294,7 @@
       "unknowns": 0
      },
      "ice_sampling": {
-      "verdict": "pass",
+      "verdict": "partial",
       "unknowns": 1
      },
      "mineral_sampling": {
@@ -2239,7 +2316,7 @@
       "unknowns": 0
      },
      "ice_sampling": {
-      "verdict": "pass",
+      "verdict": "partial",
       "unknowns": 1
      },
      "mineral_sampling": {
@@ -2247,6 +2324,17 @@
       "unknowns": 1
      }
     }
+   },
+   "evidence": {
+    "grade": "B",
+    "data_share": 0.88,
+    "layers_with_data": 7,
+    "layers_scored": 8,
+    "field_checks": [
+     "Measure 'Surface mineral map available (EMIT)' on site: no open data for it here.",
+     "Ground-truth slope, rock abundance and soil strength at rover scale (finer than the ~90 m elevation data).",
+     "Confirm access, permits and season with the site authority."
+    ]
    }
   },
   {
@@ -2257,6 +2345,8 @@
    "lat": 29.159,
    "lng": -13.438,
    "role": "candidate",
+   "note": "lava tubes",
+   "context": "",
    "verdicts": {
     "shackleton_ridge": {
      "slope": {
@@ -2592,32 +2682,44 @@
       "unknowns": 0
      }
     }
+   },
+   "evidence": {
+    "grade": "A",
+    "data_share": 1.0,
+    "layers_with_data": 8,
+    "layers_scored": 8,
+    "field_checks": [
+     "Ground-truth slope, rock abundance and soil strength at rover scale (finer than the ~90 m elevation data).",
+     "Confirm access, permits and season with the site authority."
+    ]
    }
   },
   {
    "id": "egypt_western_desert",
-   "name": "Western Desert yardangs (Kharga/Dakhla)",
-   "full_name": "Western Desert yardangs (Kharga/Dakhla), Egypt",
+   "name": "Kharga Depression yardangs (mud lions)",
+   "full_name": "Kharga Depression yardangs (mud lions), Western Desert, Egypt",
    "country": "Egypt",
-   "lat": 25.9,
-   "lng": 30.4,
+   "lat": 25.58,
+   "lng": 30.62,
    "role": "discovery case",
+   "note": "depression-floor yardang field N of Kharga (Breed & McCauley); point picked on DEM floor - confirm on imagery",
+   "context": "Discovery case. Published as a Mars analog for wind-carved landforms (yardangs and dunes; Breed & McCauley; NASA CR-3611, 1983). On these lunar south-pole tests it screens out: the depression floor is flat at the ~90 m scale the data can see, warm, and has no mineral map at this point yet.",
    "verdicts": {
     "shackleton_ridge": {
      "slope": {
-      "site_value": 7.137,
+      "site_value": 1.591,
       "target_value": 19.824,
       "note": "",
       "verdict": "fail"
      },
      "roughness": {
-      "site_value": 4.565,
+      "site_value": 1.229,
       "target_value": 24.032,
       "note": "",
       "verdict": "fail"
      },
      "bare_ground": {
-      "site_value": 0.103,
+      "site_value": 0.13,
       "target_value": null,
       "note": "",
       "pass_threshold": 0.15,
@@ -2631,54 +2733,54 @@
       "verdict": "fail"
      },
      "deep_cold": {
-      "site_value": 281.6,
+      "site_value": 282.88,
       "target_value": 135.565,
       "note": "",
       "pass_threshold": 155.57,
       "verdict": "fail"
      },
      "thermal_swing": {
-      "site_value": 38.58,
+      "site_value": 40.6,
       "target_value": 171.379,
       "note": "",
       "pass_threshold": 85.69,
-      "verdict": "fail"
+      "verdict": "partial"
      },
      "frozen_ground": {
-      "site_value": 300.395,
+      "site_value": 302.327,
       "target_value": 0.111,
       "note": "",
       "pass_threshold": 273.15,
       "verdict": "fail"
      },
      "radar_ice": {
-      "site_value": -14.675,
+      "site_value": -16.208,
       "target_value": 0.542,
       "note": "not scored: datasets are not comparable",
       "verdict": "unknown"
      },
      "minerals": {
-      "site_value": 1.0,
+      "site_value": null,
       "target_value": null,
-      "note": "fe3+_goeth+jarosite:0.85; fe3+_goethite.fingr.mpcma2:0.15; fe3+_hematite.nano.BR34b2b:0.00",
-      "verdict": "partial"
+      "note": "no data for this site",
+      "verdict": "unknown"
      }
     },
     "shackleton_floor": {
      "slope": {
-      "site_value": 7.137,
+      "site_value": 1.591,
       "target_value": 15.712,
       "note": "",
-      "verdict": "partial"
+      "verdict": "fail"
      },
      "roughness": {
-      "site_value": 4.565,
+      "site_value": 1.229,
       "target_value": 13.432,
       "note": "",
-      "verdict": "partial"
+      "verdict": "fail"
      },
      "bare_ground": {
-      "site_value": 0.103,
+      "site_value": 0.13,
       "target_value": null,
       "note": "",
       "pass_threshold": 0.15,
@@ -2692,54 +2794,54 @@
       "verdict": "fail"
      },
      "deep_cold": {
-      "site_value": 281.6,
+      "site_value": 282.88,
       "target_value": 51.366,
       "note": "",
       "pass_threshold": 71.37,
       "verdict": "fail"
      },
      "thermal_swing": {
-      "site_value": 38.58,
+      "site_value": 40.6,
       "target_value": 38.254,
       "note": "",
       "pass_threshold": 19.13,
       "verdict": "pass"
      },
      "frozen_ground": {
-      "site_value": 300.395,
+      "site_value": 302.327,
       "target_value": 1.0,
       "note": "",
       "pass_threshold": 273.15,
       "verdict": "fail"
      },
      "radar_ice": {
-      "site_value": -14.675,
+      "site_value": -16.208,
       "target_value": 0.913,
       "note": "not scored: datasets are not comparable",
       "verdict": "unknown"
      },
      "minerals": {
-      "site_value": 1.0,
+      "site_value": null,
       "target_value": null,
-      "note": "fe3+_goeth+jarosite:0.85; fe3+_goethite.fingr.mpcma2:0.15; fe3+_hematite.nano.BR34b2b:0.00",
-      "verdict": "partial"
+      "note": "no data for this site",
+      "verdict": "unknown"
      }
     },
     "malapert_massif": {
      "slope": {
-      "site_value": 7.137,
+      "site_value": 1.591,
       "target_value": 22.423,
       "note": "",
       "verdict": "fail"
      },
      "roughness": {
-      "site_value": 4.565,
+      "site_value": 1.229,
       "target_value": 28.618,
       "note": "",
       "verdict": "fail"
      },
      "bare_ground": {
-      "site_value": 0.103,
+      "site_value": 0.13,
       "target_value": null,
       "note": "",
       "pass_threshold": 0.15,
@@ -2753,54 +2855,54 @@
       "verdict": "fail"
      },
      "deep_cold": {
-      "site_value": 281.6,
+      "site_value": 282.88,
       "target_value": 145.956,
       "note": "",
       "pass_threshold": 165.96,
       "verdict": "fail"
      },
      "thermal_swing": {
-      "site_value": 38.58,
+      "site_value": 40.6,
       "target_value": 181.339,
       "note": "",
       "pass_threshold": 90.67,
-      "verdict": "fail"
+      "verdict": "partial"
      },
      "frozen_ground": {
-      "site_value": 300.395,
+      "site_value": 302.327,
       "target_value": 0.071,
       "note": "",
       "pass_threshold": 273.15,
       "verdict": "fail"
      },
      "radar_ice": {
-      "site_value": -14.675,
+      "site_value": -16.208,
       "target_value": 0.649,
       "note": "not scored: datasets are not comparable",
       "verdict": "unknown"
      },
      "minerals": {
-      "site_value": 1.0,
+      "site_value": null,
       "target_value": null,
-      "note": "fe3+_goeth+jarosite:0.85; fe3+_goethite.fingr.mpcma2:0.15; fe3+_hematite.nano.BR34b2b:0.00",
-      "verdict": "partial"
+      "note": "no data for this site",
+      "verdict": "unknown"
      }
     },
     "haworth_floor": {
      "slope": {
-      "site_value": 7.137,
+      "site_value": 1.591,
       "target_value": 12.543,
       "note": "",
-      "verdict": "partial"
+      "verdict": "fail"
      },
      "roughness": {
-      "site_value": 4.565,
+      "site_value": 1.229,
       "target_value": 7.726,
       "note": "",
-      "verdict": "partial"
+      "verdict": "fail"
      },
      "bare_ground": {
-      "site_value": 0.103,
+      "site_value": 0.13,
       "target_value": null,
       "note": "",
       "pass_threshold": 0.15,
@@ -2814,37 +2916,37 @@
       "verdict": "fail"
      },
      "deep_cold": {
-      "site_value": 281.6,
+      "site_value": 282.88,
       "target_value": 38.656,
       "note": "",
       "pass_threshold": 58.66,
       "verdict": "fail"
      },
      "thermal_swing": {
-      "site_value": 38.58,
+      "site_value": 40.6,
       "target_value": 28.347,
       "note": "",
       "pass_threshold": 14.17,
       "verdict": "pass"
      },
      "frozen_ground": {
-      "site_value": 300.395,
+      "site_value": 302.327,
       "target_value": 1.0,
       "note": "",
       "pass_threshold": 273.15,
       "verdict": "fail"
      },
      "radar_ice": {
-      "site_value": -14.675,
+      "site_value": -16.208,
       "target_value": 0.553,
       "note": "not scored: datasets are not comparable",
       "verdict": "unknown"
      },
      "minerals": {
-      "site_value": 1.0,
+      "site_value": null,
       "target_value": null,
-      "note": "fe3+_goeth+jarosite:0.85; fe3+_goethite.fingr.mpcma2:0.15; fe3+_hematite.nano.BR34b2b:0.00",
-      "verdict": "partial"
+      "note": "no data for this site",
+      "verdict": "unknown"
      }
     }
    },
@@ -2867,13 +2969,13 @@
       "unknowns": 1
      },
      "mineral_sampling": {
-      "verdict": "partial",
-      "unknowns": 0
+      "verdict": "unknown",
+      "unknowns": 1
      }
     },
     "shackleton_floor": {
      "rover_traverse": {
-      "verdict": "partial",
+      "verdict": "fail",
       "unknowns": 0
      },
      "low_sun_ops": {
@@ -2889,8 +2991,8 @@
       "unknowns": 1
      },
      "mineral_sampling": {
-      "verdict": "partial",
-      "unknowns": 0
+      "verdict": "unknown",
+      "unknowns": 1
      }
     },
     "malapert_massif": {
@@ -2911,13 +3013,13 @@
       "unknowns": 1
      },
      "mineral_sampling": {
-      "verdict": "partial",
-      "unknowns": 0
+      "verdict": "unknown",
+      "unknowns": 1
      }
     },
     "haworth_floor": {
      "rover_traverse": {
-      "verdict": "partial",
+      "verdict": "fail",
       "unknowns": 0
      },
      "low_sun_ops": {
@@ -2933,10 +3035,22 @@
       "unknowns": 1
      },
      "mineral_sampling": {
-      "verdict": "partial",
-      "unknowns": 0
+      "verdict": "unknown",
+      "unknowns": 1
      }
     }
+   },
+   "evidence": {
+    "grade": "B",
+    "data_share": 0.88,
+    "layers_with_data": 7,
+    "layers_scored": 8,
+    "field_checks": [
+     "Confirm the site location on high-resolution imagery: depression-floor yardang field N of Kharga (Breed & McCauley); point picked on DEM floor - confirm on imagery",
+     "Measure 'Surface mineral map available (EMIT)' on site: no open data for it here.",
+     "Ground-truth slope, rock abundance and soil strength at rover scale (finer than the ~90 m elevation data).",
+     "Confirm access, permits and season with the site authority."
+    ]
    }
   },
   {
@@ -2947,6 +3061,8 @@
    "lat": 14.24,
    "lng": 40.3,
    "role": "candidate",
+   "note": "acid-saline hydrothermal",
+   "context": "",
    "verdicts": {
     "shackleton_ridge": {
      "slope": {
@@ -3282,6 +3398,16 @@
       "unknowns": 0
      }
     }
+   },
+   "evidence": {
+    "grade": "A",
+    "data_share": 1.0,
+    "layers_with_data": 8,
+    "layers_scored": 8,
+    "field_checks": [
+     "Ground-truth slope, rock abundance and soil strength at rover scale (finer than the ~90 m elevation data).",
+     "Confirm access, permits and season with the site authority."
+    ]
    }
   },
   {
@@ -3292,6 +3418,8 @@
    "lat": 55.88,
    "lng": -63.31,
    "role": "candidate",
+   "note": "anorthositic impact melt",
+   "context": "",
    "verdicts": {
     "shackleton_ridge": {
      "slope": {
@@ -3553,7 +3681,7 @@
       "unknowns": 0
      },
      "ice_sampling": {
-      "verdict": "pass",
+      "verdict": "partial",
       "unknowns": 1
      },
      "mineral_sampling": {
@@ -3575,7 +3703,7 @@
       "unknowns": 0
      },
      "ice_sampling": {
-      "verdict": "pass",
+      "verdict": "partial",
       "unknowns": 1
      },
      "mineral_sampling": {
@@ -3597,7 +3725,7 @@
       "unknowns": 0
      },
      "ice_sampling": {
-      "verdict": "pass",
+      "verdict": "partial",
       "unknowns": 1
      },
      "mineral_sampling": {
@@ -3619,7 +3747,7 @@
       "unknowns": 0
      },
      "ice_sampling": {
-      "verdict": "pass",
+      "verdict": "partial",
       "unknowns": 1
      },
      "mineral_sampling": {
@@ -3627,6 +3755,17 @@
       "unknowns": 1
      }
     }
+   },
+   "evidence": {
+    "grade": "B",
+    "data_share": 0.88,
+    "layers_with_data": 7,
+    "layers_scored": 8,
+    "field_checks": [
+     "Measure 'Surface mineral map available (EMIT)' on site: no open data for it here.",
+     "Ground-truth slope, rock abundance and soil strength at rover scale (finer than the ~90 m elevation data).",
+     "Confirm access, permits and season with the site authority."
+    ]
    }
   },
   {
@@ -3634,29 +3773,31 @@
    "name": "Strelley Pool",
    "full_name": "Strelley Pool, Pilbara, Australia",
    "country": "Australia",
-   "lat": -21.18,
-   "lng": 119.15,
+   "lat": -21.11094,
+   "lng": 119.13709,
    "role": "candidate",
+   "note": "locality coordinates from Retallack et al. 2023",
+   "context": "",
    "verdicts": {
     "shackleton_ridge": {
      "slope": {
-      "site_value": 14.146,
+      "site_value": 16.265,
       "target_value": 19.824,
       "note": "",
-      "verdict": "partial"
+      "verdict": "pass"
      },
      "roughness": {
-      "site_value": 8.705,
+      "site_value": 9.182,
       "target_value": 24.032,
       "note": "",
       "verdict": "partial"
      },
      "bare_ground": {
-      "site_value": 0.249,
+      "site_value": 0.251,
       "target_value": null,
       "note": "",
       "pass_threshold": 0.15,
-      "verdict": "partial"
+      "verdict": "fail"
      },
      "low_sun": {
       "site_value": 0.0,
@@ -3666,58 +3807,58 @@
       "verdict": "fail"
      },
      "deep_cold": {
-      "site_value": 287.98,
+      "site_value": 287.83,
       "target_value": 135.565,
       "note": "",
       "pass_threshold": 155.57,
       "verdict": "fail"
      },
      "thermal_swing": {
-      "site_value": 31.74,
+      "site_value": 31.91,
       "target_value": 171.379,
       "note": "",
       "pass_threshold": 85.69,
       "verdict": "fail"
      },
      "frozen_ground": {
-      "site_value": 303.12,
+      "site_value": 303.082,
       "target_value": 0.111,
       "note": "",
       "pass_threshold": 273.15,
       "verdict": "fail"
      },
      "radar_ice": {
-      "site_value": -10.403,
+      "site_value": -10.236,
       "target_value": 0.542,
       "note": "not scored: datasets are not comparable",
       "verdict": "unknown"
      },
      "minerals": {
-      "site_value": 0.836,
+      "site_value": 0.869,
       "target_value": null,
-      "note": "fe3+_hematite.nano.BR34b2b:0.33; fe3+_hematite.lg.gr.br34c:0.25; chrysotile.gypsum.wtc01-8:0.19",
+      "note": "fe3+_hematite.nano.BR34b2b:0.41; chrysotile.gypsum.wtc01-8:0.20; fe3+_hematite.lg.gr.br34c:0.17",
       "verdict": "partial"
      }
     },
     "shackleton_floor": {
      "slope": {
-      "site_value": 14.146,
+      "site_value": 16.265,
       "target_value": 15.712,
       "note": "",
       "verdict": "pass"
      },
      "roughness": {
-      "site_value": 8.705,
+      "site_value": 9.182,
       "target_value": 13.432,
       "note": "",
-      "verdict": "partial"
+      "verdict": "pass"
      },
      "bare_ground": {
-      "site_value": 0.249,
+      "site_value": 0.251,
       "target_value": null,
       "note": "",
       "pass_threshold": 0.15,
-      "verdict": "partial"
+      "verdict": "fail"
      },
      "low_sun": {
       "site_value": 0.0,
@@ -3727,58 +3868,58 @@
       "verdict": "fail"
      },
      "deep_cold": {
-      "site_value": 287.98,
+      "site_value": 287.83,
       "target_value": 51.366,
       "note": "",
       "pass_threshold": 71.37,
       "verdict": "fail"
      },
      "thermal_swing": {
-      "site_value": 31.74,
+      "site_value": 31.91,
       "target_value": 38.254,
       "note": "",
       "pass_threshold": 19.13,
       "verdict": "pass"
      },
      "frozen_ground": {
-      "site_value": 303.12,
+      "site_value": 303.082,
       "target_value": 1.0,
       "note": "",
       "pass_threshold": 273.15,
       "verdict": "fail"
      },
      "radar_ice": {
-      "site_value": -10.403,
+      "site_value": -10.236,
       "target_value": 0.913,
       "note": "not scored: datasets are not comparable",
       "verdict": "unknown"
      },
      "minerals": {
-      "site_value": 0.836,
+      "site_value": 0.869,
       "target_value": null,
-      "note": "fe3+_hematite.nano.BR34b2b:0.33; fe3+_hematite.lg.gr.br34c:0.25; chrysotile.gypsum.wtc01-8:0.19",
+      "note": "fe3+_hematite.nano.BR34b2b:0.41; chrysotile.gypsum.wtc01-8:0.20; fe3+_hematite.lg.gr.br34c:0.17",
       "verdict": "partial"
      }
     },
     "malapert_massif": {
      "slope": {
-      "site_value": 14.146,
+      "site_value": 16.265,
       "target_value": 22.423,
       "note": "",
       "verdict": "partial"
      },
      "roughness": {
-      "site_value": 8.705,
+      "site_value": 9.182,
       "target_value": 28.618,
       "note": "",
       "verdict": "partial"
      },
      "bare_ground": {
-      "site_value": 0.249,
+      "site_value": 0.251,
       "target_value": null,
       "note": "",
       "pass_threshold": 0.15,
-      "verdict": "partial"
+      "verdict": "fail"
      },
      "low_sun": {
       "site_value": 0.0,
@@ -3788,58 +3929,58 @@
       "verdict": "fail"
      },
      "deep_cold": {
-      "site_value": 287.98,
+      "site_value": 287.83,
       "target_value": 145.956,
       "note": "",
       "pass_threshold": 165.96,
       "verdict": "fail"
      },
      "thermal_swing": {
-      "site_value": 31.74,
+      "site_value": 31.91,
       "target_value": 181.339,
       "note": "",
       "pass_threshold": 90.67,
       "verdict": "fail"
      },
      "frozen_ground": {
-      "site_value": 303.12,
+      "site_value": 303.082,
       "target_value": 0.071,
       "note": "",
       "pass_threshold": 273.15,
       "verdict": "fail"
      },
      "radar_ice": {
-      "site_value": -10.403,
+      "site_value": -10.236,
       "target_value": 0.649,
       "note": "not scored: datasets are not comparable",
       "verdict": "unknown"
      },
      "minerals": {
-      "site_value": 0.836,
+      "site_value": 0.869,
       "target_value": null,
-      "note": "fe3+_hematite.nano.BR34b2b:0.33; fe3+_hematite.lg.gr.br34c:0.25; chrysotile.gypsum.wtc01-8:0.19",
+      "note": "fe3+_hematite.nano.BR34b2b:0.41; chrysotile.gypsum.wtc01-8:0.20; fe3+_hematite.lg.gr.br34c:0.17",
       "verdict": "partial"
      }
     },
     "haworth_floor": {
      "slope": {
-      "site_value": 14.146,
+      "site_value": 16.265,
       "target_value": 12.543,
       "note": "",
       "verdict": "pass"
      },
      "roughness": {
-      "site_value": 8.705,
+      "site_value": 9.182,
       "target_value": 7.726,
       "note": "",
       "verdict": "pass"
      },
      "bare_ground": {
-      "site_value": 0.249,
+      "site_value": 0.251,
       "target_value": null,
       "note": "",
       "pass_threshold": 0.15,
-      "verdict": "partial"
+      "verdict": "fail"
      },
      "low_sun": {
       "site_value": 0.0,
@@ -3849,36 +3990,36 @@
       "verdict": "fail"
      },
      "deep_cold": {
-      "site_value": 287.98,
+      "site_value": 287.83,
       "target_value": 38.656,
       "note": "",
       "pass_threshold": 58.66,
       "verdict": "fail"
      },
      "thermal_swing": {
-      "site_value": 31.74,
+      "site_value": 31.91,
       "target_value": 28.347,
       "note": "",
       "pass_threshold": 14.17,
       "verdict": "pass"
      },
      "frozen_ground": {
-      "site_value": 303.12,
+      "site_value": 303.082,
       "target_value": 1.0,
       "note": "",
       "pass_threshold": 273.15,
       "verdict": "fail"
      },
      "radar_ice": {
-      "site_value": -10.403,
+      "site_value": -10.236,
       "target_value": 0.553,
       "note": "not scored: datasets are not comparable",
       "verdict": "unknown"
      },
      "minerals": {
-      "site_value": 0.836,
+      "site_value": 0.869,
       "target_value": null,
-      "note": "fe3+_hematite.nano.BR34b2b:0.33; fe3+_hematite.lg.gr.br34c:0.25; chrysotile.gypsum.wtc01-8:0.19",
+      "note": "fe3+_hematite.nano.BR34b2b:0.41; chrysotile.gypsum.wtc01-8:0.20; fe3+_hematite.lg.gr.br34c:0.17",
       "verdict": "partial"
      }
     }
@@ -3886,7 +4027,7 @@
    "tests": {
     "shackleton_ridge": {
      "rover_traverse": {
-      "verdict": "partial",
+      "verdict": "fail",
       "unknowns": 0
      },
      "low_sun_ops": {
@@ -3902,13 +4043,13 @@
       "unknowns": 1
      },
      "mineral_sampling": {
-      "verdict": "partial",
+      "verdict": "fail",
       "unknowns": 0
      }
     },
     "shackleton_floor": {
      "rover_traverse": {
-      "verdict": "partial",
+      "verdict": "fail",
       "unknowns": 0
      },
      "low_sun_ops": {
@@ -3924,13 +4065,13 @@
       "unknowns": 1
      },
      "mineral_sampling": {
-      "verdict": "partial",
+      "verdict": "fail",
       "unknowns": 0
      }
     },
     "malapert_massif": {
      "rover_traverse": {
-      "verdict": "partial",
+      "verdict": "fail",
       "unknowns": 0
      },
      "low_sun_ops": {
@@ -3946,13 +4087,13 @@
       "unknowns": 1
      },
      "mineral_sampling": {
-      "verdict": "partial",
+      "verdict": "fail",
       "unknowns": 0
      }
     },
     "haworth_floor": {
      "rover_traverse": {
-      "verdict": "partial",
+      "verdict": "fail",
       "unknowns": 0
      },
      "low_sun_ops": {
@@ -3968,10 +4109,20 @@
       "unknowns": 1
      },
      "mineral_sampling": {
-      "verdict": "partial",
+      "verdict": "fail",
       "unknowns": 0
      }
     }
+   },
+   "evidence": {
+    "grade": "A",
+    "data_share": 1.0,
+    "layers_with_data": 8,
+    "layers_scored": 8,
+    "field_checks": [
+     "Ground-truth slope, rock abundance and soil strength at rover scale (finer than the ~90 m elevation data).",
+     "Confirm access, permits and season with the site authority."
+    ]
    }
   },
   {
@@ -3982,6 +4133,8 @@
    "lat": -3.0,
    "lng": -60.0,
    "role": "negative control",
+   "note": "should score near zero",
+   "context": "Negative control: should qualify for nothing that needs bare, cold or low-sun ground.",
    "verdicts": {
     "shackleton_ridge": {
      "slope": {
@@ -4317,6 +4470,17 @@
       "unknowns": 1
      }
     }
+   },
+   "evidence": {
+    "grade": "B",
+    "data_share": 0.88,
+    "layers_with_data": 7,
+    "layers_scored": 8,
+    "field_checks": [
+     "Measure 'Surface mineral map available (EMIT)' on site: no open data for it here.",
+     "Ground-truth slope, rock abundance and soil strength at rover scale (finer than the ~90 m elevation data).",
+     "Confirm access, permits and season with the site authority."
+    ]
    }
   }
  ],
@@ -4356,7 +4520,7 @@
     "rover_traverse": "partial",
     "low_sun_ops": "pass",
     "thermal_cycling": "partial",
-    "ice_sampling": "pass",
+    "ice_sampling": "partial",
     "mineral_sampling": "partial"
    },
    "uncovered": []
@@ -4387,7 +4551,7 @@
     "rover_traverse": "pass",
     "low_sun_ops": "pass",
     "thermal_cycling": "partial",
-    "ice_sampling": "pass",
+    "ice_sampling": "partial",
     "mineral_sampling": "partial"
    },
    "uncovered": []
@@ -4418,7 +4582,7 @@
     "rover_traverse": "partial",
     "low_sun_ops": "pass",
     "thermal_cycling": "partial",
-    "ice_sampling": "pass",
+    "ice_sampling": "partial",
     "mineral_sampling": "partial"
    },
    "uncovered": []
@@ -4450,7 +4614,7 @@
     "rover_traverse": "pass",
     "low_sun_ops": "pass",
     "thermal_cycling": "partial",
-    "ice_sampling": "pass",
+    "ice_sampling": "partial",
     "mineral_sampling": "partial"
    },
    "uncovered": []

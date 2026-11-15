@@ -45,9 +45,11 @@ set of sites that covers the campaign, an "uncovered ledger" and a passport per 
 
 Current limits:
 - Targets are four lunar south-pole zones (Shackleton ridge and floor, Malapert massif, Haworth floor). Zone coordinates were checked against the illumination and elevation data, not against a mission plan.
-- Verdict thresholds are first estimates and need review by an engineer.
+- Verdict thresholds are first estimates; each has a written basis in `tests.json` for an engineer to confirm.
 - Thermal cycling can reach "partial" at best: no Earth site gets near lunar polar temperatures.
-- Mineral sampling is Earth-side evidence only (no lunar polar mineral layer) and unknown for the 5 sites without EMIT.
+- Ice-rich ground sampling is capped at "partial": the radar layers are not comparable, so it rests on temperature alone.
+- Mineral sampling is Earth-side evidence only (no lunar polar mineral layer) and unknown for the 6 sites without EMIT at their point.
+- Each passport shows an evidence grade (share of requirements with open data) and the field checks still needed.
 - **Geology weight defaults to 0.** The axis is only a radar proxy (Sentinel-1 for Earth, Mini-RF CPR for the Moon) and is not comparable between the two bodies yet.
 - **Aridity = barrenness** from NDVI (missing plant cover), not rainfall.
 - Every axis is min-max scaled over the 12 Earth sites; lunar values beyond that range clip to 0 or 1.

@@ -149,7 +149,8 @@ function render() {
     const cells = tests.map(t => Q.tests[t].requirements.map(r => {
       const d = s.verdicts[target][r], R = Q.requirements[r];
       const tip = `${R.label}\nSite: ${fmt(d.site_value)} ${R.unit}\nTarget: ${d.target_value !== null ? fmt(d.target_value) + ' ' + (R.target_unit || R.unit) : (R.target_text || '—')}`
-        + (d.pass_threshold !== undefined ? `\nPass threshold: ${fmt(d.pass_threshold)}` : '') + (d.note ? `\n${d.note}` : '') + `\nCaveat: ${R.caveat}`;
+        + (d.pass_threshold !== undefined ? `\nPass threshold: ${fmt(d.pass_threshold)}` : '') + (d.note ? `\n${d.note}` : '')
+        + (R.basis ? `\nWhy this threshold: ${R.basis}` : '') + `\nCaveat: ${R.caveat}`;
       return `<td title="${esc(tip)}">${pill(d.verdict)}</td>`;
     }).join('') + `<td class="tv">${pill(s.tests[target][t].verdict)}</td>`).join('');
     const cls = (p.sites.includes(s.id) ? 'inport ' : '') + (s.id === selectedSite ? 'sel' : '');
@@ -176,7 +177,7 @@ function render() {
   const item = r => `<li><b>${esc(Q.requirements[r].label)}</b>: ${esc(Q.requirements[r].caveat)}</li>`;
   document.getElementById('ledger').innerHTML =
     (p.uncovered.length ? `<p><b>Tests no site can host:</b></p><ul>${p.uncovered.map(t => `<li>${esc(Q.tests[t].name)}</li>`).join('')}</ul>` : '')
-    + (Object.values(p.best).includes('partial') ? `<p><b>Only partly covered:</b></p><ul>${Object.keys(p.best).filter(t => p.best[t] === 'partial').map(t => `<li>${esc(Q.tests[t].name)}</li>`).join('')}</ul>` : '')
+    + (Object.values(p.best).includes('partial') ? `<p><b>Only partly covered:</b></p><ul>${Object.keys(p.best).filter(t => p.best[t] === 'partial').map(t => `<li>${esc(Q.tests[t].name)}${Q.tests[t].max_reason ? ': ' + esc(Q.tests[t].max_reason) : ''}</li>`).join('')}</ul>` : '')
     + (noPass.length ? `<p><b>Requirements no site passes:</b></p><ul>${noPass.map(item).join('')}</ul>` : '')
     + (unscored.length ? `<p><b>Shown but not scored:</b></p><ul>${unscored.map(item).join('')}</ul>` : '')
     + `<p><b>What Earth cannot reproduce at all:</b></p><ul>${Q.cannot_reproduce.map(c => `<li>${esc(c)}</li>`).join('')}</ul>`;
@@ -187,10 +188,15 @@ function render() {
     const all = Object.keys(Q.tests);
     document.getElementById('passport').innerHTML = `
       <p style="color:var(--text)"><b>${esc(s.full_name)}</b><br><span class="dim">${esc(s.role)} · ${s.lat.toFixed(3)}, ${s.lng.toFixed(3)} · against ${esc(T.name)}</span></p>
+      ${s.context ? `<p class="note" style="color:var(--text)">${esc(s.context)}</p>` : ''}
       <p>${all.map(t => `${esc(Q.tests[t].name)} ${pill(s.tests[target][t].verdict)}`).join(' &nbsp; ')}</p>
+      <p style="color:var(--text)"><b>Evidence grade ${esc(s.evidence.grade)}</b>
+        <span class="dim">(${s.evidence.layers_with_data} of ${s.evidence.layers_scored} scored requirements have open data)</span></p>
+      <p style="color:var(--text);margin-bottom:0"><b>Field checks needed before calling it an analog:</b></p>
+      <ul class="small">${s.evidence.field_checks.map(c => `<li>${esc(c)}</li>`).join('')}</ul>
       <div class="wrap"><table><tr><th>Requirement</th><th>Verdict</th><th>Site value</th><th>Target</th><th>What this cannot tell you</th></tr>
       ${Object.keys(Q.requirements).map(r => { const d = s.verdicts[target][r], R = Q.requirements[r];
-        return `<tr><td style="text-align:left">${esc(R.label)}</td><td>${pill(d.verdict)}</td><td>${fmt(d.site_value)} ${esc(R.unit)}</td>
+        return `<tr><td style="text-align:left">${esc(R.label)}${R.basis ? `<br><span class="dim">${esc(R.basis)}</span>` : ''}</td><td>${pill(d.verdict)}</td><td>${fmt(d.site_value)} ${esc(R.unit)}</td>
           <td>${d.target_value !== null ? fmt(d.target_value) + ' ' + esc(R.target_unit || R.unit) : esc(R.target_text || '—')}</td>
           <td style="text-align:left">${esc(R.caveat)}${d.note ? '<br><i>' + esc(d.note) + '</i>' : ''}</td></tr>`; }).join('')}
       </table></div>
@@ -204,9 +210,18 @@ if (!Q) {
   document.getElementById('target').innerHTML = Object.entries(Q.targets).map(([k, t]) => `<option value="${esc(k)}">${esc(t.name)}</option>`).join('');
   document.getElementById('tests').innerHTML = Object.entries(Q.tests).map(([k, t]) =>
     `<label class="test"><input type="checkbox" value="${esc(k)}" checked><span>${esc(t.name)}<br><span class="dim">${t.requirements.map(r => esc(Q.requirements[r].label)).join(' · ')}</span></span></label>`).join('');
+  // optional deep link: planner.html?target=<id>&tests=<id,id>&site=<id>
+  const params = new URLSearchParams(location.search);
+  if (Q.targets[params.get('target')]) document.getElementById('target').value = params.get('target');
+  if (params.get('tests')) {
+    const want = params.get('tests').split(',');
+    document.querySelectorAll('#tests input').forEach(i => i.checked = want.includes(i.value));
+  }
+  if (Q.sites.some(s => s.id === params.get('site'))) selectedSite = params.get('site');
   document.getElementById('target').onchange = render;
   document.querySelectorAll('#tests input').forEach(i => i.onchange = render);
   render();
+  if (selectedSite && params.get('scroll') === 'passport') document.getElementById('passport-box').scrollIntoView();
 }
 </script>
 </body>

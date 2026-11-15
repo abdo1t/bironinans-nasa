@@ -99,6 +99,9 @@ def test_verdict(test, verdicts, reqs):
     else:
         known = [v for v in vs.values() if v != "unknown"]
         v = min(known, key=RANK.get) if known else "unknown"
+    cap = test.get("max_verdict")
+    if cap and v in RANK and RANK[v] > RANK[cap]:
+        v = cap
     return {"verdict": v, "unknowns": unknowns}
 
 
@@ -128,6 +131,36 @@ def portfolio(sites, target, test_ids):
     return {"sites": [], "covers": {}, "best": {}, "uncovered": list(test_ids)}
 
 
+# Why a site is on the list, where the literature frames it differently from the lunar tests.
+SITE_CONTEXT = {
+    "egypt_western_desert": "Discovery case. Published as a Mars analog for wind-carved landforms "
+                            "(yardangs and dunes; Breed & McCauley; NASA CR-3611, 1983). On these lunar "
+                            "south-pole tests it screens out: the depression floor is flat at the ~90 m scale "
+                            "the data can see, warm, and has no mineral map at this point yet.",
+    "amazon_negative_control": "Negative control: should qualify for nothing that needs bare, cold or low-sun ground.",
+}
+
+ALWAYS_CHECK = [
+    "Ground-truth slope, rock abundance and soil strength at rover scale (finer than the ~90 m elevation data).",
+    "Confirm access, permits and season with the site authority.",
+]
+
+
+def evidence(site, reqs, first_target):
+    """Evidence grade from how many scored requirements have data, plus the field checks needed."""
+    v = site["verdicts"][first_target]
+    scored = [r for r, req in reqs.items() if req["rule"] != "unscored"]
+    have = [r for r in scored if v[r]["site_value"] is not None]
+    share = len(have) / len(scored)
+    grade = "A" if share >= 0.9 else "B" if share >= 0.7 else "C"
+    checks = [f"Measure '{reqs[r]['label']}' on site: no open data for it here." for r in scored if r not in have]
+    checks += ALWAYS_CHECK
+    if site.get("note") and "confirm" in site["note"].lower():
+        checks.insert(0, "Confirm the site location on high-resolution imagery: " + site["note"])
+    return {"grade": grade, "data_share": round(share, 2), "layers_with_data": len(have),
+            "layers_scored": len(scored), "field_checks": checks}
+
+
 def build(tol_scale=1.0):
     here = os.path.dirname(os.path.abspath(__file__))
     cfg = json.load(open(os.path.join(here, "tests.json"), encoding="utf-8"))
@@ -135,6 +168,7 @@ def build(tol_scale=1.0):
     e = pd.read_csv(os.path.join(PROC, "features_earth.csv"))
     m = pd.read_csv(os.path.join(PROC, "features_moon.csv"))
     m["t_range_K"] = m["div_tmax_K"] - m["div_tmin_est_K"]
+    notes = pd.read_csv(os.path.join(ROOT, "Raw Data", "sites.csv")).set_index("site_id")["note"].to_dict()
 
     targets = {}
     for _, r in m.iterrows():
@@ -147,17 +181,20 @@ def build(tol_scale=1.0):
         srow = s.to_dict()
         site = {"id": s.site_id, "name": s["name"].split(",")[0], "full_name": s["name"],
                 "country": COUNTRY.get(s.site_id, ""), "lat": float(s.lat), "lng": float(s.lon),
-                "role": s.role, "verdicts": {}, "tests": {}}
+                "role": s.role, "note": str(notes.get(s.site_id, "") or ""),
+                "context": SITE_CONTEXT.get(s.site_id, ""), "verdicts": {}, "tests": {}}
         for _, t in m.iterrows():
             v = {rid: judge(req, srow, t.to_dict(), tol_scale) for rid, req in reqs.items()}
             site["verdicts"][t.site_id] = v
             site["tests"][t.site_id] = {tid: test_verdict(td, v, reqs)
                                         for tid, td in tests.items()}
+        site["evidence"] = evidence(site, reqs, m.site_id.iloc[0])
         sites.append(site)
     data = {
         "targets": targets, "tests": tests,
         "requirements": {rid: {"label": r["label"], "unit": r.get("unit", ""), "caveat": r["caveat"],
-                               "rule": r["rule"], "target_text": r.get("target_text", ""),
+                               "rule": r["rule"], "basis": r.get("basis", ""),
+                               "target_text": r.get("target_text", ""),
                                "target_unit": r.get("target_unit", "")} for rid, r in reqs.items()},
         "sites": sites, "cannot_reproduce": cfg["cannot_reproduce"],
         "disclaimer": "Screening evidence from open data with stated limits. No site is a confirmed "
@@ -190,6 +227,13 @@ def report(data):
                      + ", ".join(names[i] for i in p["covers"][k]))
         L += ["", "**Uncovered tests (no site reaches partial):** "
               + (", ".join(tests[x]["name"] for x in p["uncovered"]) or "none"), ""]
+    L += ["## Evidence grade per site", "",
+          "Grade A: data for at least 90% of scored requirements; B: at least 70%; C: less.", "",
+          "| Site | Grade | Requirements with data |", "|---|---|---|"]
+    for s in sites:
+        ev = s["evidence"]
+        L.append(f"| {s['name']} | {ev['grade']} | {ev['layers_with_data']} of {ev['layers_scored']} |")
+    L.append("")
     neg = next(s for s in sites if s["role"] == "negative control")
     L += ["## Negative control", "", f"{neg['full_name']}:", ""]
     for tid, t in data["targets"].items():

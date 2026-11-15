@@ -27,10 +27,10 @@ SITES = [
     ("death_valley_ubehebe", "Death Valley (Ubehebe Crater), USA", 37.010, -117.450, "known analog", "prototype JSON lists Badwater/Ubehebe"),
     ("iceland_holuhraun", "Holuhraun lava field, Iceland", 64.850, -16.833, "known analog", "basaltic terrain"),
     ("lanzarote_cueva_verdes", "Cueva de los Verdes lava tubes, Lanzarote, Spain", 29.159, -13.438, "candidate", "lava tubes"),
-    ("egypt_western_desert", "Western Desert yardangs (Kharga/Dakhla), Egypt", 25.900, 30.400, "discovery case", "approx. from team PDF"),
+    ("egypt_western_desert", "Kharga Depression yardangs (mud lions), Western Desert, Egypt", 25.580, 30.620, "discovery case", "depression-floor yardang field N of Kharga (Breed & McCauley); point picked on DEM floor - confirm on imagery"),
     ("dallol_ethiopia", "Dallol, Ethiopia", 14.240, 40.300, "candidate", "acid-saline hydrothermal"),
     ("mistastin_crater", "Mistastin Lake crater, Canada", 55.880, -63.310, "candidate", "anorthositic impact melt"),
-    ("pilbara_strelley_pool", "Strelley Pool, Pilbara, Australia", -21.180, 119.150, "candidate", "approx. location"),
+    ("pilbara_strelley_pool", "Strelley Pool, Pilbara, Australia", -21.11094, 119.13709, "candidate", "locality coordinates from Retallack et al. 2023"),
     ("amazon_negative_control", "Amazon rainforest near Manaus, Brazil", -3.000, -60.000, "negative control", "should score near zero"),
 ]
 

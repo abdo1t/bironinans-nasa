@@ -25,7 +25,7 @@ Raw Data/
     ├── Sentinel1_RTC/<site>/          10 km × 10 km radar cut-out, ~10 m
     ├── MODIS_LST_8day/<site>/         50 km × 50 km land surface temperature, 1 km, one 8-day composite per month
     ├── MODIS_NDVI_16day/<site>/       50 km × 50 km vegetation index (MOD13A1), one 16-day composite per month, NDVI = value × 0.0001 (10 sites; none for Devon and McMurdo). Get it with `python data-tools/download_ndvi.py`
-    └── EMIT_L2B_Minerals/<site>/      surface mineral map + uncertainty, ~60 m (7 sites only)
+    └── EMIT_L2B_Minerals/<site>/      surface mineral map + uncertainty, ~60 m (6 sites; see gaps)
 ```
 
 ## Data plan coverage
@@ -36,7 +36,7 @@ Raw Data/
 | Lighting / low sun | LOLA-derived illumination | computed from DEM + latitude | ✅ Moon; Earth is computed, not downloaded |
 | Temperature range | Diviner polar resource product | MODIS MOD11A2 LST | ✅ both |
 | Ice-rich, cold ground | Mini-RF CPR + Diviner ice depth | Sentinel-1 RTC | ✅ both (LEND skipped, see gaps) |
-| Mineralogy | — (see gaps) | EMIT L2B minerals | ✅ Earth, 7 of 12 sites; ❌ no Moon layer |
+| Mineralogy | — (see gaps) | EMIT L2B minerals | ✅ Earth, 6 of 12 sites; ❌ no Moon layer |
 | Visual check | — | NASA Worldview (online) | not a download |
 
 ## How to read each dataset
@@ -59,11 +59,11 @@ Raw Data/
 
 ## Gaps and caveats (for the uncovered ledger)
 
-- **EMIT minerals cover 7 of 12 sites:** Atacama, Meteor Crater, Death Valley, Lanzarote, Egypt, Dallol and Pilbara. There is **no EMIT scene** for Devon, McMurdo, Iceland or Mistastin (too far north or south), so those get *unknown* for mineralogy. The Amazon control only has an older v001 scene, which is not downloaded, so it is also *unknown*.
+- **EMIT minerals cover 6 of 12 sites:** Atacama, Meteor Crater, Death Valley, Lanzarote, Dallol and Pilbara. There is **no EMIT scene** for Devon, McMurdo, Iceland or Mistastin (too far north or south), so those get *unknown* for mineralogy. The Amazon control only has an older v001 scene, which is not downloaded, so it is also *unknown*. **Egypt** needs a new scene for its corrected point (the old one ends just north of it); fetching it needs an Earthdata token, see below. Until then Egypt is *unknown* for mineralogy.
 - **EMIT needs an Earthdata login.** The files are already downloaded here. To re-create them, generate a token at urs.earthdata.nasa.gov (approve "LP DAAC Data Pool" under Authorized Apps), then in PowerShell: `$env:EARTHDATA_TOKEN = "<token>"` and `python -I data-tools/download_emit.py`. Do not paste the token anywhere shared, and revoke it afterwards.
 - **Lunar mineralogy:** the Diviner silicate (Christiansen feature) maps are not reliable at the poles, so the south-pole target has no mineral layer.
 - **LEND hydrogen skipped:** PDS only has raw neutron counts, not maps. Diviner ice depth and Mini-RF CPR cover the ice requirement.
 - **Radar bands differ:** Mini-RF is S-band (12.6 cm) and Sentinel-1 is C-band (5.6 cm). Treat CPR and backscatter as related but not equivalent.
 - **Mars not included:** the plan makes Mars optional. MOLA, CRISM and THEMIS are in PDS if time allows.
-- **Site coordinates** for Egypt and Pilbara are approximate (taken from the team candidates PDF); check them before scoring.
+- **Site coordinates** for Egypt and Pilbara were corrected on 15 Nov 2026. Pilbara now uses the published Strelley Pool locality (S21.11094, E119.13709; Retallack et al. 2023). Egypt now sits on the Kharga Depression floor (25.58 N, 30.62 E), in the yardang field Breed & McCauley describe north of Kharga; the old point (25.9 N, 30.4 E) was on the limestone plateau. The exact Egypt point was picked on the DEM and should still be confirmed on imagery. The superseded cut-outs are kept locally in `_superseded_2026-11-15/` (not tracked).
 - Sentinel-1 and MODIS cut-outs come through Microsoft Planetary Computer's open mirror of the same ESA and NASA data, because the official portals need a login.
