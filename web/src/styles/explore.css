@@ -332,6 +332,14 @@
   white-space: nowrap;
 }
 
+.site-card__metric {
+  font-family: var(--font-tech, ui-monospace, monospace);
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
 .site-card__num {
   font-size: 1.35rem;
   font-weight: 700;
@@ -1442,9 +1450,10 @@
     display: none;
   }
 
+  /* phones: a short map so the selected place's analysis starts on the first screen */
   .mc-stage .map-wrap {
-    height: 52vh;
-    min-height: 300px;
+    height: 40vh;
+    min-height: 240px;
   }
 }
 

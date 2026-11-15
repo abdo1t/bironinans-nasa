@@ -140,9 +140,12 @@ export default function Home() {
         <p className="kicker">NASA Space Apps Challenge 2026 · research prototype</p>
         <h1>Find places on Earth that resemble the Moon and Mars</h1>
         <p className="home-hero__lede">
-          Mission teams rehearse at <Term id="analog">Earth analog sites</Term> before they fly. Pick a world and a
-          research goal: we rank {plural(data.sites.length, 'Earth location')} by how closely their terrain, climate,
-          bare ground, rock type and ground ice match a Moon or Mars site — and show you why.
+          <strong className="home-hero__plain">
+            This tool ranks {plural(data.sites.length, 'place')} on Earth by how closely they resemble a Moon or Mars site, and
+            shows the evidence for each match.
+          </strong>{' '}
+          Mission teams rehearse at <Term id="analog">Earth analog sites</Term> before they fly: pick a world and a research
+          goal to compare terrain, climate, bare ground, rock type and ground ice.
         </p>
         <p className="home-hero__scope">
           Shows resemblance, not mission readiness. {LIMITATIONS_NOTE}{' '}

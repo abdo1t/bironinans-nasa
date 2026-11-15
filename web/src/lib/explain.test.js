@@ -209,7 +209,7 @@ describe('compareVerdict rankBy min', () => {
     const sites = [{ id: 'a', name: 'A', norm: {} }, { id: 'b', name: 'B', norm: {} }]
     const rank = { a: { score: 94, scoreRange: [66, 96] }, b: { score: 83, scoreRange: [83, 83] } }
     const lines = compareVerdict(sites, { norm: {} }, [], {}, rank, 'min')
-    expect(lines[0]).toBe('Best guaranteed minimum: B (83/100 even if its missing criteria were mismatches; score 83).')
+    expect(lines[0]).toBe('Best conservative lower bound: B (83/100 even if its missing criteria were mismatches; score 83).')
     expect(lines[1]).toBe('Higher headline score but less evidence: A (94, range 66–96).')
   })
 })

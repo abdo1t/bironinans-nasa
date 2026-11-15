@@ -9,7 +9,7 @@ Pick a Moon or Mars base site, weight what matters, and get a ranked, explainabl
 > - Terrain relief for all sites and both targets: NASADEM v001, Copernicus GLO-30 for 3 high-latitude sites, the USGS Mars 2020 CTX DTM and LRO LOLA.
 > - MODIS MOD13Q1 NDVI for 10/11 sites.
 >
-> Every score shows a range for missing data, and the app can rank by guaranteed minimum. The validation (negative controls, robustness, documented analog use) is reported as-is; no bound or weight was tuned to the rankings. This is a research screening prototype, not a site-certification tool.
+> Every score shows a range for missing data, and the app can rank by conservative lower bound. The validation (negative controls, robustness, documented analog use) is reported as-is; no bound or weight was tuned to the rankings. This is a research screening prototype, not a site-certification tool.
 >
 > **Use of AI (Super Intelligence, SI):** code and documentation were developed with assistance from an AI coding assistant (Claude) and reviewed by the team. Scientific values come from the cited datasets and publications.
 >

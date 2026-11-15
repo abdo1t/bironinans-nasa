@@ -2,6 +2,60 @@
 
 State checked: commit `7b39a3e` plus uncommitted changes to documentation, `pipeline/seed/analog_evidence.csv` (quoting fix), `CLAUDE.md` notes and the SPA fallback files; real bundle `2026-11-14T05:20:03+00:00`, 2026-11-14.
 
+## R. Release candidate (branch `mission-control-ui`, 2026-11-15)
+
+Member 1 — Software Architecture & Product Development pass. Static React 18 + Vite app, React Router,
+React-Leaflet map, Recharts on Compare; no backend, no runtime NASA/API calls (basemap tiles only).
+Scoring (`pipeline/scoring.py` ↔ `web/src/lib/scoring.js`), presets, bundles and URL state are unchanged.
+
+**Parked work:** an unapproved 3D terrain experiment (three.js + height grids) that was uncommitted in
+the working tree is preserved on local branch `wip/terrain-3d` (commit `84a8b94`). This release stays 2D.
+
+**UI changes**
+
+| Screen | Change |
+|---|---|
+| Home | One plain-English sentence leads the hero. At 1280×720 the decorative emblem and question chips hide so step 1, step 2 and *Find matching places on Earth* fit above the fold (button bottom 693 px of 720). The action is sticky on desktop and a fixed bottom bar on phones. Mars → Rover testing → Find = 3 actions. |
+| Explore | Each card's big number is the **active ranking metric** (*Lower bound* when ranked by `rank=min`, *Similarity* otherwise), so a 94-similarity site at rank 5 is no longer confusing. *Details* → **Why this match?**. Phone map 40 vh so the selected place's analysis follows within one short scroll. |
+| Site details | **Why this match?** first; stats labelled **Similarity**, **Conservative lower bound**, **Evidence coverage** with one-line explanations. Three cards: *What matches? · What's different? · What still needs measuring?* (missing criteria + the mission's field measurement). *View evidence* links to values, units and sources. **Planetary Mirror 2D** (`MirrorTakeaway.jsx`) under the terrain pair: one measured match and one important difference (scored similarities, 70 % threshold, values + source links for both worlds, clipped-target wording), then *What could we test here?* and *Field measurement still needed*, scoped to the selected objective. |
+| Compare | *Score* → *Similarity*; "Guaranteed minimum" renamed **Conservative lower bound** everywhere (display text only; URL `rank=min` unchanged). |
+| Mirror | Long site names in action buttons wrap (fixed 21 px horizontal overflow at 375 px). |
+
+**Checks run (2026-11-15, team Windows machine)**
+
+| Check | Result |
+|---|---|
+| Vitest | 81 passed (6 files; +2 `mirrorTakeaway` tests) |
+| pytest (`pipeline/.venv`) | 104 passed |
+| `validate_bundle.py real` / `mock` | OK / OK |
+| oxlint | 0 errors, 1 pre-existing warning (`AppState.jsx` fast refresh) |
+| `vite build` / `vite build --mode mock` | pass / pass; no `MOCK` in `dist/data` |
+| Browser 1280×720, Mars | Home → Mars → Rover testing → Find → Explore: Holuhraun #1 lower bound 83 (6 of 6), Atacama 71, MDRS 70, White Desert 69, Lanzarote lower bound 66 / similarity 94. Marker click → card + analysis + `sel=` in URL. Tab to *Why this match?* shows a 2 px cyan focus ring; Enter opens Site details. Add to compare → Back restores `sel` + shortlist; reload restores target, mission, rank method, selection and both shortlisted sites. Compare with 2 sites: Remove buttons, *In short* before charts, *Data pending* cells. No console errors. |
+| Browser 375 px, Moon | Moon → Find → Explore (McMurdo #1, 86, range 54–92); Map ↔ List toggle; Site details McMurdo: Mirror shows aridity match 93 %, bare ground still to measure. No horizontal overflow on Home, Explore, Site, Compare, Mirror, About at 375 or 768 px. |
+
+**Leading candidate (Jezero + Rover testing, current bundle):** Holuhraun lava field, similarity 83, lower
+bound 83, 6 of 6 measured. Strongest measured match: terrain relief 164 m vs Jezero 231 m (96 %).
+Meaningful difference: aridity 862 mm/yr vs 0 mm/yr (57 %, −7.6 points; daily temperature swing is the
+lowest similarity at 14 %). Evidence gap: nothing missing for Holuhraun in this dataset; the gap is at rover
+scale — slopes, rock abundance and soil bearing strength are not measured by any criterion.
+
+**30-second demo (sourced values from this build)**
+
+| Time | Screen | Say |
+|---|---|---|
+| 0–5 s | Home: Mars (Jezero Crater) → Rover testing | "Where on Earth could a team rehearse rover driving for Jezero?" |
+| 5–12 s | Explore: Holuhraun #1, lower bound 83/100, 6 of 6 measured | "Open NASA datasets rank 11 places; Holuhraun leads on fully measured evidence." |
+| 12–22 s | Site details → Planetary Mirror: same 27 km ground; terrain relief 164 m vs 231 m (96 %); aridity 862 vs 0 mm/yr | "Same scale on both worlds: the terrain matches, the climate does not." |
+| 22–30 s | Click the NASA POWER source link; *Field measurement still needed* | "Every value links to its source — and the next step is measuring rover-scale slopes and soil strength on site." |
+
+Avoid: "discovered", "suitable for a mission", "NASA-endorsed", "live data".
+
+**Remaining:** nothing blocking. Not done: usability test with real users; the Mission Control reference
+image was still not available, so visual parity with it is unverified. Publishing and submission stay
+with the team lead.
+
+Screenshots: `docs/screenshots/release-candidate/`.
+
 ## 0. UX simplification (branch `ux-simplification`, 2026-11-14)
 
 Rollback point: tag `pre-ux-upgrade` (= `79796f4`). Audit and design record: `docs/ux_audit.md`. Screenshots: `docs/screenshots/`.

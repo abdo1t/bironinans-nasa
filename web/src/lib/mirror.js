@@ -45,6 +45,24 @@ export function defaultCriterion(rows) {
   return (matches.length ? best(matches) : used.length ? best(used) : rows[0])?.feature.id ?? null
 }
 
+/**
+ * The two rows a short visual comparison should point at, from scored similarities only:
+ *   match  = the used match that earns the most points (weight × sim; ties: feature order)
+ *   differ = the used difference that loses the most points (weight × (1 − sim)), as the `gap` rule
+ *   siteMissing = used rows with no value on the Earth side (still to be measured there)
+ * Any of them may be null / empty. Nothing is re-scored.
+ */
+export function mirrorTakeaway(rows) {
+  const pick = (list, key) => list.reduce((a, b) => (key(b) > key(a) ? b : a), list[0]) ?? null
+  const matches = rows.filter((r) => r.status === 'match')
+  const differs = rows.filter((r) => r.status === 'differ')
+  return {
+    match: pick(matches, (r) => r.weight * r.sim),
+    differ: pick(differs, (r) => r.weight * (1 - r.sim)),
+    siteMissing: rows.filter((r) => r.status === 'missing' && (r.missingSide === 'site' || r.missingSide === 'both')),
+  }
+}
+
 export const MIRROR_STATUS = {
   match: { label: 'Similar', symbol: '✓', help: `at least ${Math.round(WHY_MIN_SIM * 100)}% similar` },
   differ: { label: 'Different', symbol: '✗', help: `under ${Math.round(WHY_MIN_SIM * 100)}% similar` },

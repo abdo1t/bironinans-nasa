@@ -545,3 +545,10 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* long site names: let these buttons wrap instead of pushing the page sideways on phones */
+.mirror-detail__more .btn {
+  max-width: 100%;
+  white-space: normal;
+  text-align: center;
+}

@@ -4,6 +4,7 @@ import Disclosure from '../components/Disclosure.jsx'
 import ScoreBars from '../components/ScoreBars.jsx'
 import TargetReference from '../components/TargetReference.jsx'
 import TargetSelect from '../components/TargetSelect.jsx'
+import MirrorTakeaway from '../components/MirrorTakeaway.jsx'
 import TerrainPair from '../components/TerrainPair.jsx'
 import TerrainPreview from '../components/TerrainPreview.jsx'
 import Term from '../components/Term.jsx'
@@ -21,7 +22,7 @@ import {
 import { useBundle } from '../data/useBundle.js'
 import { pointsLost, usableWeightFromSims } from '../lib/explain.js'
 import { EVIDENCE, bodyLabel, describeSiteValue, describeTargetValue, formatCoord, sourceKind } from '../lib/format.js'
-import { missionTitle } from '../lib/missions.js'
+import { MISSIONS, missionTitle } from '../lib/missions.js'
 import { PRESETS } from '../lib/presets.js'
 import { RANK_METHODS } from '../lib/rankMethods.js'
 import { SCENARIO_LIMITATION, matchScenario } from '../lib/scenarios.js'
@@ -417,7 +418,7 @@ export default function SiteDetails() {
             {/* The plain questions come first; the expert figures follow in the same card. */}
             <div className="site-answers">
               <section className="site-answer" aria-labelledby="site-why-title">
-                <h3 id="site-why-title">Why this place?</h3>
+                <h3 id="site-why-title">Why this match?</h3>
                 <p>
                   {scored ? (
                     <>
@@ -451,23 +452,23 @@ export default function SiteDetails() {
               <dl className="site-stats">
                 <div className="stat">
                   <dt className="stat__label">
-                    <Term id="score">Match score</Term>
+                    <Term id="score">Similarity</Term>
                   </dt>
                   <dd className="stat__value">
                     <ScoreBadge score={result.score} large />
                   </dd>
-                  <dd className="stat__note">resemblance, not mission suitability</dd>
+                  <dd className="stat__note">how closely it resembles the target · not mission suitability</dd>
                 </div>
                 <div className={`stat${app.rankBy === 'min' ? ' is-key' : ''}`}>
                   <dt className="stat__label">
-                    <Term id="min">Guaranteed minimum</Term>
+                    <Term id="min">Conservative lower bound</Term>
                   </dt>
                   <dd className="stat__value">
                     {guaranteedMin(result)}
                     <span className="site-stats__of">/100</span>
                   </dd>
                   <dd className="stat__note">
-                    {openRange ? 'low end of the possible range' : 'equals the score'}
+                    {openRange ? 'score if every missing value were a total mismatch' : 'equals the similarity: nothing missing'}
                     {app.rankBy === 'min' && ' · used for the ranking'}
                   </dd>
                 </div>
@@ -532,11 +533,11 @@ export default function SiteDetails() {
 
             <p className="site-summary__more">
               {jump('similarity', 'How this score is calculated')}
-              {jump('evidence', 'See the measured values and sources')}
+              {jump('evidence', 'View evidence: values, units, sources')}
             </p>
           </section>
 
-          <div className="two-col site-two">
+          <div className="site-three">
             <section className="card" aria-labelledby="site-match-title">
               <h2 id="site-match-title">What matches?</h2>
               {result.why.length ? (
@@ -584,9 +585,13 @@ export default function SiteDetails() {
                   </ul>
                 </>
               )}
-              {diff.leftOut.length > 0 && (
+            </section>
+
+            <section className="card" aria-labelledby="site-unknown-title">
+              <h2 id="site-unknown-title">What still needs measuring?</h2>
+              {diff.leftOut.length > 0 ? (
                 <>
-                  <h3>Not measured or not usable here</h3>
+                  <p className="site-gap__detail">Not measured or not usable here, so left out of the score (never counted as zero):</p>
                   <ul className="site-list site-list--pending">
                     {diff.leftOut.map((row) => (
                       <li key={row.f.id}>
@@ -595,10 +600,39 @@ export default function SiteDetails() {
                     ))}
                   </ul>
                 </>
+              ) : (
+                <p className="site-gap__detail">Every selected criterion has data for this place and the target.</p>
               )}
+              <h3>In the field</h3>
+              <p className="site-gap__detail">
+                {(MISSIONS[app.isCustom ? 'balanced' : app.presetId] || MISSIONS.balanced).fieldMeasure} This tool
+                compares landscape-scale values from global datasets only.
+              </p>
+              <p className="site-summary__more">{jump('evidence', 'View evidence')}</p>
             </section>
           </div>
 
+        </>
+      )}
+
+      {target && (
+        <div className="site__terrain">
+          <TerrainPair target={target} site={site} isMock={data.isMock} linkTo={app.linkTo} />
+          {!data.isMock && (
+            <MirrorTakeaway
+              target={target}
+              site={site}
+              weights={app.weights}
+              features={data.features}
+              presetId={app.presetId}
+              isCustom={app.isCustom}
+              scored={scored}
+            />
+          )}
+        </div>
+      )}
+
+      {target && (
           <section className="card site-relevance" aria-labelledby="site-relevance-title">
             <h2 id="site-relevance-title">What this means for research</h2>
             {app.isCustom ? (
@@ -646,13 +680,6 @@ export default function SiteDetails() {
               the selected criteria — not that it is suitable for a mission. {SCENARIO_LIMITATION}
             </p>
           </section>
-        </>
-      )}
-
-      {target && (
-        <div className="site__terrain">
-          <TerrainPair target={target} site={site} isMock={data.isMock} linkTo={app.linkTo} />
-        </div>
       )}
 
       <p className="card card--accent site-limit" role="note">

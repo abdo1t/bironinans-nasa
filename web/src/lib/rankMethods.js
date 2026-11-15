@@ -5,12 +5,12 @@ export const RANK_METHODS = {
   score: {
     label: 'Score',
     short: 'Ranked by score. A range marks scores that missing data could still move.',
-    help: 'Ranked by score, computed from the criteria that have data. Sites with missing data show a range; switch to “Guaranteed minimum” to rank by evidence-backed score.',
+    help: 'Ranked by score, computed from the criteria that have data. Sites with missing data show a range; switch to “Conservative lower bound” to rank by evidence-backed score.',
   },
   min: {
-    label: 'Guaranteed minimum',
-    short: 'Conservative order: ranked by guaranteed minimum, the low end of each range.',
-    help: 'Ranked by guaranteed minimum: the score each site keeps if every criterion missing for it were a total mismatch — favours evidence-backed sites.',
+    label: 'Conservative lower bound',
+    short: 'Conservative order: ranked by the lower bound, the low end of each range.',
+    help: 'Ranked by conservative lower bound: the score each site keeps if every criterion missing for it were a total mismatch — favours evidence-backed sites.',
   },
 }
 

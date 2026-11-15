@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import SITE_PREVIEWS from '../data/sitePreviews.json'
 import TARGET_PREVIEWS from '../data/terrainPreviews.json'
-import { SHARED_KM, cropOf, defaultCriterion, mirrorRows } from './mirror.js'
+import { SHARED_KM, cropOf, defaultCriterion, mirrorRows, mirrorTakeaway } from './mirror.js'
 
 const features = [
   { id: 'terrain', label: 'Terrain relief', kind: 'numeric' },
@@ -33,6 +33,22 @@ describe('mirrorRows', () => {
   })
   it('opens the highest-weight match first', () => {
     expect(defaultCriterion(Object.values(rows))).toBe('terrain')
+  })
+})
+
+describe('mirrorTakeaway', () => {
+  it('picks the match earning most points, the difference losing most, and Earth-side gaps', () => {
+    const t = mirrorTakeaway(mirrorRows(target, site, weights, features))
+    // terrain 5 × 0.96 = 4.8 beats geology 3 × 1 = 3
+    expect(t.match.feature.id).toBe('terrain')
+    expect(t.differ.feature.id).toBe('temp')
+    expect(t.siteMissing.map((r) => r.feature.id)).toEqual(['ice'])
+  })
+  it('returns nulls when there is nothing to point at', () => {
+    const t = mirrorTakeaway([])
+    expect(t.match).toBeNull()
+    expect(t.differ).toBeNull()
+    expect(t.siteMissing).toEqual([])
   })
 })
 

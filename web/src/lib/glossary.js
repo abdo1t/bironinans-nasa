@@ -11,12 +11,12 @@ export const GLOSSARY = {
     text: 'Where the score could land if the criteria we have no data for at this site turned out to be a total mismatch (low end) or a perfect match (high end). It comes from missing data — it is not a statistical confidence interval.',
   },
   min: {
-    title: 'Guaranteed minimum',
+    title: 'Conservative lower bound',
     text: 'The score a site keeps even if every criterion missing for it were a total mismatch (the low end of its possible range). Ranking by it favours sites whose score rests on data.',
   },
   rankBy: {
     title: 'Ranking method',
-    text: 'Score ranks by the similarity score from the criteria that have data. Guaranteed minimum is the conservative order: it ranks by the low end of each range, so a site cannot rank high on missing data.',
+    text: 'Score ranks by the similarity score from the criteria that have data. Conservative lower bound is the cautious order: it ranks by the low end of each range, so a site cannot rank high on missing data.',
   },
   evidence: {
     title: 'Evidence coverage',

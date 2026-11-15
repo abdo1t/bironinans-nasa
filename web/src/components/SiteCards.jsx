@@ -113,8 +113,31 @@ export default function SiteCards({
             </span>
           </div>
           <div className="site-card__score">
-            {s.scored ? (
+            {s.scored && rankBy === 'min' ? (
+              // Active ranking metric first: the list is ordered by the lower bound, so that is the big number.
               <>
+                <span className="site-card__metric">Lower bound</span>
+                <span className="site-card__num">
+                  <span className="sr-only">Conservative lower bound </span>
+                  {s.min}
+                  <span className="site-card__max">/100</span>
+                </span>
+                <span className="site-card__range">
+                  {s.hasRange ? (
+                    <>
+                      similarity {s.score}
+                      <span className="sr-only">; possible range {s.min}–{s.max}</span>
+                    </>
+                  ) : r.coverage.used === r.coverage.selected ? (
+                    'no data gaps'
+                  ) : (
+                    'no missing site data'
+                  )}
+                </span>
+              </>
+            ) : s.scored ? (
+              <>
+                <span className="site-card__metric">Similarity</span>
                 <span className="site-card__num">
                   <span className="sr-only">Score </span>
                   {s.score}
@@ -125,7 +148,7 @@ export default function SiteCards({
                     <span className="sr-only">possible range: </span>could be{' '}
                     <span className={rankBy === 'min' ? 'site-card__lo is-key' : 'site-card__lo'}>
                       {s.min}
-                      <span className="sr-only"> (guaranteed minimum)</span>
+                      <span className="sr-only"> (conservative lower bound)</span>
                     </span>
                     –{s.max}
                   </span>
@@ -154,8 +177,8 @@ export default function SiteCards({
         </p>
 
         <div className="site-card__actions">
-          <Link className="btn btn--small" to={linkTo(`/site/${site.id}`)}>
-            Details<span className="sr-only"> for {site.name}</span>
+          <Link className="btn btn--small btn--why" to={linkTo(`/site/${site.id}`)}>
+            Why this match?<span className="sr-only"> {site.name}</span>
           </Link>
           <button
             type="button"

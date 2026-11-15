@@ -23,7 +23,7 @@ export function compareVerdict(sites, target, features, weights, rankBySite, ran
     const bestLo = Math.max(...scored.map(lo))
     const winners = scored.filter((s) => lo(s) === bestLo)
     lines.push(
-      `Best guaranteed minimum: ${winners.map((s) => `${s.name} (${bestLo}/100 even if its missing criteria were mismatches; score ${entry(s).score})`).join(' and ')}.`,
+      `Best conservative lower bound: ${winners.map((s) => `${s.name} (${bestLo}/100 even if its missing criteria were mismatches; score ${entry(s).score})`).join(' and ')}.`,
     )
     const higher = scored.filter((s) => !winners.includes(s) && entry(s).score > Math.max(...winners.map((w) => entry(w).score)))
     if (higher.length) {

@@ -58,13 +58,13 @@ function SummaryCard({ site, index, entry, target, weights, features, isLeader, 
       </p>
       <dl className="cmp-card__stats">
         <div>
-          <dt>Score</dt>
+          <dt>Similarity</dt>
           <dd>
             <ScoreBadge score={s.score} />
           </dd>
         </div>
         <div>
-          <dt>Guaranteed minimum</dt>
+          <dt>Conservative lower bound</dt>
           <dd className="cmp-card__num">{s.scored ? s.min : '—'}</dd>
         </div>
         <div>

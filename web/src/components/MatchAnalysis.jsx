@@ -159,7 +159,7 @@ export default function MatchAnalysis({ entry, site, target, weights, features, 
               </div>
               <div>
                 <span className="hud-label">
-                  <Term id="range">Guaranteed min.</Term>
+                  <Term id="min">Lower bound</Term>
                 </span>
                 <p className="manalysis__mid tabular">
                   {s.min}

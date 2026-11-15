@@ -64,7 +64,7 @@ export default function CompareTable({ sites, target, features, weights, rankByS
             ))}
           </tr>
           <tr>
-            <th scope="row">Guaranteed minimum</th>
+            <th scope="row">Conservative lower bound</th>
             {sites.map((s) => {
               const e = rankBySite[s.id]
               const lo = guaranteedMin(e)
