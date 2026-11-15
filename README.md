@@ -21,6 +21,7 @@ It is a **research screening prototype**. A high score means resemblance, not mi
 |---|---|
 | [Project brief](docs/nasa-space-apps-project.md) | Judges: summary, challenge mapping, NASA data, worked example, UI, demo, limitations |
 | [Release readiness (engineering handoff)](docs/release_readiness.md) | Checks run, deployment steps, submission checklist, open issues |
+| [Earth analog candidates (PDF)](Earth_Analog_Candidates.pdf) · [Problem definition & innovation brief (DOCX)](<Problem Definition & Innovation Brief.docx>) | Team research documents |
 | [Prototype overview](docs/prototype_overview.md) | Workflow, features (done and limited), data sources, 2–3 min demo, screenshots |
 | [Methodology](docs/methodology.md) | Pipeline, scoring decisions, limitations |
 | [Data readiness](docs/data_readiness.md) · [Terrain integration](docs/terrain_integration.md) | Every criterion's dataset, units, resolution and gaps |
