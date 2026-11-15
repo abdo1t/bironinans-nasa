@@ -24,6 +24,7 @@ Raw Data/
     ├── Copernicus_DEM_GLO30/<site>/   1°×1° elevation tile, 30 m
     ├── Sentinel1_RTC/<site>/          10 km × 10 km radar cut-out, ~10 m
     ├── MODIS_LST_8day/<site>/         50 km × 50 km land surface temperature, 1 km, one 8-day composite per month
+    ├── MODIS_NDVI_16day/<site>/       50 km × 50 km vegetation index (MOD13A1), one 16-day composite per month, NDVI = value × 0.0001 (10 sites; none for Devon and McMurdo). Get it with `python data-tools/download_ndvi.py`
     └── EMIT_L2B_Minerals/<site>/      surface mineral map + uncertainty, ~60 m (7 sites only)
 ```
 
