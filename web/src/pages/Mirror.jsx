@@ -8,7 +8,7 @@ import TARGET_PREVIEWS from '../data/terrainPreviews.json'
 import { useBundle } from '../data/useBundle.js'
 import { bodyLabel, formatCoord, pct } from '../lib/format.js'
 import { MIRROR_STATUS, SHARED_KM, cropOf, defaultCriterion, mirrorRows } from '../lib/mirror.js'
-import { missionTitle } from '../lib/missions.js'
+import { missionLabel } from '../lib/missions.js'
 import { LIMITATIONS_NOTE } from '../lib/scoring.js'
 import { entrySummary, plainReliability } from '../lib/summary.js'
 import { useAppState } from '../state/AppState.jsx'
@@ -223,7 +223,7 @@ export default function Mirror() {
             </select>
           </div>
           <p className="mirror__context">
-            Objective: <strong>{app.isCustom ? 'Custom weights' : missionTitle(app.presetId)}</strong> ·{' '}
+            Objective: <strong>{missionLabel(app)}</strong> ·{' '}
             {app.rankBy === 'min' ? 'most complete evidence first' : 'best match first'}
             {isDefaultSite && ' · showing the top-ranked place'}
             {data.isMock && (

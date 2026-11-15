@@ -26,7 +26,7 @@ import {
 import { useBundle } from '../data/useBundle.js'
 import { pointsLost, usableWeightFromSims } from '../lib/explain.js'
 import { EVIDENCE, bodyLabel, describeSiteValue, describeTargetValue, formatCoord, pct, sourceKind } from '../lib/format.js'
-import { MISSIONS, missionTitle } from '../lib/missions.js'
+import { MISSIONS, missionLabel as missionLabelOf } from '../lib/missions.js'
 import { PRESETS } from '../lib/presets.js'
 import { RANK_METHODS } from '../lib/rankMethods.js'
 import { SCENARIO_LIMITATION, matchScenario } from '../lib/scenarios.js'
@@ -382,9 +382,7 @@ export default function SiteDetails() {
   const scoredCount = app.ranking.filter((r) => r.score !== null).length
   const method = RANK_METHODS[app.rankBy] || RANK_METHODS.score
   // same wording as the Explore header
-  const missionLabel = app.isCustom
-    ? 'Custom weights'
-    : missionTitle(app.presetId)
+  const missionLabel = missionLabelOf(app)
   const scenario = target && !app.isCustom ? matchScenario(app.targetId, app.presetId) : null
   const diff = result ? readDifferences(result, site, target, app.weights, data.features) : null
   const openRange = scored && hasOpenRange(result)

@@ -85,3 +85,38 @@ viewports). Headless captures have no basemap tiles.
   ranking) still overlap at world zoom; the selected marker is raised above the others.
 * The main JS chunk is 520 kB (RC: 513 kB); the existing >500 kB Vite warning remains.
 * No usability study with real first-time users; the findings come from a heuristic walkthrough.
+
+## Follow-up: the four-step researcher flow
+
+Target flow: **(1) Moon or Mars + test type → (2) choose criteria and their importance → (3) the
+system compares the sites → (4) ranked list with match score, reason and missing data.**
+
+* **Step 2 is now visible before results.** Home shows a "Criteria and importance" row under the
+  selection: each criterion the test type uses, by importance (dots, 0–5), with any criterion that
+  has no data flagged and any switched-off criterion listed as not used. Phones show the top 3 plus
+  "+N more". **Adjust** opens step 3 of the chooser, which has the same importance sliders as Explore's
+  Advanced options (shared `components/WeightSliders.jsx`). Setting a criterion to 0 leaves it out.
+* **Adjusted importance keeps the test type.** The selection reads "Moon · South Pole · Ice
+  Exploration (custom criteria)", and the URL now carries `preset=<test type>` beside `w=`, so
+  reload, share links and "Reset to …" return to Ice exploration instead of Balanced. Old links with
+  only `w=` still parse as before (covered by `urlState.test.js`). Headers on Explore, Site, Compare
+  and Mirror and the top bar use the same label (`missions.js missionLabel`).
+* **Step 4: each result card names its missing data.** Below the reason, every card says
+  "Missing data: Bare ground, Geology match — not counted", or "No missing data for this place"
+  (`selection.js siteMissing`; criteria the target lacks are reported once in the page notice).
+* Wording: the number is a **match / similarity score**, not "suitability" (ملاءمة). The project
+  rule is that a high score means resemblance, not mission suitability.
+* Not done: entering target *values* per criterion (as opposed to importance). The comparison
+  values come from the cited Moon/Mars measurements; letting users override them would change the
+  scoring contract (§4–5) and needs its own design and tests.
+
+Verified (79 checks, desktop and 375 px):
+* Criteria are listed by importance, the no-data criterion is flagged, and the button stays on the
+  first screen.
+* Adjust → Ground ice set to 0 → the selection says "custom criteria" and Ice is listed as not used.
+* Find places on Earth → `explore?target=moon-south-pole&preset=ice&w=2-2-5-2-3-1-0` → the first card
+  shows its score, reason and missing data.
+* Reload keeps the weights and the test type ("Ice exploration (custom criteria)").
+* The earlier Moon, Mars, Compare, Back, reload and reduced-motion flows still pass.
+
+Unit tests 88/88.

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { formatCoord, pct, scoreColor } from '../lib/format.js'
-import { topReason } from '../lib/selection.js'
+import { siteMissing, topReason } from '../lib/selection.js'
 import { entrySummary } from '../lib/summary.js'
 import { CoverageBadge, EvidenceCoverageTag, NoveltyTag } from './Tags.jsx'
 import WhyGap from './WhyGap.jsx'
@@ -30,6 +30,19 @@ function Reason({ site, target, weights, features }) {
         {pct(r.sim)} similar{r.evidence && <> · {r.evidence} source</>}
       </span>
     </>
+  )
+}
+
+/** The selected criteria this place has no data for: left out of its score, never counted as zero. */
+function MissingLine({ site, target, weights, features }) {
+  const missing = siteMissing(site, target, weights, features)
+  if (!missing.length) return <p className="site-card__missing site-card__missing--none">No missing data for this place</p>
+  return (
+    <p className="site-card__missing">
+      <span aria-hidden="true">⚠ </span>
+      Missing data: {missing.map((f) => f.label).join(', ')}
+      <span className="muted"> — not counted</span>
+    </p>
   )
 }
 
@@ -201,9 +214,12 @@ export default function SiteCards({
         </div>
 
         {compact ? (
-          <p className="site-card__reason">
-            {s.scored ? <Reason site={site} target={target} weights={weights} features={features} /> : <WhyGap entry={r} />}
-          </p>
+          <>
+            <p className="site-card__reason">
+              {s.scored ? <Reason site={site} target={target} weights={weights} features={features} /> : <WhyGap entry={r} />}
+            </p>
+            <MissingLine site={site} target={target} weights={weights} features={features} />
+          </>
         ) : (
           <>
             <p className="site-card__meta">

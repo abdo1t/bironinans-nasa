@@ -1709,3 +1709,13 @@
   margin-top: 0.75rem;
   font-size: var(--fs-sm);
 }
+
+.site-card__missing {
+  margin: 0;
+  font-size: var(--fs-xs);
+  color: #f2c29a;
+}
+
+.site-card__missing--none {
+  color: var(--muted);
+}

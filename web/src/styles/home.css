@@ -928,3 +928,125 @@
     padding: var(--space-3);
   }
 }
+
+/* ---------------------------------------------------------------- Step 2: criteria and importance */
+.home-crit {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  max-width: 38rem;
+  margin: calc(-1 * var(--space-2)) 0 var(--space-3);
+  padding: 0.6rem 0.75rem 0.6rem 0.9rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: rgba(6, 13, 26, 0.6);
+}
+
+.home-crit__now {
+  display: grid;
+  gap: 0.35rem;
+  flex: 1 1 9rem;
+  min-width: 0;
+}
+
+.home-crit__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home-crit__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: var(--fs-xs);
+  color: var(--text);
+}
+
+.home-crit__chip.is-nodata {
+  border-style: dashed;
+  color: var(--text-2);
+}
+
+.home-crit__dots {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.home-crit__dots span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--border-strong);
+}
+
+.home-crit__dots span.is-on {
+  background: var(--accent);
+}
+
+.home-crit__nodata {
+  color: #f2c29a;
+}
+
+.home-crit__off {
+  flex-basis: 100%;
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+.home-chooser .sliders {
+  margin-top: var(--space-2);
+}
+
+@media (max-width: 640px) {
+  .home-crit {
+    margin-top: calc(-1 * var(--space-1));
+  }
+}
+
+.home-crit__more {
+  display: none;
+}
+
+/* phones: keep heading, selection, criteria and the button on the first screen */
+@media (max-width: 640px) {
+  .home-lead .kicker {
+    display: none;
+  }
+
+  .home-terrain__frame {
+    height: 88px;
+  }
+
+  .home-crit__chip.is-extra,
+  .home-crit__off {
+    display: none;
+  }
+
+  .home-crit__more {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.15rem 0.5rem;
+    font-size: var(--fs-xs);
+    color: var(--text-2);
+  }
+
+  .home-pick,
+  .home-crit {
+    padding: 0.5rem 0.6rem 0.5rem 0.75rem;
+  }
+}
+
+.home-pick__value {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.1rem;
+}

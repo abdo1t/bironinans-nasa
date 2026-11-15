@@ -3,20 +3,24 @@ import { Link, useNavigate } from 'react-router-dom'
 import MissionPicker from '../components/MissionPicker.jsx'
 import TargetSelect from '../components/TargetSelect.jsx'
 import Term from '../components/Term.jsx'
+import WeightSliders from '../components/WeightSliders.jsx'
 import WorldCard from '../components/WorldCard.jsx'
 import TARGET_PREVIEWS from '../data/terrainPreviews.json'
 import { useBundle } from '../data/useBundle.js'
+import { dataAvailability } from '../lib/explain.js'
 import { bodyLabel } from '../lib/format.js'
 import { missionTitle } from '../lib/missions.js'
 import { PRESETS } from '../lib/presets.js'
 import { RANK_METHODS } from '../lib/rankMethods.js'
 import { SCENARIOS, matchScenario, scenarioQuery } from '../lib/scenarios.js'
 import { LIMITATIONS_NOTE } from '../lib/scoring.js'
-import { selectionParts } from '../lib/selection.js'
+import { criteriaSummary, selectionParts } from '../lib/selection.js'
 import { useAppState } from '../state/AppState.jsx'
 import '../styles/home.css'
 
 const WORLDS = ['moon', 'mars']
+// Criteria chips shown on a phone's first screen (all of them on wider screens).
+const CRIT_PHONE_MAX = 3
 
 const plural = (n, one, many = `${one}s`) => `${n} ${n === 1 ? one : many}`
 
@@ -122,12 +126,16 @@ export default function Home() {
     navigate(app.linkTo('/explore', { rank }))
   }
 
-  const openChooser = () => {
+  // "Change" opens the chooser at step 1; "Adjust" opens it at the criteria step.
+  const openChooser = (stepId = null) => {
     setChooserOpen(true)
     requestAnimationFrame(() => {
-      const el = document.getElementById('home-chooser')
-      el?.scrollIntoView({ block: 'start', behavior: 'smooth' })
-      el?.querySelector('.world-card.is-selected, .world-card')?.focus({ preventScroll: true })
+      const box = document.getElementById('home-chooser')
+      const step = stepId ? document.getElementById(stepId) : box
+      const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+      step?.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' })
+      const first = stepId ? step?.querySelector('input, button') : box?.querySelector('.world-card.is-selected, .world-card')
+      first?.focus({ preventScroll: true })
     })
   }
   const closeChooser = () => {
@@ -145,13 +153,15 @@ export default function Home() {
 
   // Display-only: the ice criterion rewards matching the target's ice state (see PRESETS.ice.rationale).
   const iceFreeTarget = app.presetId === 'ice' && app.target?.norm?.ice === 'no'
-  const parts = selectionParts(app.target, app.presetId, app.isCustom)
+  const parts = selectionParts(app.target, app.presetId, app.isCustom, app.basePresetId)
+  const criteria = criteriaSummary(app.weights, data.features)
+  const avail = app.target ? dataAvailability(app.target, data.sites, app.weights, data.features) : null
 
   let ctaHint
   if (!body) ctaHint = 'Choose the Moon or Mars first.'
   else if (!app.target) ctaHint = 'Choose which site to compare with.'
   else {
-    ctaHint = `You’ll see a map and a short ranked list of ${plural(data.sites.length, 'Earth place')}, each with a reason.`
+    ctaHint = `Compares ${plural(data.sites.length, 'Earth place')} on these criteria: a ranked list with each place’s match score, the reason and any missing data.`
     if (rank === 'min') ctaHint += ` Most complete evidence first (${RANK_METHODS.min.label}).`
   }
 
@@ -195,12 +205,63 @@ export default function Home() {
               className="btn btn--small home-pick__change"
               aria-expanded={chooserOpen}
               aria-controls="home-chooser"
-              onClick={chooserOpen ? closeChooser : openChooser}
+              onClick={chooserOpen ? closeChooser : () => openChooser()}
             >
               {chooserOpen ? 'Done' : parts.length ? 'Change' : 'Choose'}
               <span className="sr-only"> world, site and research objective</span>
             </button>
           </div>
+
+          {app.target && (
+            <div className="home-crit">
+              <div className="home-crit__now">
+                <span className="home-pick__label" id="home-crit-label">
+                  Criteria and importance
+                </span>
+                <ul className="home-crit__list" aria-labelledby="home-crit-label">
+                  {criteria.used.map(({ feature, weight }, i) => (
+                    <li
+                      key={feature.id}
+                      className={`home-crit__chip${avail?.byFeature[feature.id] ? ' is-nodata' : ''}${i >= CRIT_PHONE_MAX ? ' is-extra' : ''}`}
+                    >
+                      <span className="home-crit__name">{feature.label}</span>
+                      <span className="home-crit__dots" aria-hidden="true">
+                        {[1, 2, 3, 4, 5].map((n) => (
+                          <span key={n} className={n <= weight ? 'is-on' : ''} />
+                        ))}
+                      </span>
+                      <span className="sr-only">
+                        {' '}
+                        importance {weight} of 5{avail?.byFeature[feature.id] ? ', no data yet so it cannot change the ranking' : ''}
+                      </span>
+                      {avail?.byFeature[feature.id] && (
+                        <span className="home-crit__nodata" aria-hidden="true">
+                          no data
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                  {criteria.used.length > CRIT_PHONE_MAX && (
+                    // phones list the top criteria only; "Adjust" shows all of them
+                    <li className="home-crit__more" aria-hidden="true">
+                      +{criteria.used.length - CRIT_PHONE_MAX} more
+                    </li>
+                  )}
+                  {criteria.off.length > 0 && (
+                    <li className="home-crit__off">Not used: {criteria.off.map((f) => f.label).join(', ')}</li>
+                  )}
+                </ul>
+              </div>
+              <button
+                type="button"
+                className="btn btn--small home-pick__change"
+                aria-controls="home-chooser"
+                onClick={() => openChooser('home-step-criteria')}
+              >
+                Adjust<span className="sr-only"> criteria and importance</span>
+              </button>
+            </div>
+          )}
 
           <div className="home-go">
             <button
@@ -275,7 +336,7 @@ export default function Home() {
           <div className="home-flow__col">
             <section className="home-step is-done" aria-labelledby="home-step-goal">
               <StepTitle n={2} done id="home-step-goal">
-                Choose a research objective
+                Choose a test type
               </StepTitle>
               <MissionPicker name="home-mission" value={app.presetId} onChange={app.setPreset} features={data.features} />
               <div className="home-notes" aria-live="polite">
@@ -296,6 +357,17 @@ export default function Home() {
                 validated set of mission requirements.
               </p>
             </section>
+            {app.target && (
+              <section className="home-step is-done" aria-labelledby="home-step-criteria-title" id="home-step-criteria">
+                <StepTitle n={3} done id="home-step-criteria-title">
+                  Criteria and importance
+                </StepTitle>
+                <p className="hint home-caveat">
+                  The test type sets these for you. Change any importance, or set it to 0 to leave a criterion out.
+                </p>
+                <WeightSliders idPrefix="home-w" legend="Importance of each criterion" />
+              </section>
+            )}
             <p className="home-chooser__done">
               <button type="button" className="btn btn--ghost" onClick={closeChooser}>
                 Done — use this selection

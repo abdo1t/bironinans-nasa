@@ -6,7 +6,7 @@ import Term from '../components/Term.jsx'
 import { CoverageBadge, EvidenceCoverageTag, MockTag, NoveltyTag, ScoreBadge } from '../components/Tags.jsx'
 import { useBundle } from '../data/useBundle.js'
 import { SERIES_COLORS, bodyLabel, pct } from '../lib/format.js'
-import { missionTitle } from '../lib/missions.js'
+import { missionLabel as missionLabelOf } from '../lib/missions.js'
 import { RANK_METHODS, RANK_ORDER } from '../lib/rankMethods.js'
 import { LIMITATIONS_NOTE } from '../lib/scoring.js'
 import { entrySummary, guaranteedMin, keyDifferences, plainComparison } from '../lib/summary.js'
@@ -136,9 +136,7 @@ export default function Compare() {
   }
 
   const method = RANK_METHODS[app.rankBy] || RANK_METHODS.score
-  const missionLabel = app.isCustom
-    ? 'Custom weights'
-    : missionTitle(app.presetId)
+  const missionLabel = missionLabelOf(app)
   const lines = compareVerdict(sites, app.target, data.features, app.weights, app.rankBySite, app.rankBy)
   const leadIds = leaders(sites, app.rankBySite, app.rankBy)
   const leadLabel = app.rankBy === 'min' ? 'Most complete evidence' : 'Closest match'

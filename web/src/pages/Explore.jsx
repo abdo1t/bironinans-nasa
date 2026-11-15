@@ -16,7 +16,7 @@ import { MockTag } from '../components/Tags.jsx'
 import { useBundle } from '../data/useBundle.js'
 import { availabilityNotice, dataAvailability } from '../lib/explain.js'
 import { bodyLabel } from '../lib/format.js'
-import { missionTitle } from '../lib/missions.js'
+import { missionLabel as missionLabelOf } from '../lib/missions.js'
 import { hasOpenRange } from '../lib/summary.js'
 import { PRESETS } from '../lib/presets.js'
 import { RANK_METHODS } from '../lib/rankMethods.js'
@@ -142,9 +142,7 @@ export default function Explore() {
   const notice = availabilityNotice(avail)
   const scenario = app.isCustom ? null : matchScenario(app.targetId, app.presetId)
   const scoredCount = scoredEntries.length
-  const missionLabel = app.isCustom
-    ? 'Custom weights'
-    : missionTitle(app.presetId)
+  const missionLabel = missionLabelOf(app)
   const topIds = scoredEntries.slice(0, 3).map((r) => r.site)
   const method = RANK_METHODS[app.rankBy] || RANK_METHODS.score
   // Plain-language ranking explanation shared by the map and list views. Missing data is

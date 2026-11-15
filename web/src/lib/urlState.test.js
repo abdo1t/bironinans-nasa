@@ -33,10 +33,21 @@ describe('urlState', () => {
     const weights = { ...PRESETS.balanced.weights, temp: 5 }
     const s = { ...defaultState(), presetId: 'custom', weights }
     const search = applyStateToSearch('', s, features)
-    expect(search).toBe('?w=3-3-5-1-3-3-1')
+    expect(search).toBe('?preset=balanced&w=3-3-5-1-3-3-1')
     const back = parseQuery(search, bundle)
     expect(back.presetId).toBe('custom')
     expect(back.weights).toEqual(weights)
+  })
+
+  it('custom weights keep the test type they started from', () => {
+    const weights = { ...PRESETS.ice.weights, ice: 0 }
+    const s = { ...defaultState(), presetId: 'custom', basePresetId: 'ice', weights }
+    const search = applyStateToSearch('', s, features)
+    expect(search).toBe(`?preset=ice&w=${encodeWeights(weights, features)}`)
+    const back = parseQuery(search, bundle)
+    expect([back.presetId, back.basePresetId]).toEqual(['custom', 'ice'])
+    // an old link with only w= still parses as custom weights
+    expect(parseQuery(`?w=${encodeWeights(weights, features)}`, bundle).presetId).toBe('custom')
   })
 
   it('recognises custom weights that equal a preset', () => {

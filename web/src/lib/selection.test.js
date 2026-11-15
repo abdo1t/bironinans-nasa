@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { missionShortName, selectionParts, targetShortName, topReason } from './selection.js'
+import { criteriaSummary, missionShortName, selectionParts, siteMissing, targetShortName, topReason } from './selection.js'
 
 const features = [
   { id: 'terrain', label: 'Terrain relief', kind: 'numeric' },
@@ -25,7 +25,8 @@ describe('selection labels', () => {
   })
   it('keeps names without a world prefix and names custom weights', () => {
     expect(targetShortName({ name: 'Jezero Crater — Perseverance landing site' })).toBe('Jezero Crater')
-    expect(missionShortName('ice', true)).toBe('Custom Weights')
+    expect(missionShortName('custom', true)).toBe('Custom Weights')
+    expect(missionShortName('custom', true, 'ice')).toBe('Ice Exploration (custom criteria)')
     expect(selectionParts(null, 'ice', false)).toEqual([])
   })
 })
@@ -42,5 +43,23 @@ describe('topReason', () => {
   it('ignores criteria with weight 0 or missing data, and returns null when none qualify', () => {
     expect(topReason(site, target, { terrain: 5, temp: 0, ice: 0 }, features)).toBeNull()
     expect(topReason({ ...site, norm: { ...site.norm, ice: null } }, target, { ice: 5 }, features)).toBeNull()
+  })
+})
+
+describe('criteriaSummary', () => {
+  it('lists used criteria by importance (ties in feature order) and the ones switched off', () => {
+    const { used, off } = criteriaSummary({ terrain: 2, temp: 5, ice: 5 }, features)
+    expect(used.map((c) => [c.feature.id, c.weight])).toEqual([['temp', 5], ['ice', 5], ['terrain', 2]])
+    expect(off).toEqual([])
+    expect(criteriaSummary({ temp: 3 }, features).off.map((f) => f.id)).toEqual(['terrain', 'ice'])
+  })
+})
+
+describe('siteMissing', () => {
+  it('names selected criteria the place lacks, but not ones the target lacks or that are off', () => {
+    const gappy = { ...site, norm: { terrain: null, temp: 0.2, ice: null } }
+    const t = { ...target, norm: { ...target.norm, ice: null } }
+    expect(siteMissing(gappy, t, { terrain: 2, temp: 5, ice: 5 }, features).map((f) => f.id)).toEqual(['terrain'])
+    expect(siteMissing(gappy, t, { terrain: 0, temp: 5, ice: 5 }, features)).toEqual([])
   })
 })

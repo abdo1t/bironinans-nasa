@@ -16,7 +16,7 @@ import { MockTag } from './components/Tags.jsx'
 import { useBundle } from './data/useBundle.js'
 import { featuresMissingEverywhere, joinLabels, shortDate } from './lib/explain.js'
 import { bodyLabel } from './lib/format.js'
-import { missionTitle } from './lib/missions.js'
+import { missionLabel } from './lib/missions.js'
 import { AppStateProvider, useAppState } from './state/AppState.jsx'
 import Home from './pages/Home.jsx'
 import Explore from './pages/Explore.jsx'
@@ -113,7 +113,7 @@ function TopBar({ menuOpen, onMenu, manifest, isMock }) {
   const location = useLocation()
   const navigate = useNavigate()
   const t = app.target
-  const mission = app.isCustom ? 'Custom weights' : missionTitle(app.presetId)
+  const mission = missionLabel(app)
   const changeMission = () => {
     if (!t) return navigate(app.linkTo('/'))
     if (location.pathname === '/explore') {

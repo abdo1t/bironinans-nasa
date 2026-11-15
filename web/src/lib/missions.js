@@ -42,6 +42,12 @@ export function missionTitle(presetId) {
   return presetId === 'balanced' ? 'General research (balanced)' : p.label
 }
 
+/** Mission label for the current state; adjusted weights keep the test type they started from. */
+export function missionLabel({ isCustom, presetId, basePresetId }) {
+  if (!isCustom) return missionTitle(presetId)
+  return PRESETS[basePresetId] ? `${missionTitle(basePresetId)} (custom criteria)` : 'Custom weights'
+}
+
 /**
  * Labels of the criteria a mission emphasises: every criterion at the preset's top
  * weight, plus those within one point of it (at most `limit`), in feature order.

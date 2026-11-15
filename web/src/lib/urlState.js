@@ -63,6 +63,8 @@ export function parseQuery(search, bundle, prev = defaultState()) {
     next.weights = w
     next.presetId = presetFor(w, features)
     if (next.presetId !== CUSTOM_PRESET) next.basePresetId = next.presetId
+    // custom weights remember the test type they started from (preset= beside w=)
+    else if (PRESETS[params.get('preset')]) next.basePresetId = params.get('preset')
   } else if (params.has('preset') && PRESETS[params.get('preset')]) {
     next.presetId = params.get('preset')
     next.basePresetId = next.presetId
@@ -85,8 +87,10 @@ export function parseQuery(search, bundle, prev = defaultState()) {
 export function stateToParams(state, features) {
   const out = {}
   if (state.targetId) out.target = state.targetId
-  if (state.presetId === CUSTOM_PRESET) out.w = encodeWeights(state.weights, features)
-  else out.preset = state.presetId
+  if (state.presetId === CUSTOM_PRESET) {
+    out.preset = state.basePresetId // the test type the custom weights started from
+    out.w = encodeWeights(state.weights, features)
+  } else out.preset = state.presetId
   if (state.shortlist.length) out.sites = state.shortlist.join(',')
   if (state.rankBy === 'min') out.rank = 'min'
   return out
