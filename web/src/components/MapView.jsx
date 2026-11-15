@@ -43,16 +43,20 @@ function pinIcon({ rank, score, uncatalogued, listed, selected, label }) {
   return icon
 }
 
-/** Flies to a site when the list selects it (instant under reduced motion). */
+/**
+ * When the list selects a site, one gentle pan brings its marker into view — only if it is
+ * outside the comfortable middle of the map, and never with a zoom change. Under reduced
+ * motion the map jumps instead of panning.
+ */
 function FocusController({ focus, markers }) {
   const map = useMap()
   useEffect(() => {
     const marker = focus ? markers.current[focus.id] : null
     if (!marker) return
+    const ll = marker.getLatLng()
+    if (map.getBounds().pad(-0.12).contains(ll)) return // already easy to find: don't move the map
     const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-    const zoom = Math.max(map.getZoom(), 3.5)
-    if (reduce) map.setView(marker.getLatLng(), zoom, { animate: false })
-    else map.flyTo(marker.getLatLng(), zoom, { duration: 0.6 })
+    map.panTo(ll, reduce ? { animate: false } : { animate: true, duration: 0.45, easeLinearity: 0.35 })
   }, [focus, map, markers])
   return null
 }

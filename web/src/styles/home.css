@@ -616,3 +616,315 @@
     font-size: var(--fs-xs);
   }
 }
+
+/* ---------------------------------------------------------------- First visit: lead (2026-11-15)
+   What can I find here + how do I start, in the first viewport: heading, one-line promise,
+   the current selection with one way to change it, one primary action and a credited terrain
+   image. The world/objective chooser sits below and opens on "Change". */
+
+.home-lead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 400px);
+  gap: var(--space-5);
+  align-items: center;
+  margin-bottom: var(--space-4);
+  padding: var(--space-5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(640px 260px at 85% 50%, rgba(47, 214, 240, 0.07), transparent 70%),
+    linear-gradient(180deg, rgba(16, 32, 58, 0.6), rgba(11, 23, 41, 0.6));
+  box-shadow: var(--panel-glow);
+}
+
+.home-lead__text {
+  min-width: 0;
+}
+
+.home-lead .kicker {
+  margin-bottom: var(--space-1);
+}
+
+.home-lead h1 {
+  margin: 0 0 var(--space-2);
+  font-size: clamp(1.6rem, 1.05rem + 1.8vw, 2.4rem);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+.home-lead__lede {
+  margin: 0 0 var(--space-4);
+  max-width: 38rem;
+  color: var(--text-2);
+  font-size: 1.05rem;
+}
+
+.home-lead__scope {
+  margin: var(--space-3) 0 0;
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+/* current selection: one readable line + one action to change it */
+.home-pick {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  max-width: 38rem;
+  margin-bottom: var(--space-3);
+  padding: 0.6rem 0.75rem 0.6rem 0.9rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: rgba(6, 13, 26, 0.6);
+}
+
+.home-pick__now {
+  display: grid;
+  gap: 0.1rem;
+  flex: 1 1 9rem;
+  min-width: 0;
+}
+
+.home-pick__label {
+  font-family: var(--font-tech);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.home-pick__value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.home-pick__value--empty {
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+.home-pick__part {
+  white-space: nowrap;
+}
+
+.home-pick__part .world-dot {
+  margin-right: 0.4rem;
+  vertical-align: 0.1em;
+}
+
+.home-pick__sep {
+  color: var(--accent);
+}
+
+.home-pick__change {
+  flex: none;
+  min-height: 40px;
+}
+
+.home-go {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+}
+
+.home-go__btn {
+  min-height: 52px;
+  padding-inline: 1.6rem;
+  font-size: 1.1rem;
+}
+
+.home-go__btn[aria-disabled='true'] {
+  background: var(--panel-2);
+  border: 1px dashed var(--border-strong);
+  color: var(--text-2);
+}
+
+.home-go__hint {
+  flex: 1 1 14rem;
+  min-width: 0;
+  margin: 0;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+.home-go__hint.is-nudge {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.home-go__hint.is-nudge::before {
+  content: '→ ';
+  color: var(--accent);
+}
+
+/* terrain image with its credit; text never sits on top of it */
+.home-terrain {
+  margin: 0;
+  min-width: 0;
+}
+
+.home-terrain__frame {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: #0a1a33;
+}
+
+.home-terrain__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.home-terrain__credit {
+  margin-top: 0.4rem;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.home-terrain__credit a {
+  color: var(--text-2);
+}
+
+/* chooser (opens on "Change") */
+.home-chooser {
+  margin-bottom: var(--space-4);
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: rgba(11, 23, 41, 0.55);
+  scroll-margin-top: calc(var(--topbar-h, 64px) + 0.75rem);
+}
+
+.home-chooser__done {
+  margin: 0;
+}
+
+/* motion: world selection — new terrain fades in, selected card eases into its state (~200 ms).
+   The global prefers-reduced-motion rule in system.css turns all of this off. */
+.world-card {
+  transition:
+    border-color 200ms ease-out,
+    background-color 200ms ease-out,
+    box-shadow 200ms ease-out,
+    transform 200ms ease-out;
+}
+
+.world-card.is-selected {
+  transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .home-terrain__img {
+    animation: home-terrain-in 200ms ease-out both;
+  }
+
+  .world-card__picked {
+    animation: home-fade-up 180ms ease-out both;
+  }
+
+  .home-chooser:not([hidden]) {
+    animation: home-fade-up 200ms ease-out both;
+  }
+}
+
+@keyframes home-terrain-in {
+  from {
+    opacity: 0;
+    transform: scale(1.03);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes home-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* demo laptop (1280x720): keep heading, selection and the button above the fold */
+@media (min-width: 1000px) and (max-height: 780px) {
+  .home-lead {
+    padding: var(--space-4);
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 330px);
+  }
+
+  .home-lead__lede {
+    margin-bottom: var(--space-3);
+  }
+}
+
+@media (max-width: 900px) {
+  .home-lead {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-3);
+  }
+
+  /* the terrain becomes a short banner above the heading */
+  .home-terrain {
+    order: -1;
+  }
+
+  .home-terrain__frame {
+    aspect-ratio: auto;
+    height: 150px;
+  }
+
+  .home-terrain__img {
+    object-position: 60% 40%;
+  }
+}
+
+@media (max-width: 640px) {
+  .home {
+    padding-bottom: 1rem;
+  }
+
+  .home-lead {
+    padding: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+
+  .home-lead__lede {
+    font-size: var(--fs-sm);
+    margin-bottom: var(--space-3);
+  }
+
+  .home-terrain__frame {
+    height: 112px;
+  }
+
+  .home-pick__value {
+    font-size: 1rem;
+  }
+
+  .home-go__btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .home-go__hint {
+    font-size: var(--fs-xs);
+  }
+
+  .home-chooser {
+    padding: var(--space-3);
+  }
+}

@@ -631,3 +631,119 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------------------------------------------------------------- First visit (2026-11-15)
+   The three questions lead; a one-line result strip sits above them; "View evidence" stays in
+   the header actions; terrain imagery where a sourced asset exists, otherwise a value table. */
+
+.site-result {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 1rem;
+  margin: 0 0 0.75rem;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--panel-2, rgba(16, 32, 58, 0.6));
+  font-size: var(--fs-sm);
+}
+
+.site-result strong {
+  font-size: 1.15rem;
+}
+
+.site-result__rank {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--accent);
+}
+
+.site__evidence-btn {
+  white-space: nowrap;
+}
+
+.match-line__sim {
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.site-evtable {
+  margin-bottom: var(--space-4, 1rem);
+}
+
+.site-evtable__scroll {
+  overflow-x: auto;
+}
+
+.site-evtable table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-sm);
+}
+
+.site-evtable th,
+.site-evtable td {
+  padding: 0.45rem 0.6rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.site-evtable thead th {
+  color: var(--muted);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.site-evtable tr.is-match td:nth-child(4) {
+  color: var(--ok);
+}
+
+.site-evtable tr.is-differ td:nth-child(4) {
+  color: #f2c29a;
+}
+
+/* motion: the explanation reveals with a short fade and a small rise (instant under reduced motion) */
+@media (prefers-reduced-motion: no-preference) {
+  .site-result,
+  .site-three > .card {
+    animation: site-reveal 220ms ease-out both;
+  }
+
+  .site-three > .card:nth-child(2) {
+    animation-delay: 40ms;
+  }
+
+  .site-three > .card:nth-child(3) {
+    animation-delay: 80ms;
+  }
+}
+
+@keyframes site-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .site__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .site__actions .btn {
+    flex: 1 1 auto;
+    justify-content: center;
+    min-height: 44px;
+  }
+}

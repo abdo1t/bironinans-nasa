@@ -1,9 +1,37 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { scoreColor } from '../lib/format.js'
+import { formatCoord, pct, scoreColor } from '../lib/format.js'
+import { topReason } from '../lib/selection.js'
 import { entrySummary } from '../lib/summary.js'
 import { CoverageBadge, EvidenceCoverageTag, NoveltyTag } from './Tags.jsx'
 import WhyGap from './WhyGap.jsx'
+
+/**
+ * One evidence-backed reason the place appears: the selected criterion adding the most to
+ * its score, with the measured value here, the target's value and the evidence type.
+ */
+function Reason({ site, target, weights, features }) {
+  const r = topReason(site, target, weights, features)
+  if (!r) return <span className="muted">No selected criterion is a close match.</span>
+  return (
+    <>
+      <span className="site-card__reason-main">
+        <span aria-hidden="true">✓ </span>
+        <span className="sr-only">Why it appears: </span>
+        <strong>{r.feature.label}</strong> — {r.siteText ?? 'value pending'} here
+        {r.targetText && (
+          <>
+            ; target: {r.targetText}
+            {r.clipped && ' (beyond Earth’s range)'}
+          </>
+        )}
+      </span>
+      <span className="site-card__reason-meta">
+        {pct(r.sim)} similar{r.evidence && <> · {r.evidence} source</>}
+      </span>
+    </>
+  )
+}
 
 /**
  * Ranked recommendation cards beside the map: the keyboard- and screen-reader-friendly
@@ -26,6 +54,10 @@ export default function SiteCards({
   onActive,
   selectedId,
   onSelect,
+  // compact: short cards beside the map / on phones (location, one evidence-backed reason, actions)
+  compact = false,
+  // show only the first `limit` scored places (null = all, plus the unscored ones)
+  limit = null,
 }) {
   const refs = useRef({})
   const boxRef = useRef(null)
@@ -64,8 +96,9 @@ export default function SiteCards({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rankKey])
 
-  const scored = ranking.filter((r) => r.score !== null)
-  const unscored = ranking.filter((r) => r.score === null)
+  const allScored = ranking.filter((r) => r.score !== null)
+  const scored = limit ? allScored.slice(0, limit) : allScored
+  const unscored = limit ? [] : ranking.filter((r) => r.score === null)
 
   const card = (r) => {
     const site = siteById[r.site]
@@ -79,7 +112,7 @@ export default function SiteCards({
         ref={(el) => {
           refs.current[site.id] = el
         }}
-        className={`site-card${isActive ? ' is-active' : ''}${isSelected ? ' is-selected' : ''}${listed ? ' is-listed' : ''}${s.scored ? '' : ' site-card--none'}`}
+        className={`site-card${compact ? ' site-card--compact' : ''}${isActive ? ' is-active' : ''}${isSelected ? ' is-selected' : ''}${listed ? ' is-listed' : ''}${s.scored ? '' : ' site-card--none'}`}
         onMouseEnter={() => onActive(site.id, 'list')}
         onMouseLeave={() => onActive(null, 'list')}
         onFocus={() => onActive(site.id, 'list')}
@@ -103,6 +136,7 @@ export default function SiteCards({
             </h3>
             <span className="site-card__country">
               {site.country}
+              {compact && <span className="site-card__coord"> · {formatCoord(site.lat, site.lon)}</span>}
               {moves[site.id] ? (
                 <span className={`site-card__move site-card__move--${moves[site.id] > 0 ? 'up' : 'down'}`}>
                   <span aria-hidden="true">{moves[site.id] > 0 ? '▲' : '▼'} </span>
@@ -166,15 +200,23 @@ export default function SiteCards({
           </div>
         </div>
 
-        <p className="site-card__meta">
-          {s.scored && <EvidenceCoverageTag target={target} site={site} weights={weights} features={features} />}
-          <CoverageBadge coverage={r.coverage} />
-          <NoveltyTag site={site} />
-        </p>
+        {compact ? (
+          <p className="site-card__reason">
+            {s.scored ? <Reason site={site} target={target} weights={weights} features={features} /> : <WhyGap entry={r} />}
+          </p>
+        ) : (
+          <>
+            <p className="site-card__meta">
+              {s.scored && <EvidenceCoverageTag target={target} site={site} weights={weights} features={features} />}
+              <CoverageBadge coverage={r.coverage} />
+              <NoveltyTag site={site} />
+            </p>
 
-        <p className="site-card__why">
-          <WhyGap entry={r} />
-        </p>
+            <p className="site-card__why">
+              <WhyGap entry={r} />
+            </p>
+          </>
+        )}
 
         <div className="site-card__actions">
           <Link className="btn btn--small btn--why" to={linkTo(`/site/${site.id}`)}>
@@ -191,7 +233,7 @@ export default function SiteCards({
             {listed ? '✓ In compare' : shortlistFull ? 'Compare full (3)' : '+ Compare'}
             <span className="sr-only"> {site.name}</span>
           </button>
-          {s.scored && (
+          {s.scored && !compact && (
             <Link className="btn btn--small btn--ghost" to={linkTo('/mirror', { site: site.id })}>
               Mirror<span className="sr-only">: see {site.name} beside {target.name}</span>
             </Link>

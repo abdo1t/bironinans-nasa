@@ -162,7 +162,7 @@ export default function About() {
           <li>Choose the Moon or Mars.</li>
           <li>Pick the target site (the Moon or Mars reference location).</li>
           <li>
-            Choose a <strong>research objective</strong> (Rover testing, Habitat &amp; construction, Ice drilling or
+            Choose a <strong>research objective</strong> (Rover testing, Habitat &amp; construction, Ice exploration or
             General research). Each one is a preset of criterion weights; nothing else changes.
           </li>
           <li>See the recommended Earth sites on the map and in the ranked list beside it.</li>

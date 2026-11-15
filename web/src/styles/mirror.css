@@ -552,3 +552,99 @@
   white-space: normal;
   text-align: center;
 }
+
+/* ---------------------------------------------------------------- First visit (2026-11-15)
+   Three questions lead; each claim opens its evidence below. */
+.mirror-q {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+}
+
+.mirror-q__col {
+  min-width: 0;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--panel, rgba(11, 23, 41, 0.6));
+}
+
+.mirror-q__title {
+  margin: 0 0 0.4rem;
+  font-size: 1rem;
+}
+
+.mirror-q__list {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mirror-q__item {
+  width: 100%;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  background: none;
+  color: var(--text-2);
+  font: inherit;
+  font-size: var(--fs-sm);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 180ms ease-out, background-color 180ms ease-out;
+}
+
+.mirror-q__item strong {
+  color: var(--text);
+}
+
+.mirror-q__item:hover,
+.mirror-q__item.is-active {
+  border-color: var(--accent-line, var(--border-strong));
+  background: rgba(47, 214, 240, 0.06);
+}
+
+.mirror-q__col--match .mirror-q__item > span[aria-hidden='true'] {
+  color: var(--ok);
+}
+
+.mirror-q__col--differ .mirror-q__item > span[aria-hidden='true'] {
+  color: #f2c29a;
+}
+
+.mirror-q__none {
+  margin: 0;
+  font-size: var(--fs-sm);
+}
+
+.mirror-q__more {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .mirror-q__col,
+  .mirror-detail {
+    animation: mirror-reveal 220ms ease-out both;
+  }
+}
+
+@keyframes mirror-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .mirror-q {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

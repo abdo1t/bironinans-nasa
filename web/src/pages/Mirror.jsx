@@ -179,6 +179,10 @@ export default function Mirror() {
   const critId = rows.some((r) => r.feature.id === params.get('crit')) ? params.get('crit') : defaultCriterion(rows)
   const crit = rows.find((r) => r.feature.id === critId)
   const counts = rows.reduce((acc, r) => ({ ...acc, [r.status]: (acc[r.status] || 0) + 1 }), {})
+  // Three-question summary: matches by points earned, differences by points lost, then gaps.
+  const matches = rows.filter((r) => r.status === 'match').sort((a, b) => b.weight * b.sim - a.weight * a.sim)
+  const differs = rows.filter((r) => r.status === 'differ').sort((a, b) => b.weight * (1 - b.sim) - a.weight * (1 - a.sim))
+  const missing = rows.filter((r) => r.status === 'missing')
   const world = bodyLabel(target.body)
   const tPrev = TARGET_PREVIEWS[target.id]
   const sPrev = SITE_PREVIEWS[site.id]
@@ -231,6 +235,55 @@ export default function Mirror() {
           </p>
         </div>
       </header>
+
+      {/* The three questions first; each claim opens its own evidence below. */}
+      <section className="mirror-q" aria-label="What the comparison shows">
+        {[
+          ['match', 'What matches?', matches, 'No selected characteristic is at least 70% similar.'],
+          ['differ', 'What’s different?', differs, 'No selected characteristic with data is under 70% similar.'],
+          ['missing', 'What still needs measuring?', missing, 'Every selected characteristic has data on both sides.'],
+        ].map(([kind, title, list, none]) => (
+          <div key={kind} className={`mirror-q__col mirror-q__col--${kind}`}>
+            <h2 className="mirror-q__title">{title}</h2>
+            {list.length ? (
+              <ul className="mirror-q__list">
+                {list.map((r) => (
+                  <li key={r.feature.id}>
+                    <button
+                      type="button"
+                      className={`mirror-q__item${r.feature.id === critId ? ' is-active' : ''}`}
+                      aria-controls="mirror-detail"
+                      aria-pressed={r.feature.id === critId}
+                      onClick={() => setParam('crit', r.feature.id)}
+                    >
+                      <span aria-hidden="true">{MIRROR_STATUS[r.status].symbol} </span>
+                      <strong>{r.feature.label}</strong>
+                      {kind === 'missing' ? (
+                        <span className="mirror-q__val">
+                          {' '}
+                          — no value {r.missingSide === 'target' ? `for ${target.name.split(' — ')[0]}` : r.missingSide === 'both' ? 'on either side' : `for ${site.name}`}
+                        </span>
+                      ) : (
+                        <span className="mirror-q__val">
+                          {' '}
+                          — {r.site.text ?? '—'} here vs {r.target.text ?? '—'} ({pct(r.sim)})
+                        </span>
+                      )}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="muted mirror-q__none">{none}</p>
+            )}
+          </div>
+        ))}
+        <p className="mirror-q__more">
+          <Link className="btn btn--small" to={`${app.linkTo(`/site/${site.id}`)}#evidence`}>
+            View evidence<span className="sr-only">: units, coverage and sources for {site.name}</span>
+          </Link>
+        </p>
+      </section>
 
       <div className="mirror__stage">
         <TerrainPanel

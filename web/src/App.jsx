@@ -159,10 +159,13 @@ function TopBar({ menuOpen, onMenu, manifest, isMock }) {
           </div>
         </dl>
       ) : null}
-      <button type="button" className="btn btn--small topbar__change" onClick={changeMission}>
-        <span className="btn__long">{t ? 'Change mission' : 'Choose a world'}</span>
-        <span className="btn__short">{t ? 'Change' : 'Start'}</span>
-      </button>
+      {/* Home has its own "Change" beside the selection; one control per screen avoids two meanings. */}
+      {location.pathname !== '/' && (
+        <button type="button" className="btn btn--small topbar__change" onClick={changeMission}>
+          <span className="btn__long">{t ? 'Change mission' : 'Choose a world'}</span>
+          <span className="btn__short">{t ? 'Change' : 'Start'}</span>
+        </button>
+      )}
 
       <span className="topbar__spacer" />
       <Link

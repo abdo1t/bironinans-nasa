@@ -24,6 +24,25 @@ import { matchScenario } from '../lib/scenarios.js'
 import { useAppState } from '../state/AppState.jsx'
 import '../styles/explore.css'
 
+const PHONE_QUERY = '(max-width: 760px)'
+
+/** True on phone-width screens; follows rotation and window resizes. */
+function useIsPhone() {
+  const [phone, setPhone] = useState(() => typeof window !== 'undefined' && Boolean(window.matchMedia?.(PHONE_QUERY).matches))
+  useEffect(() => {
+    const mq = window.matchMedia?.(PHONE_QUERY)
+    if (!mq) return undefined
+    const on = () => setPhone(mq.matches)
+    on()
+    mq.addEventListener('change', on)
+    return () => mq.removeEventListener('change', on)
+  }, [])
+  return phone
+}
+
+// Short ranked list beside the map on desktop.
+const STAGE_LIST_LIMIT = 5
+
 /** Value that only updates after `delay` ms of quiet (keeps screen-reader announcements off every slider step). */
 function useDebounced(value, delay) {
   const [settled, setSettled] = useState(value)
@@ -38,7 +57,11 @@ export default function Explore() {
   const { data } = useBundle()
   const app = useAppState()
   const [params, setParams] = useSearchParams()
-  const view = params.get('view') === 'list' ? 'list' : 'map'
+  const isPhone = useIsPhone()
+  // Phones open on the results (list) and desktop on the map; an explicit view= wins on both.
+  const defaultView = isPhone ? 'list' : 'map'
+  const viewParam = params.get('view')
+  const view = viewParam === 'list' || viewParam === 'map' ? viewParam : defaultView
   // Research mode = Advanced options open (weights, ranking method, full evidence table).
   // Quick explore is the default; custom weights or adv=1 switch Research mode on.
   const advParam = params.get('adv')
@@ -64,7 +87,7 @@ export default function Explore() {
       ),
     [setParams],
   )
-  const setView = (v) => setParam('view', v === 'map' ? null : v)
+  const setView = (v) => setParam('view', v === defaultView ? null : v)
   const onAdvancedToggle = (open) => {
     if (open === advancedOpen) return
     setParam('adv', open ? '1' : app.isCustom ? '0' : null)
@@ -171,6 +194,33 @@ export default function Explore() {
     onToggleShortlist: app.toggleShortlist,
     linkTo: app.linkTo,
   }
+  // Card and marker share one active / selected place, so both highlight together.
+  const cardProps = {
+    rankBy: app.rankBy,
+    active,
+    onActive,
+    selectedId: selectedSite?.id,
+    onSelect,
+  }
+  const map = (
+    <MapView
+      ranking={app.ranking}
+      siteById={data.siteById}
+      shortlist={app.shortlist}
+      isMock={data.isMock}
+      active={active}
+      onActive={onActive}
+      focus={focus}
+      selectedId={selectedSite?.id}
+      onSelect={onSelect}
+    />
+  )
+
+  const availNote = (
+    <p className="avail-notice" role="note">
+      <strong>Some measurements aren’t available yet.</strong> {notice}
+    </p>
+  )
 
   return (
     <div className={`explore${panelOpen ? '' : ' explore--collapsed'}`}>
@@ -196,7 +246,7 @@ export default function Explore() {
           <div className="explore__title">
             <p className="hud-label">Explore · mission workspace</p>
             <h1 id="explore-title">
-              Earth analogs for {app.target.name.split(' — ')[0]}{' '}
+              Places on Earth most like {app.target.name.split(' — ')[0]}{' '}
               <span className="muted">({bodyLabel(app.target.body)})</span>
             </h1>
             <p className="explore__sub">
@@ -215,15 +265,7 @@ export default function Explore() {
             </p>
           </div>
           <div className="explore__controls">
-            <div className="seg seg--mode" role="group" aria-label="Detail level">
-              <button type="button" aria-pressed={!advancedOpen} onClick={() => onAdvancedToggle(false)}>
-                Quick
-              </button>
-              <button type="button" aria-pressed={advancedOpen} onClick={() => onAdvancedToggle(true)}>
-                Research
-              </button>
-            </div>
-            <div className="seg" role="group" aria-label="View">
+            <div className="seg seg--view" role="group" aria-label="View">
               <button type="button" aria-pressed={view === 'map'} onClick={() => setView('map')}>
                 <IconMap size={16} />
                 Map
@@ -233,14 +275,22 @@ export default function Explore() {
                 List
               </button>
             </div>
+            {/* Weights, ranking order and the full evidence table live behind one control. */}
+            <button
+              type="button"
+              className={`btn btn--small explore__adv${advancedOpen ? ' is-on' : ''}`}
+              aria-expanded={advancedOpen}
+              aria-controls="explore-panel"
+              onClick={() => onAdvancedToggle(!advancedOpen)}
+            >
+              Advanced options
+              {app.isCustom && <span className="explore__adv-note"> · custom weights</span>}
+            </button>
           </div>
         </header>
 
-        {notice && (
-          <p className="avail-notice" role="note">
-            <strong>Some measurements aren’t available yet.</strong> {notice}
-          </p>
-        )}
+        {/* Phones show the results first; this note follows them there. */}
+        {notice && !isPhone && availNote}
 
         {scoredCount === 0 && (
           <p className="avail-notice" role="status">
@@ -256,20 +306,52 @@ export default function Explore() {
           {announcement}
         </p>
 
-        {view === 'map' ? (
+        {isPhone ? (
+          // Phones: results first, one Map / List switch; the selected place (sel=) is the same in both.
+          <section className="mc-panel explore__results explore__results--phone" aria-labelledby="results-title">
+            <header className="mc-panel__head">
+              <h2 id="results-title" className="mc-panel__title">
+                {view === 'map' ? <IconMap /> : <IconList />}
+                {view === 'map' ? 'Selected place' : 'Ranked places'}
+              </h2>
+            </header>
+            {view === 'map' ? (
+              <>
+                {map}
+                {selectedEntry && <SiteCards {...shared} {...cardProps} ranking={[selectedEntry]} compact />}
+              </>
+            ) : (
+              <SiteCards {...shared} {...cardProps} compact />
+            )}
+            {tray}
+          </section>
+        ) : null}
+        {isPhone && (
+          <div className="explore__phone-notes">
+            {rankingHelp}
+            {notice && availNote}
+          </div>
+        )}
+        {isPhone ? null : view === 'map' ? (
           <>
             <div className="mc-stage">
-              <MapView
-                ranking={app.ranking}
-                siteById={data.siteById}
-                shortlist={app.shortlist}
-                isMock={data.isMock}
-                active={active}
-                onActive={onActive}
-                focus={focus}
-                selectedId={selectedSite?.id}
-                onSelect={onSelect}
-              />
+              {map}
+              <section className="mc-panel explore__results explore__results--stage" aria-labelledby="results-title">
+                <header className="mc-panel__head">
+                  <h2 id="results-title" className="mc-panel__title">
+                    <IconList />
+                    Top matches
+                  </h2>
+                  <button type="button" className="link-btn explore__all" onClick={() => setView('list')}>
+                    See all {app.ranking.length}
+                    <span className="sr-only"> places in a table</span>
+                  </button>
+                </header>
+                <SiteCards {...shared} {...cardProps} compact limit={STAGE_LIST_LIMIT} />
+                {tray}
+              </section>
+            </div>
+            <div className="mc-deck">
               <MatchAnalysis
                 entry={selectedEntry}
                 site={selectedSite}
@@ -284,26 +366,6 @@ export default function Explore() {
                 listed={selectedSite ? app.shortlist.includes(selectedSite.id) : false}
                 shortlistFull={app.shortlistFull}
               />
-            </div>
-            <div className="mc-deck">
-              <section className="mc-panel explore__results" aria-labelledby="results-title">
-                <header className="mc-panel__head">
-                  <h2 id="results-title" className="mc-panel__title">
-                    <IconList />
-                    Recommended Earth sites
-                  </h2>
-                </header>
-                <div className="explore__results-head">{rankingHelp}</div>
-                <SiteCards
-                  {...shared}
-                  rankBy={app.rankBy}
-                  active={active}
-                  onActive={onActive}
-                  selectedId={selectedSite?.id}
-                  onSelect={onSelect}
-                />
-                {tray}
-              </section>
               <TerrainPair target={app.target} site={selectedSite} isMock={data.isMock} linkTo={app.linkTo} />
               <MissionEvidence
                 app={app}
@@ -315,6 +377,7 @@ export default function Explore() {
                 isMock={data.isMock}
               />
             </div>
+            <div className="explore__table-help">{rankingHelp}</div>
           </>
         ) : (
           <>

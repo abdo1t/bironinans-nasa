@@ -21,7 +21,7 @@ export const PRESETS = {
     weights: { terrain: 2, aridity: 3, temp: 2, temp_range: 2, veg: 3, geology: 5, ice: 1 },
   },
   ice: {
-    label: 'Ice drilling',
+    label: 'Ice exploration',
     rationale:
       "Ice prospecting and drilling trials: surface temperature and ground ice dominate. The ice criterion means 'matches the target's ground-ice state', so for an ice-free target it favours ice-free sites.",
     weights: { terrain: 2, aridity: 2, temp: 5, temp_range: 2, veg: 3, geology: 1, ice: 5 },

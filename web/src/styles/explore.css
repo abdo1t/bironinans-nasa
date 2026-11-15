@@ -1481,3 +1481,231 @@
     min-height: 44px;
   }
 }
+
+/* ---------------------------------------------------------------- First visit (2026-11-15)
+   Desktop: map with a short ranked list beside it; the analysis panels follow below.
+   Phones: results first with one Map / List switch. */
+
+.mc-stage {
+  grid-template-columns: minmax(0, 1fr) minmax(330px, 400px);
+}
+
+.explore__results--stage {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-radius: var(--radius-lg);
+  background: var(--panel);
+}
+
+.explore__results--stage .mc-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.explore__all {
+  font-size: var(--fs-sm);
+  white-space: nowrap;
+}
+
+.explore__results--stage .site-cards {
+  flex: 1;
+  min-height: 0;
+  max-height: none;
+  overflow-y: auto;
+  background: transparent;
+}
+
+.explore__results--stage .shortlist {
+  position: static;
+  box-shadow: none;
+}
+
+.mc-deck {
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.mc-deck .manalysis__body {
+  overflow: visible;
+}
+
+.explore__table-help {
+  margin-top: 0.75rem;
+}
+
+/* "Advanced options": one quiet control for weights, ranking order and the evidence table */
+.explore__adv {
+  min-height: 40px;
+}
+
+.explore__adv[aria-expanded='true'] {
+  border-color: var(--accent-line, var(--accent));
+  color: var(--accent);
+}
+
+.explore__adv-note {
+  color: var(--text-2);
+  font-weight: 400;
+}
+
+/* compact cards: name, location, one evidence-backed reason, two actions */
+.site-card--compact {
+  gap: 0.35rem;
+  padding: 0.6rem 0.7rem;
+}
+
+.site-card__coord {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.site-card__reason {
+  display: grid;
+  gap: 0.15rem;
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+  color: var(--text-2);
+}
+
+.site-card__reason-main strong {
+  color: var(--text);
+}
+
+.site-card__reason-main > span[aria-hidden='true'] {
+  color: var(--ok);
+  font-weight: 700;
+}
+
+.site-card__reason-meta {
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+.site-card--compact .site-card__actions .btn--why {
+  font-weight: 700;
+}
+
+/* motion: the card and its marker light up together (~200 ms); a newly selected marker
+   eases in. The global reduced-motion rule (system.css) makes these instant. */
+.site-card {
+  transition:
+    border-color 200ms ease-out,
+    background-color 200ms ease-out,
+    box-shadow 200ms ease-out;
+}
+
+.pin {
+  transition:
+    transform 180ms ease-out,
+    box-shadow 180ms ease-out;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pin-wrap.is-selected .pin {
+    animation: pin-select 220ms ease-out both;
+  }
+
+  .site-card.is-selected .site-card__reason {
+    animation: reveal-up 200ms ease-out both;
+  }
+}
+
+@keyframes pin-select {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.22);
+  }
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 1320px) {
+  .mc-deck {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 1100px) {
+  .mc-stage {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .explore__results--stage .site-cards {
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+/* phones: results panel first; the Map / List switch leads the controls */
+.explore__results--phone {
+  border-radius: var(--radius-lg);
+  background: var(--panel);
+}
+
+.explore__results--phone .site-cards {
+  max-height: none;
+  overflow: visible;
+  background: transparent;
+}
+
+.explore__results--phone .map-wrap {
+  height: 52vh;
+  min-height: 260px;
+  border-radius: 0;
+}
+
+.explore__results--phone .shortlist {
+  position: sticky;
+  bottom: 0;
+  box-shadow: 0 -6px 16px rgba(0, 0, 0, 0.35);
+}
+
+@media (max-width: 760px) {
+  .mc-deck {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .explore__controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .seg--view {
+    flex: 1 1 auto;
+  }
+
+  .seg--view button {
+    flex: 1;
+    justify-content: center;
+    min-height: 44px;
+  }
+
+  .explore__adv {
+    min-height: 44px;
+  }
+
+  .site-card--compact .site-card__actions .btn {
+    min-height: 40px;
+  }
+}
+
+.explore__phone-notes {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+  font-size: var(--fs-sm);
+}

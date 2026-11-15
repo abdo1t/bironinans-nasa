@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import Disclosure from '../components/Disclosure.jsx'
+import MatchLine from '../components/MatchLine.jsx'
 import ScoreBars from '../components/ScoreBars.jsx'
+import SITE_PREVIEWS from '../data/sitePreviews.json'
+import TARGET_PREVIEWS from '../data/terrainPreviews.json'
+import { mirrorRows, MIRROR_STATUS } from '../lib/mirror.js'
 import TargetReference from '../components/TargetReference.jsx'
 import TargetSelect from '../components/TargetSelect.jsx'
 import MirrorTakeaway from '../components/MirrorTakeaway.jsx'
@@ -21,12 +25,12 @@ import {
 } from '../components/Tags.jsx'
 import { useBundle } from '../data/useBundle.js'
 import { pointsLost, usableWeightFromSims } from '../lib/explain.js'
-import { EVIDENCE, bodyLabel, describeSiteValue, describeTargetValue, formatCoord, sourceKind } from '../lib/format.js'
+import { EVIDENCE, bodyLabel, describeSiteValue, describeTargetValue, formatCoord, pct, sourceKind } from '../lib/format.js'
 import { MISSIONS, missionTitle } from '../lib/missions.js'
 import { PRESETS } from '../lib/presets.js'
 import { RANK_METHODS } from '../lib/rankMethods.js'
 import { SCENARIO_LIMITATION, matchScenario } from '../lib/scenarios.js'
-import { LIMITATIONS_NOTE, WHY_MIN_SIM, isMissing, scoreSite } from '../lib/scoring.js'
+import { LIMITATIONS_NOTE, WHY_MAX_ITEMS, WHY_MIN_SIM, isMissing, scoreSite } from '../lib/scoring.js'
 import { entrySummary, guaranteedMin, hasOpenRange, plainReliability } from '../lib/summary.js'
 import { useAppState } from '../state/AppState.jsx'
 import '../styles/site.css'
@@ -227,6 +231,63 @@ function DifferenceLine({ row, site, target }) {
   )
 }
 
+/**
+ * Shown where no sourced terrain image exists for this place: every selected criterion with the
+ * value here, the target's value, the scored similarity and the evidence type. Missing stays "—".
+ */
+function EvidenceTable({ site, target, weights, features, onEvidence }) {
+  const rows = mirrorRows(target, site, weights, features).filter((r) => r.status !== 'unused')
+  return (
+    <section className="card site-evtable" aria-labelledby="site-evtable-title">
+      <h2 id="site-evtable-title">Side by side: the measured values</h2>
+      <p className="site-gap__detail">
+        No terrain image exists for this place yet, so here are the values behind the score instead.
+      </p>
+      <div className="site-evtable__scroll">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Criterion</th>
+              <th scope="col">{site.name}</th>
+              <th scope="col">Target ({bodyLabel(target.body)})</th>
+              <th scope="col">Similarity</th>
+              <th scope="col">Evidence</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr key={r.feature.id} className={`is-${r.status}`}>
+                <th scope="row">{r.feature.label}</th>
+                <td>{r.site.text ?? <span className="tag tag--pending">Data pending</span>}</td>
+                <td>
+                  {r.target.text ?? <span className="tag tag--pending">No value</span>}{' '}
+                  <ClippedTag direction={r.target.clipped} />
+                </td>
+                <td>
+                  {r.sim === null ? (
+                    <span className="muted">not scored</span>
+                  ) : (
+                    <>
+                      <span aria-hidden="true">{MIRROR_STATUS[r.status].symbol} </span>
+                      {pct(r.sim)}
+                    </>
+                  )}
+                </td>
+                <td>{r.site.status ? <EvidenceTag status={r.site.status} /> : <SourceTag source={site.sources?.[r.feature.id]} />}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="site-summary__more">
+        <a href="#evidence" onClick={onEvidence}>
+          View evidence: units, coverage and sources
+        </a>
+      </p>
+    </section>
+  )
+}
+
 /** A selected criterion without a similarity: say why, never show it as a difference of 0. */
 function LeftOutLine({ row, site }) {
   const { f, sv } = row
@@ -329,6 +390,20 @@ export default function SiteDetails() {
   const openRange = scored && hasOpenRange(result)
   const summary = entrySummary(result)
   const fullCoverage = Boolean(result) && result.coverage.used === result.coverage.selected
+  // "What matches": the criteria at least WHY_MIN_SIM similar that earn the most points (the same
+  // rule and order as the scored `why`), each with its measured values and evidence type.
+  const matchRows =
+    target && scored
+      ? mirrorRows(target, site, app.weights, data.features)
+          .filter((r) => r.status === 'match')
+          .sort((a, b) => b.weight * b.sim - a.weight * a.sim)
+          .slice(0, WHY_MAX_ITEMS)
+      : []
+  // A criterion listed under "What matches" is not repeated as a difference (its % similar says how close).
+  const matchIds = new Set(matchRows.map((r) => r.feature.id))
+  const furtherRows = diff ? diff.further.filter((r) => !matchIds.has(r.f.id)) : []
+  // Terrain imagery only where both sourced previews exist; otherwise the evidence table.
+  const hasImagery = Boolean(target && !data.isMock && TARGET_PREVIEWS[target.id] && SITE_PREVIEWS[site.id])
 
   return (
     <article className="page site">
@@ -369,6 +444,10 @@ export default function SiteDetails() {
           )}
         </div>
         <div className="site__actions">
+          <a className="btn btn--ghost site__evidence-btn" href="#evidence" onClick={jumpTo('evidence')}>
+            View evidence
+            <span className="sr-only">: values, units, coverage and sources for {site.name}</span>
+          </a>
           <button
             type="button"
             className={`btn ${listed ? 'btn--ghost' : 'btn--primary'}`}
@@ -399,6 +478,108 @@ export default function SiteDetails() {
         </section>
       ) : (
         <>
+          <p className="site-result" aria-label="Result summary">
+            {scored ? (
+              <>
+                {ranked?.rank && (
+                  <span className="site-result__rank">
+                    #{ranked.rank} <span className="muted">of {scoredCount}</span>
+                  </span>
+                )}
+                <span>
+                  <Term id="score">Similarity</Term> <strong>{result.score}</strong>
+                  <span className="muted">/100</span>
+                  {openRange && <span className="muted"> (could be {result.scoreRange[0]}–{result.scoreRange[1]})</span>}
+                </span>
+              </>
+            ) : (
+              <span>
+                <strong>No score</strong> — insufficient data
+              </span>
+            )}
+            <CoverageBadge coverage={result.coverage} />
+            <span className="muted">
+              vs {target.name.split(' — ')[0]} ({bodyLabel(target.body)}) · {missionLabel}
+            </span>
+          </p>
+
+          <div className="site-three">
+            <section className="card" aria-labelledby="site-match-title">
+              <h2 id="site-match-title">What matches?</h2>
+              {matchRows.length ? (
+                <ul className="site-list site-list--match">
+                  {matchRows.map((row) => (
+                    <li key={row.feature.id}>
+                      <MatchLine row={row} site={site} target={target} />
+                    </li>
+                  ))}
+                </ul>
+              ) : scored ? (
+                <p className="muted">No selected criterion reaches {Math.round(WHY_MIN_SIM * 100)}% similarity.</p>
+              ) : (
+                <p className="muted">No score — insufficient data, so no matches are listed.</p>
+              )}
+            </section>
+
+            <section className="card" aria-labelledby="site-differ-title">
+              <h2 id="site-differ-title">What’s different?</h2>
+              <p className="site-gap">
+                {diff.gapRow && 'Largest shortfall: '}
+                {/* Display only: "No gaps" would read as "nothing missing" when some criteria have no data. */}
+                {scored && !diff.gapRow && diff.leftOut.length > 0 ? 'No large differences where data exist' : result.gap}
+                {scored && !diff.gapRow && (
+                  <span className="site-gap__detail">
+                    Every selected criterion with data is at least {Math.round(WHY_MIN_SIM * 100)}% similar to the
+                    target.
+                    {diff.leftOut.length > 0 &&
+                      ` But ${diff.leftOut.length} ${diff.leftOut.length === 1 ? 'characteristic was' : 'characteristics were'} not measured or not usable here (listed below), so differences there are unknown.`}
+                  </span>
+                )}
+                {diff.gapRow && (
+                  <span className="site-gap__detail">
+                    <DifferenceLine row={diff.gapRow} site={site} target={target} />
+                  </span>
+                )}
+              </p>
+              {furtherRows.length > 0 && (
+                <>
+                  <h3>{diff.gapRow ? 'Also costing points' : 'Smaller differences'}</h3>
+                  <ul className="site-list site-list--differ">
+                    {furtherRows.map((row) => (
+                      <li key={row.f.id}>
+                        <DifferenceLine row={row} site={site} target={target} />
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </section>
+
+            <section className="card" aria-labelledby="site-unknown-title">
+              <h2 id="site-unknown-title">What still needs measuring?</h2>
+              {diff.leftOut.length > 0 ? (
+                <>
+                  <p className="site-gap__detail">Not measured or not usable here, so left out of the score (never counted as zero):</p>
+                  <ul className="site-list site-list--pending">
+                    {diff.leftOut.map((row) => (
+                      <li key={row.f.id}>
+                        <LeftOutLine row={row} site={site} />
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ) : (
+                <p className="site-gap__detail">Every selected criterion has data for this place and the target.</p>
+              )}
+              <h3>In the field</h3>
+              <p className="site-gap__detail">
+                {(MISSIONS[app.isCustom ? 'balanced' : app.presetId] || MISSIONS.balanced).fieldMeasure} This tool
+                compares landscape-scale values from global datasets only.
+              </p>
+              <p className="site-summary__more">{jump('evidence', 'View evidence')}</p>
+            </section>
+          </div>
+
           <section className="card card--raised site-summary" aria-labelledby="site-summary-title">
             <div className="site-summary__head">
               <h2 id="site-summary-title">
@@ -537,85 +718,15 @@ export default function SiteDetails() {
             </p>
           </section>
 
-          <div className="site-three">
-            <section className="card" aria-labelledby="site-match-title">
-              <h2 id="site-match-title">What matches?</h2>
-              {result.why.length ? (
-                <ul className="site-list site-list--match">
-                  {result.why.map((w) => (
-                    <li key={w}>{w}</li>
-                  ))}
-                </ul>
-              ) : scored ? (
-                <p className="muted">No selected criterion reaches {Math.round(WHY_MIN_SIM * 100)}% similarity.</p>
-              ) : (
-                <p className="muted">No score — insufficient data, so no matches are listed.</p>
-              )}
-            </section>
-
-            <section className="card" aria-labelledby="site-differ-title">
-              <h2 id="site-differ-title">What’s different?</h2>
-              <p className="site-gap">
-                {diff.gapRow && 'Largest shortfall: '}
-                {/* Display only: "No gaps" would read as "nothing missing" when some criteria have no data. */}
-                {scored && !diff.gapRow && diff.leftOut.length > 0 ? 'No large differences where data exist' : result.gap}
-                {scored && !diff.gapRow && (
-                  <span className="site-gap__detail">
-                    Every selected criterion with data is at least {Math.round(WHY_MIN_SIM * 100)}% similar to the
-                    target.
-                    {diff.leftOut.length > 0 &&
-                      ` But ${diff.leftOut.length} ${diff.leftOut.length === 1 ? 'characteristic was' : 'characteristics were'} not measured or not usable here (listed below), so differences there are unknown.`}
-                  </span>
-                )}
-                {diff.gapRow && (
-                  <span className="site-gap__detail">
-                    <DifferenceLine row={diff.gapRow} site={site} target={target} />
-                  </span>
-                )}
-              </p>
-              {diff.further.length > 0 && (
-                <>
-                  <h3>{diff.gapRow ? 'Also costing points' : 'Smaller differences'}</h3>
-                  <ul className="site-list site-list--differ">
-                    {diff.further.map((row) => (
-                      <li key={row.f.id}>
-                        <DifferenceLine row={row} site={site} target={target} />
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              )}
-            </section>
-
-            <section className="card" aria-labelledby="site-unknown-title">
-              <h2 id="site-unknown-title">What still needs measuring?</h2>
-              {diff.leftOut.length > 0 ? (
-                <>
-                  <p className="site-gap__detail">Not measured or not usable here, so left out of the score (never counted as zero):</p>
-                  <ul className="site-list site-list--pending">
-                    {diff.leftOut.map((row) => (
-                      <li key={row.f.id}>
-                        <LeftOutLine row={row} site={site} />
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              ) : (
-                <p className="site-gap__detail">Every selected criterion has data for this place and the target.</p>
-              )}
-              <h3>In the field</h3>
-              <p className="site-gap__detail">
-                {(MISSIONS[app.isCustom ? 'balanced' : app.presetId] || MISSIONS.balanced).fieldMeasure} This tool
-                compares landscape-scale values from global datasets only.
-              </p>
-              <p className="site-summary__more">{jump('evidence', 'View evidence')}</p>
-            </section>
-          </div>
 
         </>
       )}
 
-      {target && (
+      {target && !hasImagery && (
+        <EvidenceTable site={site} target={target} weights={app.weights} features={data.features} onEvidence={jumpTo('evidence')} />
+      )}
+
+      {target && hasImagery && (
         <div className="site__terrain">
           <TerrainPair target={target} site={site} isMock={data.isMock} linkTo={app.linkTo} />
           {!data.isMock && (
