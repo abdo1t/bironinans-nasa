@@ -648,3 +648,76 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* ===== Selected characteristic, pinned to both pictures (redesign 2026-11-15) =====
+   A glass chip in the top-left (clear of the scale bar) of each frame names the characteristic and this side's value,
+   so choosing one lights up both worlds at once. Symbol-free text + status border, never colour alone
+   (the status word is in the bridge list and the sentence below it). */
+.mirror-panel__crit {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  max-width: calc(100% - 20px);
+  margin: 0;
+  padding: 6px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  border-radius: 8px;
+  border: 1px solid var(--accent-line);
+  background: rgba(4, 8, 16, 0.78);
+  backdrop-filter: blur(6px);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  line-height: 1.3;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+
+.mirror-panel__crit-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.mirror-panel__crit--match {
+  border-color: var(--sem-match);
+}
+
+.mirror-panel__crit--differ {
+  border-color: var(--sem-differ, #f19a8f);
+}
+
+.mirror-panel__crit--missing strong,
+.mirror-panel__crit--unused strong {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.mirror-bridge__explain {
+  margin: var(--space-3, 12px) 0 0;
+  padding: 8px 10px;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+  background: var(--accent-soft);
+  font-size: var(--fs-sm);
+  line-height: 1.45;
+}
+
+.mirror-bridge__explain--match {
+  border-left-color: var(--sem-match);
+}
+
+.mirror-bridge__explain--differ {
+  border-left-color: var(--sem-differ, #f19a8f);
+}
+
+.mirror-bridge__explain a {
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+/* Pictures come first now: give the text questions breathing room above them. */
+.mirror__stage + .mirror__honesty + .mirror-q {
+  margin-top: var(--space-5, 24px);
+}

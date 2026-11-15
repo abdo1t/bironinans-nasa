@@ -80,7 +80,15 @@ const SOURCES = [
     match: 'EMIT',
   },
   { label: 'NASA Moon / Mars Trek (target site viewers)', url: 'https://trek.nasa.gov/' },
-  { label: 'Basemap tiles: Esri World Dark Gray Canvas', url: 'https://www.esri.com/' },
+  { label: 'Basemap tiles: Esri World Imagery (Esri, Maxar, Earthstar Geographics)', url: 'https://www.esri.com/' },
+  {
+    label: 'Home globe, Moon: NASA LRO Wide Angle Camera colour mosaic (NASA/GSFC/Arizona State University), via the NASA SVS CGI Moon Kit — imagery only, not used in scoring',
+    url: 'https://svs.gsfc.nasa.gov/4720/',
+  },
+  {
+    label: 'Home globe, Mars: Viking MDIM 2.1 colorized global mosaic (NASA Ames / USGS Astrogeology) — imagery only, not used in scoring',
+    url: 'https://astrogeology.usgs.gov/search/map/mars_viking_colorized_global_mosaic_232m',
+  },
 ]
 
 const AI_STATEMENT =

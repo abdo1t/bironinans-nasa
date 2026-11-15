@@ -1,16 +1,8 @@
-import { Suspense, lazy, useEffect, useState } from 'react'
-import { Link, NavLink, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { Suspense, lazy, useEffect, useRef, useState } from 'react'
+import { Link, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
-import {
-  IconCompare,
-  IconData,
-  IconDataset,
-  IconDiscover,
-  IconMap,
-  IconMenu,
-  IconMethod,
-  IconMirror,
-} from './components/Icons.jsx'
+import { IconCompare, IconDataset, IconDiscover, IconMap, IconMethod, IconMirror } from './components/Icons.jsx'
+import MissionSelector from './components/MissionSelector.jsx'
 import RouteEffects from './components/RouteEffects.jsx'
 import { MockTag } from './components/Tags.jsx'
 import { useBundle } from './data/useBundle.js'
@@ -23,151 +15,171 @@ import Explore from './pages/Explore.jsx'
 import SiteDetails from './pages/SiteDetails.jsx'
 import About from './pages/About.jsx'
 import './styles/app.css'
+// Redesign layer (world tokens, shell, shared components): after every eagerly loaded page sheet.
+import './styles/theme.css'
 
 // The radar chart (Recharts) is only needed on Compare: load it on demand.
 const Compare = lazy(() => import('./pages/Compare.jsx'))
 // Planetary Mirror (terrain images, evidence panel): also on demand, off the main journey.
 const Mirror = lazy(() => import('./pages/Mirror.jsx'))
+// Scientific report (print / CSV / JSON): on demand.
+const Report = lazy(() => import('./pages/Report.jsx'))
 
 /** Original mark: a target point on an orbit ring (no agency insignia). */
 function BrandMark({ size = 30 }) {
   return (
     <svg className="brand__mark" viewBox="0 0 32 32" width={size} height={size} aria-hidden="true" focusable="false">
       <circle cx="16" cy="16" r="10.5" fill="none" stroke="#b4c4dc" strokeWidth="1.75" />
-      <ellipse cx="16" cy="16" rx="15" ry="5.5" fill="none" stroke="#2fd6f0" strokeWidth="1.75" transform="rotate(-25 16 16)" />
-      <circle cx="16" cy="16" r="3.25" fill="#2fd6f0" />
+      <ellipse cx="16" cy="16" rx="15" ry="5.5" fill="none" stroke="currentColor" strokeWidth="1.75" transform="rotate(-25 16 16)" />
+      <circle cx="16" cy="16" r="3.25" fill="currentColor" />
     </svg>
   )
 }
 
-/** Left navigation rail. Desktop: always visible; small screens: a drawer opened from the top bar. */
-function Rail({ open, onClose }) {
+const NAV = [
+  { to: '/', label: 'Home', Icon: IconDiscover, end: true },
+  { to: '/explore', label: 'Explore', Icon: IconMap },
+  { to: '/mirror', label: 'Mirror', Icon: IconMirror },
+  { to: '/compare', label: 'Compare', Icon: IconCompare, count: true },
+  { to: '/about', label: 'Method', Icon: IconMethod },
+]
+
+/**
+ * Main navigation: five short labels. Desktop shows them in the top bar; phones show the same
+ * links as a bottom tab bar. Active = aria-current plus an underline (top) / filled pill
+ * (bottom), never colour alone. Site details count as part of Explore.
+ */
+function NavLinks({ variant }) {
   const app = useAppState()
-  const location = useLocation()
+  const { pathname } = useLocation()
   const n = app.shortlist.length
-  const onAbout = location.pathname === '/about'
-  const items = [
-    { to: '/', label: 'Discover', Icon: IconDiscover, end: true },
-    { to: '/explore', label: 'Explore Map', Icon: IconMap },
-    { to: '/mirror', label: 'Planetary Mirror', Icon: IconMirror },
-    { to: '/compare', label: 'Compare Sites', Icon: IconCompare, count: n },
-    { to: '/about', hash: 'data', label: 'Scientific Data', Icon: IconData, active: onAbout && location.hash === '#data' },
-    { to: '/about', label: 'Methodology', Icon: IconMethod, active: onAbout && location.hash !== '#data' },
-  ]
   return (
-    <nav id="rail" className={`rail${open ? ' is-open' : ''}`} aria-label="Main">
-      <Link to={app.linkTo('/')} className="rail__brand" title="Earth Analog Finder — start">
-        <BrandMark />
-        <span className="sr-only">Earth Analog Finder — start</span>
-      </Link>
-      <div className="rail__nav">
-        {items.map((it) => {
-          const href = app.linkTo(it.to) + (it.hash ? `#${it.hash}` : '')
-          const content = (
-            <>
-              <it.Icon />
-              <span>{it.label}</span>
-              {it.count > 0 && (
-                <span className="rail__count">
-                  {it.count}
-                  <span className="sr-only"> sites selected</span>
+    <ul className={`nav nav--${variant}`}>
+      {NAV.map((it) => {
+        const forceActive = it.to === '/explore' && pathname.startsWith('/site/')
+        return (
+          <li key={it.to}>
+            <NavLink
+              to={app.linkTo(it.to)}
+              end={it.end}
+              className={({ isActive }) => `nav__item${isActive || forceActive ? ' is-active' : ''}`}
+              aria-current={forceActive ? 'page' : undefined}
+            >
+              <it.Icon size={variant === 'tabs' ? 22 : 18} />
+              <span className="nav__label">{it.label}</span>
+              {it.count && n > 0 && (
+                <span className="nav__count">
+                  {n}
+                  <span className="sr-only"> places selected</span>
                 </span>
               )}
-            </>
-          )
-          if (it.active !== undefined) {
-            return (
-              <Link
-                key={it.label}
-                to={href}
-                className={`rail__item${it.active ? ' is-active' : ''}`}
-                aria-current={it.active ? 'page' : undefined}
-                onClick={onClose}
-              >
-                {content}
-              </Link>
-            )
-          }
-          return (
-            <NavLink
-              key={it.label}
-              to={href}
-              end={it.end}
-              className={({ isActive }) => `rail__item${isActive ? ' is-active' : ''}`}
-              onClick={onClose}
-            >
-              {content}
             </NavLink>
-          )
-        })}
-      </div>
-      <div className="rail__spacer" />
-      <p className="rail__foot">Space Apps 2026 research prototype</p>
-    </nav>
+          </li>
+        )
+      })}
+    </ul>
   )
 }
 
-/** Top bar: brand, the current mission context, one action to change it, and the data mode. */
-function TopBar({ menuOpen, onMenu, manifest, isMock }) {
+/**
+ * The current mission in one compact control: "● Moon · Lunar South Pole · Ice exploration".
+ * Opens a small popover with the same selector as Home (world, site, mission) and a link to the
+ * full criteria. Escape, a click outside or navigating closes it.
+ */
+function MissionControl() {
   const app = useAppState()
   const location = useLocation()
-  const navigate = useNavigate()
+  const [openAt, setOpenAt] = useState(null)
+  const here = location.pathname
+  const open = openAt === here
+  const boxRef = useRef(null)
+  const btnRef = useRef(null)
+  useEffect(() => {
+    if (!open) return undefined
+    const onKey = (e) => {
+      if (e.key === 'Escape') {
+        setOpenAt(null)
+        btnRef.current?.focus()
+      }
+    }
+    const onDown = (e) => {
+      if (!boxRef.current?.contains(e.target)) setOpenAt(null)
+    }
+    window.addEventListener('keydown', onKey)
+    window.addEventListener('pointerdown', onDown)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      window.removeEventListener('pointerdown', onDown)
+    }
+  }, [open])
   const t = app.target
   const mission = missionLabel(app)
-  const changeMission = () => {
-    if (!t) return navigate(app.linkTo('/'))
-    if (location.pathname === '/explore') {
-      const params = new URLSearchParams(location.search)
-      params.set('panel', '1')
-      return navigate({ search: params.toString().replace(/%2C/g, ',') }, { replace: true })
-    }
-    navigate(app.linkTo('/explore', { panel: '1' }))
-  }
+  return (
+    <div className="mctl" ref={boxRef}>
+      <button
+        ref={btnRef}
+        type="button"
+        className="mctl__btn"
+        aria-expanded={open}
+        aria-controls="mctl-pop"
+        onClick={() => setOpenAt(open ? null : here)}
+      >
+        <span className="sr-only">Current mission: </span>
+        {t ? (
+          <>
+            <span className={`world-dot world-dot--${t.body}`} aria-hidden="true" />
+            <span className="mctl__world">{bodyLabel(t.body)}</span>
+            <span className="mctl__sep" aria-hidden="true">
+              ·
+            </span>
+            <span className="mctl__target" title={t.name}>
+              {t.name.split(' — ')[0]}
+            </span>
+            <span className="mctl__sep mctl__hide-sm" aria-hidden="true">
+              ·
+            </span>
+            <span className="mctl__mission mctl__hide-sm">{mission}</span>
+          </>
+        ) : (
+          <span className="mctl__target">Choose a world</span>
+        )}
+        <span className="mctl__chev" aria-hidden="true" />
+        <span className="sr-only"> — change</span>
+      </button>
+      <div id="mctl-pop" className="mctl__pop" hidden={!open} role="group" aria-label="Change mission">
+        <MissionSelector idPrefix="nav" layout="stack" />
+        <div className="mctl__foot">
+          <Link className="link-btn" to={app.linkTo('/explore', { adv: '1' })} onClick={() => setOpenAt(null)}>
+            Adjust criteria and weights
+          </Link>
+          <Link className="link-btn" to={app.linkTo('/report')} onClick={() => setOpenAt(null)}>
+            Research report
+          </Link>
+          <button type="button" className="btn btn--small" onClick={() => setOpenAt(null)}>
+            Done
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/** Top bar: brand, navigation, the current mission and the data mode. */
+function TopBar({ manifest, isMock }) {
+  const app = useAppState()
+  const location = useLocation()
   return (
     <header className="topbar">
-      <button
-        type="button"
-        className="btn btn--ghost topbar__menu"
-        aria-expanded={menuOpen}
-        aria-controls="rail"
-        onClick={onMenu}
-      >
-        <IconMenu size={20} />
-        <span className="sr-only">Menu</span>
-      </button>
       <Link to={app.linkTo('/')} className="topbar__brand">
+        <BrandMark size={26} />
         <span className="topbar__name">Earth Analog Finder</span>
-        <span className="topbar__tag">Planetary analog research console</span>
       </Link>
-
-      {t ? (
-        <dl className="mission-strip" aria-label="Current search">
-          <div className="mission-strip__cell">
-            <dt>Reference world</dt>
-            <dd>
-              <span className={`world-dot world-dot--${t.body}`} aria-hidden="true" />
-              {bodyLabel(t.body)}
-            </dd>
-          </div>
-          <div className="mission-strip__cell">
-            <dt>Planetary target</dt>
-            <dd title={t.name}>{t.name.split(' — ')[0]}</dd>
-          </div>
-          <div className="mission-strip__cell mission-strip__cell--mission">
-            <dt>Research mission</dt>
-            <dd>{mission}</dd>
-          </div>
-        </dl>
-      ) : null}
-      {/* Home has its own "Change" beside the selection; one control per screen avoids two meanings. */}
-      {location.pathname !== '/' && (
-        <button type="button" className="btn btn--small topbar__change" onClick={changeMission}>
-          <span className="btn__long">{t ? 'Change mission' : 'Choose a world'}</span>
-          <span className="btn__short">{t ? 'Change' : 'Start'}</span>
-        </button>
-      )}
-
+      <nav className="topbar__nav" aria-label="Main">
+        <NavLinks variant="top" />
+      </nav>
       <span className="topbar__spacer" />
+      {/* Home shows the same selector in its hero; one control per screen avoids two meanings. */}
+      {location.pathname !== '/' && <MissionControl />}
       <Link
         to="/about#data"
         className={`data-mode${isMock ? ' data-mode--mock' : ''}`}
@@ -179,10 +191,8 @@ function TopBar({ menuOpen, onMenu, manifest, isMock }) {
         }
       >
         <IconDataset className="data-mode__icon" size={14} />
-        <span className="data-mode__label">{isMock ? 'Mock data' : 'Scientific dataset'}</span>
-        <span className="data-mode__text">
-          {isMock ? '· not measurements' : `· static bundle, ${shortDate(manifest?.generatedAt)}`}
-        </span>
+        <span className="data-mode__label">{isMock ? 'Mock data' : 'Data'}</span>
+        <span className="data-mode__text">{isMock ? '· not measurements' : `· ${shortDate(manifest?.generatedAt)}`}</span>
       </Link>
     </header>
   )
@@ -235,37 +245,32 @@ function NotFound() {
 function StartupHeader() {
   return (
     <header className="topbar">
-      <BrandMark />
       <span className="topbar__brand">
+        <BrandMark size={26} />
         <span className="topbar__name">Earth Analog Finder</span>
-        <span className="topbar__tag">Planetary analog research console</span>
       </span>
     </header>
   )
 }
 
-/** Shell for a loaded bundle: rail + top bar; the drawer closes on navigation and Escape. */
+/**
+ * Shell for a loaded bundle: top bar (desktop navigation), bottom tab bar (phones), and the
+ * world theme: `data-world` on <html> switches the accent between lunar silver/cyan and
+ * Martian copper/amber everywhere, map popups included.
+ */
 function Shell({ data, children }) {
-  // The drawer is open only for the page it was opened on, so any navigation closes it.
-  const location = useLocation()
-  const here = location.pathname + location.hash
-  const [openAt, setOpenAt] = useState(null)
-  const menuOpen = openAt === here
-  const setMenuOpen = (open) => setOpenAt(typeof open === 'function' ? (open(menuOpen) ? here : null) : open ? here : null)
+  const app = useAppState()
+  const world = app.target?.body || 'moon'
   useEffect(() => {
-    if (!menuOpen) return
-    const onKey = (e) => e.key === 'Escape' && setOpenAt(null)
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [menuOpen])
+    document.documentElement.dataset.world = world
+  }, [world])
   return (
     <>
-      <Rail open={menuOpen} onClose={() => setMenuOpen(false)} />
-      {menuOpen && (
-        <button type="button" className="rail-scrim" aria-label="Close menu" onClick={() => setMenuOpen(false)} />
-      )}
-      <TopBar menuOpen={menuOpen} onMenu={() => setMenuOpen((o) => !o)} manifest={data.manifest} isMock={data.isMock} />
+      <TopBar manifest={data.manifest} isMock={data.isMock} />
       {children}
+      <nav className="tabbar" aria-label="Main (bottom)">
+        <NavLinks variant="tabs" />
+      </nav>
     </>
   )
 }
@@ -323,6 +328,7 @@ export default function App() {
                   <Route path="/site/:id" element={<SiteDetails />} />
                   <Route path="/compare" element={<Compare />} />
                   <Route path="/mirror" element={<Mirror />} />
+                  <Route path="/report" element={<Report />} />
                   <Route path="/about" element={<About />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>

@@ -51,6 +51,10 @@ export default function ShortlistBar({ shortlist, siteById, onRemove, onClear, l
           </span>
         </button>
       )}
+      <Link className="btn btn--ghost btn--small shortlist__report" to={linkTo('/report')}>
+        Report
+        <span className="sr-only"> — printable research report of this search</span>
+      </Link>
     </section>
   )
 }

@@ -33,16 +33,34 @@ function Reason({ site, target, weights, features }) {
   )
 }
 
-/** The selected criteria this place has no data for: left out of its score, never counted as zero. */
-function MissingLine({ site, target, weights, features }) {
+/**
+ * Compact missing-data indicator: "◐ 2 missing" (or "✓ complete"). One click opens the
+ * explanation — which selected criteria have no data here and that they are left out of the
+ * score, never counted as zero. Symbol + word, never colour alone.
+ */
+function MissingChip({ site, target, weights, features }) {
+  const [open, setOpen] = useState(false)
   const missing = siteMissing(site, target, weights, features)
-  if (!missing.length) return <p className="site-card__missing site-card__missing--none">No missing data for this place</p>
+  const id = `missing-${site.id}`
+  if (!missing.length) {
+    return (
+      <span className="miss-chip miss-chip--none">
+        <span aria-hidden="true">✓ </span>complete<span className="sr-only"> — no missing data for this place</span>
+      </span>
+    )
+  }
   return (
-    <p className="site-card__missing">
-      <span aria-hidden="true">⚠ </span>
-      Missing data: {missing.map((f) => f.label).join(', ')}
-      <span className="muted"> — not counted</span>
-    </p>
+    <>
+      <button type="button" className="miss-chip" aria-expanded={open} aria-controls={id} onClick={() => setOpen((o) => !o)}>
+        <span aria-hidden="true">◐ </span>
+        {missing.length} missing
+        <span className="sr-only"> data — explain</span>
+      </button>
+      <p id={id} className="miss-pop reveal" hidden={!open}>
+        <strong>No data here for {missing.map((f) => f.label).join(', ')}.</strong> Left out of this score — never counted
+        as zero — so the score could still move once measured.
+      </p>
+    </>
   )
 }
 
@@ -214,12 +232,9 @@ export default function SiteCards({
         </div>
 
         {compact ? (
-          <>
-            <p className="site-card__reason">
-              {s.scored ? <Reason site={site} target={target} weights={weights} features={features} /> : <WhyGap entry={r} />}
-            </p>
-            <MissingLine site={site} target={target} weights={weights} features={features} />
-          </>
+          <p className="site-card__reason">
+            {s.scored ? <Reason site={site} target={target} weights={weights} features={features} /> : <WhyGap entry={r} />}
+          </p>
         ) : (
           <>
             <p className="site-card__meta">
@@ -253,6 +268,11 @@ export default function SiteCards({
             <Link className="btn btn--small btn--ghost" to={linkTo('/mirror', { site: site.id })}>
               Mirror<span className="sr-only">: see {site.name} beside {target.name}</span>
             </Link>
+          )}
+          {compact && (
+            <span className="site-card__miss">
+              <MissingChip site={site} target={target} weights={weights} features={features} />
+            </span>
           )}
         </div>
       </li>

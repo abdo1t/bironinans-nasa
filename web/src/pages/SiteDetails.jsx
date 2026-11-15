@@ -403,6 +403,23 @@ export default function SiteDetails() {
   // Terrain imagery only where both sourced previews exist; otherwise the evidence table.
   const hasImagery = Boolean(target && !data.isMock && TARGET_PREVIEWS[target.id] && SITE_PREVIEWS[site.id])
 
+  // Published analog reference and site notes: kept, but below the three answers (and on their
+  // own when no target is chosen) so the place and its score lead the page.
+  const refs = (site.analogRef || site.notes) && (
+    <div className="site__refs">
+      {site.analogRef && (
+        <p className="site__ref">
+          Analog reference: <CitationText text={site.analogRef} />
+        </p>
+      )}
+      {site.notes && (
+        <p className="site__ref">
+          Note: <CitationText text={site.notes} />
+        </p>
+      )}
+    </div>
+  )
+
   return (
     <article className="page site">
       <p className="crumbs">
@@ -430,17 +447,43 @@ export default function SiteDetails() {
             </span>
             {data.isMock && <MockTag />}
           </p>
-          {site.analogRef && (
-            <p className="site__ref">
-              Analog reference: <CitationText text={site.analogRef} />
-            </p>
-          )}
-          {site.notes && (
-            <p className="site__ref">
-              Note: <CitationText text={site.notes} />
-            </p>
-          )}
         </div>
+        {target && (
+          <div className={`site-score${scored ? '' : ' site-score--none'}`} aria-label="Result summary">
+            {scored ? (
+              <>
+                <p className="site-score__num">
+                  <strong>{result.score}</strong>
+                  <span className="site-score__of">
+                    /100 <Term id="score">similarity</Term>
+                  </span>
+                </p>
+                <p className="site-score__meta">
+                  {ranked?.rank && (
+                    <span className="site-result__rank">
+                      #{ranked.rank} <span className="muted">of {scoredCount}</span>
+                    </span>
+                  )}
+                  {openRange && (
+                    <span className="muted">
+                      could be {result.scoreRange[0]}–{result.scoreRange[1]}
+                    </span>
+                  )}
+                </p>
+              </>
+            ) : (
+              <p className="site-score__num site-score__num--none">
+                <strong>No score</strong> — insufficient data
+              </p>
+            )}
+            <p className="site-score__meta">
+              <CoverageBadge coverage={result.coverage} />
+            </p>
+            <p className="site-score__vs">
+              vs {target.name.split(' — ')[0]} ({bodyLabel(target.body)}) · {missionLabel}
+            </p>
+          </div>
+        )}
         <div className="site__actions">
           <a className="btn btn--ghost site__evidence-btn" href="#evidence" onClick={jumpTo('evidence')}>
             View evidence
@@ -473,34 +516,10 @@ export default function SiteDetails() {
           <h2 id="site-prompt-title">Pick a target site to score this Earth site</h2>
           <p className="muted">Choose the Moon or Mars site to compare it with.</p>
           <TargetSelect id="site-target" label="Target site" targets={data.targets} value={null} onChange={app.setTarget} />
+          {refs}
         </section>
       ) : (
         <>
-          <p className="site-result" aria-label="Result summary">
-            {scored ? (
-              <>
-                {ranked?.rank && (
-                  <span className="site-result__rank">
-                    #{ranked.rank} <span className="muted">of {scoredCount}</span>
-                  </span>
-                )}
-                <span>
-                  <Term id="score">Similarity</Term> <strong>{result.score}</strong>
-                  <span className="muted">/100</span>
-                  {openRange && <span className="muted"> (could be {result.scoreRange[0]}–{result.scoreRange[1]})</span>}
-                </span>
-              </>
-            ) : (
-              <span>
-                <strong>No score</strong> — insufficient data
-              </span>
-            )}
-            <CoverageBadge coverage={result.coverage} />
-            <span className="muted">
-              vs {target.name.split(' — ')[0]} ({bodyLabel(target.body)}) · {missionLabel}
-            </span>
-          </p>
-
           <div className="site-three">
             <section className="card" aria-labelledby="site-match-title">
               <h2 id="site-match-title">What matches?</h2>
@@ -577,6 +596,7 @@ export default function SiteDetails() {
               <p className="site-summary__more">{jump('evidence', 'View evidence')}</p>
             </section>
           </div>
+          {refs}
 
           <section className="card card--raised site-summary" aria-labelledby="site-summary-title">
             <div className="site-summary__head">

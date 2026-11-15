@@ -1,13 +1,111 @@
 import L from 'leaflet'
-import { useEffect, useMemo, useRef } from 'react'
-import { MapContainer, Marker, TileLayer, Tooltip, useMap } from 'react-leaflet'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { MapContainer, Marker, Polyline, TileLayer, Tooltip, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import { NO_SCORE_COLOR, SCORE_BINS, scoreColor } from '../lib/format.js'
 import { MockTag } from './Tags.jsx'
 
-// Basemap tiles are the only external requests the app makes (no API key).
-const TILE_URL = 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}'
-const TILE_ATTRIBUTION = 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
+// Basemap tiles are the only external requests the app makes (no API key). Esri World Imagery
+// (CLAUDE.md §7): real ground, so deserts, ice and lava fields read at a glance. The previous
+// dark-grey canvas tiles were nearly the colour of the panel, so a half-loaded map looked blank.
+const TILE_URL = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+const TILE_ATTRIBUTION = 'Imagery &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community'
+// Still loading after this long: say so (markers are already placed by their coordinates).
+const SLOW_MS = 6000
+
+// A 30° graticule drawn by Leaflet itself: the map keeps a visible frame of reference while
+// tiles load or if they fail, and needs no request.
+const GRATICULE = [
+  ...[-60, -30, 0, 30, 60].map((lat) => ({
+    key: `lat${lat}`,
+    equator: lat === 0,
+    positions: [
+      [lat, -180],
+      [lat, 180],
+    ],
+  })),
+  ...[-150, -120, -90, -60, -30, 0, 30, 60, 90, 120, 150].map((lon) => ({
+    key: `lon${lon}`,
+    equator: false,
+    positions: [
+      [-85, lon],
+      [85, lon],
+    ],
+  })),
+]
+
+/**
+ * Basemap tile status from Leaflet's own tile events. `load` fires once every visible tile has
+ * finished — loaded or failed — so: no tile loaded and some failed → error; some failed → partial.
+ * Before the first `load`: loading (then "slow" after SLOW_MS). Later pans never flash the
+ * loading state; a pan that loads tiles again clears an earlier error.
+ */
+function useTileStatus() {
+  const [status, setStatus] = useState('loading')
+  const counts = useRef({ ok: 0, err: 0 })
+  const layerRef = useRef(null)
+  useEffect(() => {
+    if (status !== 'loading') return undefined
+    const id = setTimeout(() => setStatus((s) => (s === 'loading' ? 'slow' : s)), SLOW_MS)
+    return () => clearTimeout(id)
+  }, [status])
+  const handlers = useMemo(
+    () => ({
+      loading: () => {
+        counts.current = { ok: 0, err: 0 }
+      },
+      tileload: () => {
+        counts.current.ok += 1
+      },
+      tileerror: () => {
+        counts.current.err += 1
+      },
+      load: () => {
+        const { ok, err } = counts.current
+        setStatus(ok === 0 && err > 0 ? 'error' : err > 0 ? 'partial' : 'ready')
+      },
+    }),
+    [],
+  )
+  const retry = useCallback(() => {
+    counts.current = { ok: 0, err: 0 }
+    setStatus('loading')
+    layerRef.current?.redraw()
+  }, [])
+  return { status, handlers, layerRef, retry }
+}
+
+/** Loading / slow / failed basemap, said in words over the map (markers stay usable). */
+function TileStatus({ status, onRetry }) {
+  if (status === 'ready') return null
+  if (status === 'loading' || status === 'slow') {
+    return (
+      <p className="map-status map-status--loading" role="status">
+        <span className="map-status__spin" aria-hidden="true" />
+        {status === 'slow'
+          ? 'Basemap is slow to load — the markers are already placed by their coordinates.'
+          : 'Loading basemap…'}
+      </p>
+    )
+  }
+  return (
+    <div className={`map-status map-status--${status}`} role={status === 'error' ? 'alert' : 'status'}>
+      <p>
+        {status === 'error' ? (
+          <>
+            <strong>Basemap unavailable.</strong> The map tiles could not load (offline or blocked). Markers are still
+            placed by their coordinates, and the ranked list shows the same results.
+          </>
+        ) : (
+          'Some basemap tiles did not load.'
+        )}
+      </p>
+      <button type="button" className="btn btn--small" onClick={onRetry}>
+        Retry
+      </button>
+    </div>
+  )
+}
 
 const escapeHtml = (text) =>
   String(text).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c])
@@ -120,6 +218,7 @@ export default function MapView({
   onSelect,
 }) {
   const markers = useRef({})
+  const tiles = useTileStatus()
   // Stacking order: best matches on top, the active marker above everything.
   const baseZ = Object.fromEntries(ranking.map((r, i) => [r.site, (ranking.length - i) * 10]))
 
@@ -149,7 +248,7 @@ export default function MapView({
   return (
     <div className="map-col">
       <div
-        className="map-wrap"
+        className={`map-wrap map-wrap--${tiles.status}`}
         role="region"
         aria-label="Map of Earth candidate sites. Each marker shows the site's rank; select one to analyse it. The ranked list gives the same ranking."
       >
@@ -165,7 +264,21 @@ export default function MapView({
         worldCopyJump
         className="map"
       >
-        <TileLayer url={TILE_URL} attribution={TILE_ATTRIBUTION} maxNativeZoom={16} />
+        <TileLayer
+          ref={tiles.layerRef}
+          url={TILE_URL}
+          attribution={TILE_ATTRIBUTION}
+          maxNativeZoom={16}
+          eventHandlers={tiles.handlers}
+        />
+        {GRATICULE.map((g) => (
+          <Polyline
+            key={g.key}
+            positions={g.positions}
+            interactive={false}
+            pathOptions={{ className: g.equator ? 'map-grid map-grid--eq' : 'map-grid', weight: g.equator ? 1 : 0.75 }}
+          />
+        ))}
         <FocusController focus={focus} markers={markers} />
         <FitAllButton bounds={bounds} />
         <ResizeWatcher bounds={bounds} />
@@ -212,6 +325,7 @@ export default function MapView({
           )
         })}
       </MapContainer>
+      <TileStatus status={tiles.status} onRetry={tiles.retry} />
       </div>
 
       {/* Key sits under the map so it never hides a marker. */}

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import CriteriaPanel from '../components/CriteriaPanel.jsx'
-import { IconList, IconMap } from '../components/Icons.jsx'
+import { IconList, IconMap, IconSliders } from '../components/Icons.jsx'
 import MatchAnalysis from '../components/MatchAnalysis.jsx'
 import MissionEvidence from '../components/MissionEvidence.jsx'
 import MapView from '../components/MapView.jsx'
@@ -222,31 +222,26 @@ export default function Explore() {
 
   return (
     <div className={`explore${panelOpen ? '' : ' explore--collapsed'}`}>
-      <aside id="explore-panel" className="explore__panel" aria-label="Mission controls" hidden={!panelOpen}>
-        <div className="explore__panel-inner">
+      <aside id="explore-panel" className="explore__panel" aria-labelledby="explore-panel-title" hidden={!panelOpen}>
+        <div className="explore__panel-inner reveal">
           <div className="explore__panel-head">
-            <h2>Mission controls</h2>
+            <h2 id="explore-panel-title">Advanced options</h2>
             <button type="button" className="btn btn--ghost btn--small" onClick={closePanel}>
-              Close<span className="sr-only"> mission controls</span>
+              Close<span className="sr-only"> advanced options</span>
             </button>
           </div>
-          <CriteriaPanel
-            advancedOpen={advancedOpen}
-            onAdvancedToggle={onAdvancedToggle}
-            rankBy={app.rankBy}
-            onRankBy={app.setRankBy}
-          />
+          <CriteriaPanel rankBy={app.rankBy} onRankBy={app.setRankBy} />
         </div>
       </aside>
 
       <section className="explore__main" aria-labelledby="explore-title">
         <header className="explore__head">
           <div className="explore__title">
-            <p className="hud-label">Explore · mission workspace</p>
-            <h1 id="explore-title">
-              Places on Earth most like {app.target.name.split(' — ')[0]}{' '}
-              <span className="muted">({bodyLabel(app.target.body)})</span>
-            </h1>
+            <p className="kicker explore__kicker">
+              <span className={`world-dot world-dot--${app.target.body}`} aria-hidden="true" />
+              {bodyLabel(app.target.body)} · Earth analogs
+            </p>
+            <h1 id="explore-title">Places on Earth most like {app.target.name.split(' — ')[0]}</h1>
             <p className="explore__sub">
               <span>
                 Mission: <strong>{missionLabel}</strong>
@@ -276,11 +271,12 @@ export default function Explore() {
             {/* Weights, ranking order and the full evidence table live behind one control. */}
             <button
               type="button"
-              className={`btn btn--small explore__adv${advancedOpen ? ' is-on' : ''}`}
-              aria-expanded={advancedOpen}
+              className={`btn btn--small explore__adv${panelOpen ? ' is-on' : ''}`}
+              aria-expanded={panelOpen}
               aria-controls="explore-panel"
-              onClick={() => onAdvancedToggle(!advancedOpen)}
+              onClick={() => (panelOpen ? closePanel() : onAdvancedToggle(true))}
             >
+              <IconSliders size={16} />
               Advanced options
               {app.isCustom && <span className="explore__adv-note"> · custom weights</span>}
             </button>

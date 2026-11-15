@@ -52,8 +52,8 @@ function SummaryCard({ site, index, entry, target, weights, features, isLeader, 
           Remove
         </button>
       </div>
-      {isLeader && <p className="cmp-card__lead">{leadLabel}</p>}
       <p className="cmp-card__status">
+        {isLeader && <span className="cmp-card__lead">{leadLabel}</span>}
         <NoveltyTag site={site} />
       </p>
       <dl className="cmp-card__stats">
@@ -91,7 +91,7 @@ function SummaryCard({ site, index, entry, target, weights, features, isLeader, 
           </div>
         </dl>
       ) : (
-        <p className="cmp-card__short">{s.short || 'Data pending'}</p>
+        <p className="cmp-card__short cmp-card__why">{s.short || 'Data pending'}</p>
       )}
     </li>
   )
@@ -141,6 +141,10 @@ export default function Compare() {
   const leadIds = leaders(sites, app.rankBySite, app.rankBy)
   const leadLabel = app.rankBy === 'min' ? 'Most complete evidence' : 'Closest match'
   const { differences, notComparable } = keyDifferences(sites, app.target, data.features, app.weights)
+  const plain = plainComparison(
+    sites,
+    sites.map((s) => app.rankBySite[s.id]),
+  )
 
   return (
     <section className="page compare">
@@ -181,17 +185,19 @@ export default function Compare() {
           <Link className="btn btn--ghost btn--small" to={app.linkTo('/explore')}>
             Change places
           </Link>
+          <Link className="btn btn--small" to={app.linkTo('/report')}>
+            Generate report
+          </Link>
         </div>
       </header>
 
+      {/* One sentence about the selected places leads; the caveats follow in smaller type. */}
       <section className="cmp-plain" aria-labelledby="cmp-plain-title">
-        <h2 id="cmp-plain-title">In short</h2>
-        {plainComparison(
-          sites,
-          sites.map((s) => app.rankBySite[s.id]),
-        ).map((line) => (
-          <p key={line}>{line}</p>
-        ))}
+        <h2 id="cmp-plain-title" className="sr-only">
+          In short
+        </h2>
+        <p className="cmp-plain__lede">{plain[0]}</p>
+        {plain.length > 1 && <p className="cmp-plain__more">{plain.slice(1).join(' ')}</p>}
       </section>
       <ul className={`cmp-cards cmp-cards--${sites.length}`} aria-label="Compared sites">
         {sites.map((site, i) => (

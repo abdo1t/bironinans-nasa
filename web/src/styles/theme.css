@@ -1,0 +1,740 @@
+/* Redesign layer (2026-11-15): one coherent look across routes.
+   Loaded after index.css → system.css → mission.css → eager page sheets → app.css (App.jsx).
+   Lazy pages (Compare, Mirror) load their own sheet later and restyle themselves there.
+
+   Direction: cinematic hero with strong type and depth; generous spacing and restrained colour
+   elsewhere; planet-centred composition on Home. The accent follows the world:
+     Moon → lunar silver + cyan        Mars → copper + amber
+   Decorative planet artwork is soft, frameless and glowing; scientific terrain images are framed,
+   captioned with source and scale, and tagged "Data" — the two never look alike.
+   Every colour pair used for text keeps ≥ 4.5:1 on --bg / --panel. */
+
+:root,
+:root[data-world='moon'] {
+  --bg: #050a14;
+  --bg-2: #08101f;
+  --panel: #0b1527;
+  --panel-2: #0f1c33;
+  --panel-3: #15253f;
+  --border: #1b2c47;
+  --border-strong: #2a4166;
+
+  --world: #d4dce6; /* lunar silver */
+  --accent: #5fe0f2; /* cyan */
+  --accent-hover: #8beaf7;
+  --accent-ink: #02131a;
+  --accent-soft: rgba(95, 224, 242, 0.11);
+  --accent-line: rgba(95, 224, 242, 0.48);
+  --world-glow: rgba(95, 224, 242, 0.22);
+  --world-glow-2: rgba(212, 220, 230, 0.12);
+  --link: #8fdcfb;
+
+  --font-display: 'Segoe UI Variable Display', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --radius: 10px;
+  --radius-lg: 16px;
+  --topbar-h: 60px;
+  --tabbar-h: 64px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root[data-world='mars'] {
+  --world: #e8956a; /* copper */
+  --accent: #f4ab5e; /* amber */
+  --accent-hover: #f8c38c;
+  --accent-ink: #1e0d03;
+  --accent-soft: rgba(244, 171, 94, 0.12);
+  --accent-line: rgba(244, 171, 94, 0.5);
+  --world-glow: rgba(232, 120, 60, 0.26);
+  --world-glow-2: rgba(244, 171, 94, 0.12);
+  --link: #f7c590;
+}
+
+body {
+  background:
+    radial-gradient(1100px 520px at 78% -8%, var(--world-glow-2), transparent 62%),
+    radial-gradient(900px 600px at -10% 110%, rgba(30, 60, 110, 0.18), transparent 60%),
+    var(--bg);
+  background-attachment: fixed;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+}
+
+h1 {
+  letter-spacing: -0.015em;
+}
+
+/* ================================================================ shell */
+
+.app,
+.app--startup {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: 'top' 'banner' 'main' 'foot';
+  /* decorative layers (starfield, planet) may bleed past the content edge; the viewport clips
+     them. `clip` creates no scroll container, so the sticky top bar keeps working. */
+  overflow-x: clip;
+}
+
+.topbar {
+  gap: 0.5rem 1rem;
+  min-height: var(--topbar-h);
+  padding: 0.45rem clamp(1rem, 2.4vw, 2rem);
+  background: rgba(5, 10, 20, 0.78);
+  backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid rgba(42, 65, 102, 0.6);
+}
+
+.topbar__brand {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.55rem;
+  flex: none;
+}
+
+.topbar__brand .brand__mark {
+  color: var(--accent);
+  transition: color 400ms ease;
+}
+
+.topbar__name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+}
+
+.topbar__nav {
+  margin-left: clamp(0.5rem, 2vw, 1.75rem);
+}
+
+.nav {
+  display: flex;
+  gap: 0.15rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav__item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 40px;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  color: var(--text-2);
+  font-size: 0.92rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 150ms ease, background-color 150ms ease;
+}
+
+.nav__item svg {
+  flex: none;
+  opacity: 0.8;
+}
+
+.nav__item:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* active: filled pill + accent underline + weight (never colour alone) */
+.nav--top .nav__item.is-active {
+  color: var(--text);
+  font-weight: 650;
+  background: var(--accent-soft);
+}
+
+.nav--top .nav__item.is-active::after {
+  content: '';
+  position: absolute;
+  left: 0.9rem;
+  right: 0.9rem;
+  bottom: -0.55rem;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+
+.nav__item.is-active svg {
+  color: var(--accent);
+  opacity: 1;
+}
+
+.nav__count {
+  min-width: 1.15rem;
+  height: 1.15rem;
+  padding: 0 0.3rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font: 700 0.7rem/1.15rem var(--font-ui);
+  text-align: center;
+}
+
+/* ---------------------------------------------------------------- mission control (compact) */
+
+.mctl {
+  position: relative;
+  min-width: 0;
+}
+
+.mctl__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  max-width: min(46vw, 520px);
+  min-height: 40px;
+  padding: 0.35rem 0.55rem 0.35rem 0.8rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: rgba(15, 28, 51, 0.7);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.88rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.mctl__btn:hover,
+.mctl__btn[aria-expanded='true'] {
+  border-color: var(--accent-line);
+  background: var(--accent-soft);
+}
+
+.mctl__btn .world-dot {
+  margin-right: 0;
+  flex: none;
+}
+
+.mctl__world {
+  font-weight: 650;
+}
+
+.mctl__sep {
+  color: var(--muted);
+}
+
+.mctl__target,
+.mctl__mission {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mctl__mission {
+  color: var(--text-2);
+}
+
+.mctl__chev {
+  width: 0.45rem;
+  height: 0.45rem;
+  margin: 0 0.25rem 0.15rem 0.15rem;
+  border-right: 2px solid var(--muted);
+  border-bottom: 2px solid var(--muted);
+  transform: rotate(45deg);
+  flex: none;
+}
+
+.mctl__pop {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  z-index: 1200;
+  width: min(360px, calc(100vw - 2rem));
+  padding: 1rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: rgba(11, 21, 39, 0.97);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+}
+
+.mctl__pop[hidden] {
+  display: none;
+}
+
+.mctl__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.9rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.88rem;
+}
+
+/* ---------------------------------------------------------------- mission selector (shared) */
+
+.mselect {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.mselect--stack {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.mselect--hero {
+  grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr);
+  align-items: end;
+  gap: 0.75rem 1rem;
+}
+
+.mselect__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.mselect__label {
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.mselect__worlds {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 3px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: rgba(5, 10, 20, 0.55);
+}
+
+.mselect__world {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 36px;
+  padding: 0.3rem 0.95rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-2);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 250ms ease, color 250ms ease;
+}
+
+.mselect__world .world-dot {
+  margin-right: 0;
+}
+
+.mselect__world:hover:not(:disabled) {
+  color: var(--text);
+}
+
+.mselect__world[aria-pressed='true'] {
+  background: var(--accent-soft);
+  color: var(--text);
+  box-shadow: inset 0 0 0 1px var(--accent-line);
+}
+
+.mselect__select {
+  width: 100%;
+  min-height: 42px;
+  padding: 0.45rem 2rem 0.45rem 0.8rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(45deg, transparent 50%, var(--muted) 50%) calc(100% - 16px) 52% / 6px 6px no-repeat,
+    linear-gradient(135deg, var(--muted) 50%, transparent 50%) calc(100% - 11px) 52% / 6px 6px no-repeat,
+    rgba(5, 10, 20, 0.55);
+  color: var(--text);
+  font: inherit;
+  font-weight: 600;
+  appearance: none;
+  text-overflow: ellipsis;
+}
+
+.mselect__select:hover:not(:disabled) {
+  border-color: var(--accent-line);
+}
+
+.mselect__select:disabled {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.mselect__select option {
+  background: var(--panel);
+  color: var(--text);
+}
+
+.world-dot--moon {
+  background: radial-gradient(circle at 35% 35%, #f2f5f9, #9aa3ae);
+}
+
+.world-dot--mars {
+  background: radial-gradient(circle at 35% 35%, #f6b27a, #b3542a);
+}
+
+/* ---------------------------------------------------------------- banners, footer, tab bar */
+
+.data-banner,
+.mock-banner {
+  padding: 0.4rem clamp(1rem, 2.4vw, 2rem);
+  font-size: 0.82rem;
+}
+
+.app-footer {
+  padding: 1rem clamp(1rem, 2.4vw, 2rem) 1.25rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.data-mode {
+  border-color: var(--border-strong);
+}
+
+.data-mode__icon {
+  color: var(--accent);
+}
+
+.tabbar {
+  display: none;
+}
+
+@media (max-width: 1240px) {
+  .data-mode__text,
+  .mctl__hide-sm {
+    display: none;
+  }
+}
+
+@media (max-width: 960px) {
+  .nav__item {
+    padding: 0.4rem 0.55rem;
+  }
+
+  .topbar__name {
+    display: none;
+  }
+}
+
+/* phones: brand + mission in the top bar; the five links move to a bottom tab bar */
+@media (max-width: 760px) {
+  .topbar {
+    gap: 0.5rem;
+    padding: 0.4rem 0.75rem;
+  }
+
+  .topbar__nav {
+    display: none;
+  }
+
+  .topbar__name {
+    display: inline;
+    font-size: 0.95rem;
+  }
+
+  .topbar__brand {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  .topbar__spacer {
+    display: block;
+  }
+
+  .mctl__btn {
+    max-width: 52vw;
+    min-height: 44px;
+  }
+
+  .mctl__world,
+  .mctl__btn .mctl__sep {
+    display: none;
+  }
+
+  .mctl__pop {
+    position: fixed;
+    top: calc(var(--topbar-h) + 0.25rem);
+    left: 0.75rem;
+    right: 0.75rem;
+    width: auto;
+  }
+
+  .tabbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1100;
+    display: block;
+    padding: 0.35rem 0.4rem calc(0.35rem + env(safe-area-inset-bottom));
+    background: rgba(5, 10, 20, 0.94);
+    backdrop-filter: blur(14px);
+    border-top: 1px solid var(--border);
+  }
+
+  .nav--tabs {
+    justify-content: space-around;
+  }
+
+  .nav--tabs li {
+    flex: 1;
+  }
+
+  .nav--tabs .nav__item {
+    flex-direction: column;
+    gap: 0.15rem;
+    width: 100%;
+    min-height: 52px;
+    padding: 0.35rem 0.2rem;
+    border-radius: 12px;
+    font-size: 0.72rem;
+    justify-content: center;
+  }
+
+  .nav--tabs .nav__item.is-active {
+    color: var(--text);
+    font-weight: 700;
+    background: var(--accent-soft);
+    box-shadow: inset 0 2px 0 var(--accent);
+  }
+
+  .nav--tabs .nav__count {
+    position: absolute;
+    top: 4px;
+    right: calc(50% - 22px);
+  }
+
+  .app {
+    padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
+  }
+
+  .mselect--hero {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .mselect--hero .mselect__field--world {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 400px) {
+  .topbar__name {
+    display: none;
+  }
+
+  .mctl {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .mctl__btn {
+    max-width: 100%;
+  }
+}
+
+/* ================================================================ shared controls */
+
+.btn {
+  border-radius: var(--radius);
+  font-weight: 550;
+}
+
+.btn--primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 700;
+  box-shadow: 0 8px 24px -12px var(--accent);
+}
+
+.btn--primary:hover:not(:disabled):not([aria-disabled='true']) {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+.btn--primary:disabled,
+.btn--primary.is-disabled {
+  box-shadow: none;
+}
+
+.seg button[aria-pressed='true'] {
+  background: var(--accent-soft);
+  box-shadow: inset 0 -2px 0 var(--accent);
+  color: var(--text);
+}
+
+.kicker {
+  color: var(--accent);
+  letter-spacing: 0.14em;
+}
+
+/* scientific image tag: marks a picture drawn from data (never on decorative art) */
+.data-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.1rem 0.45rem;
+  border: 1px solid rgba(158, 224, 196, 0.5);
+  border-radius: 4px;
+  background: rgba(5, 10, 20, 0.78);
+  color: #bdf0d8;
+  font-family: var(--font-tech);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ---------------------------------------------------------------- planet artwork + crossfade */
+
+.planet-art {
+  position: relative;
+  aspect-ratio: 1;
+}
+
+.planet-art::before {
+  /* atmosphere / rim glow behind the sphere */
+  content: '';
+  position: absolute;
+  inset: 4%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, var(--world-glow) 0%, transparent 68%);
+  filter: blur(18px);
+  transform: scale(1.2);
+}
+
+.planet-art__layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: scale(0.94) rotate(-4deg);
+}
+
+.planet-art__layer.is-on {
+  opacity: 1;
+  transform: none;
+}
+
+.planet-art__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ================================================================ motion (opt-in only) */
+
+@media (prefers-reduced-motion: no-preference) {
+  .planet-art__layer {
+    transition:
+      opacity 650ms var(--ease-out),
+      transform 900ms var(--ease-out);
+  }
+
+  /* subtle reveal when evidence opens */
+  .disclosure[open] > .disclosure__body,
+  .reveal {
+    animation: eaf-reveal 260ms var(--ease-out) both;
+  }
+
+  .mctl__pop:not([hidden]) {
+    animation: eaf-pop 180ms var(--ease-out) both;
+  }
+}
+
+@keyframes eaf-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes eaf-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav__item,
+  .mctl__btn,
+  .mselect__world,
+  .topbar__brand .brand__mark {
+    transition: none;
+  }
+}
+
+/* ================================================================ world switch: accent crossfade
+   Registered colour properties can transition, so Moon ↔ Mars recolours every accent use in
+   ~200 ms instead of snapping. Instant under reduced motion (no transition declared). */
+@property --accent {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #5fe0f2;
+}
+
+@property --accent-hover {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #8beaf7;
+}
+
+@property --accent-soft {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: rgba(95, 224, 242, 0.11);
+}
+
+@property --accent-line {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: rgba(95, 224, 242, 0.48);
+}
+
+@property --world {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #d4dce6;
+}
+
+@property --world-glow {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: rgba(95, 224, 242, 0.22);
+}
+
+@property --link {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #8fdcfb;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :root {
+    transition:
+      --accent 200ms ease-out,
+      --accent-hover 200ms ease-out,
+      --accent-soft 200ms ease-out,
+      --accent-line 200ms ease-out,
+      --world 200ms ease-out,
+      --world-glow 200ms ease-out,
+      --link 200ms ease-out;
+  }
+}

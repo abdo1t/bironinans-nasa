@@ -747,3 +747,117 @@
     min-height: 44px;
   }
 }
+
+/* ---------------------------------------------------------------- Redesign (2026-11-15)
+   The place and its score lead: name/status on the left, a large score card on the right,
+   actions underneath; then the three answers; the published reference after them. */
+
+.site .site__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'id score'
+    'actions score';
+  align-items: start;
+  gap: var(--space-3, 12px) var(--space-5, 24px);
+  margin-bottom: var(--space-4, 16px);
+}
+
+.site .site__id {
+  grid-area: id;
+}
+
+.site .site__head h1 {
+  font-size: clamp(2rem, 1.2rem + 2.4vw, 3.1rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.site .site__actions {
+  grid-area: actions;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-start;
+}
+
+.site-score {
+  grid-area: score;
+  min-width: 230px;
+  padding: var(--space-3, 12px) var(--space-4, 16px);
+  border: 1px solid var(--accent-line);
+  border-radius: var(--radius-lg, 16px);
+  background:
+    radial-gradient(120% 90% at 100% 0%, var(--accent-soft), transparent 70%),
+    var(--panel);
+  box-shadow: 0 18px 40px -24px var(--world-glow);
+}
+
+.site-score p {
+  margin: 0;
+}
+
+.site-score__num {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.site-score__num strong {
+  font-family: var(--font-display);
+  font-size: 3.4rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.site-score__num--none strong {
+  font-size: 1.4rem;
+}
+
+.site-score__of {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+.site-score__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.75rem;
+  margin-top: 0.35rem !important;
+  font-size: var(--fs-sm);
+}
+
+.site-score__vs {
+  margin-top: 0.5rem !important;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+.site__refs {
+  margin: var(--space-3, 12px) 0 var(--space-4, 16px);
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--border-strong);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .site-score {
+    animation: site-reveal 260ms ease-out both;
+  }
+}
+
+@media (max-width: 760px) {
+  .site .site__head {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'id'
+      'score'
+      'actions';
+  }
+
+  .site-score {
+    min-width: 0;
+  }
+}
